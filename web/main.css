@@ -1,0 +1,76 @@
+html, body {
+    background: black;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    size: 2vh;
+}
+
+.column {
+    width: var(size);
+    position: absolute;
+}
+
+.cell {
+    background-color: #222;
+    width: 2vh;
+    height: 2vh;
+    border: 1px solid #666;
+}
+
+.container {
+    width: 100vw;
+    display: inline-flex;
+}
+
+.column-0 {
+    top: 20vh;
+    left: 32vw;
+}
+
+.column-1 {
+    top: 22vh;
+    left: 28vw;
+}
+
+.column-2 {
+    top: 18vh;
+    left: 20vw;
+}
+
+.column-3 {
+    top: 12vh;
+    left: 25vw;
+}
+
+.column-4 {
+    top: 10vh;
+    left: 30vw;
+}
+
+.column-5 {
+    top: 8vh;
+    left: 35vw;
+}
+
+.column-6 {
+    top: 10vh;
+    left: 40vw;
+}
+
+.column-7 {
+    top: 12vh;
+    left: 45vw;
+}
+
+.column-8 {
+    top: 14vh;
+    left: 40vw;
+}
+
+.column-9 {
+    top: 16vh;
+    left: 35vw;
+}
