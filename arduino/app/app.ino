@@ -31,13 +31,22 @@ void setup() {
 
 void loop()
 {
+    if (Serial.available() == 0) {
+        // Serial port is not ready yet
+        return;
+    }
+
     // read the value from the sensor:
     sensorValue = analogRead(sensorPin);
-    int numLedsToLight = floor ((sensorValue / 200.0) * NUM_LEDS);
+    
+    // write the value to the serial port
+    Serial.println(sensorValue);
 
-    Serial.print("hello! I am working =)");
-    Serial.print(sensorValue);
-    Serial.println();
+    // read led value from the serial port
+    int valFromServer = Serial.parseInt();
+
+    //int numLedsToLight = floor ((valFromServer / 200.0) * NUM_LEDS);
+    int numLedsToLight = valFromServer;
 
     uint8_t brightness = 100;
 
