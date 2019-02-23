@@ -25,52 +25,54 @@ html {
     display: inline-flex;
 }
 
+
 .column-0 {
-    top: 20vh;
-    left: 32vw;
-}
-
-.column-1 {
-    top: 22vh;
-    left: 28vw;
-}
-
-.column-2 {
-    top: 18vh;
-    left: 20vw;
-}
-
-.column-3 {
-    top: 12vh;
-    left: 25vw;
-}
-
-.column-4 {
-    top: 10vh;
-    left: 30vw;
-}
-
-.column-5 {
-    top: 8vh;
-    left: 35vw;
-}
-
-.column-6 {
-    top: 10vh;
-    left: 40vw;
-}
-
-.column-7 {
-    top: 12vh;
-    left: 45vw;
-}
-
-.column-8 {
-    top: 14vh;
-    left: 40vw;
-}
-
-.column-9 {
-    top: 16vh;
-    left: 35vw;
-}
+    top: 9.78190306317332vh;
+    left: 10.0380711367257vw;
+    }
+    
+    .column-1 {
+    top: 12.9741139337567vh;
+    left: 17.8457255753113vw;
+    }
+    
+    .column-2 {
+    top: 14.683360946242vh;
+    left: 35.9917047496213vw;
+    }
+    
+    .column-3 {
+    top: 14.741618276031vh;
+    left: 62.6921862562037vw;
+    }
+    
+    .column-4 {
+    top: 13.1125731831881vh;
+    left: 81.3043262740966vw;
+    }
+    
+    .column-5 {
+    top: 9.95636732250813vh;
+    left: 89.9984769225669vw;
+    }
+    
+    .column-6 {
+    top: 7.24031507343971vh;
+    left: 83.3554328826867vw;
+    }
+    
+    .column-7 {
+    top: 5.23141524625887vh;
+    left: 62.0282319801709vw;
+    }
+    
+    .column-8 {
+    top: 5.18184773395688vh;
+    left: 39.3104649568697vw;
+    }
+    
+    .column-9 {
+    top: 7.0964852214453vh;
+    left: 17.4353792657472vw;
+    }
+    

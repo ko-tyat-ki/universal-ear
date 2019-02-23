@@ -62,7 +62,7 @@ class Column {
 }
 
 const setup = () => {
-    const totalNumberOfColumns = 9;
+    const totalNumberOfColumns = 10;
 
     for (let key = 0; key < totalNumberOfColumns; key++) {
         const div = document.createElement('div');
