@@ -25,52 +25,53 @@ html {
     display: inline-flex;
 }
 
+
 .column-0 {
-    top: 20vh;
-    left: 32vw;
+top: 9.78964453053579vh;
+left: 18.7827837064668vw;
 }
 
 .column-1 {
-    top: 22vh;
-    left: 28vw;
+top: 14.6074462440863vh;
+left: 10.0444050015212vw;
 }
 
 .column-2 {
-    top: 18vh;
-    left: 20vw;
+top: 19.5751901499844vh;
+left: 16.5677055452692vw;
 }
 
 .column-3 {
-    top: 12vh;
-    left: 25vw;
+top: 22.7953669235822vh;
+left: 35.8610062488297vw;
 }
 
 .column-4 {
-    top: 10vh;
-    left: 30vw;
+top: 23.0379784871483vh;
+left: 60.5549219986149vw;
 }
 
 .column-5 {
-    top: 8vh;
-    left: 35vw;
+top: 20.2103554694642vh;
+left: 81.2172162935332vw;
 }
 
 .column-6 {
-    top: 10vh;
-    left: 40vw;
+top: 15.3925537559137vh;
+left: 89.9555949984788vw;
 }
 
 .column-7 {
-    top: 12vh;
-    left: 45vw;
+top: 10.4248098500156vh;
+left: 83.4322944547308vw;
 }
 
 .column-8 {
-    top: 14vh;
-    left: 40vw;
+top: 7.20463307641777vh;
+left: 64.1389937511703vw;
 }
 
 .column-9 {
-    top: 16vh;
-    left: 35vw;
+top: 6.96202151285168vh;
+left: 39.4450780013851vw;
 }
