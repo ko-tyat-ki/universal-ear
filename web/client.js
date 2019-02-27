@@ -5,11 +5,22 @@ const connectArduinosWithColumns = async ({
     arduinos,
     columns
 }) => {
-    for (let columnName in columns) {
-        let column = columns[columnName]
-        let arduino = arduinos[columnName]
-
-        column.colorLeds(arduino.read())
+    const selectedFunction = document.getElementById('select-regime').options.selectedIndex
+    
+    switch (selectedFunction) {
+        case 0:
+            for (let columnName in columns) {
+                let column = columns[columnName]
+                let arduino = arduinos[columnName]
+        
+                column.colorLeds(arduino.read())
+            }
+            break
+        case 1:
+            console.log('No function is written for this option yet')
+            break
+        default:
+            console.log('You need to pick up function you would use')
     }
 }
 
