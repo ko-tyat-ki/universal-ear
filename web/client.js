@@ -1,7 +1,5 @@
 import { sleep } from './lib/helpers/sleep.js'
-
-import { Arduino } from './lib/classes/arduino.js'
-import { Column } from './lib/classes/column.js'
+import { drawColumns } from './lib/helpers/drawColumns.js'
 
 const connectArduinosWithColumns = async ({
     arduinos,
@@ -12,25 +10,6 @@ const connectArduinosWithColumns = async ({
         let arduino = arduinos[columnName]
 
         column.colorLeds(arduino.read())
-    }
-}
-
-const drawColumns = (columnKeys) => {
-    const columns = []
-    const arduinos = []
-
-    columnKeys.forEach(key => {
-        const div = document.createElement('div')
-        div.className = `column column-${key}`
-        div.id = `column-${key}`
-        document.getElementById('container').appendChild(div)
-        columns.push(new Column(key))
-        arduinos.push(new Arduino(0, key))
-    })
-
-    return {
-        columns,
-        arduinos
     }
 }
 
