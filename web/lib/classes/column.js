@@ -1,5 +1,4 @@
 const initColor = '#222'
-const brightColor = '#88b'
 const numberOfLEDs = 40
 
 export class Column {
@@ -24,18 +23,17 @@ export class Column {
         document.getElementById(cellId).style['background-color'] = color
     };
 
-    colorLeds(tension) {
+    colorLeds(leds) {
         this.cleanLeds()
 
-        for (let key = 0; key < Math.min(tension, numberOfLEDs/2); key++) {
-            this.changeCellColor(numberOfLEDs/2 - key, brightColor)
-            this.changeCellColor(numberOfLEDs/2 + key, brightColor)
-        }
+        leds.forEach(led => {
+            this.changeCellColor(led.number, led.color)
+        })
     }
 
     cleanLeds() {
-         for (let key = 0; key < numberOfLEDs; key++) {
-             this.changeCellColor(key, initColor)
-         }
+        for (let key = 0; key < numberOfLEDs; key++) {
+            this.changeCellColor(key, initColor)
+        }
     }
 }
