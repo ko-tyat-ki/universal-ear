@@ -2,7 +2,7 @@ import { sleep } from './lib/helpers/sleep.js'
 import { drawColumns } from './lib/helpers/drawColumns.js'
 
 import { basic } from './lib/functions/basic.js'
- 
+
 const connectArduinosWithColumns = async ({
     arduinos,
     columns

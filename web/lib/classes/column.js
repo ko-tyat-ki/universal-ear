@@ -2,8 +2,9 @@ const initColor = '#222'
 const numberOfLEDs = 40
 
 export class Column {
-    constructor(columnName) {
+    constructor(columnName, numberOfLEDs) {
         this.columnName = columnName
+        this.numberOfLEDs = numberOfLEDs
         this.drawCells()
     }
 
