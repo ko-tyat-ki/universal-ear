@@ -8,7 +8,7 @@ export const basic = ({
         let arduino = arduinos[columnName]
 
         const tension = arduino.read()
-        const numberOfLEDs = 40
+        const numberOfLEDs = column.numberOfLEDs
 
         const leds = []
 
