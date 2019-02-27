@@ -1,6 +1,6 @@
 const initColor = '#222'
 const brightColor = '#88b'
-const numberOfLEDs = 30
+const numberOfLEDs = 40
 
 export class Column {
     constructor(columnName) {
