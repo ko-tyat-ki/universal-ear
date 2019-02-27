@@ -100,10 +100,10 @@ class Column {
     }
 }
 
-const connectArduinoWithColumn = async ({
+const connectArduinosWithColumns = async ({
     arduinos,
     columns
-}) => {ommit
+}) => {
     for (let columnName in columns) {
         let column = columns[columnName]
         let arduino = arduinos[columnName]
@@ -112,32 +112,46 @@ const connectArduinoWithColumn = async ({
     }
 }
 
-(async () => {
-    let columns = {}
-    let arduinos = {}
+const drawColumns = (columnKeys) => {
+    const columns = []
+    const arduinos = []
 
-    for (let key = 0; key < totalNumberOfColumns; key++) {
+    columnKeys.forEach(key => {
         const div = document.createElement('div')
         div.className = `column column-${key}`
         div.id = `column-${key}`
         document.getElementById('container').appendChild(div)
-        columns[key] = new Column(key)
-        arduinos[key] = new Arduino(0, key)
+        columns.push(new Column(key))
+        arduinos.push(new Arduino(0, key))
+    })
+
+    return {
+        columns,
+        arduinos
     }
+}
+
+(async () => {
+    const columnKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+    const {
+        columns,
+        arduinos
+    } = drawColumns(columnKeys)
 
     let currentTime = Date.now()
 
     while (true) {
         let delta = Date.now() - currentTime
 
-        for (let arduinoName in arduinos) {
-            arduinos[arduinoName].update(delta)
-        }
+        arduinos.forEach(arduino => {
+            arduino.update(delta)
+        })
 
         currentTime = Date.now()
         await sleep(10)
 
-        await connectArduinoWithColumn({
+        await connectArduinosWithColumns({
             arduinos,
             columns
         })
