@@ -1,6 +1,8 @@
 import { sleep } from './lib/helpers/sleep.js'
 import { drawColumns } from './lib/helpers/drawColumns.js'
 
+import { basic } from './lib/functions/basic.js'
+ 
 const connectArduinosWithColumns = async ({
     arduinos,
     columns
@@ -9,12 +11,10 @@ const connectArduinosWithColumns = async ({
     
     switch (selectedFunction) {
         case 0:
-            for (let columnName in columns) {
-                let column = columns[columnName]
-                let arduino = arduinos[columnName]
-        
-                column.colorLeds(arduino.read())
-            }
+            basic({
+                arduinos,
+                columns
+            })
             break
         case 1:
             console.log('No function is written for this option yet')
