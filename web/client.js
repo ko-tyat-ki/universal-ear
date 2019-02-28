@@ -2,7 +2,6 @@ import { sleep } from './lib/helpers/sleep.js'
 import { drawColumns } from './lib/helpers/drawColumns.js'
 
 import { basic } from './lib/functions/basic.js'
-import { flicker } from './lib/functions/flicker.js'
 
 const connectArduinosWithColumns = async ({
     arduinos,
@@ -17,14 +16,8 @@ const connectArduinosWithColumns = async ({
                 columns
             })
             break
-		case 1:
-			flicker({
-				arduinos,
-				columns
-			})
-			break
-		case 2:
-			console.log('No function is written for this option yet')
+        case 1:
+            console.log('No function is written for this option yet')
             break
         default:
             console.log('You need to pick up function you would use')
