@@ -17,9 +17,6 @@ extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
 
 int sensorPin = A0;    // select the input pin for the potentiometer
 int sensorValue = 0;  // variable to store the value coming from the sensor
-int sensorAvg, sensorMed, longAverage; // moving average of the sensor values
-const int AverageN = 10; // for first fast integration
-const int AverageN2 = 50; // for slower integration
 
 void setup() {
     delay( 3000 ); // power-up safety delay
@@ -41,13 +38,6 @@ void loop()
 
     // read the value from the sensor:
     sensorValue = analogRead(sensorPin);
-    // Calculate the averages
-    sensorAvg = runningAverage(sensorValue);
-    // Calculate the difference between the sensor value and averaged value:
-    int diffFast = (sensorValue - sensorAvg);  // fast. aka Derivative (for fast plucking)
-    int diffSlow = (sensorAvg - veryAverage);  // slow. aka pressure (for slow pushing)
-  
-    
     
     // write the value to the serial port
     Serial.println(sensorValue);
@@ -75,36 +65,3 @@ void loop()
     FastLED.show();
     FastLED.delay(1000 / UPDATES_PER_SECOND);
 }
-
-// Two functions for averaging the sensor value
-int runningAverage(int NewSensorValue) {
-  static int index = 0;
-  static int LMvar[AverageN];
-  static long sum = 0;
-  static byte count = 0;
-  sum -= LMvar[index];
-  LMvar[index] = NewSensorValue;
-  sum += LMvar[index];
-  index++;
-  index = index % AverageN;
-  if (count < AverageN) count++;
-  if (index % AverageN == 0) {
-    longAverage = runningAverage2(sum/count);
-  }
-  return sum/count;
-}
-
-int runningAverage2(int NewSensorValue2) {
-  static int index2 = 0;
-  static int LMvar2[AverageN2];
-  static long sum2 = 0;
-  static byte count2 = 0;
-  sum2 -= LMvar2[index2];
-  LMvar2[index2] = NewSensorValue2;
-  sum2 += LMvar2[index2];
-  index2++;
-  index2 = index2 % AverageN2;
-  if (count2 < AverageN2) count2++;
-  return sum2/count2;
-}
-
