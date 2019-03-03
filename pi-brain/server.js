@@ -1,3 +1,5 @@
+const net = require('net')
+
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
 const port1 = new SerialPort('/dev/ttyACM1', {
@@ -16,6 +18,10 @@ const parsers = [parser1, parser2]
 
 const dividers = [200.0 , 500.0]
 
+const client = net.createConnection({ port: 8124 }).on('error', () => {
+  console.log('disconnected from server')
+})
+
 parsers.map( (parser, key) => {
   let lastSendTime = 0
 
@@ -23,12 +29,15 @@ parsers.map( (parser, key) => {
     const sensorValue = parseInt(data, 10)
     console.log(`Sensor value ${key}:`, sensorValue)
 
+    client.write(Buffer.from(`${sensorValue}`))
+
     // do the math
     const outVale = Math.floor((sensorValue / dividers[key]) * 40) //number of LEDs to l$
 
     lastSendTime = Date.now()
     ports[key].write(outVale + "\n", function(err) {
       console.log(`Send value ${key}:`, outVale)
+
       if (err) {
         return console.log('Error on write: ', err.message)
       }
