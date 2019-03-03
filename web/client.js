@@ -2,6 +2,7 @@ import { sleep } from './lib/helpers/sleep.js'
 import { drawColumns } from './lib/helpers/drawColumns.js'
 
 import { basic } from './lib/functions/basic.js'
+import { randomEcho } from './lib/functions/randomEcho.js'
 
 const connectArduinosWithColumns = async ({
     arduinos,
@@ -17,7 +18,10 @@ const connectArduinosWithColumns = async ({
             })
             break
         case 1:
-            console.log('No function is written for this option yet')
+            randomEcho({
+                arduinos,
+                columns
+            })
             break
         default:
             console.log('You need to pick up function you would use')
