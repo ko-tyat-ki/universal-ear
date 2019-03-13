@@ -10,7 +10,7 @@ const connectArduinosWithColumns = async ({
     columns
 }) => {
     const selectedFunction = document.getElementById('select-regime').options.selectedIndex
-    
+
     switch (selectedFunction) {
         case 0:
             basic({

@@ -1,6 +1,13 @@
 import pygame
 import random
 import time
+import socket
+
+# set up and open read from the socket
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.bind(('localhost', 8124))
+client.listen(1)
+c, addr = client.accept()
 
 pygame.mixer.init(44100, -16, channels=2, buffer=4096 )
 
@@ -18,13 +25,17 @@ channel1.play(sound1, loops = -1)
 # plays occasional thunder sounds
 duration = sound2.get_length() # duration of thunder in seconds
 down = True
+
 while True: # infinite while-loop
 	# play thunder sound if random condition met
-	i = random.randint(0,80)
-	print(i)
-	if i == 10:
+
+	i = c.recv(2) # receives sensor value from the socket
+	print i
+
+	if i > 100:
 		channel2.play(sound2)
 		channel2.set_volume(random.random(),random.random())
+		print('My duration', duration)
 		time.sleep(duration)
 		
 	time.sleep(0.1)	
