@@ -9,7 +9,7 @@ export const basic = ({ arduinos, columns }) => {
 
     const leds = [];
 
-    for (let key = 0; key <= Math.min(tension, arduino.sensorPosition); key++) {
+    for (let key = 0; key <= Math.min(tension); key++) {
       leds.push({
         number: Math.max(arduino.sensorPosition - key, 0),
         color: brightColor
