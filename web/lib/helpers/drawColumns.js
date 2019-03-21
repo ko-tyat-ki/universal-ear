@@ -3,18 +3,17 @@ import { Column } from "../classes/column.js";
 
 const numberOfLEDs = 40;
 
-export const drawColumns = columnKeys => {
+export const drawColumns = columnsInput => {
   const columns = [];
   const arduinos = [];
-  console.log(columnKeys);
 
-  columnKeys.forEach(key => {
+  columnsInput.forEach(column => {
     const div = document.createElement("div");
-    div.className = `column column-${key}`;
-    div.id = `column-${key}`;
+    div.className = `column column-${column.key}`;
+    div.id = `column-${column.key}`;
     document.getElementById("container").appendChild(div);
-    columns.push(new Column(key, numberOfLEDs));
-    arduinos.push(new Arduino(0, key));
+    columns.push(new Column(column, numberOfLEDs));
+    arduinos.push(new Arduino(0, column));
   });
 
   return {
