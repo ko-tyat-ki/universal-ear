@@ -1,7 +1,7 @@
 export const basic = ({ arduinos, columns }) => {
   const brightColor = "#88b";
-  columns.map((columnName, key) => {
-    let column = columns[key];
+  columns.map((columnData, key) => {
+    let column = columnData;
     let arduino = arduinos[key];
 
     const tension = arduino.read();
@@ -9,15 +9,19 @@ export const basic = ({ arduinos, columns }) => {
 
     const leds = [];
 
-    for (let key = 0; key < Math.min(tension, numberOfLEDs / 2); key++) {
+    for (let key = 0; key <= Math.min(tension, arduino.sensorPosition); key++) {
       leds.push({
-        number: numberOfLEDs / 2 - key,
+        number: Math.max(arduino.sensorPosition - key, 0),
         color: brightColor
       });
       leds.push({
-        number: numberOfLEDs / 2 + key,
+        number: Math.min(arduino.sensorPosition + key, numberOfLEDs - 1),
         color: brightColor
       });
+    }
+
+    if (leds.number === 0) {
+      console.log({ leds, numberOfLEDs });
     }
 
     column.colorLeds(leds);

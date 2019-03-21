@@ -38,27 +38,80 @@ const connectArduinosWithColumns = async ({ arduinos, columns }) => {
 
 const buildColumns = async configuration => {
   const selectedFunction = configuration.options.selectedIndex;
-  let columnKeys;
+  let columns;
 
   switch (selectedFunction) {
     case 0:
-      columnKeys = ["a", "s"];
+      columns = [
+        {
+          key: "a",
+          sensorPosition: 10
+        },
+        {
+          key: "s",
+          sensorPosition: 30
+        }
+      ];
       break;
     case 1:
-      columnKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+      columns = [
+        {
+          key: "0",
+          sensorPosition: 20
+        },
+        {
+          key: "1",
+          sensorPosition: 20
+        },
+        {
+          key: "2",
+          sensorPosition: 20
+        },
+        {
+          key: "3",
+          sensorPosition: 20
+        },
+        {
+          key: "4",
+          sensorPosition: 20
+        },
+        {
+          key: "5",
+          sensorPosition: 20
+        },
+        {
+          key: "6",
+          sensorPosition: 20
+        },
+        {
+          key: "7",
+          sensorPosition: 20
+        },
+        {
+          key: "8",
+          sensorPosition: 20
+        },
+        {
+          key: "9",
+          sensorPosition: 20
+        }
+      ];
       break;
     default:
       console.log("You need to pick up configuration you would use");
       return;
   }
 
-  return { ...drawColumns(columnKeys), columnKeys };
+  return {
+    ...drawColumns(columns),
+    columnKeys: columns.map(column => column.key)
+  };
 };
 
 const cleanScreen = columnKeys => {
   columnKeys.forEach(columnKey => {
-    const column = document.getElementById(`column-${columnKey}`);
-    document.getElementById("container").removeChild(column);
+    const columnEl = document.getElementById(`column-${columnKey}`);
+    document.getElementById("container").removeChild(columnEl);
   });
 };
 
