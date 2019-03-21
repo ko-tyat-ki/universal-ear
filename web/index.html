@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Playground</title>
-        <link rel="stylesheet" href="main.css" type="text/css">
-    </head>
-    <body>
-        <div class = "container" id="container"></div>
-        <div class = "menu">
-            <select id="select-regime">
-                <option value="basic">Basic</option>
-                <option value="randomEcho">Random echo</option>
-                <option value="flicker">Flicker</option>
-                <option value="empty">Empty</option>
-			</select>
-        </div>
-        <script src="client.js" type="module"></script>
-    </body>
+  <head>
+    <title>Playground</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    <div class="container" id="container"></div>
+    <div class="menu">
+      <div id="select-regime--container">
+        <h5>Regime:</h5>
+        <select id="select-regime">
+          <option value="basic">Basic</option>
+          <option value="randomEcho">Random echo</option>
+          <option value="flicker">Flicker</option>
+          <option value="empty">Empty</option>
+        </select>
+      </div>
+      <div id="select-configuaration--container">
+        <h5>Configuration:</h5>
+        <select id="select-configuaration">
+          <option value="duet">Duet</option>
+          <option value="circle">Circle</option>
+        </select>
+      </div>
+    </div>
+    <script src="client.js" type="module"></script>
+  </body>
 </html>

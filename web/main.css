@@ -1,76 +1,93 @@
-html, body {
-    background: black;
-    margin: 0;
-    padding: 0;
+html,
+body {
+  background: black;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-    size: 1.3vh;
+  size: 1.3vh;
+}
+
+h5 {
+  color: #ddd;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
 .column {
-    width: var(size);
-    position: absolute;
+  width: var(size);
+  position: absolute;
 }
 
 .cell {
-    background-color: #222;
-    width: 1.3vh;
-    height: 1.3vh;
-    border: 1px solid #666;
+  background-color: #222;
+  width: 1.3vh;
+  height: 1.3vh;
+  border: 1px solid #666;
 }
 
 .container {
-    width: 100vw;
-    display: inline-flex;
+  width: 100vw;
+  display: inline-flex;
 }
 
 .column-0 {
-    top: 9.78964453053579vh;
-    left: 18.7827837064668vw;
+  top: 9.78964453053579vh;
+  left: 18.7827837064668vw;
 }
 
 .column-1 {
-    top: 14.6074462440863vh;
-    left: 10.0444050015212vw;
+  top: 14.6074462440863vh;
+  left: 10.0444050015212vw;
 }
 
 .column-2 {
-    top: 19.5751901499844vh;
-    left: 16.5677055452692vw;
+  top: 19.5751901499844vh;
+  left: 16.5677055452692vw;
 }
 
 .column-3 {
-    top: 22.7953669235822vh;
-    left: 35.8610062488297vw;
+  top: 22.7953669235822vh;
+  left: 35.8610062488297vw;
 }
 
 .column-4 {
-    top: 23.0379784871483vh;
-    left: 60.5549219986149vw;
+  top: 23.0379784871483vh;
+  left: 60.5549219986149vw;
 }
 
 .column-5 {
-    top: 20.2103554694642vh;
-    left: 81.2172162935332vw;
+  top: 20.2103554694642vh;
+  left: 81.2172162935332vw;
 }
 
 .column-6 {
-    top: 15.3925537559137vh;
-    left: 89.9555949984788vw;
+  top: 15.3925537559137vh;
+  left: 89.9555949984788vw;
 }
 
 .column-7 {
-    top: 10.4248098500156vh;
-    left: 83.4322944547308vw;
+  top: 10.4248098500156vh;
+  left: 83.4322944547308vw;
 }
 
 .column-8 {
-    top: 7.20463307641777vh;
-    left: 64.1389937511703vw;
+  top: 7.20463307641777vh;
+  left: 64.1389937511703vw;
 }
 
 .column-9 {
-    top: 6.96202151285168vh;
-    left: 39.4450780013851vw;
+  top: 6.96202151285168vh;
+  left: 39.4450780013851vw;
+}
+
+.column-a {
+  top: 20vh;
+  left: 20vw;
+}
+
+.column-s {
+  top: 20vh;
+  left: 80vw;
 }
