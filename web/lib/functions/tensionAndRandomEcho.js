@@ -23,29 +23,25 @@ export const tensionAndRandomEcho = ({
 					if (distance === 0) {
 						leds.push({
 							number: Math.max(arduino.sensorPosition - key, 0),
-							color: `rgba(${155 + Math.random() * 100}, ${155 + Math.random() *
-								100}, ${155 + Math.random() * 100}, ${1 / (key + 1) + 0.7} )`
+							color: `rgba(${60 + Math.random() * 195}, ${60 + Math.random() * 195}, ${60 + Math.random() * 195}, 1 )`
 						})
 						leds.push({
 							number: Math.min(arduino.sensorPosition + key, numberOfLEDs - 1),
-							color: `rgba(${155 + Math.random() * 100}, ${155 + Math.random() *
-								100}, ${155 + Math.random() * 100}, ${1 / (key + 1) + 0.7})`
+							color: `rgba(${60 + Math.random() * 195}, ${60 + Math.random() * 195}, ${60 + Math.random() * 195}, 1 )`
 						})
 					} else {
 						if (tension > arduino.sensorPosition) {
 							let dif = Math.min(Math.floor(tension - arduino.sensorPosition), numberOfLEDs - 1);
 							leds.push({
 								number: dif,
-								color: `rgba(${Math.random() * 255}, ${Math.random() *
-									255}, ${Math.random() * 255}, 1 )`
+								color: `rgba(${60 + Math.random() * 195}, ${60 + Math.random() * 195}, ${60 + Math.random() * 195}, 1 )`
 							})
 						}
 						if (tension > numberOfLEDs - arduino.sensorPosition) {
 							let dif = Math.min(Math.floor(tension - numberOfLEDs + arduino.sensorPosition), numberOfLEDs - 1);
 							leds.push({
 								number: numberOfLEDs - 1 - dif,
-								color: `rgba(${Math.random() * 255}, ${Math.random() *
-									255}, ${Math.random() * 255}, 1 )`
+								color: `rgba(${60 + Math.random() * 195}, ${60 + Math.random() * 195}, ${60 + Math.random() * 195}, 1 )`
 							})
 						}
 					}
