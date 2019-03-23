@@ -22,7 +22,7 @@ const randomEcho = (measurements, columns, arduinos) => {
   }
 
   return arduinos.map(arduino => {
-    let name = arduino.key
+    const name = arduino.key
 
     const measurement = findMeasurement(measurements, name)
 
