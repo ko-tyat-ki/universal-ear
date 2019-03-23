@@ -1,6 +1,6 @@
 import { getDistance } from '../helpers/getDistance.js'
 
-export const tensionAndRandomEcho = ({
+const tensionAndRandomEcho = ({
 	arduinos,
 	columns
 }) => {
@@ -52,3 +52,5 @@ export const tensionAndRandomEcho = ({
 		}
 	})
 }
+
+export default { tensionAndRandomEcho }

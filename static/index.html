@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Playground</title>
-    <link rel="stylesheet" href="main.css" type="text/css" />
+    <link rel="stylesheet" href="static/main.css" type="text/css" />
   </head>
   <body>
     <div class="container" id="container"></div>
@@ -10,21 +10,23 @@
       <div id="select-regime--container">
         <h5>Regime:</h5>
         <select id="select-regime">
-          <option value="basic">Basic</option>
+          <option value="basic" selected="selected">Basic</option>
           <option value="randomEcho">Random echo</option>
           <option value="flicker">Flicker</option>
           <option value="tensionAndRandomEcho">Tension and random echo</option>
           <option value="empty">Empty</option>
         </select>
       </div>
-      <div id="select-configuaration--container">
+      <div id="select-configuration--container">
         <h5>Configuration:</h5>
-        <select id="select-configuaration">
-          <option value="duet">Duet</option>
+        <select id="select-configuration">
+          <option value="duet" selected="selected">Duet</option>
           <option value="circle">Circle</option>
         </select>
       </div>
     </div>
-    <script src="client.js" type="module"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js" type="application/javascript"></script>
+    <script src="web/client.js" type="module"></script>
   </body>
 </html>

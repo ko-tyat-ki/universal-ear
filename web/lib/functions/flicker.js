@@ -1,29 +1,31 @@
-export const flicker = ({
-	arduinos,
-	columns
-}) => {
-	const brightColor = '#88b'
-	for (let columnName in columns) {
-		let column = columns[columnName]
-		let arduino = arduinos[columnName]
+const flicker = (measurements, columns, arduinos) => {
+  const brightColor = '#88b'
 
-		const tension = arduino.read()
-		const numberOfLEDs = column.numberOfLEDs
+  return measurements.map((measurement) => {
+    const key = measurement.name
 
-		const leds = []
-		
-		for (let key = 0; key < numberOfLEDs; key++) {
-			var _color
-			if (tension / numberOfLEDs > Math.random()) {
-				_color = brightColor
-			} else {
-				_color = '#222'
-			}
-			leds.push({
-				number: key,
-				color: _color
-			})
-		}
-		column.colorLeds(leds)
-	}
+    let column = columns[key]
+
+    const tension = measurement.tension
+    const numberOfLEDs = column.numberOfLEDs
+
+    const leds = []
+
+    for (let key = 0; key < numberOfLEDs; key++) {
+      const ledColor = tension / numberOfLEDs > Math.random()
+        ? brightColor
+        : '#222'
+
+      leds.push({
+        number: key,
+        color: ledColor,
+      })
+    }
+    return {
+      "name": key,
+      "leds": leds,
+    }
+  })
 }
+
+export default { flicker }

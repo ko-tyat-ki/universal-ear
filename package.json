@@ -1,0 +1,38 @@
+{
+  "name": "nowhere-ear",
+  "version": "1.0.0",
+  "description": "Web interface for the Universal Ear project",
+  "main": "web/server.js",
+  "scripts": {
+    "server": "node web/server.js",
+    "start": "babel-watch --watch ./web ./web/server.js"
+  },
+  "watch": {
+    "server": {
+      "patterns": [
+        "web",
+        "static"
+      ],
+      "extensions": "js,html,css"
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.2",
+    "babel-eslint": "^10.0.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-watch": "^7.0.0",
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-google": "^0.12.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "npm-watch": "^0.6.0"
+  }
+}
