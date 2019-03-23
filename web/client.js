@@ -4,6 +4,7 @@ import { drawColumns } from "./lib/helpers/drawColumns.js";
 import { basic } from "./lib/functions/basic.js";
 import { randomEcho } from "./lib/functions/randomEcho.js";
 import { flicker } from "./lib/functions/flicker.js";
+import { tensionAndRandomEcho } from "./lib/functions/tensionAndRandomEcho.js";
 
 const connectArduinosWithColumns = async ({ arduinos, columns }) => {
   const selectedFunction = document.getElementById("select-regime").options
@@ -29,6 +30,12 @@ const connectArduinosWithColumns = async ({ arduinos, columns }) => {
       });
       break;
     case 3:
+      tensionAndRandomEcho({
+        arduinos,
+        columns
+      });
+      break;
+    case 4:
       console.log("No function is written for this option yet");
       break;
     default:
