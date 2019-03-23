@@ -1,10 +1,20 @@
+
+const find = (stack, needle, key = "key") => {
+  for (let idx in stack) {
+    let item = stack[idx]
+    if (item[key] == needle) {
+      return item
+    }
+  }
+}
+
 const flicker = (measurements, columns, arduinos) => {
   const brightColor = '#88b'
 
   return measurements.map((measurement) => {
     const key = measurement.name
 
-    let column = columns[key]
+    let column = find(columns, key, 'columnName')
 
     const tension = measurement.tension
     const numberOfLEDs = column.numberOfLEDs
@@ -21,10 +31,10 @@ const flicker = (measurements, columns, arduinos) => {
         color: ledColor,
       })
     }
-    return {
+    return [{
       "name": key,
       "leds": leds,
-    }
+    }]
   })
 }
 

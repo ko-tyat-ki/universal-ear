@@ -25,10 +25,10 @@ server.listen(3000, () => {
 const connectedSockets = {}
 const clientConfigurations = {}
 
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
   connectedSockets[socket.id] = socket
 
-  socket.on('measurements', function(measurements) {
+  socket.on('measurements', function (measurements) {
     if (!measurements) return
     // TODO: log measurements into file (+ rotate log and remove zero values)
 
@@ -49,14 +49,12 @@ io.on('connection', function(socket) {
 
     const ledsConfig = currentMode(measurements, columns, config.arduinos)
 
-    // console.log(ledsConfig)
-
     // TODO: change real arduino
 
-    socket.emit("ledsChanged", ledsConfig)
+    ledsConfig.filter(c => c != null).map(ledConfig => socket.emit("ledsChanged", ledConfig))
   })
 
-  socket.on('configure', function(configuration) {
+  socket.on('configure', function (configuration) {
     console.log("configuration", configuration)
     clientConfigurations[socket.id] = configuration
   })

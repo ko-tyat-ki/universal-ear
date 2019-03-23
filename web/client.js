@@ -1,5 +1,5 @@
 import { sleep } from "./lib/helpers/sleep.js";
-import {drawEar} from './lib/helpers/drawEar.js'
+import { drawEar } from './lib/helpers/drawEar.js'
 
 var socket = io()
 
@@ -78,20 +78,10 @@ const buildColumns = async (configuration, regime) => {
 
   const ear = drawEar(columns)
 
-  let cols = {}
-  for (const column of ear.columns) {
-    cols[column.columnName] = column
-  }
-
-  let ards = {}
-  for (const ard of ear.arduinos) {
-    ards[ard.key] = ard
-  }
-
   socket.emit('configure', {
     "mode": selectedRegime,
-    "columns": cols,
-    "arduinos": ards,
+    "columns": ear.columns,
+    "arduinos": ear.arduinos,
   })
 
   return {
@@ -116,6 +106,7 @@ socket.on('ledsChanged', (changes) => {
 
   for (let changeIdx in changes) {
     let change = changes[changeIdx]
+    if (!change) continue
     let column = columnsIdx[change.name]
     column.colorLeds(change.leds)
   }
