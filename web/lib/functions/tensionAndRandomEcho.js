@@ -1,15 +1,25 @@
 import { getDistance } from '../helpers/getDistance.js'
 
-const tensionAndRandomEcho = ({
-	arduinos,
-	columns
-}) => {
-	const names = columns.map(column => column.columnName)
-	arduinos.forEach(arduino => {
-		const tension = arduino.read()
+const tensionAndRandomEcho = (measurements, columns, arduinos) => {
+	const names = columns.map(c => c.columnName)
+
+	const findMeasurement = (meas, key) => {
+		for (let m in meas) {
+			if (meas[m].name == key) return meas[m]
+		}
+	}
+	return arduinos.map(arduino => {
+		const name = arduino.key
+
+		const measurement = findMeasurement(measurements, name)
+		const tension = measurement.tension
 
 		if (tension) {
-			columns.forEach(column => {
+			return columns.map(column => {
+				if (!measurement || tension <= 0) {
+					return
+				}
+
 				const numberOfLEDs = column.numberOfLEDs
 				const distance = getDistance({
 					arduino,
@@ -47,7 +57,10 @@ const tensionAndRandomEcho = ({
 					}
 				}
 
-				column.colorLeds(leds)
+				return {
+					name: column.columnName,
+					leds
+				}
 			})
 		}
 	})

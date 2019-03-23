@@ -1,50 +1,61 @@
-import {getDistance} from '../helpers/getDistance.js'
+import { getDistance } from '../helpers/getDistance.js'
 
+const find = (stack, needle, key = "key") => {
+
+  for (let idx in stack) {
+
+    let item = stack[idx]
+
+    if (item[key] == needle) {
+      return item
+    }
+  }
+}
 
 const randomEcho = (measurements, columns, arduinos) => {
-  const names = Object.keys(columns)
-  const brightColor = '#88b'
+  const names = columns.map(c => c.columnName)
 
   const findMeasurement = (meas, key) => {
     for (let m in meas) {
-      if (meas[m].name == key) return m
+      if (meas[m].name == key) return meas[m]
     }
   }
 
-
-  Object.values(arduinos).map(arduino => {
-    let name = arduino.key
+  return arduinos.map(arduino => {
+    const name = arduino.key
 
     const measurement = findMeasurement(measurements, name)
 
-    if (!measurement) {
-      return {
-        "name": name,
-        "leds": [],
+    return columns.map(column => {
+      if (!measurement || measurement.tension <= 0) {
+        return
       }
-    }
 
-    Object.values(columns).map(column => {
       const distance = getDistance({
         arduino,
         column,
         names
       })
 
+      console.log(distance)
+
       const leds = []
 
       for (let key = 0; key < column.numberOfLEDs; key++) {
         const colorIntensity = parseInt(255 * Math.random())
-        const color = `rgba(15, ${colorIntensity}, 200, ${1/(distance + 1)})`
+        const color = `rgba(15, ${colorIntensity}, 200, ${1 / (distance + 1)})`
         leds.push({
           number: key,
           color: color
         })
       }
 
-      column.colorLeds(leds)
+      return {
+        name: column.columnName,
+        leds,
+      }
     })
   })
 }
 
-export default {randomEcho}
+export default { randomEcho }
