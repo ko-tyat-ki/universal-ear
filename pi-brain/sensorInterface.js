@@ -1,6 +1,6 @@
 export class SensorInterface {
 
-    constructor(port, sensorId) {
+    constructor(port) {
         this.minimalTension = 0
         this.tension = 0
         this.isBeingPulled = false
@@ -14,7 +14,7 @@ export class SensorInterface {
 
     // callback = function(sensor_id, sensor_value: , data: dict)
     setCallback(callback) {
-        this.callback = callback;
+        this.callback = callback
     }
 
 }

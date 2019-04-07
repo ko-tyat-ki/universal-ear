@@ -41,14 +41,14 @@ const tensionAndRandomEcho = (measurements, columns, arduinos) => {
 						})
 					} else {
 						if (tension > arduino.sensorPosition) {
-							let dif = Math.min(Math.floor(tension - arduino.sensorPosition), numberOfLEDs - 1);
+							let dif = Math.min(Math.floor(tension - arduino.sensorPosition), numberOfLEDs - 1)
 							leds.push({
 								number: dif,
 								color: `rgba(${60 + Math.random() * 195}, ${60 + Math.random() * 195}, ${60 + Math.random() * 195}, 1 )`
 							})
 						}
 						if (tension > numberOfLEDs - arduino.sensorPosition) {
-							let dif = Math.min(Math.floor(tension - numberOfLEDs + arduino.sensorPosition), numberOfLEDs - 1);
+							let dif = Math.min(Math.floor(tension - numberOfLEDs + arduino.sensorPosition), numberOfLEDs - 1)
 							leds.push({
 								number: numberOfLEDs - 1 - dif,
 								color: `rgba(${60 + Math.random() * 195}, ${60 + Math.random() * 195}, ${60 + Math.random() * 195}, 1 )`
