@@ -2,21 +2,23 @@ const net = require('net')
 
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
-const port1 = new SerialPort('/dev/ttyACM1', {
+const port1 = new SerialPort('/dev/ttyACM0', {
   baudRate: 9600
 })
 const parser1 = port1.pipe(new Readline({ delimiter: '\n' }))
 
-const port2 = new SerialPort('/dev/ttyACM2', {
-  baudRate: 9600
-})
-const parser2 = port2.pipe(new Readline({ delimiter: '\n' }))
+// const port2 = new SerialPort('/dev/ttyUSB2', {
+//   baudRate: 9600
+// })
+// const parser2 = port2.pipe(new Readline({ delimiter: '\n' }))
 
-const ports = [port1, port2]
+// const ports = [port1, port2]
+const ports = [port1]
 
-const parsers = [parser1, parser2]
+// const parsers = [parser1, parser2]
+const parsers = [parser1]
 
-const dividers = [200.0 , 500.0]
+const dividers = [200.0] //, 500.0]
 
 const client = net.createConnection({ port: 8124 }).on('error', () => {
   console.log('disconnected from server')
