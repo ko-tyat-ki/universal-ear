@@ -49,8 +49,6 @@ io.on('connection', function(socket) {
 
     const ledsConfig = currentMode(measurements, columns, config.arduinos)
 
-    // console.log(ledsConfig)
-
     // TODO: change real arduino
 
     socket.emit("ledsChanged", ledsConfig)
