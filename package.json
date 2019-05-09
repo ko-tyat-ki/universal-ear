@@ -4,8 +4,8 @@
   "description": "Web interface for the Universal Ear project",
   "main": "web/server.js",
   "scripts": {
-    "server": "node web/server.js",
-    "start": "babel-watch --watch ./web ./web/server.js"
+    "server": "node web/start_server.js",
+    "start": "babel-watch --watch ./web ./web/start_server.js"
   },
   "watch": {
     "server": {
@@ -20,6 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
+    "serialport": "^7.1.5",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {

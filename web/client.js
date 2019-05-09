@@ -89,7 +89,7 @@ const buildColumns = async (configuration, regime) => {
   }
 
   socket.emit('configure', {
-    "mode": selectedRegime,
+    "visualisation": selectedRegime,
     "columns": cols,
     "arduinos": ards,
   })
@@ -161,11 +161,12 @@ let onConfigure = async () => {
     const measurements = arduinos.map(a => {
       return {
         name: a.key,
-        tension: a.tension
+        value: a.tension,
+        order: a.order,
       }
     })
 
-    socket.emit('measurements', measurements)
+    socket.emit("data", measurements)
     currentTime = Date.now()
     await sleep(10)
   }

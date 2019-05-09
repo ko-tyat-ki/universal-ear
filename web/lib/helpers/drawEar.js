@@ -7,17 +7,18 @@ export const drawEar = columnsInput => {
   const columns = []
   const arduinos = []
 
-  columnsInput.forEach(column => {
+
+  columnsInput.forEach((column, idx) => {
     const div = document.createElement("div")
     div.className = `column column-${column.key}`
     div.id = `column-${column.key}`
     document.getElementById("container").appendChild(div)
     columns.push(new Column(column, numberOfLEDs))
-    arduinos.push(new Arduino(0, column))
+    arduinos.push(new Arduino(0, column, idx))
   })
 
   return {
     columns,
     arduinos
-  };
-};
+  }
+}
