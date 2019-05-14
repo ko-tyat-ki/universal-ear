@@ -19,7 +19,9 @@
   "author": "Ko-Tya-Tki Kollektiv",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.2",
     "express": "^4.16.4",
+    "regenerator": "^0.14.1",
     "serialport": "^7.1.5",
     "socket.io": "^2.2.0"
   },
