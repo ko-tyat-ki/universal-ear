@@ -1,37 +1,40 @@
+import { Leds, Led } from "./../classes/Led"
+
+
+const maxTension = 1000
+const minTension = 0
+
+const noColor = new Led(0, 0, 0)
+const brightColor = new Led(136, 136, 187)
+
 const basic = (measurements, devices) => {
-  const brightColor = "#88b"
+  // measurement = { value: '321', sensor: '0', "ledCount": 40, diffFast: '3', diffSlow: '-2' } }
 
-  return measurements.map((measurement) => {
-    const key = measurement.name
+  // console.log(measurements, devices)
 
-    let column = devices[key]
+  let output = {}
 
-    const tension = measurement.tension
-    const numberOfLEDs = column.numberOfLEDs
+  devices.forEach( device => {
+    let measurement = measurements[device]
+    let ledCount = parseInt(measurement.ledCount)
+    let tension = parseFloat(measurement.value)
 
-    const leds = []
+    let relativeTension = (tension / (maxTension - minTension))
+    let ledsToLightUp = ledCount * relativeTension
+    let middleLedIndex = Math.round(ledCount / 2)
 
-    // for (let key = 0; key < Math.min(tension, numberOfLEDs / 2); key++) {
-      // leds.push({
-      //   number: Math.max(arduino.sensorPosition - key, 0),
-      //   color: brightColor
-      // })
+    let leds = Leds.fill(ledCount, noColor)
 
-      // leds.push({
-      //   number: Math.min(arduino.sensorPosition + key, numberOfLEDs - 1),
-      //   color: brightColor
-      // })
-    // }
-
-    // if (leds.length == 0) {
-    //   return
-    // }
-
-    return {
-      "name": key,
-      "leds": leds,
+    for (let i = 0; i < ledCount; i++) {
+      if (Math.abs(i - middleLedIndex) < ledsToLightUp / 2) {
+        leds.set(i, brightColor)
+      }
     }
+
+    output[devices] = leds
   })
+
+  return output
 }
 
 export default {basic}

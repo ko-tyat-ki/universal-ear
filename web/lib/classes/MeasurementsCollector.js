@@ -25,18 +25,25 @@ class MeasurementsCollector {
     return devices
   }
 
+  sendOutput(device, output) {
+    // console.log(device, output)
+    this.providers.filter(provider => {
+      let inputs = provider.getInputs()
+      return inputs.includes(device)
+    }).map(provider => {
+      provider.sendOutput(device, output)
+    })
+  }
+
   collectMeasurements() {
     let newMeasurements = {}
 
     this.providers.forEach(provider => {
       let devices = provider.getCurrentMeasurements()
-
-      Object.entries(devices).forEach((deviceMeasurements) => {
-        let measurements = deviceMeasurements[1]
-        newMeasurements = Object.assign(newMeasurements, measurements)
-      })
+      newMeasurements = Object.assign(newMeasurements, devices)
     })
-    this.measurements = Object.assign({}, this.measurements, newMeasurements)
+
+    this.measurements = newMeasurements
   }
 
 }

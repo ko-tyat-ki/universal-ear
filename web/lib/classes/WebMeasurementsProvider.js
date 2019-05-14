@@ -3,6 +3,7 @@
 class WebMeasurementsProvider {
   constructor() {
     this.sockets = []
+    this.devices = []
     this.deviceData = {}
   }
 
@@ -18,8 +19,11 @@ class WebMeasurementsProvider {
 
   getInputs() {
     let inputs = []
-    this.sockets.forEach((socket) => {
-      inputs.push(...Object.keys(this.deviceData[socket] || {}))
+
+    this.devices.sort((a, b)  => {
+      return a.order - b.order
+    }).forEach((device) => {
+      inputs.push(device.name)
     })
     return inputs
   }
@@ -53,6 +57,10 @@ class WebMeasurementsProvider {
 
       this.deviceData[socket.id] = deviceData
     })
+  }
+
+  sendOutput(device, data) {
+    this.sockets[device].write(data)
   }
 
   getCurrentMeasurements() {
