@@ -5,7 +5,7 @@
   "main": "web/server.js",
   "scripts": {
     "server": "node web/server.js",
-    "start": "babel-watch --watch ./web ./web/server.js"
+    "start": "babel-watch --watch web web/server.js"
   },
   "watch": {
     "server": {
@@ -16,7 +16,7 @@
       "extensions": "js,html,css"
     }
   },
-  "author": "",
+  "author": "Ko-Tya-Tki Kollektiv",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
