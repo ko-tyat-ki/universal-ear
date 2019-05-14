@@ -29,7 +29,6 @@ class MeasurementProcessor {
     Object.entries(this.handlers).map((name, handler) => {
       handler(ledsConfig)
     })
-    console.log(ledsConfig)
   }
 
 }

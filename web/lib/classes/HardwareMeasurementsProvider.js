@@ -26,14 +26,20 @@ class HardwareMeasurementsProvider {
 
   getInputs() {
     let inputs = []
-    this.devices.forEach((deviceName) => {
-      inputs.push(...Object.keys(this.deviceData[deviceName] || {}))
+
+    this.devices.sort((a, b)  => {
+      return a.order - b.order
+    }).forEach((device) => {
+      inputs.push(device.name)
     })
     return inputs
   }
 
-  listenForInput(name) {
-    this.devices.push(name)
+  listenForInput(name, order) {
+    this.devices.push({
+      name: name,
+      order: order,
+    })
 
     // TODO: looks ugly
     this.ports[name] = new SerialPort('/dev/tty'+name, {baudRate: baudRate})
@@ -61,17 +67,41 @@ class HardwareMeasurementsProvider {
     let _self = this
     this.parsers[name].on("data", function (data) {
       // TODO: rewrite arduino code
+      // console.log("data", data)
+
+      if (data[0] !== "r") {
+        // Sometimes parial data is being read from port, checking that string starts with right symbol
+        return
+      }
+
+      data = data.trimRight().split("|")
+
+      let ledCount = data[1]
+      let sensor = data[2]
+      let value = data[3]
+      let diffFast = data[4]
+      let diffSlow = data[5]
 
       // NOTE: temporary for test
       let newData = {
-        "arduino": 0
+        "value": value,
+        "ledCount": ledCount,
+        "sensor": sensor,
+        "diffFast": diffFast,
+        "diffSlow": diffSlow,
       }
-
-      // TODO: uncomment convert arduino output to dictionary of {<sensorname>: <value>}
-      // let nameValueTuple = data.split(';')
-      // let newData = {}
-      // newData[nameValueTuple[0]] = nameValueTuple[1]
       _self.deviceData[name] = Object.assign({}, _self.deviceData[name], newData)
+    })
+  }
+
+  sendOutput(device, data) {
+    console.log(`Send value:`, data)
+
+    this.ports[device].write(data, function(err) {
+      if (err) {
+        return console.log('Error on write: ', err.message)
+      }
+      // console.log("SENT!!!")
     })
   }
 

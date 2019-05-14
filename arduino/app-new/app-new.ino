@@ -2,7 +2,8 @@
 
 // TODO: string tokenization http://forum.arduino.cc/index.php?topic=396450.0
 
-#define NAME        0
+#define ORDER       0
+#define LED_COUNT   40
 #define LED_PIN     8
 #define NUM_LEDS    60
 #define BRIGHTNESS  64
@@ -50,11 +51,6 @@ void charToStringL(const char S[], String &D)
 
 void loop()
 {
-    if (Serial.available() == 0) {
-        // Serial port is not ready yet
-        return;
-    }
-
     // read the value from the sensor:
     sensorValue = analogRead(sensorPin);
     // Calculate the averages
@@ -63,19 +59,28 @@ void loop()
     int diffFast = (sensorValue - sensorAvg);  // fast. aka Derivative (for fast plucking)
     int diffSlow = (sensorAvg - longAverage);  // slow. aka pressure (for slow pushing)
 
-    // read led value from the serial port
+    Serial.println("r|" +String(LED_COUNT) + "|" + ORDER + "|"+sensorValue+"|"+String(diffFast) + "|" + String(diffSlow));
+
+    if (Serial.available() == 0) {
+        // Serial port is not ready yet
+        return;
+    }
+
     String input = Serial.readString();
 
-    if (input[0] == 'l') {
-      char inputChars[640];
+    if (input != "-1" && input[0] == 'c') {
+      FastLED.clear();
+      FastLED.show();
+    }
+
+    if (input != "-1" && input[0] == 'l') {
+      char inputChars[255];
       input.substring(1).toCharArray(inputChars, sizeof(inputChars));
 
       uint8_t brightness = 100;
 
       static uint8_t colorIndex = 0;
       colorIndex = colorIndex + 1; /* motion speed */
-
-      FastLED.clear();
 
       char * ledConf;
       ledConf = strtok (inputChars, ";");
@@ -97,13 +102,9 @@ void loop()
         ledConf = strtok (NULL, ";");
       }
 
-      // First, clear the existing led values
-
       FastLED.show();
       FastLED.delay(1000 / UPDATES_PER_SECOND);
-    } else {
-      Serial.println(String(NAME) + "|"+String(diffFast) + "|" + String(diffSlow));
-    }
+    } 
 }
 
 // Two functions for averaging the sensor value
