@@ -11,14 +11,29 @@ const port = new SerialPort(`/dev/tty${arduinoPort}`, {
 })
 const parser = port.pipe(new Readline({ delimiter: '\n' }))
 
-parser.on('data', (data) => {
-  console.log(data)
-})
-
-import { server } from './webserver'
+import { server, clientMeasurementsProvider, io } from './webserver'
 
 server.listen(3000, () => {
   console.log('I am listenning on 3000')
+
+  io.on('connection', (socket) => {
+    parser.on('data', (data) => {
+      const clientData = clientMeasurementsProvider.getDeviceData()
+      const realData = data.split('\t')[0] * .1
+
+      const shrineInformation = Object.values(clientData)
+      const shrineInformationEssence = shrineInformation[0]
+      if (shrineInformationEssence) {
+        shrineInformationEssence[Object.keys(shrineInformationEssence)[0]] += realData
+      }
+
+      if (shrineInformationEssence) {
+        console.log(shrineInformationEssence)
+        // socket.emit('toClient', shrineInformationEssence)
+        // --- this is overloading server => not working, we need to think about alternative way of sending info to the client
+      }
+    })
+  })
 })
 
 

@@ -7,6 +7,10 @@ class WebMeasurementsProvider {
     this.deviceData = {}
   }
 
+  getDeviceData() {
+    return this.deviceData
+  }
+
   removeInput(socket) {
     let id = socket.id
     delete this.deviceData[id]
@@ -60,6 +64,7 @@ class WebMeasurementsProvider {
   }
 
   sendOutput(device, data) {
+    console.log(this.sockets)
     this.sockets[device].write(data)
   }
 

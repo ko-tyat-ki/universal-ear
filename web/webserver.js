@@ -24,5 +24,6 @@ io.on('connection', (socket) => {
 
 export {
   server,
-  webMeasurementsProvider as clientMeasurementsProvider
+  webMeasurementsProvider as clientMeasurementsProvider,
+  io
 }

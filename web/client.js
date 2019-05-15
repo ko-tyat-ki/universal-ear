@@ -172,8 +172,11 @@ let onConfigure = async () => {
     })
 
     socket.emit('data', measurements)
+    // socket.on('toClient', (data) => {
+    //   console.log('this data is on client, woop!', data)
+    // })
     currentTime = Date.now()
-    await sleep(10)
+    await sleep(100)
   }
 })()
 
