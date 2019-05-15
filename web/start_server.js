@@ -35,24 +35,18 @@ const devices = hardwareMeasurementsProvider.getInputs()
 
 
 const loop = () => {
-  console.log("loop")
   collector.collectMeasurements()
   let measurements = collector.getMeasurements()
 
-  console.log(measurements)
-
-  let data = JSON.stringify({
-    "devices": devices,
-    "measurements": measurements,
-  })
-
+  // TODO: uncomment to send to python
+  // Sends measurements to python
+  // let data = JSON.stringify({
+  //   "devices": devices,
+  //   "measurements": measurements,
+  // })
   // pythonServerClient.write(Buffer.from(data))
 
-  // TODO: Send measurements to python
-
   let visualization = config.getVisualizationHandler()
-
-  // console.log(measurements)
 
   if (!measurements || Objects.isEmpty(measurements)) {
     return
@@ -66,16 +60,7 @@ const loop = () => {
   collector.sendOutput(".usbmodem14101", "l17;0;0;0;18;0;0;0;19;136;136;187;20;136;136;187;21;136;136;187;22;0;0;0;23;0;0;0;24;0;0;0;25;0;0;0;26;0;0;0;27;0;0;0;28;0;0;0;29;0;0;0;30;0;0;0;31;0;0;0;32;0;0;0;33;0;0;0;")
   collector.sendOutput(".usbmodem14101", "l34;0;0;0;35;0;0;0;36;0;0;0;37;0;0;0;38;0;0;0;39;0;0;0;")
 
-  // }, 10)
-
-
-  // console.log(leds)
-
-
-  // console.log(Object.keys(hardwareMeasurementsProvider.ports[".usbmodem14101"]))
-  // console.log("writable", hardwareMeasurementsProvider.ports[".usbmodem14101"].writable)
-
-
+  // TODO: Uncomment to send real measurements to arduino
   // Object.keys(leds).forEach(device => {
   //   leds[device].toArduinoStrings().forEach((line) => {
   //     setTimeout(()=>{
@@ -83,50 +68,18 @@ const loop = () => {
   //     }, 10)
   //   })
   // })
-
-  // console.log(leds)
-  // for () {
-  //
-  // }
-
-  // console.log(leds.toArduinoString())
-  // console.log(devices)
-
-  // let ledOutput = visualization(measurements, devices)
-  // Led output is matrix where columns represent device and rows represent led colors attached to a device
-
-
-  // Send led output to client and device sockets
-
 }
 
-async.parallel([
-  function (callback) {
-    server.listen(3000, () => {
-      console.log('I am listenning on 3000')
-    })
-    server.on("error", callback(null, 1))
-  },
-  function (callback) {
-    // setInterval(loop, 1000)
-    callback(null, 2)
-  }
-], (z) => {
-  console.log("wow", z)
+server.listen(3000, () => {
+  console.log('I am listenning on 3000')
 })
 
-// Starting web server
-
-// async.forever(
-//   (next) => {
-//     loop()
-//     setTimeout(next, 500)
-//   },
-//   (err) => {
-//     console.log("BOOM", err)
-//   }
-// )
-
-// l20;136;136;187;21;136;136;187;22;0;0;0;23;0;0;0;24;0;0;0;25;0;0;0;26;0;0;0;27;0;0;0;28;0;0;0;29;0;0;0;30;0;0;0;31;0;0;0;32;0;0;0;33;0;0;0;34;0;0;0;35;0;0;0;36;0;0;0;37;0;0;0;38;0;0;0;39;0;0;0;
-// l18;0;0;0;19;136;136;187;20;136;136;187;21;136;136;187;22;0;0;0;23;0;0;0;24;0;0;0;
-// l39;255;0;0;
+async.forever(
+  (next) => {
+    loop()
+    next()
+  },
+  (err) => {
+    console.log("BOOM", err)
+  }
+)
