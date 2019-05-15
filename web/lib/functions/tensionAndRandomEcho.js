@@ -53,4 +53,4 @@ const tensionAndRandomEcho = ({
 	})
 }
 
-export default { tensionAndRandomEcho }
+export { tensionAndRandomEcho as default }

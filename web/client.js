@@ -1,5 +1,10 @@
-import { sleep } from "./lib/helpers/sleep.js";
-import {drawEar} from './lib/helpers/drawEar.js'
+/* global document */
+/* global console */
+/* global io */
+
+import { sleep } from './lib/helpers/sleep.js'
+import { drawEar } from './lib/helpers/drawEar.js'
+// import io from 'socket.io-client'
 
 var socket = io()
 
@@ -18,11 +23,11 @@ const buildColumns = async (configuration, regime) => {
     case 'duet':
       columns = [
         {
-          key: "a",
+          key: 'a',
           sensorPosition: 10
         },
         {
-          key: "s",
+          key: 's',
           sensorPosition: 30
         }
       ]
@@ -30,49 +35,49 @@ const buildColumns = async (configuration, regime) => {
     case 'circle':
       columns = [
         {
-          key: "0",
+          key: '0',
           sensorPosition: 20
         },
         {
-          key: "1",
+          key: '1',
           sensorPosition: 20
         },
         {
-          key: "2",
+          key: '2',
           sensorPosition: 20
         },
         {
-          key: "3",
+          key: '3',
           sensorPosition: 20
         },
         {
-          key: "4",
+          key: '4',
           sensorPosition: 20
         },
         {
-          key: "5",
+          key: '5',
           sensorPosition: 20
         },
         {
-          key: "6",
+          key: '6',
           sensorPosition: 20
         },
         {
-          key: "7",
+          key: '7',
           sensorPosition: 20
         },
         {
-          key: "8",
+          key: '8',
           sensorPosition: 20
         },
         {
-          key: "9",
+          key: '9',
           sensorPosition: 20
         }
       ]
       break
     default:
-      console.log("You need to pick up configuration you would use")
+      console.log('You need to pick up configuration you would use')
       return
   }
 
@@ -89,9 +94,9 @@ const buildColumns = async (configuration, regime) => {
   }
 
   socket.emit('configure', {
-    "visualisation": selectedRegime,
-    "columns": cols,
-    "arduinos": ards,
+    'visualisation': selectedRegime,
+    'columns': cols,
+    'arduinos': ards,
   })
 
   return {
@@ -105,7 +110,7 @@ const cleanScreen = columnKeys => {
 
   columnKeys.forEach(columnKey => {
     const columnEl = document.getElementById(`column-${columnKey}`);
-    document.getElementById("container").removeChild(columnEl);
+    document.getElementById('container').removeChild(columnEl);
   });
 };
 
@@ -166,7 +171,7 @@ let onConfigure = async () => {
       }
     })
 
-    socket.emit("data", measurements)
+    socket.emit('data', measurements)
     currentTime = Date.now()
     await sleep(10)
   }

@@ -1,9 +1,8 @@
-import {getDistance} from '../helpers/getDistance.js'
+import { getDistance } from '../helpers/getDistance.js'
 
 
 const randomEcho = (measurements, columns, arduinos) => {
   const names = Object.keys(columns)
-  const brightColor = '#88b'
 
   const findMeasurement = (meas, key) => {
     for (let m in meas) {
@@ -35,7 +34,7 @@ const randomEcho = (measurements, columns, arduinos) => {
 
       for (let key = 0; key < column.numberOfLEDs; key++) {
         const colorIntensity = parseInt(255 * Math.random())
-        const color = `rgba(15, ${colorIntensity}, 200, ${1/(distance + 1)})`
+        const color = `rgba(15, ${colorIntensity}, 200, ${1 / (distance + 1)})`
         leds.push({
           number: key,
           color: color
@@ -47,4 +46,4 @@ const randomEcho = (measurements, columns, arduinos) => {
   })
 }
 
-export default {randomEcho}
+export { randomEcho as default }

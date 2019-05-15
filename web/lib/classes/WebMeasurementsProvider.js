@@ -20,7 +20,7 @@ class WebMeasurementsProvider {
   getInputs() {
     let inputs = []
 
-    this.devices.sort((a, b)  => {
+    this.devices.sort((a, b) => {
       return a.order - b.order
     }).forEach((device) => {
       inputs.push(device.name)
@@ -32,9 +32,9 @@ class WebMeasurementsProvider {
     let socketId = socket.id
     this.sockets.push(socketId)
 
-    socket.on("disconnect", (err) => {
+    socket.on('disconnect', (err) => {
       // TODO: logging
-      console.log("Input disconnected. Removing handlers", err)
+      console.log('Input disconnected. Removing handlers', err)
       this.removeInput(socketId)
     })
 
@@ -43,7 +43,7 @@ class WebMeasurementsProvider {
   }
 
   startListening(socket) {
-    socket.on("data", (measurements) => {
+    socket.on('data', (measurements) => {
       // TODO: logging
       if (!measurements) return
 
@@ -52,7 +52,7 @@ class WebMeasurementsProvider {
       let deviceData = {}
 
       measurements.sort((a, b) => a.order - b.order).forEach(measurement => {
-        deviceData[measurement["name"]] = measurement["value"]
+        deviceData[measurement['name']] = measurement['value']
       })
 
       this.deviceData[socket.id] = deviceData

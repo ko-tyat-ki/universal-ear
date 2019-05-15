@@ -1,6 +1,5 @@
 import { Leds, Led } from "./../classes/Led"
 
-
 const maxTension = 1000
 const minTension = 0
 
@@ -14,7 +13,7 @@ const basic = (measurements, devices) => {
 
   let output = {}
 
-  devices.forEach( device => {
+  devices.forEach(device => {
     let measurement = measurements[device]
 
     if (!measurement) return
@@ -40,4 +39,4 @@ const basic = (measurements, devices) => {
   return output
 }
 
-export default {basic}
+export { basic as default }

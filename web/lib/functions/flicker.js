@@ -1,4 +1,4 @@
-const flicker = (measurements, columns, arduinos) => {
+const flicker = (measurements, columns) => {
   const brightColor = '#88b'
 
   return measurements.map((measurement) => {
@@ -28,4 +28,4 @@ const flicker = (measurements, columns, arduinos) => {
   })
 }
 
-export default { flicker }
+export { flicker as default }
