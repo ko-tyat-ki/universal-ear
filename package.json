@@ -21,6 +21,7 @@
   "dependencies": {
     "async": "^2.6.2",
     "express": "^4.16.4",
+    "microjob": "^0.5.2",
     "regenerator": "^0.14.1",
     "serialport": "^7.1.5",
     "socket.io": "^2.2.0"

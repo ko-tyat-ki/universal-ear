@@ -16,6 +16,9 @@ const basic = (measurements, devices) => {
 
   devices.forEach( device => {
     let measurement = measurements[device]
+
+    if (!measurement) return
+
     let ledCount = parseInt(measurement.ledCount)
     let tension = parseFloat(measurement.value)
 
