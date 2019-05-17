@@ -1,6 +1,6 @@
 html,
 body {
-  background: black;
+  /* background: black; */
   margin: 0;
   padding: 0;
 }
@@ -13,6 +13,12 @@ h5 {
   color: #ddd;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  z-index: -1;
 }
 
 .column {

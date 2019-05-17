@@ -1,32 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Playground</title>
-    <link rel="stylesheet" href="static/main.css" type="text/css" />
-  </head>
-  <body>
-    <div class="container" id="container"></div>
-    <div class="menu">
-      <div id="select-regime--container">
-        <h5>Regime:</h5>
-        <select id="select-regime">
-          <option value="basic" selected="selected">Basic</option>
-          <option value="randomEcho">Random echo</option>
-          <option value="flicker">Flicker</option>
-          <option value="tensionAndRandomEcho">Tension and random echo</option>
-          <option value="empty">Empty</option>
-        </select>
-      </div>
-      <div id="select-configuration--container">
-        <h5>Configuration:</h5>
-        <select id="select-configuration">
-          <option value="duet" selected="selected">Duet</option>
-          <option value="circle">Circle</option>
-        </select>
-      </div>
-    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js" type="application/javascript"></script>
-    <script src="web/client.js" type="module"></script>
-  </body>
+<head>
+  <title>Playground</title>
+  <link rel="stylesheet" href="static/main.css" type="text/css" />
+</head>
+
+<body>
+  <div class="container" id="container"></div>
+  <div class="menu">
+    <div id="select-regime--container">
+      <h5>Regime:</h5>
+      <select id="select-regime">
+        <option value="basic" selected="selected">Basic</option>
+        <option value="randomEcho">Random echo</option>
+        <option value="flicker">Flicker</option>
+        <option value="tensionAndRandomEcho">Tension and random echo</option>
+        <option value="empty">Empty</option>
+      </select>
+    </div>
+    <div id="select-configuration--container">
+      <h5>Configuration:</h5>
+      <select id="select-configuration">
+        <option value="duet" selected="selected">Duet</option>
+        <option value="circle">Circle</option>
+      </select>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"
+    type="application/javascript"></script>
+  <script src="web/lib/three/three.js"></script>
+  <script src="web/lib/three/OrbitControls.js"></script>
+  <script src="web/client.js" type="module"></script>
+</body>
+
 </html>
