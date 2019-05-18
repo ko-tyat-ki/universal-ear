@@ -137,141 +137,61 @@ let onConfigure = async () => {
 	}
 }
 
-////
-
-/* testing cloth simulation */
-// var pinsFormation = [];
-// var pins = [6];
-// pinsFormation.push(pins);
-// pins = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-// pinsFormation.push(pins);
-// pins = [0];
-// pinsFormation.push(pins);
-// pins = []; // cut the rope ;)
-// pinsFormation.push(pins);
-// pins = [0, cloth.w]; // classic 2 pins
-// pinsFormation.push(pins);
-// pins = pinsFormation[1];
-// function togglePins() {
-// 	pins = pinsFormation[~~(Math.random() * pinsFormation.length)];
-// }
-// if (WEBGL.isWebGLAvailable() === false) {
-// 	document.body.appendChild(WEBGL.getWebGLErrorMessage());
-// }
-// var container, stats;
-// var camera, scene, renderer;
-// var clothGeometry;
-// var sphere;
-// var object;
 let container
 
 let camera
 let scene
 let renderer
 
-init()
-animate()
-function init() {
+const setUpCanvas = () => {
 	container = document.createElement('div')
 	container.className = `canvas`
 	document.body.appendChild(container)
-	// scene
-	console.log(THREE)
+}
+
+const setUpScene = () => {
 	scene = new THREE.Scene()
-	scene.background = new THREE.Color(0xcce0ff)
-	scene.fog = new THREE.Fog(0xcce0ff, 500, 10000)
-	// camera
+	scene.background = new THREE.Color(0x141852)
+	scene.fog = new THREE.Fog(0x141852, 500, 10000)
+}
+
+const setUpCamera = () => {
 	camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 10000)
 	camera.position.set(1000, 50, 1500)
-	// lights
+}
+
+const setUpLights = () => {
 	scene.add(new THREE.AmbientLight(0x666666))
-	var light = new THREE.DirectionalLight(0xdfebff, 1)
+	let light = new THREE.DirectionalLight(0xdfebff, 1)
 	light.position.set(50, 200, 100)
 	light.position.multiplyScalar(1.3)
 	light.castShadow = true
 	light.shadow.mapSize.width = 1024
 	light.shadow.mapSize.height = 1024
-	var d = 300
+	let d = 300
 	light.shadow.camera.left = - d
 	light.shadow.camera.right = d
 	light.shadow.camera.top = d
 	light.shadow.camera.bottom = - d
 	light.shadow.camera.far = 1000
 	scene.add(light)
-	// 	// cloth material
-	var loader = new THREE.TextureLoader()
-	// 	var clothTexture = loader.load('textures/patterns/circuit_pattern.png');
-	// 	clothTexture.anisotropy = 16;
-	// 	var clothMaterial = new THREE.MeshLambertMaterial({
-	// 		map: clothTexture,
-	// 		side: THREE.DoubleSide,
-	// 		alphaTest: 0.5
-	// 	});
-	// 	// cloth geometry
-	// 	clothGeometry = new THREE.ParametricBufferGeometry(clothFunction, cloth.w, cloth.h);
-	// 	// cloth mesh
-	// 	object = new THREE.Mesh(clothGeometry, clothMaterial);
-	// 	object.position.set(0, 0, 0);
-	// 	object.castShadow = true;
-	// 	scene.add(object);
-	// 	object.customDepthMaterial = new THREE.MeshDepthMaterial({
-	// 		depthPacking: THREE.RGBADepthPacking,
-	// 		map: clothTexture,
-	// 		alphaTest: 0.5
-	// 	});
-	// 	// sphere
-	// 	var ballGeo = new THREE.SphereBufferGeometry(ballSize, 32, 16);
-	// 	var ballMaterial = new THREE.MeshLambertMaterial();
-	// 	sphere = new THREE.Mesh(ballGeo, ballMaterial);
-	// 	sphere.castShadow = true;
-	// 	sphere.receiveShadow = true;
-	// 	scene.add(sphere);
-	// ground
-	var groundTexture = loader.load('../static/images/desert.jpeg')
+}
+
+const setUpGround = () => {
+	let loader = new THREE.TextureLoader()
+	let groundTexture = loader.load('../static/images/desert.jpeg')
 	groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping
 	groundTexture.repeat.set(25, 25)
 	groundTexture.anisotropy = 16
-	var groundMaterial = new THREE.MeshLambertMaterial({ map: groundTexture })
-	var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(20000, 20000), groundMaterial)
+	let groundMaterial = new THREE.MeshLambertMaterial({ map: groundTexture })
+	let mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(20000, 20000), groundMaterial)
 	mesh.position.y = - 250
 	mesh.rotation.x = - Math.PI / 2
 	mesh.receiveShadow = true
 	scene.add(mesh)
-	// poles
-	var poleGeo = new THREE.BoxBufferGeometry(5, 375, 5)
-	var poleMat = new THREE.MeshLambertMaterial()
-	var mesh = new THREE.Mesh(poleGeo, poleMat)
-	mesh.position.x = - 125
-	mesh.position.y = - 62
-	mesh.receiveShadow = true
-	mesh.castShadow = true
-	scene.add(mesh)
-	var mesh = new THREE.Mesh(poleGeo, poleMat)
-	mesh.position.x = 125
-	mesh.position.y = - 62
-	mesh.receiveShadow = true
-	mesh.castShadow = true
-	scene.add(mesh)
-	var mesh = new THREE.Mesh(new THREE.BoxBufferGeometry(255, 5, 5), poleMat)
-	mesh.position.y = - 250 + (750 / 2)
-	mesh.position.x = 0
-	mesh.receiveShadow = true
-	mesh.castShadow = true
-	scene.add(mesh)
-	var gg = new THREE.BoxBufferGeometry(10, 10, 10)
-	var mesh = new THREE.Mesh(gg, poleMat)
-	mesh.position.y = - 250
-	mesh.position.x = 125
-	mesh.receiveShadow = true
-	mesh.castShadow = true
-	scene.add(mesh)
-	var mesh = new THREE.Mesh(gg, poleMat)
-	mesh.position.y = - 250
-	mesh.position.x = - 125
-	mesh.receiveShadow = true
-	mesh.castShadow = true
-	scene.add(mesh)
-	// renderer
+}
+
+const setUpRenderer = () => {
 	renderer = new THREE.WebGLRenderer({ antialias: true })
 	renderer.setPixelRatio(window.devicePixelRatio)
 	renderer.setSize(window.innerWidth, window.innerHeight)
@@ -279,17 +199,91 @@ function init() {
 	renderer.gammaInput = true
 	renderer.gammaOutput = true
 	renderer.shadowMap.enabled = true
-	// controls
-	var controls = new THREE.OrbitControls(camera, renderer.domElement)
+}
+
+const setUpControls = () => {
+	let controls = new THREE.OrbitControls(camera, renderer.domElement)
 	controls.maxPolarAngle = Math.PI * 0.5
 	controls.minDistance = 1000
 	controls.maxDistance = 5000
-	// performance monitor
-	// stats = new Stats()
-	// container.appendChild(stats.dom)
-	//
+}
+
+const addLED = ({
+	size,
+	x,
+	y,
+	z,
+	color
+}) => {
+	const sphere = new THREE.SphereBufferGeometry(size, 0, 0)
+	const light = new THREE.Light(color, 1)
+	light.position.set(x, y, z)
+	light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color })))
+	scene.add(light)
+	return { sphere, light }
+}
+
+const createStructure = () => {
+	// poles
+	let mesh
+	let poleGeo = new THREE.BoxBufferGeometry(5, 375, 5)
+	let poleMat = new THREE.MeshLambertMaterial({ color: 0x343434 })
+	mesh = new THREE.Mesh(poleGeo, poleMat)
+	mesh.position.x = - 125
+	mesh.position.y = - 62
+	mesh.receiveShadow = true
+	mesh.castShadow = true
+	scene.add(mesh)
+	mesh = new THREE.Mesh(poleGeo, poleMat)
+	mesh.position.x = 125
+	mesh.position.y = - 62
+	mesh.receiveShadow = true
+	mesh.castShadow = true
+	scene.add(mesh)
+	mesh = new THREE.Mesh(new THREE.BoxBufferGeometry(255, 5, 5), poleMat)
+	mesh.position.y = - 250 + (750 / 2)
+	mesh.position.x = 0
+	mesh.receiveShadow = true
+	mesh.castShadow = true
+	scene.add(mesh)
+
+	for (let i = 0; i < 150; i++) {
+		addLED({
+			size: 3,
+			x: 122,
+			y: -180 + i * 2,
+			z: 0,
+			color: 0x55ffff
+		})
+	}
+
+	for (let i = 0; i < 150; i++) {
+		addLED({
+			size: 3,
+			x: -122,
+			y: -180 + i * 2,
+			z: 0,
+			color: 0xff55ff
+		})
+	}
+}
+
+init()
+animate()
+function init() {
+	setUpCanvas()
+	setUpScene()
+	setUpCamera()
+	setUpLights()
+	setUpGround()
+
+	createStructure()
+
+	setUpRenderer()
+	setUpControls()
+
 	window.addEventListener('resize', onWindowResize, false)
-	// sphere.visible = ! true
+
 }
 
 function onWindowResize() {
@@ -297,30 +291,12 @@ function onWindowResize() {
 	camera.updateProjectionMatrix()
 	renderer.setSize(window.innerWidth, window.innerHeight)
 }
-//
+
 function animate() {
 	requestAnimationFrame(animate)
-	// var time = Date.now()
-	// var windStrength = Math.cos(time / 7000) * 20 + 40
-	// windForce.set(Math.sin(time / 2000), Math.cos(time / 3000), Math.sin(time / 1000))
-	// windForce.normalize()
-	// windForce.multiplyScalar(windStrength)
-	// simulate(time)
-	render()
-	// stats.update()
-}
-function render() {
-	// var p = cloth.particles;
-	// for (var i = 0, il = p.length; i < il; i++) {
-	// 	var v = p[i].position
-	// 	clothGeometry.attributes.position.setXYZ(i, v.x, v.y, v.z)
-	// }
-	// clothGeometry.attributes.position.needsUpdate = true
-	// clothGeometry.computeVertexNormals()
-	// sphere.position.copy(ballPosition)
 	renderer.render(scene, camera)
 }
-////
+
 
 (async () => {
 	await onConfigure()
