@@ -1,8 +1,8 @@
 /* global document */
 /* global THREE */
 
-import { Arduino } from "../classes/arduino.js"
-import { Column } from "../classes/column.js"
+import { Sensor } from "../classes/sensor.js"
+import { Stick } from "../classes/stick.js"
 
 const numberOfLEDs = 150
 
@@ -77,7 +77,6 @@ export const drawEar = (columnsInput, scene) => {
 	const arduinos = []
 
 	const ColumnsLEDs = createStructure(scene)
-	console.log('what we get', ColumnsLEDs)
 
 	columnsInput.forEach((column, key) => {
 		// css column
@@ -87,8 +86,8 @@ export const drawEar = (columnsInput, scene) => {
 		document.getElementById("container").appendChild(div)
 
 		// pass to classes
-		columns.push(new Column(column, numberOfLEDs, ColumnsLEDs[key]))
-		arduinos.push(new Arduino(0, column))
+		columns.push(new Stick(column, numberOfLEDs, ColumnsLEDs[key]))
+		arduinos.push(new Sensor(0, column))
 	})
 
 	return {

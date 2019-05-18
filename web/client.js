@@ -1,20 +1,21 @@
 /* global document */
-/* global window */
 /* global console */
 
-/* global THREE */
 /* global io */
+/* global requestAnimationFrame */
 
 import { sleep } from './lib/helpers/sleep.js'
 import { drawEar } from './lib/helpers/drawEar.js'
-// import * as THREE from './lib/three/three.js'
+import { init, animate } from './lib/helpers/setUpWorld.js'
 
 let socket = io()
 
-let columns = null
+let columns
 let columnsIdx = {}
-let arduinos = null
-let columnKeys = null
+let arduinos
+let columnKeys
+
+let scene
 
 const buildColumns = async (configuration, regime) => {
 	const selectedConfiguration = configuration.options[configuration.options.selectedIndex].value
@@ -137,110 +138,9 @@ let onConfigure = async () => {
 	}
 }
 
-let container
-
-let camera
-let scene
-let renderer
-
-const setUpCanvas = () => {
-	container = document.createElement('div')
-	container.className = `canvas`
-	document.body.appendChild(container)
-}
-
-const setUpScene = () => {
-	scene = new THREE.Scene()
-	scene.background = new THREE.Color(0x141852)
-	scene.fog = new THREE.Fog(0x141852, 500, 10000)
-	scene.autoUpdate = true
-}
-
-const setUpCamera = () => {
-	camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 10000)
-	camera.position.set(1000, 50, 1500)
-}
-
-const setUpLights = () => {
-	scene.add(new THREE.AmbientLight(0x666666))
-	let light = new THREE.DirectionalLight(0xdfebff, 1)
-	light.position.set(50, 200, 100)
-	light.position.multiplyScalar(1.3)
-	light.castShadow = true
-	light.shadow.mapSize.width = 1024
-	light.shadow.mapSize.height = 1024
-	let d = 300
-	light.shadow.camera.left = - d
-	light.shadow.camera.right = d
-	light.shadow.camera.top = d
-	light.shadow.camera.bottom = - d
-	light.shadow.camera.far = 1000
-	scene.add(light)
-}
-
-const setUpGround = () => {
-	let loader = new THREE.TextureLoader()
-	let groundTexture = loader.load('../static/images/desert.jpeg')
-	groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping
-	groundTexture.repeat.set(25, 25)
-	groundTexture.anisotropy = 16
-	let groundMaterial = new THREE.MeshLambertMaterial({ map: groundTexture })
-	let mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(20000, 20000), groundMaterial)
-	mesh.position.y = - 250
-	mesh.rotation.x = - Math.PI / 2
-	mesh.receiveShadow = true
-	scene.add(mesh)
-}
-
-const setUpRenderer = () => {
-	renderer = new THREE.WebGLRenderer({ antialias: true })
-	renderer.setPixelRatio(window.devicePixelRatio)
-	renderer.setSize(window.innerWidth, window.innerHeight)
-	container.appendChild(renderer.domElement)
-	renderer.gammaInput = true
-	renderer.gammaOutput = true
-	renderer.shadowMap.enabled = true
-}
-
-const setUpControls = () => {
-	let controls = new THREE.OrbitControls(camera, renderer.domElement)
-	controls.maxPolarAngle = Math.PI * 0.5
-	controls.minDistance = 1000
-	controls.maxDistance = 5000
-}
-
-init()
-animate()
-function init() {
-	setUpCanvas()
-	setUpScene()
-	setUpCamera()
-	setUpLights()
-	setUpGround()
-
-	// createStructure()
-
-	setUpRenderer()
-	setUpControls()
-
-	window.addEventListener('resize', onWindowResize, false)
-
-}
-
-function onWindowResize() {
-	camera.aspect = window.innerWidth / window.innerHeight
-	camera.updateProjectionMatrix()
-	renderer.setSize(window.innerWidth, window.innerHeight)
-}
-
-function animate() {
-	requestAnimationFrame(animate)
-
-	renderer.render(scene, camera)
-}
-
-
 (async () => {
+	init()
+	scene = animate()
 	await onConfigure()
 
 	const regime = document.getElementById('select-regime')

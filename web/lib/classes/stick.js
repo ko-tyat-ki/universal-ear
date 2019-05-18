@@ -3,7 +3,7 @@
 
 const initColor = "#222"
 
-export class Column {
+export class Stick {
 	constructor(column, numberOfLEDs, ColumnLEDs) {
 		this.columnName = column.key
 		this.numberOfLEDs = numberOfLEDs

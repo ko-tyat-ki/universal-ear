@@ -1,6 +1,6 @@
 /* global document */
 
-export class Arduino {
+export class Sensor {
 	constructor(tension, column) {
 		this.minimalTension = tension
 		this.tension = tension
@@ -58,7 +58,7 @@ export class Arduino {
 		this.tension = Math.max(this.minimalTension, tension)
 
 		if (this.tension != this.minimalTension) {
-			console.log("Arduino", this.key, this.tension, this.isBeingPulled)
+			console.log("Sensor", this.key, this.tension, this.isBeingPulled)
 		}
 	}
 }
