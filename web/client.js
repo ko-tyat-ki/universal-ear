@@ -8,15 +8,9 @@ import { drawEar } from './lib/helpers/drawEar.js'
 import { init, animate } from './lib/helpers/setUpWorld.js'
 
 let socket = io()
-
-let columns
-let columnsIdx = {}
-let arduinos
-let columnKeys
-
 let scene
 
-const buildColumns = async (configuration, regime) => {
+const buildColumns = (configuration, regime) => {
 	const selectedConfiguration = configuration.options[configuration.options.selectedIndex].value
 	const selectedRegime = regime.options[regime.options.selectedIndex].value
 
@@ -98,54 +92,45 @@ const buildColumns = async (configuration, regime) => {
 	}
 }
 
-const cleanScreen = columnKeys => {
-	if (!columnKeys) return
+let arduinos
 
-	columnKeys.forEach(columnKey => {
-		const columnEl = document.getElementById(`column-${columnKey}`)
-		document.getElementById('container').removeChild(columnEl)
-	})
-}
-
-socket.on('ledsChanged', (changes) => {
-	if (!changes) return
-	if (!columns) return
-	if (changes.length <= 0) return
-
-	for (let changeIdx in changes) {
-		let change = changes[changeIdx]
-		if (!change) continue
-		let column = columnsIdx[change.name]
-		column.colorLeds(change.leds)
-	}
-
-})
-
-let onConfigure = async () => {
+const onConfigure = () => {
 	const configuration = document.getElementById('select-configuration')
 	const regime = document.getElementById('select-regime')
 
-	cleanScreen(columnKeys)
-	const update = await buildColumns(configuration, regime)
-	columns = update.columns
+	const update = buildColumns(configuration, regime)
+	const columns = update.columns
 	arduinos = update.arduinos
-	columnKeys = update.columnKeys
 
-	columnsIdx = {}
+	// code for sockets, maybe will need to be reconfigured
+	const columnsIdx = {}
 	for (const column of columns) {
 		columnsIdx[column.columnName] = column
 	}
+
+	socket.on('ledsChanged', (changes) => {
+		if (!changes) return
+		if (!columns) return
+		if (changes.length <= 0) return
+
+		for (let changeIdx in changes) {
+			let change = changes[changeIdx]
+			if (!change) continue
+			let column = columnsIdx[change.name]
+			column.colorLeds(change.leds)
+		}
+	})
 }
 
 (async () => {
 	init()
 	scene = animate()
-	await onConfigure()
+	onConfigure()
 
 	const regime = document.getElementById('select-regime')
 	const configuration = document.getElementById('select-configuration')
-	configuration.addEventListener('change', async () => await onConfigure())
-	regime.addEventListener('change', async () => await onConfigure())
+	configuration.addEventListener('change', onConfigure)
+	regime.addEventListener('change', onConfigure)
 
 	let currentTime = Date.now()
 	let stop = false
