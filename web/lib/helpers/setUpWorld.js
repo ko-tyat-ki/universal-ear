@@ -91,13 +91,6 @@ export const init = () => {
     setUpControls()
 
     window.addEventListener('resize', onWindowResize, false)
-
-    return {
-        container,
-        camera,
-        scene,
-        renderer
-    }
 }
 
 export const animate = () => {

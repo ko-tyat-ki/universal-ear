@@ -2,7 +2,6 @@
 /* global console */
 
 /* global io */
-/* global requestAnimationFrame */
 
 import { sleep } from './lib/helpers/sleep.js'
 import { drawEar } from './lib/helpers/drawEar.js'
