@@ -1,4 +1,3 @@
-/* global document */
 /* global THREE */
 
 import { Sensor } from "../classes/sensor.js"
