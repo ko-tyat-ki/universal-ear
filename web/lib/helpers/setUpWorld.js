@@ -44,6 +44,23 @@ const setUpLights = () => {
     scene.add(light)
 }
 
+const setUpMoon = () => {
+    let loader = new THREE.TextureLoader()
+    let moonTexture = loader.load('../static/images/moon.jpeg')
+    moonTexture.wrapS = moonTexture.wrapT = THREE.RepeatWrapping
+    moonTexture.repeat.set(1, 1)
+    moonTexture.anisotropy = 16
+    const moonGeo = new THREE.SphereBufferGeometry(100, 32, 16)
+    var moonMaterial = new THREE.MeshLambertMaterial({ map: moonTexture })
+    const sphere = new THREE.Mesh(moonGeo, moonMaterial)
+    sphere.position.x = -2500
+    sphere.position.y = 400
+    sphere.position.z = -1000
+    sphere.castShadow = true
+    sphere.receiveShadow = true
+    scene.add(sphere)
+}
+
 const setUpGround = () => {
     let loader = new THREE.TextureLoader()
     let groundTexture = loader.load('../static/images/desert.jpeg')
@@ -89,6 +106,7 @@ export const init = () => {
     setUpGround()
     setUpRenderer()
     setUpControls()
+    setUpMoon()
 
     window.addEventListener('resize', onWindowResize, false)
 }
