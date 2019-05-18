@@ -4,7 +4,11 @@
 import { Sensor } from "../classes/sensor.js"
 import { Stick } from "../classes/stick.js"
 
-const numberOfLEDs = 150
+const NUMBER_OF_LEDS = 150
+const STICK_SIZE = 3
+const ONE_LED_SIZE = 2
+const POLE_COLOR = 0x222222
+const INIT_STICK_COLOR = 0x55ffff
 
 const addLED = ({
 	size,
@@ -23,75 +27,45 @@ const addLED = ({
 	return sphere
 }
 
-const createStructure = (scene) => {
-	// poles
-	let mesh
-	const poleGeo = new THREE.BoxBufferGeometry(5, 375, 5)
-	const poleMat = new THREE.MeshLambertMaterial({ color: 0x343434 })
-	mesh = new THREE.Mesh(poleGeo, poleMat)
-	mesh.position.x = - 125
-	mesh.position.y = - 62
-	mesh.receiveShadow = true
-	mesh.castShadow = true
-	scene.add(mesh)
-	mesh = new THREE.Mesh(poleGeo, poleMat)
-	mesh.position.x = 125
-	mesh.position.y = - 62
-	mesh.receiveShadow = true
-	mesh.castShadow = true
-	scene.add(mesh)
-	mesh = new THREE.Mesh(new THREE.BoxBufferGeometry(255, 5, 5), poleMat)
-	mesh.position.y = - 250 + (750 / 2)
-	mesh.position.x = 0
-	mesh.receiveShadow = true
-	mesh.castShadow = true
-	scene.add(mesh)
-
-	const NUMBER_OF_LEDS = 150
-
-	const firstColumnLEDs = [...Array(NUMBER_OF_LEDS)].map((num, key) => {
-		return addLED({
-			size: 3,
-			x: 122,
-			y: -180 + key * 2,
-			z: 0,
-			color: 0x55ffff
-		}, scene)
+const drawStructure = (poles, scene) => {
+	poles.forEach(pole => {
+		const poleGeo = new THREE.BoxBufferGeometry(pole.geoX, pole.geoY, pole.geoZ)
+		const poleMat = new THREE.MeshLambertMaterial({ color: POLE_COLOR })
+		const mesh = new THREE.Mesh(poleGeo, poleMat)
+		mesh.position.x = pole.initX
+		mesh.position.y = pole.initY
+		mesh.receiveShadow = true
+		mesh.castShadow = true
+		scene.add(mesh)
 	})
-
-	const secondColumnLEDs = [...Array(NUMBER_OF_LEDS)].map((num, key) => {
-		return addLED({
-			size: 3,
-			x: -122,
-			y: -180 + key * 2,
-			z: 0,
-			color: 0xff55ff
-		}, scene)
-	})
-
-	return [firstColumnLEDs, secondColumnLEDs]
 }
 
-export const drawEar = (columnsInput, scene) => {
-	const columns = []
-	const arduinos = []
+const drawStick = (stick, scene) => {
+	return [...Array(NUMBER_OF_LEDS)].map((num, key) => {
+		return addLED({
+			size: STICK_SIZE,
+			x: stick.x,
+			y: stick.y + key * ONE_LED_SIZE,
+			z: stick.z,
+			color: INIT_STICK_COLOR
+		}, scene)
+	})
+}
 
-	const ColumnsLEDs = createStructure(scene)
+export const drawEar = (configuration, scene) => {
+	drawStructure(configuration.poles, scene)
 
-	columnsInput.forEach((column, key) => {
-		// css column
-		const div = document.createElement("div")
-		div.className = `column column-${column.key}`
-		div.id = `column-${column.key}`
-		document.getElementById("container").appendChild(div)
+	const sticks = configuration.sticks.map((stick, key) => {
+		const stickLEDS = drawStick(stick, scene)
+		return new Stick(NUMBER_OF_LEDS, stickLEDS, key)
+	})
 
-		// pass to classes
-		columns.push(new Stick(column, numberOfLEDs, ColumnsLEDs[key]))
-		arduinos.push(new Sensor(0, column))
+	const sensors = configuration.sensors.map(sensor => {
+		return new Sensor(0, sensor)
 	})
 
 	return {
-		columns,
-		arduinos
+		sticks,
+		sensors
 	}
 }

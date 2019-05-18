@@ -1,41 +1,34 @@
-const find = (stack, needle, key = "key") => {
-	for (let idx in stack) {
-		let item = stack[idx]
-		if (item[key] == needle) {
-			return item
-		}
-	}
-}
-
-const basic = (measurements, columns, arduinos) => {
-	const brightColor = "#88b"
+const basic = (measurements, sticks, sensors) => {
+	const brightColor = 0x55ffff
 
 	return measurements.map((measurement) => {
 		const key = measurement.name
 
-		let column = find(columns, key, 'columnName')
-		let arduino = find(arduinos, key)
+		const sensor = sensors.find(sensor => sensor.key === key)
+
+		const stickKey = sensors.indexOf(sensor)
+		const stick = sticks[stickKey]
 
 		const tension = measurement.tension
-		const numberOfLEDs = column.numberOfLEDs
+		const numberOfLEDs = stick.numberOfLEDs
 
 		const leds = []
 
 		for (let key = 0; key < Math.min(tension, numberOfLEDs / 2); key++) {
 			leds.push({
-				number: Math.max(arduino.sensorPosition - key, 0),
+				number: Math.max(sensor.sensorPosition - key, 0),
 				color: brightColor
 			})
 
 			leds.push({
-				number: Math.min(arduino.sensorPosition + key, numberOfLEDs - 1),
+				number: Math.min(sensor.sensorPosition + key, numberOfLEDs - 1),
 				color: brightColor
 			})
 		}
 
 		return [{
-			"name": key,
-			"leds": leds,
+			key: stickKey,
+			leds
 		}]
 	})
 }

@@ -10,115 +10,152 @@ import { init, animate } from './lib/helpers/setUpWorld.js'
 let socket = io()
 let scene
 
-const buildColumns = (structure, regime) => {
-	const selectedStructure = structure.options[structure.options.selectedIndex].value
-	const selectedRegime = regime.options[regime.options.selectedIndex].value
-
-	let columns
-
+const calculateConfiguration = (selectedStructure) => {
 	switch (selectedStructure) {
 		case 'duet':
-			columns = [
-				{
-					key: 'a',
-					sensorPosition: 10
-				},
-				{
-					key: 's',
-					sensorPosition: 120
-				}
-			]
-			break
+			return {
+				sticks: [
+					{
+						x: 122,
+						y: -180,
+						z: 0
+					},
+					{
+						x: -122,
+						y: -180,
+						z: 0
+					}
+				],
+				sensors: [
+					{
+						key: 'a',
+						sensorPosition: 10
+					},
+					{
+						key: 's',
+						sensorPosition: 120
+					}
+				],
+				poles: [
+					{
+						geoX: 5,
+						geoY: 375,
+						geoZ: 5,
+						initX: 125,
+						initY: -62,
+						initZ: 0
+					}, {
+						geoX: 5,
+						geoY: 375,
+						geoZ: 5,
+						initX: -125,
+						initY: -62,
+						initZ: 0
+					}, {
+						geoX: 255,
+						geoY: 5,
+						geoZ: 5,
+						initX: 0,
+						initY: 125,
+						initZ: 0
+					}
+				]
+
+			}
 		case 'circle':
-			columns = [
-				{
-					key: '0',
-					sensorPosition: 20
-				},
-				{
-					key: '1',
-					sensorPosition: 20
-				},
-				{
-					key: '2',
-					sensorPosition: 20
-				},
-				{
-					key: '3',
-					sensorPosition: 20
-				},
-				{
-					key: '4',
-					sensorPosition: 20
-				},
-				{
-					key: '5',
-					sensorPosition: 20
-				},
-				{
-					key: '6',
-					sensorPosition: 20
-				},
-				{
-					key: '7',
-					sensorPosition: 20
-				},
-				{
-					key: '8',
-					sensorPosition: 20
-				},
-				{
-					key: '9',
-					sensorPosition: 20
-				}
-			]
-			break
+			return {
+				columns: [
+					{
+						key: '0',
+						sensorPosition: 20
+					},
+					{
+						key: '1',
+						sensorPosition: 20
+					},
+					{
+						key: '2',
+						sensorPosition: 20
+					},
+					{
+						key: '3',
+						sensorPosition: 20
+					},
+					{
+						key: '4',
+						sensorPosition: 20
+					},
+					{
+						key: '5',
+						sensorPosition: 20
+					},
+					{
+						key: '6',
+						sensorPosition: 20
+					},
+					{
+						key: '7',
+						sensorPosition: 20
+					},
+					{
+						key: '8',
+						sensorPosition: 20
+					},
+					{
+						key: '9',
+						sensorPosition: 20
+					}
+				]
+			}
 		default:
 			console.log('You need to pick up structure you would use')
 			return
 	}
+}
 
-	const ear = drawEar(columns, scene)
+const buildColumns = (structure, regime) => {
+	const selectedStructure = structure.options[structure.options.selectedIndex].value
+	const selectedRegime = regime.options[regime.options.selectedIndex].value
+
+	const configuration = calculateConfiguration(selectedStructure)
+
+	const ear = drawEar(configuration, scene)
 
 	socket.emit('configure', {
 		'mode': selectedRegime,
-		'columns': ear.columns,
-		'arduinos': ear.arduinos,
+		'sticks': ear.sticks,
+		'sensors': ear.sensors,
 	})
 
-	return {
-		...ear,
-		columnKeys: columns.map(column => column.key)
-	}
+	return ear
 }
 
-let arduinos
+let sensors
 
 const onConfigure = () => {
 	const structure = document.getElementById('select-structure')
 	const regime = document.getElementById('select-regime')
 
 	const update = buildColumns(structure, regime)
-	const columns = update.columns
-	arduinos = update.arduinos
+	const sticks = update.sticks
+	sensors = update.sensors
 
 	// code for sockets, maybe will need to be reconfigured
-	const columnsIdx = {}
-	for (const column of columns) {
-		columnsIdx[column.columnName] = column
+	const sticksIdx = {}
+	for (const stick of sticks) {
+		sticksIdx[stick.stickName] = stick
 	}
 
 	socket.on('ledsChanged', (changes) => {
 		if (!changes) return
-		if (!columns) return
+		if (!sticks) return
 		if (changes.length <= 0) return
 
-		for (let changeIdx in changes) {
-			let change = changes[changeIdx]
-			if (!change) continue
-			let column = columnsIdx[change.name]
-			column.colorLeds(change.leds)
-		}
+		changes.map(change => {
+			if (!change) return
+			let stick = sticks[change.key]
+			stick.colorLeds(change.leds)
+		})
 	})
 }
 
@@ -138,16 +175,16 @@ const onConfigure = () => {
 	while (!stop) {
 		const delta = Date.now() - currentTime
 
-		if (!arduinos) continue
+		if (!sensors) continue
 
-		arduinos.forEach((arduino) => {
-			arduino.update(delta)
+		sensors.forEach((sensor) => {
+			sensor.update(delta)
 		})
 
-		const measurements = arduinos.map(a => {
+		const measurements = sensors.map(sensor => {
 			return {
-				name: a.key,
-				tension: a.tension
+				name: sensor.key,
+				tension: sensor.tension
 			}
 		})
 

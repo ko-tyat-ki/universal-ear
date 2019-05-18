@@ -1,13 +1,13 @@
 /* global document */
 
 export class Sensor {
-	constructor(tension, column) {
+	constructor(tension, sensor) {
 		this.minimalTension = tension
 		this.tension = tension
 		this.isBeingPulled = false
 		this.tensionSpeed = 0.05
-		this.key = column.key
-		this.sensorPosition = column.sensorPosition
+		this.key = sensor.key
+		this.sensorPosition = sensor.sensorPosition
 
 		this.setKeyDownEventListener()
 		this.setKeyUpEventListener()
