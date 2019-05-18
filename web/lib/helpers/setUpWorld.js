@@ -46,7 +46,7 @@ const setUpLights = () => {
 
 const setUpMoon = () => {
     let loader = new THREE.TextureLoader()
-    let moonTexture = loader.load('../static/images/moon.jpeg')
+    let moonTexture = loader.load('../static/images/moon.png')
     moonTexture.wrapS = moonTexture.wrapT = THREE.RepeatWrapping
     moonTexture.repeat.set(1, 1)
     moonTexture.anisotropy = 16
