@@ -10,13 +10,13 @@ import { init, animate } from './lib/helpers/setUpWorld.js'
 let socket = io()
 let scene
 
-const buildColumns = (configuration, regime) => {
-	const selectedConfiguration = configuration.options[configuration.options.selectedIndex].value
+const buildColumns = (structure, regime) => {
+	const selectedStructure = structure.options[structure.options.selectedIndex].value
 	const selectedRegime = regime.options[regime.options.selectedIndex].value
 
 	let columns
 
-	switch (selectedConfiguration) {
+	switch (selectedStructure) {
 		case 'duet':
 			columns = [
 				{
@@ -74,7 +74,7 @@ const buildColumns = (configuration, regime) => {
 			]
 			break
 		default:
-			console.log('You need to pick up configuration you would use')
+			console.log('You need to pick up structure you would use')
 			return
 	}
 
@@ -95,10 +95,10 @@ const buildColumns = (configuration, regime) => {
 let arduinos
 
 const onConfigure = () => {
-	const configuration = document.getElementById('select-configuration')
+	const structure = document.getElementById('select-structure')
 	const regime = document.getElementById('select-regime')
 
-	const update = buildColumns(configuration, regime)
+	const update = buildColumns(structure, regime)
 	const columns = update.columns
 	arduinos = update.arduinos
 
@@ -128,8 +128,8 @@ const onConfigure = () => {
 	onConfigure()
 
 	const regime = document.getElementById('select-regime')
-	const configuration = document.getElementById('select-configuration')
-	configuration.addEventListener('change', onConfigure)
+	const structure = document.getElementById('select-structure')
+	structure.addEventListener('change', onConfigure)
 	regime.addEventListener('change', onConfigure)
 
 	let currentTime = Date.now()
