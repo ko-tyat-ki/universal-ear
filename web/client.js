@@ -28,13 +28,16 @@ const buildColumns = (structure, regime) => {
 }
 
 let sensors
+let sticks
 
 const onConfigure = () => {
+	init()
+	scene = animate()
 	const structure = document.getElementById('select-structure')
 	const regime = document.getElementById('select-regime')
 
 	const update = buildColumns(structure, regime)
-	const sticks = update.sticks
+	sticks = update.sticks
 	sensors = update.sensors
 
 	socket.on('ledsChanged', (changes) => {
@@ -44,20 +47,25 @@ const onConfigure = () => {
 
 		changes.map(change => {
 			if (!change) return
-			let stick = sticks[change.key]
+			let stick = sticks.find(stick => stick.stickName === change.key)
 			stick.colorLeds(change.leds)
 		})
 	})
 }
 
 (async () => {
-	init()
-	scene = animate()
 	onConfigure()
 
 	const regime = document.getElementById('select-regime')
 	const structure = document.getElementById('select-structure')
-	structure.addEventListener('change', onConfigure)
+	structure.addEventListener('change', () => {
+		while (scene.children.length > 0) {
+			scene.remove(scene.children[0])
+		}
+		sticks = null
+		sensors = null
+		onConfigure()
+	})
 	regime.addEventListener('change', onConfigure)
 
 	let currentTime = Date.now()

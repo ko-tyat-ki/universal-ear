@@ -33,6 +33,7 @@ const drawStructure = (poles, scene) => {
 		const mesh = new THREE.Mesh(poleGeo, poleMat)
 		mesh.position.x = pole.initX
 		mesh.position.y = pole.initY
+		mesh.position.z = pole.initZ
 		mesh.receiveShadow = true
 		mesh.castShadow = true
 		scene.add(mesh)
