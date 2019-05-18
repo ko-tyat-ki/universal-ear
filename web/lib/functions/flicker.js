@@ -1,29 +1,23 @@
-const find = (stack, needle, key = "key") => {
-	for (let idx in stack) {
-		let item = stack[idx]
-		if (item[key] == needle) {
-			return item
-		}
-	}
-}
-
-const flicker = (measurements, columns) => {
-	const brightColor = '#88b'
+const flicker = (measurements, sticks, sensors) => {
+	const brightColor = 0x55ffff
 
 	return measurements.map((measurement) => {
 		const key = measurement.name
 
-		let column = find(columns, key, 'columnName')
+		let sensor = sensors.find(sensor => sensor.key === key)
+
+		const stickKey = sensors.indexOf(sensor)
+		const stick = sticks[stickKey]
 
 		const tension = measurement.tension
-		const numberOfLEDs = column.numberOfLEDs
+		const numberOfLEDs = stick.numberOfLEDs
 
 		const leds = []
 
 		for (let key = 0; key < numberOfLEDs; key++) {
 			const ledColor = tension / numberOfLEDs > Math.random()
 				? brightColor
-				: '#222'
+				: 0x222222
 
 			leds.push({
 				number: key,
@@ -31,8 +25,8 @@ const flicker = (measurements, columns) => {
 			})
 		}
 		return [{
-			"name": key,
-			"leds": leds,
+			key: stickKey,
+			leds
 		}]
 	})
 }
