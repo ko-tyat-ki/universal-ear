@@ -1,4 +1,4 @@
-const INIT_STICK_COLOR = 0x443322
+const INIT_STICK_COLOR = 0x222244
 
 export class Stick {
 	constructor(numberOfLEDs, StickLEDs, key) {

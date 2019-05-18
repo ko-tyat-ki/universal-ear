@@ -3,10 +3,10 @@
 import { Sensor } from "../classes/sensor.js"
 import { Stick } from "../classes/stick.js"
 
-const NUMBER_OF_LEDS = 150
+const NUMBER_OF_LEDS = 50
 const STICK_SIZE = 3
-const ONE_LED_SIZE = 2
-const POLE_COLOR = 0x222222
+const ONE_LED_SIZE = 5
+const POLE_COLOR = 0x221111
 const INIT_STICK_COLOR = 0x55ffff
 
 const addLED = ({
@@ -16,7 +16,7 @@ const addLED = ({
 	z,
 	color
 }, scene) => {
-	const ballGeo = new THREE.CylinderBufferGeometry(size, size, 2, 32)
+	const ballGeo = new THREE.CylinderBufferGeometry(size, size, 5, 32)
 	const ballMaterial = new THREE.MeshLambertMaterial({ color })
 	const sphere = new THREE.Mesh(ballGeo, ballMaterial)
 	sphere.position.x = x
