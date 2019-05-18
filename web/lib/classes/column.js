@@ -1,17 +1,18 @@
 /* global document */
+/* global console */
 
 const initColor = "#222"
-const numberOfLEDs = 40
 
 export class Column {
-	constructor(column, numberOfLEDs) {
+	constructor(column, numberOfLEDs, ColumnLEDs) {
 		this.columnName = column.key
 		this.numberOfLEDs = numberOfLEDs
+		this.ColumnsLEDs = ColumnLEDs
 		this.drawCells()
 	}
 
 	drawCells() {
-		for (let key = 0; key < numberOfLEDs; key++) {
+		for (let key = 0; key < this.numberOfLEDs; key++) {
 			const div = document.createElement("div")
 
 			div.className = `cell cell-${key}-${this.columnName}`
@@ -31,12 +32,14 @@ export class Column {
 
 		leds.forEach(led => {
 			this.changeCellColor(led.number, led.color)
+			this.ColumnsLEDs[led.number].material.color.setHex(0xff55ff)
 		})
 	}
 
 	cleanLeds() {
-		for (let key = 0; key < numberOfLEDs; key++) {
+		for (let key = 0; key < this.numberOfLEDs; key++) {
 			this.changeCellColor(key, initColor)
+			this.ColumnsLEDs[key].material.color.setHex(0x222222)
 		}
 	}
 }

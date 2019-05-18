@@ -31,7 +31,7 @@ const buildColumns = async (configuration, regime) => {
 				},
 				{
 					key: 's',
-					sensorPosition: 30
+					sensorPosition: 120
 				}
 			]
 			break
@@ -84,7 +84,7 @@ const buildColumns = async (configuration, regime) => {
 			return
 	}
 
-	const ear = drawEar(columns)
+	const ear = drawEar(columns, scene)
 
 	socket.emit('configure', {
 		'mode': selectedRegime,
@@ -209,71 +209,6 @@ const setUpControls = () => {
 	controls.maxDistance = 5000
 }
 
-const addLED = ({
-	size,
-	x,
-	y,
-	z,
-	color
-}) => {
-	const ballGeo = new THREE.SphereBufferGeometry(size, 0, 0)
-	const ballMaterial = new THREE.MeshLambertMaterial()
-	const sphere = new THREE.Mesh(ballGeo, ballMaterial)
-	sphere.position.x = x
-	sphere.position.y = y
-	sphere.position.z = z
-	sphere.material.color.setHex(color)
-	scene.add(sphere)
-	return sphere
-}
-
-const createStructure = () => {
-	// poles
-	let mesh
-	let poleGeo = new THREE.BoxBufferGeometry(5, 375, 5)
-	let poleMat = new THREE.MeshLambertMaterial({ color: 0x343434 })
-	mesh = new THREE.Mesh(poleGeo, poleMat)
-	mesh.position.x = - 125
-	mesh.position.y = - 62
-	mesh.receiveShadow = true
-	mesh.castShadow = true
-	scene.add(mesh)
-	mesh = new THREE.Mesh(poleGeo, poleMat)
-	mesh.position.x = 125
-	mesh.position.y = - 62
-	mesh.receiveShadow = true
-	mesh.castShadow = true
-	scene.add(mesh)
-	mesh = new THREE.Mesh(new THREE.BoxBufferGeometry(255, 5, 5), poleMat)
-	mesh.position.y = - 250 + (750 / 2)
-	mesh.position.x = 0
-	mesh.receiveShadow = true
-	mesh.castShadow = true
-	scene.add(mesh)
-
-	const NUMBER_OF_LEDS = 150
-
-	const firstColumnLEDs = [...Array(NUMBER_OF_LEDS)].map((num, key) => {
-		return addLED({
-			size: 3,
-			x: 122,
-			y: -180 + key * 2,
-			z: 0,
-			color: 0x55ffff
-		})
-	})
-
-	const secondColumnLEDs = [...Array(NUMBER_OF_LEDS)].map((num, key) => {
-		return addLED({
-			size: 3,
-			x: -122,
-			y: -180 + key * 2,
-			z: 0,
-			color: 0xff55ff
-		})
-	})
-}
-
 init()
 animate()
 function init() {
@@ -283,7 +218,7 @@ function init() {
 	setUpLights()
 	setUpGround()
 
-	createStructure()
+	// createStructure()
 
 	setUpRenderer()
 	setUpControls()
