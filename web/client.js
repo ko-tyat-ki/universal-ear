@@ -153,6 +153,7 @@ const setUpScene = () => {
 	scene = new THREE.Scene()
 	scene.background = new THREE.Color(0x141852)
 	scene.fog = new THREE.Fog(0x141852, 500, 10000)
+	scene.autoUpdate = true
 }
 
 const setUpCamera = () => {
@@ -215,12 +216,15 @@ const addLED = ({
 	z,
 	color
 }) => {
-	const sphere = new THREE.SphereBufferGeometry(size, 0, 0)
-	const light = new THREE.Light(color, 1)
-	light.position.set(x, y, z)
-	light.add(new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color })))
-	scene.add(light)
-	return { sphere, light }
+	const ballGeo = new THREE.SphereBufferGeometry(size, 0, 0)
+	const ballMaterial = new THREE.MeshLambertMaterial()
+	const sphere = new THREE.Mesh(ballGeo, ballMaterial)
+	sphere.position.x = x
+	sphere.position.y = y
+	sphere.position.z = z
+	sphere.material.color.setHex(color)
+	scene.add(sphere)
+	return sphere
 }
 
 const createStructure = () => {
@@ -247,25 +251,27 @@ const createStructure = () => {
 	mesh.castShadow = true
 	scene.add(mesh)
 
-	for (let i = 0; i < 150; i++) {
-		addLED({
+	const NUMBER_OF_LEDS = 150
+
+	const firstColumnLEDs = [...Array(NUMBER_OF_LEDS)].map((num, key) => {
+		return addLED({
 			size: 3,
 			x: 122,
-			y: -180 + i * 2,
+			y: -180 + key * 2,
 			z: 0,
 			color: 0x55ffff
 		})
-	}
+	})
 
-	for (let i = 0; i < 150; i++) {
-		addLED({
+	const secondColumnLEDs = [...Array(NUMBER_OF_LEDS)].map((num, key) => {
+		return addLED({
 			size: 3,
 			x: -122,
-			y: -180 + i * 2,
+			y: -180 + key * 2,
 			z: 0,
 			color: 0xff55ff
 		})
-	}
+	})
 }
 
 init()
@@ -294,6 +300,7 @@ function onWindowResize() {
 
 function animate() {
 	requestAnimationFrame(animate)
+
 	renderer.render(scene, camera)
 }
 
