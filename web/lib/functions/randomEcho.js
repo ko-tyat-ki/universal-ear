@@ -1,44 +1,40 @@
 import { getDistance } from '../helpers/getDistance.js'
+import * as THREE from '../three/three.js'
 
-const randomEcho = (measurements, columns, arduinos) => {
-	const names = columns.map(c => c.columnName)
+const randomEcho = (measurements, sticks, sensors) => {
+	const names = sensors.map(sensor => sensor.key)
 
-	const findMeasurement = (meas, key) => {
-		for (let m in meas) {
-			if (meas[m].name == key) return meas[m]
-		}
-	}
+	return sensors.map(sensor => {
+		const name = sensor.key
 
-	return arduinos.map(arduino => {
-		const name = arduino.key
+		const measurement = measurements.find(measurement => measurement.name === name)
 
-		const measurement = findMeasurement(measurements, name)
-
-		return columns.map(column => {
+		return sticks.map((stick, key) => {
 			if (!measurement || measurement.tension <= 0) {
 				return
 			}
 
 			const distance = getDistance({
-				arduino,
-				column,
+				sensor,
+				stick,
 				names
 			})
 
 			const leds = []
 
-			for (let key = 0; key < column.numberOfLEDs; key++) {
+			for (let key = 0; key < stick.numberOfLEDs; key++) {
 				const colorIntensity = parseInt(255 * Math.random())
-				const color = `rgba(15, ${colorIntensity}, 200, ${1 / (distance + 1)})`
+				const rgbColor = `rgba(${Math.floor(15 / (distance + 1))}, ${Math.floor(colorIntensity / (distance + 1))}, ${Math.floor(200 / (distance + 1))})`
+				const color = new THREE.Color(rgbColor)
 				leds.push({
 					number: key,
-					color: color
+					color
 				})
 			}
 
 			return {
-				name: column.columnName,
-				leds,
+				key: sensors.indexOf(sensors[key]),
+				leds
 			}
 		})
 	})

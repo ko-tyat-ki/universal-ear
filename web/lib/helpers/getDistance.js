@@ -1,7 +1,7 @@
 export const getDistance = ({
-    arduino,
-    column,
+    sensor,
+    stick,
     names
 }) => {
-    return Math.abs(names.indexOf(arduino.key) - names.indexOf(column.columnName))
+    return Math.abs(names.indexOf(sensor.key) - stick.stickName)
 }

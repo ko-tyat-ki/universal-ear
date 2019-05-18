@@ -1,4 +1,5 @@
 /* global document */
+/* global console */
 
 export class Sensor {
 	constructor(tension, sensor) {
