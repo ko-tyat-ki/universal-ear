@@ -1,3 +1,5 @@
+/* global document */
+
 export class Arduino {
 	constructor(tension, column) {
 		this.minimalTension = tension

@@ -1,3 +1,5 @@
+/* global document */
+
 const initColor = "#222"
 const numberOfLEDs = 40
 
