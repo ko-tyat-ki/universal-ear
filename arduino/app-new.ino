@@ -1,8 +1,11 @@
 #include <FastLED.h>
 
+// TODO: string tokenization http://forum.arduino.cc/index.php?topic=396450.0
+
+#define NAME        0
 #define LED_PIN     8
-#define NUM_LEDS    40
-#define BRIGHTNESS  255
+#define NUM_LEDS    60
+#define BRIGHTNESS  64
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
 CRGB leds[NUM_LEDS];
@@ -27,9 +30,22 @@ void setup() {
     FastLED.setBrightness(  BRIGHTNESS );
 
     Serial.begin(9600);
-    
+
     currentPalette = RainbowColors_p;
     currentBlending = LINEARBLEND;
+
+    FastLED.clear();
+}
+
+void charToStringL(const char S[], String &D)
+{
+    byte at = 0;
+    const char *p = S;
+    D = "";
+
+    while (*p++) {
+      D.concat(S[at++]);
+    }
 }
 
 void loop()
@@ -43,30 +59,51 @@ void loop()
     sensorValue = analogRead(sensorPin);
     // Calculate the averages
     sensorAvg = runningAverage(sensorValue);
+    // Calculate the difference between the sensor value and averaged value:
+    int diffFast = (sensorValue - sensorAvg);  // fast. aka Derivative (for fast plucking)
+    int diffSlow = (sensorAvg - longAverage);  // slow. aka pressure (for slow pushing)
 
-    Serial.println(sensorAvg);
-    
-    int numLedsToLight = abs(floor ((sensorValue / 500.0) * NUM_LEDS));
+    // read led value from the serial port
+    String input = Serial.readString();
 
-    Serial.println(numLedsToLight);
+    if (input[0] == 'l') {
+      char inputChars[640];
+      input.substring(1).toCharArray(inputChars, sizeof(inputChars));
 
-    uint8_t brightness = 100;
+      uint8_t brightness = 100;
 
-    static uint8_t colorIndex = 0;
-    colorIndex = colorIndex + 1; /* motion speed */
+      static uint8_t colorIndex = 0;
+      colorIndex = colorIndex + 1; /* motion speed */
 
-    // First, clear the existing led values
-    FastLED.clear();    
-    
-    for(int led = 0; led < numLedsToLight - 18; led++) { 
-        currentPalette = RainbowColors_p;
-        currentBlending = LINEARBLEND;
-        leds[NUM_LEDS / 2 + led] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
-        leds[NUM_LEDS / 2 - led] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
-         // leds[led] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
+      FastLED.clear();
+
+      char * ledConf;
+      ledConf = strtok (inputChars, ";");
+      while (ledConf != NULL)
+      {
+        int ledNum = String(ledConf).toInt();
+
+        ledConf    = strtok(NULL, ";");
+        int red    = String(ledConf).toInt();
+
+        ledConf    = strtok(NULL, ";");
+        int green  = String(ledConf).toInt();
+
+        ledConf    = strtok(NULL, ";");
+        int blue   = String(ledConf).toInt();
+
+        leds[ledNum] = CRGB(red, green, blue);
+
+        ledConf = strtok (NULL, ";");
+      }
+
+      // First, clear the existing led values
+
+      FastLED.show();
+      FastLED.delay(1000 / UPDATES_PER_SECOND);
+    } else {
+      Serial.println(String(NAME) + "|"+String(diffFast) + "|" + String(diffSlow));
     }
-    FastLED.show();
-    FastLED.delay(1000 / UPDATES_PER_SECOND);
 }
 
 // Two functions for averaging the sensor value
