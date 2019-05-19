@@ -529,13 +529,13 @@ export const calculateConfiguration = (selectedStructure) => {
                         },
                         init: {
                             x: 112.5,
-                            y: 300,
+                            y: 50,
                             z: 64.95190528
                         },
                         euler: {
-                            x: 0,
-                            y: 30,
-                            z: 90
+                            x: 0 / 180 * Math.PI,
+                            y: 30 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
                         }
                     }, {
                         geo: {
@@ -545,13 +545,13 @@ export const calculateConfiguration = (selectedStructure) => {
                         },
                         init: {
                             x: 0,
-                            y: 300,
+                            y: 50,
                             z: 129.9038106
                         },
                         euler: {
-                            x: 0,
-                            y: 90,
-                            z: 90
+                            x: 0 / 180 * Math.PI,
+                            y: 90 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
                         }
                     }, {
                         geo: {
@@ -561,12 +561,13 @@ export const calculateConfiguration = (selectedStructure) => {
                         },
                         init: {
                             x: -112.5,
-                            y: 300,
+                            y: 50,
                             z: 64.95190528
-                        }, euler: {
-                            x: 0,
-                            y: 150,
-                            z: 90
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 150 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
                         }
                     }, {
                         geo: {
@@ -576,13 +577,13 @@ export const calculateConfiguration = (selectedStructure) => {
                         },
                         init: {
                             x: -112.5,
-                            y: 300,
+                            y: 50,
                             z: -64.95190528
                         },
                         euler: {
-                            x: 0,
-                            y: 210,
-                            z: 90
+                            x: 0 / 180 * Math.PI,
+                            y: 210 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
                         }
                     }, {
                         geo: {
@@ -592,13 +593,13 @@ export const calculateConfiguration = (selectedStructure) => {
                         },
                         init: {
                             x: 0,
-                            y: 300,
+                            y: 50,
                             z: -129.9038106
                         },
                         euler: {
-                            x: 0,
-                            y: 270,
-                            z: 90
+                            x: 0 / 180 * Math.PI,
+                            y: 270 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
                         }
                     }, {
                         geo: {
@@ -608,13 +609,13 @@ export const calculateConfiguration = (selectedStructure) => {
                         },
                         init: {
                             x: 112.5,
-                            y: 300,
+                            y: 50,
                             z: -64.95190528
                         },
                         euler: {
-                            x: 0,
-                            y: 330,
-                            z: 90
+                            x: 0 / 180 * Math.PI,
+                            y: 330 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
                         }
                     }, {
                         geo: {
@@ -624,13 +625,13 @@ export const calculateConfiguration = (selectedStructure) => {
                         },
                         init: {
                             x: 112.5,
-                            y: 400,
+                            y: 150,
                             z: 64.95190528
                         },
                         euler: {
-                            x: 0,
-                            y: 30,
-                            z: 90
+                            x: 0 / 180 * Math.PI,
+                            y: 30 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
                         }
                     }, {
                         geo: {
@@ -640,12 +641,13 @@ export const calculateConfiguration = (selectedStructure) => {
                         },
                         init: {
                             x: 0,
-                            y: 400,
+                            y: 150,
                             z: 129.9038106
-                        }, euler: {
-                            x: 0,
-                            y: 90,
-                            z: 90
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 90 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
                         }
                     }, {
                         geo: {
@@ -655,13 +657,13 @@ export const calculateConfiguration = (selectedStructure) => {
                         },
                         init: {
                             x: -112.5,
-                            y: 400,
+                            y: 150,
                             z: 64.95190528
                         },
                         euler: {
-                            x: 0,
-                            y: 150,
-                            z: 90
+                            x: 0 / 180 * Math.PI,
+                            y: 150 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
                         }
                     }, {
                         geo: {
@@ -671,13 +673,13 @@ export const calculateConfiguration = (selectedStructure) => {
                         },
                         init: {
                             x: -112.5,
-                            y: 400,
+                            y: 150,
                             z: -64.95190528
                         },
                         euler: {
-                            x: 0,
-                            y: 210,
-                            z: 90
+                            x: 0 / 180 * Math.PI,
+                            y: 210 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
                         }
                     }, {
                         geo: {
@@ -687,13 +689,13 @@ export const calculateConfiguration = (selectedStructure) => {
                         },
                         init: {
                             x: 0,
-                            y: 400,
+                            y: 150,
                             z: -129.9038106
                         },
                         euler: {
-                            x: 0,
-                            y: 270,
-                            z: 90
+                            x: 0 / 180 * Math.PI,
+                            y: 270 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
                         }
                     }, {
                         geo: {
@@ -703,13 +705,13 @@ export const calculateConfiguration = (selectedStructure) => {
                         },
                         init: {
                             x: 112.5,
-                            y: 400,
+                            y: 150,
                             z: -64.95190528
                         },
                         euler: {
-                            x: 0,
-                            y: 330,
-                            z: 90
+                            x: 0 / 180 * Math.PI,
+                            y: 330 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
                         }
                     }
                 ]
