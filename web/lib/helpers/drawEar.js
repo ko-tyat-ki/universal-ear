@@ -36,6 +36,10 @@ const drawStructure = (poles, scene) => {
 		mesh.position.z = pole.init.z
 		mesh.receiveShadow = true
 		mesh.castShadow = true
+		if (pole.euler) {
+			const a = new THREE.Euler(0, 1, 1.57, 'XYZ')
+			mesh.setRotationFromEuler(a)
+		}
 		scene.add(mesh)
 	})
 }
