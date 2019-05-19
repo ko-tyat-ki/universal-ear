@@ -1,23 +1,71 @@
-import { Arduino } from "../classes/arduino.js"
-import { Column } from "../classes/column.js"
+/* global THREE */
 
-const numberOfLEDs = 40
+import { Sensor } from "../classes/sensor.js"
+import { Stick } from "../classes/stick.js"
 
-export const drawEar = columnsInput => {
-	const columns = []
-	const arduinos = []
+const NUMBER_OF_LEDS = 50
+const STICK_SIZE = 3
+const ONE_LED_SIZE = 5
+const POLE_COLOR = 0x221111
+const INIT_STICK_COLOR = 0x55ffff
 
-	columnsInput.forEach(column => {
-		const div = document.createElement("div")
-		div.className = `column column-${column.key}`
-		div.id = `column-${column.key}`
-		document.getElementById("container").appendChild(div)
-		columns.push(new Column(column, numberOfLEDs))
-		arduinos.push(new Arduino(0, column))
+const addLED = ({
+	size,
+	x,
+	y,
+	z,
+	color
+}, scene) => {
+	const ballGeo = new THREE.CylinderBufferGeometry(size, size, 5, 32)
+	const ballMaterial = new THREE.MeshLambertMaterial({ color })
+	const sphere = new THREE.Mesh(ballGeo, ballMaterial)
+	sphere.position.x = x
+	sphere.position.y = y
+	sphere.position.z = z
+	scene.add(sphere)
+	return sphere
+}
+
+const drawStructure = (poles, scene) => {
+	poles.forEach(pole => {
+		const poleGeo = new THREE.BoxBufferGeometry(pole.geoX, pole.geoY, pole.geoZ)
+		const poleMat = new THREE.MeshLambertMaterial({ color: POLE_COLOR })
+		const mesh = new THREE.Mesh(poleGeo, poleMat)
+		mesh.position.x = pole.initX
+		mesh.position.y = pole.initY
+		mesh.position.z = pole.initZ
+		mesh.receiveShadow = true
+		mesh.castShadow = true
+		scene.add(mesh)
+	})
+}
+
+const drawStick = (stick, scene) => {
+	return [...Array(NUMBER_OF_LEDS)].map((num, key) => {
+		return addLED({
+			size: STICK_SIZE,
+			x: stick.x,
+			y: stick.y + key * ONE_LED_SIZE,
+			z: stick.z,
+			color: INIT_STICK_COLOR
+		}, scene)
+	})
+}
+
+export const drawEar = (configuration, scene) => {
+	drawStructure(configuration.poles, scene)
+
+	const sticks = configuration.sticks.map((stick, key) => {
+		const stickLEDS = drawStick(stick, scene)
+		return new Stick(NUMBER_OF_LEDS, stickLEDS, key)
+	})
+
+	const sensors = configuration.sensors.map(sensor => {
+		return new Sensor(0, sensor)
 	})
 
 	return {
-		columns,
-		arduinos
+		sticks,
+		sensors
 	}
 }

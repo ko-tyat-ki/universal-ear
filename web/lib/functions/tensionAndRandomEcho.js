@@ -1,29 +1,25 @@
 import { getDistance } from '../helpers/getDistance.js'
+import * as THREE from '../three/three.js'
 
-const tensionAndRandomEcho = (measurements, columns, arduinos) => {
-	const names = columns.map(c => c.columnName)
+const tensionAndRandomEcho = (measurements, sticks, sensors) => {
+	const names = sensors.map(sensor => sensor.key)
 
-	const findMeasurement = (meas, key) => {
-		for (let m in meas) {
-			if (meas[m].name == key) return meas[m]
-		}
-	}
-	return arduinos.map(arduino => {
-		const name = arduino.key
+	return sensors.map(sensor => {
+		const name = sensor.key
 
-		const measurement = findMeasurement(measurements, name)
+		const measurement = measurements.find(measurement => measurement.name === name)
 		const tension = measurement.tension
 
 		if (tension) {
-			return columns.map(column => {
+			return sticks.map(stick => {
 				if (!measurement || tension <= 0) {
 					return
 				}
 
-				const numberOfLEDs = column.numberOfLEDs
+				const numberOfLEDs = stick.numberOfLEDs
 				const distance = getDistance({
-					arduino,
-					column,
+					sensor,
+					stick,
 					names
 				})
 
@@ -32,33 +28,33 @@ const tensionAndRandomEcho = (measurements, columns, arduinos) => {
 				for (let key = 0; key <= tension; key++) {
 					if (distance === 0) {
 						leds.push({
-							number: Math.max(arduino.sensorPosition - key, 0),
-							color: `rgba(${60 + Math.random() * 195}, ${60 + Math.random() * 195}, ${60 + Math.random() * 195}, 1 )`
+							number: Math.max(sensor.sensorPosition - key, 0),
+							color: new THREE.Color(`rgba(${Math.floor(60 + Math.random() * 195)}, ${Math.floor(60 + Math.random() * 195)}, ${Math.floor(60 + Math.random() * 195)})`)
 						})
 						leds.push({
-							number: Math.min(arduino.sensorPosition + key, numberOfLEDs - 1),
-							color: `rgba(${60 + Math.random() * 195}, ${60 + Math.random() * 195}, ${60 + Math.random() * 195}, 1 )`
+							number: Math.min(sensor.sensorPosition + key, numberOfLEDs - 1),
+							color: new THREE.Color(`rgba(${Math.floor(60 + Math.random() * 195)}, ${Math.floor(60 + Math.random() * 195)}, ${Math.floor(60 + Math.random() * 195)})`)
 						})
 					} else {
-						if (tension > arduino.sensorPosition) {
-							let dif = Math.min(Math.floor(tension - arduino.sensorPosition), numberOfLEDs - 1)
+						if (tension > sensor.sensorPosition) {
+							let dif = Math.min(Math.floor(tension - sensor.sensorPosition), numberOfLEDs - 1)
 							leds.push({
 								number: dif,
-								color: `rgba(${60 + Math.random() * 195}, ${60 + Math.random() * 195}, ${60 + Math.random() * 195}, 1 )`
+								color: new THREE.Color(`rgba(${Math.floor(60 + Math.random() * 195)}, ${Math.floor(60 + Math.random() * 195)}, ${Math.floor(60 + Math.random() * 195)})`)
 							})
 						}
-						if (tension > numberOfLEDs - arduino.sensorPosition) {
-							let dif = Math.min(Math.floor(tension - numberOfLEDs + arduino.sensorPosition), numberOfLEDs - 1)
+						if (tension > numberOfLEDs - sensor.sensorPosition) {
+							let dif = Math.min(Math.floor(tension - numberOfLEDs + sensor.sensorPosition), numberOfLEDs - 1)
 							leds.push({
 								number: numberOfLEDs - 1 - dif,
-								color: `rgba(${60 + Math.random() * 195}, ${60 + Math.random() * 195}, ${60 + Math.random() * 195}, 1 )`
+								color: new THREE.Color(`rgba(${Math.floor(60 + Math.random() * 195)}, ${Math.floor(60 + Math.random() * 195)}, ${Math.floor(60 + Math.random() * 195)})`)
 							})
 						}
 					}
 				}
 
 				return {
-					name: column.columnName,
+					key: stick.stickName,
 					leds
 				}
 			})
