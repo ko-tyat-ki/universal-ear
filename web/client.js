@@ -1,8 +1,8 @@
 /* global document */
+/* global setInterval */
 
 /* global io */
 
-import { sleep } from './lib/helpers/sleep.js'
 import { drawEar } from './lib/helpers/drawEar.js'
 import { init, animate } from './lib/helpers/setUpWorld.js'
 import { calculateConfiguration } from './lib/helpers/configuration.js'
@@ -69,12 +69,11 @@ const onConfigure = () => {
 	regime.addEventListener('change', onConfigure)
 
 	let currentTime = Date.now()
-	let stop = false
 
-	while (!stop) {
+	setInterval(() => {
 		const delta = Date.now() - currentTime
 
-		if (!sensors) continue
+		if (!sensors) return
 
 		sensors.forEach((sensor) => {
 			sensor.update(delta)
@@ -89,6 +88,5 @@ const onConfigure = () => {
 
 		socket.emit('measurements', measurements)
 		currentTime = Date.now()
-		await sleep(10)
-	}
+	}, 10)
 })()
