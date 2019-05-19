@@ -5,7 +5,7 @@ import express from 'express'
 import path from 'path'
 import http from 'http'
 import socketio from 'socket.io'
-import modes from './lib/modes'
+import modes from './lib/visualisations'
 
 // Black magic
 const app = express()
@@ -47,11 +47,15 @@ io.on('connection', function (socket) {
 			return
 		} // TODO: logging
 
+		console.log("AAZZAZA", measurements)
+
 		const ledsConfig = currentMode(measurements, sticks, config.sensors)
 
 		// TODO: change real arduino
 
-		ledsConfig.filter(c => c != null).map(ledConfig => socket.emit('ledsChanged', ledConfig))
+		console.log(ledsConfig)
+
+		// ledsConfig.filter(c => c != null).map(ledConfig => socket.emit('ledsChanged', ledConfig))
 	})
 
 	socket.on('configure', function (configuration) {

@@ -18,7 +18,7 @@ export const calculateConfiguration = (selectedStructure) => {
                 ],
                 sensors: [
                     {
-                        key: 'a',
+                        key: '.usbmodem14201',
                         sensorPosition: 10
                     },
                     {
