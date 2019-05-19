@@ -1,4 +1,5 @@
 /* global __dirname */
+/* global console */
 
 import express from 'express'
 import path from 'path'
@@ -17,11 +18,12 @@ app.use('/web/lib/', express.static(path.join(__dirname, 'lib')))
 let webMeasurementsProvider = new WebMeasurementsProvider()
 
 // Socket connection from web interface
-io.on('connection', function(socket) {
+io.on('connection', (socket) => {
   webMeasurementsProvider.listenForInput(socket)
 })
 
 export {
   server,
-  webMeasurementsProvider as clientMeasurementsProvider
+  webMeasurementsProvider as clientMeasurementsProvider,
+  io
 }
