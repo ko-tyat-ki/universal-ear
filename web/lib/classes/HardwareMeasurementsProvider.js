@@ -3,7 +3,7 @@
 import SerialPort from 'serialport'
 import Readline from '@serialport/parser-readline'
 
-const BAUD_RATE = 9600 // TODO pass as an argument
+const BAUD_RATE = 115200 // TODO pass as an argument
 
 class HardwareMeasurementsProvider {
   constructor() {
@@ -11,6 +11,7 @@ class HardwareMeasurementsProvider {
     this.ports = {}
     this.parsers = {}
     this.deviceData = {}
+    this.toWrite = {}
   }
 
   removeInput(name) {
@@ -63,26 +64,22 @@ class HardwareMeasurementsProvider {
     this.startListening(name)
   }
 
+  setToWrite(name, ledsConfig) {
+    this.toWrite[name] = ledsConfig
+  }
+
   startListening(name) {
     let _self = this
     this.parsers[name].on('data', function (data) {
       // TODO: rewrite arduino code
-      // console.log('data', data)
+      console.log(data)
+      data = data.trim().split("\t")
 
-      if (data[0] !== 'r') {
-        // Sometimes parial data is being read from port, checking that string starts with right symbol
-        return
-      }
-
-      data = data.trimRight().split('|')
-
-      let ledCount = data[1]
-      let sensor = data[2]
-      let value = data[3]
-      let diffFast = data[4]
-      let diffSlow = data[5]
-
-      // NOTE: temporary for test
+      let ledCount = 40
+      let sensor = "s1"
+      let value = data[0]
+      let diffFast = data[1]
+      let diffSlow = data[2]
       let newData = {
         'value': value,
         'ledCount': ledCount,
@@ -91,22 +88,71 @@ class HardwareMeasurementsProvider {
         'diffSlow': diffSlow,
       }
       _self.deviceData[name] = Object.assign({}, _self.deviceData[name], newData)
+
+      if (!_self.toWrite[name]) return
+
+      _self.writeData(name, _self.toWrite[name].filter(c => c != null))
+
+      // TODO: this is old format
+      //
+      // if (data[0] !== 'r') {
+      //   // Sometimes parial data is being read from port, checking that string starts with right symbol
+      //   return
+      // }
+      //
+      // data = data.trimRight().split('|')
+      //
+      // let ledCount = data[1]
+      // let sensor = data[2]
+      // let value = data[3]
+      // let diffFast = data[4]
+      // let diffSlow = data[5]
+      //
+      // // NOTE: temporary for test
+      // let newData = {
+      //   'value': value,
+      //   'ledCount': ledCount,
+      //   'sensor': sensor,
+      //   'diffFast': diffFast,
+      //   'diffSlow': diffSlow,
+      // }
+      // _self.deviceData[name] = Object.assign({}, _self.deviceData[name], newData)
+
     })
+
   }
 
-  sendOutput(device, data) {
-    // console.log(`Send value:`, data)
+  writeData(device, data) {
+    if (!data) return
 
-    this.ports[device].write(data, function (err) {
-      if (err) {
-        return console.log('Error on write: ', err.message)
+    if (!data[0]) return
+
+    let leds = data[0][0].leds
+
+    let _self = this
+
+    // _self.ports[device].write("<0>")
+
+    for (let i = 0; i < leds.length; i++) {
+      let num = leds[i].number + 1
+      _self.ports[device].write(`<${num},255,0,0>\n`, () => {
+        console.log(arguments)
+      })
+    }
+  }
+
+  getDeviceData(name) {
+
+    let data = this.deviceData[name]
+
+    if (!data) return []
+
+    return [
+      {
+        name,
+        tension: data.value,
       }
-      // console.log('SENT!!!')
-    })
-  }
-
-  getCurrentMeasurements() {
-    return this.deviceData
+    ]
   }
 }
 

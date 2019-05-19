@@ -1,24 +1,29 @@
 /* global console */
 
+let tensionKey = "tension"
+
 class WebMeasurementsProvider {
   constructor() {
-    this.sockets = []
+    this.socket = null
     this.devices = []
     this.deviceData = {}
   }
 
   getDeviceData() {
-    return this.deviceData
+    if (!this.getSocket()) return []
+
+    let data = this.deviceData[this.getSocket().id]
+
+    if (!data) return []
+
+    return Object
+      .keys(data)
+      .map(el => { return {name: el, tension: data[el]}})
   }
 
   removeInput(socket) {
     let id = socket.id
     delete this.deviceData[id]
-
-    let indexToDelete = this.sockets.indexOf(socket.id)
-    if (indexToDelete >= 0) {
-      this.sockets.splice(indexToDelete)
-    }
   }
 
   getInputs() {
@@ -32,22 +37,32 @@ class WebMeasurementsProvider {
     return inputs
   }
 
+  getSocket() {
+    return this.socket
+  }
+
   listenForInput(socket) {
-    let socketId = socket.id
-    this.sockets.push(socketId)
+    this.socket = socket
 
     socket.on('disconnect', (err) => {
       // TODO: logging
       console.log('Input disconnected. Removing handlers', err)
-      this.removeInput(socketId)
+      this.removeInput(socket.id)
     })
 
     // TODO: probably should be started elsewhere.
     this.startListening(socket)
   }
 
+  writeData(ledsConfig) {
+    let socket = this.getSocket()
+    ledsConfig.map(ledConfig => socket.emit('ledsChanged', ledConfig))
+  }
+
   startListening(socket) {
-    socket.on('data', (measurements) => {
+    socket.on('measurements', (measurements) => {
+      // console.log(measurements)
+
       // TODO: logging
       if (!measurements) return
 
@@ -56,7 +71,7 @@ class WebMeasurementsProvider {
       let deviceData = {}
 
       measurements.sort((a, b) => a.order - b.order).forEach(measurement => {
-        deviceData[measurement['name']] = measurement['value']
+        deviceData[measurement['name']] = measurement[tensionKey]
       })
 
       this.deviceData[socket.id] = deviceData
@@ -64,8 +79,8 @@ class WebMeasurementsProvider {
   }
 
   sendOutput(device, data) {
-    console.log(this.sockets)
-    this.sockets[device].write(data)
+    console.log("write", this.socket.id)
+    this.socket.write(data)
   }
 
   getCurrentMeasurements() {

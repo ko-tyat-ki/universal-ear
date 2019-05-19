@@ -10,7 +10,7 @@ const basic = (measurements, sticks, sensors) => {
 		const stick = sticks[stickKey]
 
 		const tension = measurement.tension
-		const numberOfLEDs = stick.numberOfLEDs
+		const numberOfLEDs = stick.numberOfLEDs || 40
 
 		const leds = []
 
