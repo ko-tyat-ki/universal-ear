@@ -53,7 +53,7 @@ const onConfigure = () => {
 	})
 }
 
-(async () => {
+(() => {
 	onConfigure()
 
 	const regime = document.getElementById('select-regime')
