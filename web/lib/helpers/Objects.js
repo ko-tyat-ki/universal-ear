@@ -7,5 +7,5 @@ function isEmpty(obj) {
 }
 
 export default {
-  isEmpty,
+  isEmpty
 }
