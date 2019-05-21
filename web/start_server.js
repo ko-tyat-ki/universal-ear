@@ -1,88 +1,108 @@
 /* global console */
 /* global setInterval */
 
-// const BAUD_RATE = 9600
+const BAUD_RATE = 9600
 
-// import SerialPort from 'serialport'
-// import Readline from '@serialport/parser-readline'
+import SerialPort from 'serialport'
+import Readline from '@serialport/parser-readline'
 
 const arduinoPort = '.usbmodem14201'
 
-// const port = new SerialPort(`/dev/tty${arduinoPort}`, {
-//   baudRate: BAUD_RATE
-// })
+const port = new SerialPort(`/dev/tty${arduinoPort}`, {
+  baudRate: BAUD_RATE
+})
 
-// const parser = port.pipe(new Readline({ delimiter: '\n' }))
+const parser = port.pipe(new Readline({ delimiter: '\n' }))
 
-import HardwareMeasurementsProvider from './lib/classes/HardwareMeasurementsProvider'
-import {server, clientMeasurementsProvider, clientConfiguration } from './webserver'
-import modes from "./lib/visualisations"
+port.on('error', (err) => {
+  console.log('Port failure, removing device.', err)
+})
 
-let ledsConfig = {}
+// port failures
+port.on('close', (err) => {
+  console.log('Port was closed.', err)
+})
 
-setInterval(() => {
-  let measurements = clientMeasurementsProvider.getDeviceData()
-
-  if (!measurements) return
-  // TODO: log measurements into file (+ rotate log and remove zero values)
-
-  let config = clientConfiguration
-  if (!config) {
-    return
-  } // TODO: logging
-
-  const sticks = config.sticks
-  if (!sticks) {
-    return
-  } // TODO: logging
-
-  const currentMode = modes[config.mode]
-  if (!currentMode) {
-    return
-  } // TODO: logging
-
-  const ledsConfig = currentMode(measurements, sticks, config.sensors)
-
-  // TODO: change real arduino
-
-  // clientMeasurementsProvider.writeData(ledsConfig.filter(c => c != null))
-}, 1000 / 25)
-
-
-
-let hardwareMeasurementsProvider = new HardwareMeasurementsProvider()
-hardwareMeasurementsProvider.listenForInput(arduinoPort, 0)
+parser.on('data', data => {
+  // const sensorValue = parseInt(data, 10)
+  console.log(data)
+})
 
 setInterval(() => {
-  let measurements = hardwareMeasurementsProvider.getDeviceData(arduinoPort)
+  parser.write(`<10,255,0,0>\n`)
+}, 100)
 
-  if (!measurements) return
-  // TODO: log measurements into file (+ rotate log and remove zero values)
 
-  let config = clientConfiguration
 
-  // console.log(config)
+// import HardwareMeasurementsProvider from './lib/classes/HardwareMeasurementsProvider'
+// import { server, clientMeasurementsProvider, clientConfiguration } from './webserver'
+// import modes from "./lib/visualisations"
 
-  if (!config) {
-    return
+// let ledsConfig = {}
 
-  } // TODO: logging
-  const sticks = config.sticks
-  if (!sticks) {
-    return
+// setInterval(() => {
+//   let measurements = clientMeasurementsProvider.getDeviceData()
 
-  } // TODO: logging
+//   if (!measurements) return
+//   // TODO: log measurements into file (+ rotate log and remove zero values)
 
-  const currentMode = modes[config.mode || 'basic']
-  if (!currentMode) {
-    return
-  } // TODO: logging
+//   let config = clientConfiguration
+//   if (!config) {
+//     return
+//   } // TODO: logging
 
-  ledsConfig = currentMode(measurements, sticks, config.sensors)
+//   const sticks = config.sticks
+//   if (!sticks) {
+//     return
+//   } // TODO: logging
 
-  hardwareMeasurementsProvider.setToWrite(arduinoPort, ledsConfig)
-  // console.log(JSON.stringify(ledsConfig))
-}, 1000 / 5)
+//   const currentMode = modes[config.mode]
+//   if (!currentMode) {
+//     return
+//   } // TODO: logging
+
+//   const ledsConfig = currentMode(measurements, sticks, config.sensors)
+
+//   // TODO: change real arduino
+
+//   // clientMeasurementsProvider.writeData(ledsConfig.filter(c => c != null))
+// }, 1000 / 25)
+
+
+
+// let hardwareMeasurementsProvider = new HardwareMeasurementsProvider()
+// hardwareMeasurementsProvider.listenForInput(arduinoPort, 0)
+
+// setInterval(() => {
+//   let measurements = hardwareMeasurementsProvider.getDeviceData(arduinoPort)
+
+//   if (!measurements) return
+//   // TODO: log measurements into file (+ rotate log and remove zero values)
+
+//   let config = clientConfiguration
+
+//   // console.log(config)
+
+//   if (!config) {
+//     return
+
+//   } // TODO: logging
+//   const sticks = config.sticks
+//   if (!sticks) {
+//     return
+
+//   } // TODO: logging
+
+//   const currentMode = modes[config.mode || 'basic']
+//   if (!currentMode) {
+//     return
+//   } // TODO: logging
+
+//   ledsConfig = currentMode(measurements, sticks, config.sensors)
+
+//   hardwareMeasurementsProvider.setToWrite(arduinoPort, ledsConfig)
+//   // console.log(JSON.stringify(ledsConfig))
+// }, 1000 / 5)
 
 
 
@@ -90,8 +110,8 @@ setInterval(() => {
 // collector.registerProvider(hardwareMeasurementsProvider)
 // collector.registerProvider(clientMeasurementsProvider)
 
-server.listen(3000, () => {
-  console.log('I am listenning on 3000')
+// server.listen(3000, () => {
+//   console.log('I am listenning on 3000')
 
 
 
@@ -113,7 +133,7 @@ server.listen(3000, () => {
   //     }
   //   })
   // })
-})
+// })
 
 
 // import HardwareMeasurementsProvider from './lib/classes/HardwareMeasurementsProvider'

@@ -88,5 +88,5 @@ const onConfigure = () => {
 
 		socket.emit('measurements', measurements)
 		currentTime = Date.now()
-	}, 10)
+	}, 50)
 })()
