@@ -7,7 +7,7 @@
 #define COLOR_ORDER GRB
 CRGB leds[NUM_LEDS];
 
-#define UPDATES_PER_SECOND 100
+#define UPDATES_PER_SECOND 25
 
 CRGBPalette16 currentPalette;
 TBlendType    currentBlending;
@@ -34,26 +34,22 @@ const int numberOfVariables = 4; // How many?
 int Signal[numberOfVariables]; 
 // Debugging variable:
 int incomingData = 0;
+boolean areWeOutputting = false;
 
 void setup() {
     delay( 3000 ); // power-up safety delay
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(  BRIGHTNESS );
 
-    Serial.begin(115200);
+    Serial.begin(9600);
     
     currentPalette = RainbowColors_p;
     currentBlending = LINEARBLEND;
 }
 
 void loop()
-{
-    // Serial: Receive Data script:
-    recvWithStartEndMarkers();
-    // Serial: Put data into Signal struct:
-    showNewData();
-  
-    // read the value from the sensor:
+{  
+    // Read the value from the sensor:
     sensorValue = analogRead(sensorPin);
     // Calculate the averages
     sensorAvg = runningAverage(sensorValue);
@@ -62,17 +58,32 @@ void loop()
     lerpingAverageFast = lerp(lerpingAverageFast, sensorValue, 0.2);
     lerpingAverageVerySlow = lerp(lerpingAverageVerySlow, sensorAvg, 0.005);
 
-    // Output the averages:
-    Serial.print(sensorValue);
-    Serial.print("\t");
-    Serial.print(lerpingAverageFast - lerpingAverageVerySlow);
-    Serial.print("\t");
-    Serial.print(lerpingAverageSlow - lerpingAverageVerySlow);
-    Serial.print("\t");
-    Serial.print(String(Signal[0]) + " " + String(Signal[1]) + " " + String(Signal[2]) + " " + String(Signal[3]));
-    Serial.println("");    
-    
-    
+    // Ping Pong
+
+    if (areWeOutputting == true) {
+      // Output the averages:
+      Serial.print("we are here  ");
+      Serial.print(sensorValue);
+      Serial.print("\t");
+      Serial.print(lerpingAverageFast - lerpingAverageVerySlow);
+      Serial.print("\t");
+      Serial.print(lerpingAverageSlow - lerpingAverageVerySlow);
+      Serial.println("");
+      areWeOutputting = false;
+      delay(1000);
+      return;
+    }
+    else {
+      // Serial: Receive Data script:
+      recvWithStartEndMarkers();
+      // Serial: Put data into Signal struct:
+      showNewData();
+      Serial.print(String(Signal[0]) + " " + String(Signal[1]) + " " + String(Signal[2]) + " " + String(Signal[3]));
+      Serial.println("");
+      areWeOutputting = true;
+      delay(1000);
+      return;
+    }
     
     //Serial.print("\t");
     //Serial.println(incomingData);
@@ -83,35 +94,35 @@ void loop()
     Serial.println("\t");
     */
     
-    int numLedsToLight = abs(floor ((sensorValue / 500.0) * NUM_LEDS));
+    // int numLedsToLight = abs(floor ((sensorValue / 500.0) * NUM_LEDS));
 
     //Serial.println(numLedsToLight);
 
-    uint8_t brightness = 100;
+    // uint8_t brightness = 100;
 
-    static uint8_t colorIndex = 0;
-    colorIndex = colorIndex + 1; /* motion speed */
+    // static uint8_t colorIndex = 0;
+    // colorIndex = colorIndex + 1; /* motion speed */
 
-    if (Signal[0] == 0) {
-      FastLED.clear();
-      FastLED.show();
-      // Debugging data:
-      incomingData = 0;
-    } else {
-      leds[Signal[0]] = CRGB(Signal[1], Signal[2], Signal[3]);
-    /*
-    for(int led = 0; led < numLedsToLight - 18; led++) { 
-        currentPalette = RainbowColors_p;
-        currentBlending = LINEARBLEND;
-        leds[NUM_LEDS / 2 + led] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
-        leds[NUM_LEDS / 2 - led] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
-         // leds[led] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
-    }
-    */
-      FastLED.show();
-      incomingData = Signal[1];
-    }
-    FastLED.delay(1000 / UPDATES_PER_SECOND);
+    // if (Signal[0] == 0) {
+    //   FastLED.clear();
+    //   FastLED.show();
+    //   // Debugging data:
+    //   incomingData = 0;
+    // } else {
+    //   leds[Signal[0]] = CRGB(Signal[1], Signal[2], Signal[3]);
+    // /*
+    // for(int led = 0; led < numLedsToLight - 18; led++) { 
+    //     currentPalette = RainbowColors_p;
+    //     currentBlending = LINEARBLEND;
+    //     leds[NUM_LEDS / 2 + led] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
+    //     leds[NUM_LEDS / 2 - led] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
+    //      // leds[led] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
+    // }
+    // */
+    //   FastLED.show();
+    //   incomingData = Signal[1];
+    // }
+    // FastLED.delay(1000 / UPDATES_PER_SECOND);
 }
 
 float lerp(float from, float to, float fraction) {

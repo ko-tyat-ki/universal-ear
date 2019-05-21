@@ -3,7 +3,7 @@
 import SerialPort from 'serialport'
 import Readline from '@serialport/parser-readline'
 
-const BAUD_RATE = 115200 // TODO pass as an argument
+const BAUD_RATE = 9600 // TODO pass as an argument
 
 class HardwareMeasurementsProvider {
   constructor() {

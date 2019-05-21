@@ -47,15 +47,15 @@ io.on('connection', function (socket) {
 			return
 		} // TODO: logging
 
-		console.log("AAZZAZA", measurements)
+		// console.log("AAZZAZA", measurements)
 
 		const ledsConfig = currentMode(measurements, sticks, config.sensors)
 
 		// TODO: change real arduino
 
-		console.log(ledsConfig)
+		console.log('THIS IS OUR LED CONFIG', ledsConfig)
 
-		// ledsConfig.filter(c => c != null).map(ledConfig => socket.emit('ledsChanged', ledConfig))
+		ledsConfig.filter(c => c != null).map(ledConfig => socket.emit('ledsChanged', ledConfig))
 	})
 
 	socket.on('configure', function (configuration) {
@@ -68,4 +68,38 @@ io.on('connection', function (socket) {
 		delete clientConfigurations[socket.id]
 	})
 })
+
+/* global console */
+/* global setInterval */
+
+const BAUD_RATE = 9600
+
+import SerialPort from 'serialport'
+import Readline from '@serialport/parser-readline'
+
+const arduinoPort = '.usbmodem14201'
+
+const port = new SerialPort(`/dev/tty${arduinoPort}`, {
+	baudRate: BAUD_RATE
+})
+
+const parser = port.pipe(new Readline({ delimiter: '\n' }))
+
+port.on('error', (err) => {
+	console.log('Port failure, removing device.', err)
+})
+
+// port failures
+port.on('close', (err) => {
+	console.log('Port was closed.', err)
+})
+
+parser.on('data', data => {
+	// const sensorValue = parseInt(data, 10)
+	console.log(data)
+})
+
+setInterval(() => {
+	parser.write(`<10,255,0,0>\n`)
+}, 1000)
 
