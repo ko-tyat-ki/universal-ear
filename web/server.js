@@ -1,6 +1,7 @@
 /* global console */
 /* global __dirname */
-/* global setInterval */
+/* global Uint8Array */
+/* global ArrayBuffer */
 
 import express from 'express'
 import path from 'path'
@@ -99,20 +100,18 @@ parser.on('data', data => {
 	if (areWeWriting && ledsConfig) {
 		console.log('OTHER DATA', data)
 		console.log('Sending', ledsConfig)
-		let post
-		if (ledsConfig[0][0].leds.length === 0) {
-			post = '<0,n,n,n>\n'
-			port.write(post)
-		} else {
-			post = '<'
-			ledsConfig[0][0].leds.slice(0, 5).forEach(led => {
-				const rgb = transformHexToRgb(led.color)
-				post += `${led.number},${rgb.r},${rgb.g},${rgb.b},`
-			})
-			post += '>\n'
+		var bufferArray = new ArrayBuffer(40 * 4);
+		var dataForBuffer = new Uint8Array(bufferArray);
 
-			port.write(post)
-		}
+		ledsConfig[0][0].leds.forEach((led, key) => {
+			const rgb = transformHexToRgb(led.color)
+			dataForBuffer[key * 4] = led.number
+			dataForBuffer[key * 4 + 1] = rgb.r
+			dataForBuffer[key * 4 + 2] = rgb.g
+			dataForBuffer[key * 4 + 3] = rgb.b
+		})
+
+		port.write(dataForBuffer)
 		areWeWriting = false
 	} else {
 		console.log('DATA', data)
@@ -121,16 +120,6 @@ parser.on('data', data => {
 		}
 	}
 })
-
-// setInterval(() => {
-// 	talkToArduino()
-// }, 1000)
-
-// (() => {
-// 	setInterval(() => {
-// 		talkToArduino()
-// 	}, 100)
-// })()
 
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
