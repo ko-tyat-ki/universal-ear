@@ -87,15 +87,11 @@ void loop()
 		areWeWriting = false;
 	}
 	else {
-		if (Signal[0] == 0) {
-			FastLED.clear();
-		}
-    else {
-      for (int i = 0; i < 5; i++) {
+    FastLED.clear();
+    for (int i = 0; i < 5; i++) {
         leds[Signal[0 + i*4]] = CRGB(Signal[1 + i*4], Signal[2 + i*4], Signal[3 + i*4]);
-      }
-			FastLED.show();
-		}
+    }
+    FastLED.show();
 	}
 }
 
