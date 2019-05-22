@@ -30,11 +30,12 @@ boolean received = true;
 char startMarker = '<';
 char endMarker = '>';
 unsigned long counter = 0;
-const int numberOfVariables = 5; // How many?
+const int numberOfVariables = 20; // How many? Waaaa ???
 int Signal[numberOfVariables]; 
 // Debugging variable:
 int incomingData = 0;
-boolean areWeWriting = false;
+boolean areWeWriting = true;
+boolean didNotTalk = true;
 
 void setup() {
 		delay( 3000 ); // power-up safety delay
@@ -67,7 +68,7 @@ void loop()
 
 	// Ping Pong
 
-	if (areWeWriting == true) {
+	if (areWeWriting == true || didNotTalk == true) {
 		// Output the averages:
 		Serial.print("mad hatter");
     Serial.println("");
@@ -90,7 +91,9 @@ void loop()
 			FastLED.clear();
 		}
     else {
-			leds[Signal[0]] = CRGB(Signal[1], Signal[2], Signal[3]);
+      for (int i = 0; i < 5; i++) {
+        leds[Signal[0 + i*4]] = CRGB(Signal[1 + i*4], Signal[2 + i*4], Signal[3 + i*4]);
+      }
 			FastLED.show();
 		}
 	}
@@ -151,6 +154,7 @@ void showNewData() {
 		parseData();
 		newData = false;
     areWeWriting = true;
+    didNotTalk = false;
 	}
 }
 
@@ -167,40 +171,3 @@ void parseData() {
 		strtokIndx = strtok(NULL, ",");     // this continues where the previous call left off  
 	}
 }
-
-  //Serial.print("\t");
-  //Serial.println(incomingData);
-  /*
-  Serial.print(sensorAvg - longAverage);
-  Serial.print("\t");
-  Serial.print(longAverage - globalMedian);
-  Serial.println("\t");
-  */
-  
-  // int numLedsToLight = abs(floor ((sensorValue / 500.0) * NUM_LEDS));
-
-  //Serial.println(numLedsToLight);
-
-  // static uint8_t colorIndex = 0;
-  // colorIndex = colorIndex + 1; /* motion speed */
-
-  // if (Signal[0] == 0) {
-  //   FastLED.clear();
-  //   FastLED.show();
-  //   // Debugging data:
-  //   incomingData = 0;
-  // } else {
-  //   leds[Signal[0]] = CRGB(Signal[1], Signal[2], Signal[3]);
-  // /*
-  // for(int led = 0; led < numLedsToLight - 18; led++) { 
-  //     currentPalette = RainbowColors_p;
-  //     currentBlending = LINEARBLEND;
-  //     leds[NUM_LEDS / 2 + led] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
-  //     leds[NUM_LEDS / 2 - led] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
-  //      // leds[led] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
-  // }
-  // */
-  //   FastLED.show();
-  //   incomingData = Signal[1];
-  // }
-  // FastLED.delay(1000 / UPDATES_PER_SECOND);

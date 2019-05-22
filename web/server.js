@@ -104,20 +104,13 @@ parser.on('data', data => {
 			post = '<0,n,n,n>\n'
 			port.write(post)
 		} else {
-			// Non working case when we try to send several at a time one after another - doesn't work => we need 1 Array
-			// 
-			// ledsConfig[0][0].leds.forEach(led => {
-			// 	// const led = ledsConfig[0][0].leds[0]
-			// 	const rgb = transformHexToRgb(led.color)
-			// 	post = `<${led.number},${rgb.r},${rgb.g},${rgb.b}>\n`
-			// 	port.write(post)
-			// })
+			post = '<'
+			ledsConfig[0][0].leds.slice(0, 5).forEach(led => {
+				const rgb = transformHexToRgb(led.color)
+				post += `${led.number},${rgb.r},${rgb.g},${rgb.b},`
+			})
+			post += '>\n'
 
-			// This case is working, but it's only one
-			// 
-			const led = ledsConfig[0][0].leds[0]
-			const rgb = transformHexToRgb(led.color)
-			post = `<${led.number},${rgb.r},${rgb.g},${rgb.b}>\n`
 			port.write(post)
 		}
 		areWeWriting = false
