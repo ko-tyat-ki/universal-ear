@@ -1,36 +1,36 @@
 /* global console */
 /* global setInterval */
 
-const BAUD_RATE = 9600
+// const BAUD_RATE = 9600
 
-import SerialPort from 'serialport'
-import Readline from '@serialport/parser-readline'
+// import SerialPort from 'serialport'
+// import Readline from '@serialport/parser-readline'
 
-const arduinoPort = '.usbmodem14201'
+// const arduinoPort = '.usbmodem14201'
 
-const port = new SerialPort(`/dev/tty${arduinoPort}`, {
-  baudRate: BAUD_RATE
-})
+// const port = new SerialPort(`/dev/tty${arduinoPort}`, {
+//   baudRate: BAUD_RATE
+// })
 
-const parser = port.pipe(new Readline({ delimiter: '\n' }))
+// const parser = port.pipe(new Readline({ delimiter: '\n' }))
 
-port.on('error', (err) => {
-  console.log('Port failure, removing device.', err)
-})
+// port.on('error', (err) => {
+//   console.log('Port failure, removing device.', err)
+// })
 
-// port failures
-port.on('close', (err) => {
-  console.log('Port was closed.', err)
-})
+// // port failures
+// port.on('close', (err) => {
+//   console.log('Port was closed.', err)
+// })
 
-parser.on('data', data => {
-  // const sensorValue = parseInt(data, 10)
-  console.log(data)
-})
+// parser.on('data', data => {
+//   // const sensorValue = parseInt(data, 10)
+//   console.log(data)
+// })
 
-setInterval(() => {
-  parser.write(`<10,255,0,0>\n`)
-}, 100)
+// setInterval(() => {
+//   parser.write(`<10,255,0,0>\n`)
+// }, 100)
 
 
 
