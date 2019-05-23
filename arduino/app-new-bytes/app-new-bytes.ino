@@ -36,9 +36,7 @@ char receivedChars[numChars];
 boolean newData = false;
 boolean received = true;
 boolean recvInProgress = false;
-// Start and End markers;
-char startMarker = '<';
-char endMarker = '>';
+
 unsigned long counter = 0;
 const int numberOfVariables = 40; // 4 How many variables do I send?
 // Array holding the incoming data
@@ -148,7 +146,6 @@ void sendCallforData() {
     Serial.println(String(payloadIn.ledno1) + ", " + String(payloadIn.ledno2) + ", " + String(payloadIn.ledno3));
     Serial.println("eat me");
   }
-
 }
 
 boolean testEvery(long millisecondsPeriod) {
@@ -203,6 +200,7 @@ void receiveBytes() {
 
   while (Serial.available() > 0 && newData == false) {
     rc = Serial.read();
+//    Serial.println(rc);
     if (recvInProgress == true) {
       if (ndx == 0) {
         payloadLength = rc;
@@ -215,12 +213,11 @@ void receiveBytes() {
       } else {
         // Check for checksum
         if (rc == endByte) {
+          Serial.println(rc);
           // Collect incoming data into a payload struct
           memcpy(&payloadIn, inBuffer, payloadInSize);
           // For first contact or contact after turning off the LEDs
-          if (sleep) {
-            sleep = false;
-          }
+          sleep = false;
         }
         recvInProgress = false;
         ndx = 0;
