@@ -61,40 +61,7 @@ port.on('close', (err) => {
 	console.log('Port was closed.', err)
 })
 
-// parser.on('data', data => {
-// const sensorValue = parseInt(data, 10)
-// console.log(data)
-// if (data && ledsConfig) {
-// 	const cleanLedsConfig = ledsConfig.filter(Boolean)
-// 	for (let i = 0; i < cleanLedsConfig.length; i++) {
-// 		const leds = ledsConfig[i][0].leds
-
-// 		leds.map(led => {
-// 			// const rgb = transformHexToRgb(led.color)
-// 			port.write(`${led.number}\n`)
-// 			// port.write(`${rgb.r}\n`)
-// 			// port.write(`${rgb.g}\n`)
-// 			// port.write(`${rgb.b}\n`)
-// 			// port.write(`${rgb.r + rgb.g + rgb.b + led.number}\n`)
-// 		})
-// 	}
-// }
-// })
-// setInterval(() => {
-// 	parser.write(`<10,255,0,0>\n`)
-// }, 1000)
-
-// const blablabla = async () => {
-
-// }
-
 let areWeWriting = true
-
-// const readFromArduino = () => {
-// 	const data = port.read().toString('utf8')
-// 	console.log('DATA', data)
-// 	return new Promise(resolves(port.read().toString('utf8')))
-// }
 
 parser.on('data', data => {
 	if (areWeWriting && ledsConfig) {

@@ -58,7 +58,6 @@ struct PayloadIn
   uint8_t b1, b2, b3;
 }payloadIn;
 
-
 boolean receivedBytes = false;
 byte startByte = 0x10;
 byte inBuffer[payloadInSize];
@@ -67,13 +66,12 @@ byte inBuffer[payloadInSize];
 int diffFast;
 int diffSlow;
 
-
 void setup() {
     delay( 1000 ); // power-up safety delay
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(  BRIGHTNESS );
 
-    Serial.begin(115200);
+    Serial.begin(9600);
 
     currentPalette = RainbowColors_p;
     currentBlending = LINEARBLEND;
