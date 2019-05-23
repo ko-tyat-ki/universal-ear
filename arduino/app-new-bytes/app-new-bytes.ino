@@ -62,7 +62,7 @@ void setup() {
     delay( 1000 ); // power-up safety delay
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(  BRIGHTNESS );
-    Serial.begin(9600);
+    Serial.begin(115200);
 
     currentPalette = RainbowColors_p;
     currentBlending = LINEARBLEND;
