@@ -90,6 +90,8 @@ parser.on('data', data => {
 		console.log('Data IN, listen', data)
 		if (data == 'eat me\r') {
 			areWeWriting = true
+		} else {
+			console.log(data.split('\t')[0])
 		}
 	}
 })

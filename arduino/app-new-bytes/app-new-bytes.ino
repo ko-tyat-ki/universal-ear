@@ -115,14 +115,14 @@ void parseData() {
   if (newData == true) {
     writeToLeds();
     Serial.print("Received! ");
-    sendDraftResponse();
+    sendSensorData();
     newData = false;
   } else {
     // TODO make something so that the following code wouldn't execute when receiving data.
     if (testEvery(500) && !recvInProgress) {
       sleep = true;
       Serial.print("Waiting for transmission, ");
-      sendDraftResponse();
+      sendSensorData();
     }
   }
 }
@@ -130,12 +130,12 @@ void parseData() {
 void sendCallforData() {
   if (testEvery(500) && sleep) {
     Serial.print("Received! ");
-    sendDraftResponse();
+    sendSensorData();
   }
 }
 
-void sendDraftResponse() {
-    Serial.println(String(payloadIn.ledno[0][0]) + ", " + String(payloadIn.ledno[0][1]) + ", " + String(payloadIn.ledno[0][2]));
+void sendSensorData() {
+    Serial.println(String(sensorValue) + "\t" + String(diffFast) + "\t" + String(diffSlow));
     Serial.println("eat me");
 }
 
