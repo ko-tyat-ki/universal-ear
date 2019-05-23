@@ -46,8 +46,8 @@ import Readline from '@serialport/parser-readline'
 
 const arduinoPort = '.usbmodem14201'
 
-// const port = new SerialPort('COM7', {
-const port = new SerialPort(`/dev/tty${arduinoPort}`, {
+const port = new SerialPort('COM14', {
+//const port = new SerialPort(`/dev/tty${arduinoPort}`, {
 	baudRate: BAUD_RATE
 })
 

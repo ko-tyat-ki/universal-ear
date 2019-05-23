@@ -51,12 +51,23 @@ const byte payloadInSize = 40;
 
 struct PayloadIn
 {
+  uint8_t ledno[10][4];
+}payloadIn;
+/*
+struct PayLoadIn
+{
   uint8_t ledno1, r1, g1, b1;
   uint8_t ledno2, r2, g2, b2;
   uint8_t ledno3, r3, g3, b3;
   uint8_t ledno4, r4, g4, b4;
-  
+  uint8_t ledno5, r5, g5, b5;
+  uint8_t ledno6, r6, g6, b6;
+  uint8_t ledno7, r7, g7, b7;
+  uint8_t ledno8, r8, g8, b8;
+  uint8_t ledno9, r9, g9, b9;
+  uint8_t ledno10, r10, g10, b10;
 }payloadIn;
+*/
 
 boolean receivedBytes = false;
 byte startByte = 0x10;
@@ -124,18 +135,16 @@ void readSensorData() {
 // When finished getting a full message, run this function.
 void parseData() {
   if (newData == true) {
-    //writeToLeds();
+    writeToLeds();
     Serial.print("Received! ");
-    Serial.println(String(payloadIn.ledno1) + ", " + String(payloadIn.ledno2) + ", " + String(payloadIn.ledno3));
-    Serial.println("eat me");//Serial.println();
+    sendDraftResponse();
     newData = false;
   } else {
     // TODO make something so that the following code wouldn't execute when receiving data.
     if (testEvery(500) && !recvInProgress) {
       sleep = true;
       Serial.print("Waiting for transmission, ");
-      Serial.println(String(payloadIn.ledno1) + ", " + String(payloadIn.ledno2) + ", " + String(payloadIn.ledno3));
-      Serial.println("eat me");
+      sendDraftResponse();
     }
   }
 }
@@ -143,9 +152,13 @@ void parseData() {
 void sendCallforData() {
   if (testEvery(500) && sleep) {
     Serial.print("Received! ");
-    Serial.println(String(payloadIn.ledno1) + ", " + String(payloadIn.ledno2) + ", " + String(payloadIn.ledno3));
-    Serial.println("eat me");
+    sendDraftResponse();
   }
+}
+
+void sendDraftResponse() {
+    Serial.println(String(payloadIn.ledno[0][0]) + ", " + String(payloadIn.ledno[0][1]) + ", " + String(payloadIn.ledno[0][2]));
+    Serial.println("eat me");
 }
 
 boolean testEvery(long millisecondsPeriod) {
@@ -183,8 +196,9 @@ float lerp(float from, float to, float fraction) {
 
 void writeToLeds() {
   FastLED.clear();
-  for (int i = 0; i < numberOfVariables/4; i++) {
-    leds[Signal[4*i]] = CRGB(Signal[1 + 4*i], Signal[2 + 4*i], Signal[3 + 4*i]);
+  for (int i = 0; i < payloadInSize/4; i++) {
+    //leds[Signal[4*i]] = CRGB(Signal[1 + 4*i], Signal[2 + 4*i], Signal[3 + 4*i]);
+    leds[payloadIn.ledno[i][0]] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][2],payloadIn.ledno[i][3]);
   }
   FastLED.show();
 }
@@ -213,7 +227,7 @@ void receiveBytes() {
       } else {
         // Check for checksum
         if (rc == endByte) {
-          Serial.println(rc);
+          //Serial.println(rc);
           // Collect incoming data into a payload struct
           memcpy(&payloadIn, inBuffer, payloadInSize);
           // For first contact or contact after turning off the LEDs
