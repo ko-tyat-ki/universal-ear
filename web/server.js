@@ -46,8 +46,8 @@ import Readline from '@serialport/parser-readline'
 
 const arduinoPort = '.usbmodem14201'
 
-const port = new SerialPort('COM7', {
-//const port = new SerialPort(`/dev/tty${arduinoPort}`, {
+// const port = new SerialPort('COM7', {
+const port = new SerialPort(`/dev/tty${arduinoPort}`, {
 	baudRate: BAUD_RATE
 })
 
@@ -67,15 +67,13 @@ let areWeWriting = true
 parser.on('data', data => {
 	if (areWeWriting && ledsConfig) {
 		console.log('DATA IN', data)
-		//var d = new Date();
-		//console.log('TIME', d.getMilliseconds())
-		//console.log('Sending', ledsConfig)
-		const numberOfLeds = 10;
-		var bufferArray = new ArrayBuffer(numberOfLeds * 4 + 3);
-		var dataForBuffer = new Uint8Array(bufferArray);
-		var startByte = 0x10;
-		var sizeByte = 0x11;
-		var checkSum = 0x12;
+
+		const numberOfLeds = 10
+		const bufferArray = new ArrayBuffer(numberOfLeds * 4 + 3)
+		const dataForBuffer = new Uint8Array(bufferArray)
+		const startByte = 0x10
+		const sizeByte = 0x11
+		const checkSum = 0x12
 
 		dataForBuffer[0] = startByte
 		dataForBuffer[1] = sizeByte
@@ -88,10 +86,9 @@ parser.on('data', data => {
 		})
 		dataForBuffer[numberOfLeds * 4 + 2] = checkSum
 		port.write(dataForBuffer)
-		//console.log('Data OUT', dataForBuffer)
 		areWeWriting = false
 	} else {
-		//console.log('Data IN', data)
+		console.log('Data IN, listen', data)
 		if (data == 'eat me\r') {
 			areWeWriting = true
 		}
