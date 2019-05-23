@@ -46,8 +46,8 @@ import Readline from '@serialport/parser-readline'
 
 const arduinoPort = '.usbmodem14201'
 
-const port = new SerialPort('COM14', {
-//const port = new SerialPort(`/dev/tty${arduinoPort}`, {
+// const port = new SerialPort('COM14', {
+const port = new SerialPort(`/dev/tty${arduinoPort}`, {
 	baudRate: BAUD_RATE
 })
 
@@ -68,8 +68,8 @@ parser.on('data', data => {
 	if (areWeWriting && ledsConfig) {
 		console.log('DATA IN', data)
 
-		const numberOfLeds = 30
-		const bufferArray = new ArrayBuffer(numberOfLeds * 4 + 3)
+		const numberOfLeds = 40
+		const bufferArray = new ArrayBuffer(numberOfLeds * 3 + 3)
 		const dataForBuffer = new Uint8Array(bufferArray)
 		const startByte = 0x10
 		const sizeByte = 0x11
@@ -77,14 +77,13 @@ parser.on('data', data => {
 
 		dataForBuffer[0] = startByte
 		dataForBuffer[1] = sizeByte
-		ledsConfig[0][0].leds.slice(0, numberOfLeds).forEach((led, key) => {
+		ledsConfig[0][0].leds.slice(0, numberOfLeds).forEach(led => {
 			const rgb = transformHexToRgb(led.color)
-			dataForBuffer[key * 4 + 2] = led.number
-			dataForBuffer[key * 4 + 3] = rgb.r
-			dataForBuffer[key * 4 + 4] = rgb.g
-			dataForBuffer[key * 4 + 5] = rgb.b
+			dataForBuffer[led.number * 3 + 2] = rgb.r
+			dataForBuffer[led.number * 3 + 3] = rgb.g
+			dataForBuffer[led.number * 3 + 4] = rgb.b
 		})
-		dataForBuffer[numberOfLeds * 4 + 2] = checkSum
+		dataForBuffer[numberOfLeds * 3 + 2] = checkSum
 		port.write(dataForBuffer)
 		areWeWriting = false
 	} else {

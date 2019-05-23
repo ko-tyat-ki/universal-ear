@@ -37,38 +37,16 @@ boolean newData = false;
 boolean received = true;
 boolean recvInProgress = false;
 
-unsigned long counter = 0;
-const int numberOfVariables = 40; // 4 How many variables do I send?
-// Array holding the incoming data
-int Signal[numberOfVariables]; 
-// Debugging variable:
-int incomingData = 0;
-
 // LEDs in Bytes:
 // TODO - change into correct number of bytes.
 // TODO - check if it's possible to make the size dependent on the incoming data.
-const byte numberOfLeds = 30;
-const byte payloadInSize = numberOfLeds * 4;
+const byte numberOfLeds = 40;
+const byte payloadInSize = numberOfLeds * 3;
 
 struct PayloadIn
 {
-  uint8_t ledno[numberOfLeds][4];
+  uint8_t ledno[numberOfLeds][3];
 }payloadIn;
-/*
-struct PayLoadIn
-{
-  uint8_t ledno1, r1, g1, b1;
-  uint8_t ledno2, r2, g2, b2;
-  uint8_t ledno3, r3, g3, b3;
-  uint8_t ledno4, r4, g4, b4;
-  uint8_t ledno5, r5, g5, b5;
-  uint8_t ledno6, r6, g6, b6;
-  uint8_t ledno7, r7, g7, b7;
-  uint8_t ledno8, r8, g8, b8;
-  uint8_t ledno9, r9, g9, b9;
-  uint8_t ledno10, r10, g10, b10;
-}payloadIn;
-*/
 
 boolean receivedBytes = false;
 byte startByte = 0x10;
@@ -198,13 +176,12 @@ void writeToLeds() {
   FastLED.clear();
   for (int i = 0; i < payloadInSize/4; i++) {
     //leds[Signal[4*i]] = CRGB(Signal[1 + 4*i], Signal[2 + 4*i], Signal[3 + 4*i]);
-    leds[payloadIn.ledno[i][0]] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][2],payloadIn.ledno[i][3]);
+    leds[i] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][1],payloadIn.ledno[i][2]);
   }
   FastLED.show();
 }
 
 // Serial communication:
-
 
 void receiveBytes() {
   static byte ndx = 0;
