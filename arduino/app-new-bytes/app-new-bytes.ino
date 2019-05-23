@@ -47,11 +47,12 @@ int incomingData = 0;
 // LEDs in Bytes:
 // TODO - change into correct number of bytes.
 // TODO - check if it's possible to make the size dependent on the incoming data.
-const byte payloadInSize = 40;
+const byte numberOfLeds = 30;
+const byte payloadInSize = numberOfLeds * 4;
 
 struct PayloadIn
 {
-  uint8_t ledno[10][4];
+  uint8_t ledno[numberOfLeds][4];
 }payloadIn;
 /*
 struct PayLoadIn
@@ -83,7 +84,6 @@ void setup() {
     delay( 1000 ); // power-up safety delay
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(  BRIGHTNESS );
-
     Serial.begin(9600);
 
     currentPalette = RainbowColors_p;

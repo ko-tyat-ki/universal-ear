@@ -68,7 +68,7 @@ parser.on('data', data => {
 	if (areWeWriting && ledsConfig) {
 		console.log('DATA IN', data)
 
-		const numberOfLeds = 10
+		const numberOfLeds = 30
 		const bufferArray = new ArrayBuffer(numberOfLeds * 4 + 3)
 		const dataForBuffer = new Uint8Array(bufferArray)
 		const startByte = 0x10
