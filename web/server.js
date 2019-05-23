@@ -39,7 +39,7 @@ const connectedSockets = {}
 const clientConfigurations = {}
 let ledsConfig
 
-const BAUD_RATE = 9600
+const BAUD_RATE = 115200
 
 import SerialPort from 'serialport'
 import Readline from '@serialport/parser-readline'
