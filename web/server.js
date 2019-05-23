@@ -46,7 +46,8 @@ import Readline from '@serialport/parser-readline'
 
 const arduinoPort = '.usbmodem14201'
 
-const port = new SerialPort(`/dev/tty${arduinoPort}`, {
+const port = new SerialPort('COM7', {
+//const port = new SerialPort(`/dev/tty${arduinoPort}`, {
 	baudRate: BAUD_RATE
 })
 
@@ -67,22 +68,30 @@ parser.on('data', data => {
 	if (areWeWriting && ledsConfig) {
 		console.log('OTHER DATA', data)
 		console.log('Sending', ledsConfig)
-		var bufferArray = new ArrayBuffer(40 * 4);
+		const numberOfLeds = 3;
+		var bufferArray = new ArrayBuffer(numberOfLeds * 4 + 3);
 		var dataForBuffer = new Uint8Array(bufferArray);
+		var startByte = 0x10;
+		var sizeByte = 0x11;
+		var checkSum = 0x12;
 
-		ledsConfig[0][0].leds.forEach((led, key) => {
+		dataForBuffer[0] = startByte
+		dataForBuffer[1] = sizeByte
+		ledsConfig[0][0].leds.slice(0, numberOfLeds).forEach((led, key) => {
 			const rgb = transformHexToRgb(led.color)
-			dataForBuffer[key * 4] = led.number
-			dataForBuffer[key * 4 + 1] = rgb.r
-			dataForBuffer[key * 4 + 2] = rgb.g
-			dataForBuffer[key * 4 + 3] = rgb.b
+			dataForBuffer[key * 4 + 2] = led.number
+			dataForBuffer[key * 4 + 3] = rgb.r
+			dataForBuffer[key * 4 + 4] = rgb.g
+			dataForBuffer[key * 4 + 5] = rgb.b
 		})
-
+		dataForBuffer[numberOfLeds * 4 + 2] = checkSum
 		port.write(dataForBuffer)
+		console.log('Data OUT', dataForBuffer)
 		areWeWriting = false
 	} else {
-		console.log('DATA', data)
-		if (data === 'eat me\r') {
+		console.log('Data IN', data)
+		if (data == 'eat me\r') {
+			console.log('END SYMBOL true')
 			areWeWriting = true
 		}
 	}

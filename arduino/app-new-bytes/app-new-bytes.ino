@@ -48,7 +48,7 @@ int incomingData = 0;
 // LEDs in Bytes:
 // TODO - change into correct number of bytes.
 // TODO - check if it's possible to make the size dependent on the incoming data.
-const byte payloadInSize = 3;
+const byte payloadInSize = 12;
 
 struct PayloadIn
 {
@@ -61,6 +61,7 @@ struct PayloadIn
 boolean receivedBytes = false;
 byte startByte = 0x10;
 byte inBuffer[payloadInSize];
+byte sleep = true;
 
 // Serial output
 int diffFast;
@@ -98,6 +99,7 @@ void loop()
     receiveBytes();
     // Serial: Put data into "Signal" struct & send data back to server
     parseData();
+    //sendCallforData();
     
 }
 
@@ -121,11 +123,42 @@ void readSensorData() {
 // When finished getting a full message, run this function.
 void parseData() {
   if (newData == true) {
-    writeToLeds();
+    //writeToLeds();
     Serial.print("Received! ");
     Serial.println(String(payloadIn.ledno1) + ", " + String(payloadIn.ledno2) + ", " + String(payloadIn.ledno3));
+    Serial.println("eat me");//Serial.println();
     newData = false;
+  } else {
+    if (testEvery(500)) {
+      sleep = true;
+      Serial.print("Waiting for transmission, ");
+      Serial.println(String(payloadIn.ledno1) + ", " + String(payloadIn.ledno2) + ", " + String(payloadIn.ledno3));
+      Serial.println("eat me");
+    }
   }
+}
+
+void sendCallforData() {
+  if (testEvery(500) && sleep) {
+    Serial.print("Received! ");
+    Serial.println(String(payloadIn.ledno1) + ", " + String(payloadIn.ledno2) + ", " + String(payloadIn.ledno3));
+    Serial.println("eat me");
+  }
+
+}
+
+boolean testEvery(long millisecondsPeriod) {
+  static long firstSeconds;
+  static boolean timeOut = false;
+  if (millis() - firstSeconds > millisecondsPeriod) {
+    timeOut = true;
+  }
+  if (timeOut) {
+    firstSeconds = millis();  
+    timeOut = false;
+    return true;
+  }
+  return timeOut;
 }
 
 // Functions for direct averaging the sensor value
@@ -148,15 +181,11 @@ float lerp(float from, float to, float fraction) {
 }
 
 void writeToLeds() {
-  if (Signal[0] == 0) {
-    FastLED.clear();
-    FastLED.show();
-  } else if (Signal[0] < 40) {
-    for (int i = 0; i < numberOfVariables/4; i++) {
-      leds[Signal[4*i]] = CRGB(Signal[1 + 4*i], Signal[2 + 4*i], Signal[3 + 4*i]);
-    }
-    FastLED.show();
+  FastLED.clear();
+  for (int i = 0; i < numberOfVariables/4; i++) {
+    leds[Signal[4*i]] = CRGB(Signal[1 + 4*i], Signal[2 + 4*i], Signal[3 + 4*i]);
   }
+  FastLED.show();
 }
 
 // Serial communication:
@@ -182,10 +211,14 @@ void receiveBytes() {
         ndx++;
       } else {
         // Check for checksum
-        if (sum == rc) {
+        //if (sum == rc) {
           // Collect incoming data into a payload struct
           memcpy(&payloadIn, inBuffer, payloadInSize);
-        }
+          // For first contact or contact after turning off the LEDs
+          if (sleep) {
+            sleep = false;
+          }
+        //}
         recvInProgress = false;
         ndx = 0;
         newData = true;
