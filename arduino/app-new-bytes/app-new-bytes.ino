@@ -35,11 +35,12 @@ const byte numChars = 64;
 char receivedChars[numChars];
 boolean newData = false;
 boolean received = true;
+boolean recvInProgress = false;
 // Start and End markers;
 char startMarker = '<';
 char endMarker = '>';
 unsigned long counter = 0;
-const int numberOfVariables = 16; // 4 How many variables do I send?
+const int numberOfVariables = 40; // 4 How many variables do I send?
 // Array holding the incoming data
 int Signal[numberOfVariables]; 
 // Debugging variable:
@@ -48,18 +49,20 @@ int incomingData = 0;
 // LEDs in Bytes:
 // TODO - change into correct number of bytes.
 // TODO - check if it's possible to make the size dependent on the incoming data.
-const byte payloadInSize = 12;
+const byte payloadInSize = 40;
 
 struct PayloadIn
 {
-  uint8_t ledno1, ledno2, ledno3;
-  uint8_t r1, r2, r3;
-  uint8_t g1, g2, g3;
-  uint8_t b1, b2, b3;
+  uint8_t ledno1, r1, g1, b1;
+  uint8_t ledno2, r2, g2, b2;
+  uint8_t ledno3, r3, g3, b3;
+  uint8_t ledno4, r4, g4, b4;
+  
 }payloadIn;
 
 boolean receivedBytes = false;
 byte startByte = 0x10;
+byte endByte = 0x12;
 byte inBuffer[payloadInSize];
 byte sleep = true;
 
@@ -129,7 +132,8 @@ void parseData() {
     Serial.println("eat me");//Serial.println();
     newData = false;
   } else {
-    if (testEvery(500)) {
+    // TODO make something so that the following code wouldn't execute when receiving data.
+    if (testEvery(500) && !recvInProgress) {
       sleep = true;
       Serial.print("Waiting for transmission, ");
       Serial.println(String(payloadIn.ledno1) + ", " + String(payloadIn.ledno2) + ", " + String(payloadIn.ledno3));
@@ -192,7 +196,6 @@ void writeToLeds() {
 
 
 void receiveBytes() {
-  static boolean recvInProgress = false;
   static byte ndx = 0;
   byte rc;
   static byte sum;
@@ -211,14 +214,14 @@ void receiveBytes() {
         ndx++;
       } else {
         // Check for checksum
-        //if (sum == rc) {
+        if (rc == endByte) {
           // Collect incoming data into a payload struct
           memcpy(&payloadIn, inBuffer, payloadInSize);
           // For first contact or contact after turning off the LEDs
           if (sleep) {
             sleep = false;
           }
-        //}
+        }
         recvInProgress = false;
         ndx = 0;
         newData = true;
