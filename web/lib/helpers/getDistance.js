@@ -1,7 +1,6 @@
 export const getDistance = ({
-    sensor,
-    stick,
-    names
+    sensorNumber,
+    stickNumber
 }) => {
-    return Math.abs(names.indexOf(sensor.key) - stick.stickName)
+    return Math.abs(sensorNumber - stickNumber)
 }
