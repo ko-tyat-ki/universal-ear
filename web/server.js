@@ -8,17 +8,9 @@ import path from 'path'
 import http from 'http'
 import socketio from 'socket.io'
 import modes from './lib/visualisations'
+import { transformHexToRgb } from './lib/helpers/dataHelpers'
 
 import 'babel-polyfill'
-
-const transformHexToRgb = (hex) => {
-	const b = hex % 256
-	const g = (hex - b) / 256 % 256
-	const r = ((hex - b) / 256 - g) / 256
-	return {
-		r, g, b
-	}
-}
 
 const app = express()
 const server = new http.Server(app)
