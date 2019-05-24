@@ -28,14 +28,18 @@ const addLED = ({
 
 const drawStructure = (poles, scene) => {
 	poles.forEach(pole => {
-		const poleGeo = new THREE.BoxBufferGeometry(pole.geoX, pole.geoY, pole.geoZ)
+		const poleGeo = new THREE.BoxBufferGeometry(pole.geo.x, pole.geo.y, pole.geo.z)
 		const poleMat = new THREE.MeshLambertMaterial({ color: POLE_COLOR })
 		const mesh = new THREE.Mesh(poleGeo, poleMat)
-		mesh.position.x = pole.initX
-		mesh.position.y = pole.initY
-		mesh.position.z = pole.initZ
+		mesh.position.x = pole.init.x
+		mesh.position.y = pole.init.y
+		mesh.position.z = pole.init.z
 		mesh.receiveShadow = true
 		mesh.castShadow = true
+		if (pole.euler) {
+			const a = new THREE.Euler(pole.euler.x, pole.euler.y, pole.euler.z, 'XYZ')
+			mesh.setRotationFromEuler(a)
+		}
 		scene.add(mesh)
 	})
 }
