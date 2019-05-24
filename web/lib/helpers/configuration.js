@@ -28,26 +28,38 @@ export const calculateConfiguration = (selectedStructure) => {
                 ],
                 poles: [
                     {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: 125,
-                        initY: -62,
-                        initZ: 0
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: 125,
+                            y: -62.5,
+                            z: 0
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: -125,
-                        initY: -62,
-                        initZ: 0
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: -125,
+                            y: -62.5,
+                            z: 0
+                        }
                     }, {
-                        geoX: 255,
-                        geoY: 5,
-                        geoZ: 5,
-                        initX: 0,
-                        initY: 125,
-                        initZ: 0
+                        geo: {
+                            x: 255,
+                            y: 5,
+                            z: 5
+                        },
+                        init: {
+                            x: 0,
+                            y: 125,
+                            z: 0
+                        }
                     }
                 ]
             }
@@ -158,82 +170,126 @@ export const calculateConfiguration = (selectedStructure) => {
                 ],
                 poles: [
                     {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: 600,
-                        initY: -62,
-                        initZ: 0
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: 600,
+                            y: -62.5,
+                            z: 0
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: 600 * Math.cos(2 * Math.PI * 1 / 11),
-                        initY: -62,
-                        initZ: 600 * Math.sin(2 * Math.PI * 1 / 11)
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: 600 * Math.cos(2 * Math.PI * 1 / 11),
+                            y: -62.5,
+                            z: 600 * Math.sin(2 * Math.PI * 1 / 11)
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: 600 * Math.cos(2 * Math.PI * 2 / 11),
-                        initY: -62,
-                        initZ: 600 * Math.sin(2 * Math.PI * 2 / 11)
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: 600 * Math.cos(2 * Math.PI * 2 / 11),
+                            y: -62.5,
+                            z: 600 * Math.sin(2 * Math.PI * 2 / 11)
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: 600 * Math.cos(2 * Math.PI * 3 / 11),
-                        initY: -62,
-                        initZ: 600 * Math.sin(2 * Math.PI * 3 / 11)
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: 600 * Math.cos(2 * Math.PI * 3 / 11),
+                            y: -62.5,
+                            z: 600 * Math.sin(2 * Math.PI * 3 / 11)
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: 600 * Math.cos(2 * Math.PI * 4 / 11),
-                        initY: -62,
-                        initZ: 600 * Math.sin(2 * Math.PI * 4 / 11)
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: 600 * Math.cos(2 * Math.PI * 4 / 11),
+                            y: -62.5,
+                            z: 600 * Math.sin(2 * Math.PI * 4 / 11)
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: 600 * Math.cos(2 * Math.PI * 5 / 11),
-                        initY: -62,
-                        initZ: 600 * Math.sin(2 * Math.PI * 5 / 11)
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: 600 * Math.cos(2 * Math.PI * 5 / 11),
+                            y: -62.5,
+                            z: 600 * Math.sin(2 * Math.PI * 5 / 11)
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: 600 * Math.cos(2 * Math.PI * 6 / 11),
-                        initY: -62,
-                        initZ: 600 * Math.sin(2 * Math.PI * 6 / 11)
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: 600 * Math.cos(2 * Math.PI * 6 / 11),
+                            y: -62.5,
+                            z: 600 * Math.sin(2 * Math.PI * 6 / 11)
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: 600 * Math.cos(2 * Math.PI * 7 / 11),
-                        initY: -62,
-                        initZ: 600 * Math.sin(2 * Math.PI * 7 / 11)
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: 600 * Math.cos(2 * Math.PI * 7 / 11),
+                            y: -62.5,
+                            z: 600 * Math.sin(2 * Math.PI * 7 / 11)
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: 600 * Math.cos(2 * Math.PI * 8 / 11),
-                        initY: -62,
-                        initZ: 600 * Math.sin(2 * Math.PI * 8 / 11)
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: 600 * Math.cos(2 * Math.PI * 8 / 11),
+                            y: -62.5,
+                            z: 600 * Math.sin(2 * Math.PI * 8 / 11)
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: 600 * Math.cos(2 * Math.PI * 9 / 11),
-                        initY: -62,
-                        initZ: 600 * Math.sin(2 * Math.PI * 9 / 11)
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: 600 * Math.cos(2 * Math.PI * 9 / 11),
+                            y: -62.5,
+                            z: 600 * Math.sin(2 * Math.PI * 9 / 11)
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 375,
-                        geoZ: 5,
-                        initX: 600 * Math.cos(2 * Math.PI * 10 / 11),
-                        initY: -62,
-                        initZ: 600 * Math.sin(2 * Math.PI * 10 / 11)
+                        geo: {
+                            x: 5,
+                            y: 375,
+                            z: 5
+                        },
+                        init: {
+                            x: 600 * Math.cos(2 * Math.PI * 10 / 11),
+                            y: -62.5,
+                            z: 600 * Math.sin(2 * Math.PI * 10 / 11)
+                        }
                     }
                 ]
             }
@@ -242,7 +298,7 @@ export const calculateConfiguration = (selectedStructure) => {
                 sticks: [
                     {
                         x: 0,
-                        y: -130,
+                        y: -50,
                         z: 0
                     },
                     {
@@ -267,12 +323,12 @@ export const calculateConfiguration = (selectedStructure) => {
                     },
                     {
                         x: -72,
-                        y: -130,
+                        y: -50,
                         z: -126
                     },
                     {
                         x: 72,
-                        y: -130,
+                        y: -50,
                         z: -126
                     },
                     {
@@ -344,82 +400,678 @@ export const calculateConfiguration = (selectedStructure) => {
                 ],
                 poles: [
                     {
-                        geoX: 5,
-                        geoY: 500,
-                        geoZ: 5,
-                        initX: 0,
-                        initY: -62,
-                        initZ: 0
+                        geo: {
+                            x: 5,
+                            y: 500,
+                            z: 5
+                        },
+                        init: {
+                            x: 0,
+                            y: 0,
+                            z: 0
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 400,
-                        geoZ: 5,
-                        initX: 150,
-                        initY: -62,
-                        initZ: 0
+                        geo: {
+                            x: 5,
+                            y: 400,
+                            z: 5
+                        },
+                        init: {
+                            x: 150,
+                            y: -50,
+                            z: 0
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 400,
-                        geoZ: 5,
-                        initX: 75,
-                        initY: -62,
-                        initZ: 129.9038106
+                        geo: {
+                            x: 5,
+                            y: 400,
+                            z: 5
+                        },
+                        init: {
+                            x: 75,
+                            y: -50,
+                            z: 129.9038106
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 400,
-                        geoZ: 5,
-                        initX: -75,
-                        initY: -62,
-                        initZ: 129.9038106
+                        geo: {
+                            x: 5,
+                            y: 400,
+                            z: 5
+                        },
+                        init: {
+                            x: -75,
+                            y: -50,
+                            z: 129.9038106
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 400,
-                        geoZ: 5,
-                        initX: -150,
-                        initY: -62,
-                        initZ: 0
+                        geo: {
+                            x: 5,
+                            y: 400,
+                            z: 5
+                        },
+                        init: {
+                            x: -150,
+                            y: -50,
+                            z: 0
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 500,
-                        geoZ: 5,
-                        initX: -75,
-                        initY: -62,
-                        initZ: -129.9038106
+                        geo: {
+                            x: 5,
+                            y: 500,
+                            z: 5
+                        },
+                        init: {
+                            x: -75,
+                            y: 0,
+                            z: -129
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 500,
-                        geoZ: 5,
-                        initX: 75,
-                        initY: -62,
-                        initZ: -129.9038106
+                        geo: {
+                            x: 5,
+                            y: 500,
+                            z: 5
+                        },
+                        init: {
+                            x: 75,
+                            y: 0,
+                            z: -129
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 400,
-                        geoZ: 5,
-                        initX: 300,
-                        initY: -62,
-                        initZ: 0
+                        geo: {
+                            x: 5,
+                            y: 400,
+                            z: 5
+                        },
+                        init: {
+                            x: 300,
+                            y: -50,
+                            z: 0
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 400,
-                        geoZ: 5,
-                        initX: 150,
-                        initY: -62,
-                        initZ: 259.8076211
+                        geo: {
+                            x: 5,
+                            y: 400,
+                            z: 5
+                        },
+                        init: {
+                            x: 150,
+                            y: -50,
+                            z: 259.8076211
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 400,
-                        geoZ: 5,
-                        initX: -150,
-                        initY: -62,
-                        initZ: 259.8076211
+                        geo: {
+                            x: 5,
+                            y: 400,
+                            z: 5
+                        },
+                        init: {
+                            x: -150,
+                            y: -50,
+                            z: 259.8076211
+                        }
                     }, {
-                        geoX: 5,
-                        geoY: 400,
-                        geoZ: 5,
-                        initX: -300,
-                        initY: -62,
-                        initZ: 0
+                        geo: {
+                            x: 5,
+                            y: 400,
+                            z: 5
+                        },
+                        init: {
+                            x: -300,
+                            y: -50,
+                            z: 0
+                        }
+                    },
+                    // Inner perimeter
+                    {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: 112.5,
+                            y: 50,
+                            z: 64.95190528
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 60 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: 0,
+                            y: 50,
+                            z: 129.9038106
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 0 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: -112.5,
+                            y: 50,
+                            z: 64.95190528
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: -60 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: -112.5,
+                            y: 50,
+                            z: -64.95190528
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 240 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: 0,
+                            y: 50,
+                            z: -129.9038106
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 180 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: 112.5,
+                            y: 50,
+                            z: -64.95190528
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 120 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: 112.5,
+                            y: 150,
+                            z: 64.95190528
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 60 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: 0,
+                            y: 150,
+                            z: 129.9038106
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 0 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: -112.5,
+                            y: 150,
+                            z: 64.95190528
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: -60 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: -112.5,
+                            y: 150,
+                            z: -64.95190528
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 240 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: 0,
+                            y: 150,
+                            z: -129.9038106
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 180 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: 112.5,
+                            y: 150,
+                            z: -64.95190528
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 120 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    },
+                    // Outer perimeter
+                    {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: 225,
+                            y: 50,
+                            z: 129.9038106
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 60 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: 0,
+                            y: 50,
+                            z: 259.8076211
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 0 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: -225,
+                            y: 50,
+                            z: 129.9038106
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: -60 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: 225,
+                            y: 150,
+                            z: 129.9038106
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 60 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: 0,
+                            y: 150,
+                            z: 259.8076211
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 0 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: -225,
+                            y: 150,
+                            z: 129.9038106
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: -60 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    },
+                    // Diagonal poles
+                    {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: 150,
+                            y: 50,
+                            z: 0
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 0 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: 75,
+                            y: 50,
+                            z: 129.9038106
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: -60 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: -75,
+                            y: 50,
+                            z: 129.9038106
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: -120 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: -150,
+                            y: 50,
+                            z: 0
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 180 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: -37.5,
+                            y: 50,
+                            z: -64.95191
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 120 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: 37.5,
+                            y: 50,
+                            z: -64.95191
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 60 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: 150,
+                            y: 150,
+                            z: 0
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 0 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: 75,
+                            y: 150,
+                            z: 129.9038106
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: -60 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: -75,
+                            y: 150,
+                            z: 129.9038106
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: -120 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: -150,
+                            y: 150,
+                            z: 0
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 180 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: -37.5,
+                            y: 150,
+                            z: -64.95191
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 120 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 150,
+                            z: 5
+                        },
+                        init: {
+                            x: 37.5,
+                            y: 150,
+                            z: -64.95191
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: 60 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    },
+                    // Entrance
+                    {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: 187.5,
+                            y: 150,
+                            z: -64.95191
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: -30 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: -187.5,
+                            y: 150,
+                            z: -64.95191
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: -150 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: 187.5,
+                            y: 50,
+                            z: -64.95191
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: -30 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
+                    }, {
+                        geo: {
+                            x: 5,
+                            y: 300,
+                            z: 5
+                        },
+                        init: {
+                            x: -187.5,
+                            y: 50,
+                            z: -64.95191
+                        },
+                        euler: {
+                            x: 0 / 180 * Math.PI,
+                            y: -150 / 180 * Math.PI,
+                            z: 90 / 180 * Math.PI
+                        }
                     }
                 ]
             }
