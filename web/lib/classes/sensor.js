@@ -1,5 +1,4 @@
 /* global document */
-/* global console */
 
 export class Sensor {
 	constructor(tension, sensor) {
@@ -38,11 +37,11 @@ export class Sensor {
 		)
 	}
 
-	read() {
+	read() { // DO WE USE IT???
 		return this.tension
 	}
 
-	pull() {
+	pull() { // DO WE USE IT??
 		// TODO: pull speed
 		this.tension += 1
 	}
@@ -57,9 +56,5 @@ export class Sensor {
 		}
 
 		this.tension = Math.max(this.minimalTension, tension)
-
-		if (this.tension != this.minimalTension) {
-			console.log("Sensor", this.key, this.tension, this.isBeingPulled)
-		}
 	}
 }
