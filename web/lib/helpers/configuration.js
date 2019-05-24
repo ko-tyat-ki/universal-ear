@@ -23,7 +23,7 @@ export const calculateConfiguration = (selectedStructure) => {
                     },
                     {
                         key: 's',
-                        sensorPosition: 40
+                        sensorPosition: 30
                     }
                 ],
                 poles: [
