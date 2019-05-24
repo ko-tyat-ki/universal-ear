@@ -75,105 +75,149 @@ export const calculateConfiguration = (selectedStructure) => {
             return {
                 sticks: [
                     {
-                        x: 597,
-                        y: -180,
-                        z: 0
+                        name: '1',
+                        init: {
+                            x: 597,
+                            y: -180,
+                            z: 0
+                        }
                     },
                     {
-                        x: 597 * Math.cos(2 * Math.PI * 1 / 11),
-                        y: -180,
-                        z: 597 * Math.sin(2 * Math.PI * 1 / 11)
+                        name: '2',
+                        init: {
+                            x: 597 * Math.cos(2 * Math.PI * 1 / 11),
+                            y: -180,
+                            z: 597 * Math.sin(2 * Math.PI * 1 / 11)
+                        }
                     },
                     {
-                        x: 597 * Math.cos(2 * Math.PI * 2 / 11),
-                        y: -180,
-                        z: 597 * Math.sin(2 * Math.PI * 2 / 11)
+                        name: '3',
+                        init: {
+                            x: 597 * Math.cos(2 * Math.PI * 2 / 11),
+                            y: -180,
+                            z: 597 * Math.sin(2 * Math.PI * 2 / 11)
+                        }
                     },
                     {
-                        x: 597 * Math.cos(2 * Math.PI * 3 / 11),
-                        y: -180,
-                        z: 597 * Math.sin(2 * Math.PI * 3 / 11)
+                        name: '4',
+                        init: {
+                            x: 597 * Math.cos(2 * Math.PI * 3 / 11),
+                            y: -180,
+                            z: 597 * Math.sin(2 * Math.PI * 3 / 11)
+                        }
                     },
                     {
-                        x: 597 * Math.cos(2 * Math.PI * 4 / 11),
-                        y: -180,
-                        z: 597 * Math.sin(2 * Math.PI * 4 / 11)
+                        name: '5',
+                        init: {
+                            x: 597 * Math.cos(2 * Math.PI * 4 / 11),
+                            y: -180,
+                            z: 597 * Math.sin(2 * Math.PI * 4 / 11)
+                        }
                     },
                     {
-                        x: 597 * Math.cos(2 * Math.PI * 5 / 11),
-                        y: -180,
-                        z: 597 * Math.sin(2 * Math.PI * 5 / 11)
+                        name: '6',
+                        init: {
+                            x: 597 * Math.cos(2 * Math.PI * 5 / 11),
+                            y: -180,
+                            z: 597 * Math.sin(2 * Math.PI * 5 / 11)
+                        }
                     },
                     {
-                        x: 597 * Math.cos(2 * Math.PI * 6 / 11),
-                        y: -180,
-                        z: 597 * Math.sin(2 * Math.PI * 6 / 11)
+                        name: '7',
+                        init: {
+                            x: 597 * Math.cos(2 * Math.PI * 6 / 11),
+                            y: -180,
+                            z: 597 * Math.sin(2 * Math.PI * 6 / 11)
+                        }
                     },
                     {
-                        x: 597 * Math.cos(2 * Math.PI * 7 / 11),
-                        y: -180,
-                        z: 597 * Math.sin(2 * Math.PI * 7 / 11)
+                        name: '8',
+                        init: {
+                            x: 597 * Math.cos(2 * Math.PI * 7 / 11),
+                            y: -180,
+                            z: 597 * Math.sin(2 * Math.PI * 7 / 11)
+                        }
                     },
                     {
-                        x: 597 * Math.cos(2 * Math.PI * 8 / 11),
-                        y: -180,
-                        z: 597 * Math.sin(2 * Math.PI * 8 / 11)
+                        name: '9',
+                        init: {
+                            x: 597 * Math.cos(2 * Math.PI * 8 / 11),
+                            y: -180,
+                            z: 597 * Math.sin(2 * Math.PI * 8 / 11)
+                        }
                     },
                     {
-                        x: 597 * Math.cos(2 * Math.PI * 9 / 11),
-                        y: -180,
-                        z: 597 * Math.sin(2 * Math.PI * 9 / 11)
+                        name: '10',
+                        init: {
+                            x: 597 * Math.cos(2 * Math.PI * 9 / 11),
+                            y: -180,
+                            z: 597 * Math.sin(2 * Math.PI * 9 / 11)
+                        }
                     },
                     {
-                        x: 597 * Math.cos(2 * Math.PI * 10 / 11),
-                        y: -180,
-                        z: 597 * Math.sin(2 * Math.PI * 10 / 11)
+                        name: '11',
+                        init: {
+                            x: 597 * Math.cos(2 * Math.PI * 10 / 11),
+                            y: -180,
+                            z: 597 * Math.sin(2 * Math.PI * 10 / 11)
+                        }
                     }
                 ],
                 sensors: [
                     {
                         key: '0',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '1'
                     },
                     {
                         key: '1',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '2'
                     },
                     {
                         key: '2',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '3'
                     },
                     {
                         key: '3',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '4'
                     },
                     {
                         key: '4',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '5'
                     },
                     {
                         key: '5',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '6'
                     },
                     {
                         key: '6',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '7'
                     },
                     {
                         key: '7',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '8'
                     },
                     {
                         key: '8',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '9'
                     },
                     {
                         key: '9',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '10'
                     },
                     {
                         key: '-',
-                        sensorPosition: 20
+                        sensorPosition: 20,
+                        column: '11'
                     }
                 ],
                 poles: [
@@ -305,105 +349,149 @@ export const calculateConfiguration = (selectedStructure) => {
             return {
                 sticks: [
                     {
-                        x: 0,
-                        y: -50,
-                        z: 0
+                        name: '1',
+                        init: {
+                            x: 0,
+                            y: -50,
+                            z: 0
+                        }
                     },
                     {
-                        x: 147,
-                        y: -180,
-                        z: 0
+                        name: '2',
+                        init: {
+                            x: 147,
+                            y: -180,
+                            z: 0
+                        }
                     },
                     {
-                        x: 72,
-                        y: -180,
-                        z: 126
+                        name: '3',
+                        init: {
+                            x: 72,
+                            y: -180,
+                            z: 126
+                        }
                     },
                     {
-                        x: -72,
-                        y: -180,
-                        z: 126
+                        name: '4',
+                        init: {
+                            x: -72,
+                            y: -180,
+                            z: 126
+                        }
                     },
                     {
-                        x: -147,
-                        y: -180,
-                        z: 0
+                        name: '5',
+                        init: {
+                            x: -147,
+                            y: -180,
+                            z: 0
+                        }
                     },
                     {
-                        x: -72,
-                        y: -50,
-                        z: -126
+                        name: '6',
+                        init: {
+                            x: -72,
+                            y: -50,
+                            z: -126
+                        }
                     },
                     {
-                        x: 72,
-                        y: -50,
-                        z: -126
+                        name: '7',
+                        init: {
+                            x: 72,
+                            y: -50,
+                            z: -126
+                        }
                     },
                     {
-                        x: 297,
-                        y: -180,
-                        z: 0
+                        name: '8',
+                        init: {
+                            x: 297,
+                            y: -180,
+                            z: 0
+                        }
                     },
                     {
-                        x: 147,
-                        y: -180,
-                        z: 256
+                        name: '9',
+                        init: {
+                            x: 147,
+                            y: -180,
+                            z: 256
+                        }
                     },
                     {
-                        x: -147,
-                        y: -180,
-                        z: 256
+                        name: '10',
+                        init: {
+                            x: -147,
+                            y: -180,
+                            z: 256
+                        }
                     },
                     {
-                        x: -297,
-                        y: -180,
-                        z: 0
+                        name: '11',
+                        init: {
+                            x: -297,
+                            y: -180,
+                            z: 0
+                        }
                     }
                 ],
                 sensors: [
                     {
                         key: '0',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '1'
                     },
                     {
                         key: '1',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '2'
                     },
                     {
                         key: '2',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '3'
                     },
                     {
                         key: '3',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '4'
                     },
                     {
                         key: '4',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '5'
                     },
                     {
                         key: '5',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '6'
                     },
                     {
                         key: '6',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '7'
                     },
                     {
                         key: '7',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '8'
                     },
                     {
                         key: '8',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '9'
                     },
                     {
                         key: '9',
-                        sensorPosition: 25
+                        sensorPosition: 25,
+                        column: '10'
                     },
                     {
                         key: '-',
-                        sensorPosition: 20
+                        sensorPosition: 20,
+                        column: '11'
                     }
                 ],
                 poles: [
