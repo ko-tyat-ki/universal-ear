@@ -2,22 +2,17 @@ import { getDistance } from '../helpers/getDistance.js'
 import * as THREE from '../three/three.js'
 
 const randomEcho = (measurements, sticks, sensors) => {
-	const names = sensors.map(sensor => sensor.key)
+	return sensors.map((sensor, sensorNumber) => {
+		const measurement = measurements.find(measurement => measurement.name === sensor.key)
 
-	return sensors.map(sensor => {
-		const name = sensor.key
-
-		const measurement = measurements.find(measurement => measurement.name === name)
-
-		return sticks.map((stick, key) => {
+		return sticks.map((stick, stickNumber) => {
 			if (!measurement || measurement.tension <= 0) {
 				return
 			}
 
 			const distance = getDistance({
-				sensor,
-				stick,
-				names
+				sensorNumber,
+				stickNumber
 			})
 
 			const leds = []
@@ -33,7 +28,7 @@ const randomEcho = (measurements, sticks, sensors) => {
 			}
 
 			return {
-				key: sensors.indexOf(sensors[key]),
+				key: stick.name,
 				leds
 			}
 		})
