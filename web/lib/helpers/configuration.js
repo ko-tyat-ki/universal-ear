@@ -1009,10 +1009,74 @@ export const calculateConfiguration = (selectedStructure) => {
 							y: 60 / 180 * Math.PI,
 							z: 90 / 180 * Math.PI
 						}
+					},
+					// Entrance
+					{
+						geo: {
+							x: 5,
+							y: 300,
+							z: 5
+						},
+						init: {
+							x: 187.5,
+							y: 150,
+							z: -64.95191
+						},
+						euler: {
+							x: 0 / 180 * Math.PI,
+							y: -30 / 180 * Math.PI,
+							z: 90 / 180 * Math.PI
+						}
+					},				
+					{
+						geo: {
+							x: 5,
+							y: 300,
+							z: 5
+						},
+						init: {
+							x: -187.5,
+							y: 150,
+							z: -64.95191
+						},
+						euler: {
+							x: 0 / 180 * Math.PI,
+							y: -150 / 180 * Math.PI,
+							z: 90 / 180 * Math.PI
+						}
+					}, {
+						geo: {
+							x: 5,
+							y: 300,
+							z: 5
+						},
+						init: {
+							x: 187.5,
+							y: 50,
+							z: -64.95191
+						},
+						euler: {
+							x: 0 / 180 * Math.PI,
+							y: -30 / 180 * Math.PI,
+							z: 90 / 180 * Math.PI
+						}
+					}, {
+						geo: {
+							x: 5,
+							y: 300,
+							z: 5
+						},
+						init: {
+							x: -187.5,
+							y: 50,
+							z: -64.95191
+						},
+						euler: {
+							x: 0 / 180 * Math.PI,
+							y: -150 / 180 * Math.PI,
+							z: 90 / 180 * Math.PI
+						}
 					}
-
-						
-						
                 ]
             }
         default:
