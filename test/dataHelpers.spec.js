@@ -2,9 +2,11 @@
 /* global expect */
 
 import {
-    transformHexToRgb,
     addColor,
-    combineLEDs
+    combineLEDs,
+    regroupConfig,
+    transformHexToRgb,
+    eliminateLEDsConfigRepetition
 } from '../web/lib/helpers/dataHelpers'
 
 test('#transformHexToRgb', () => {
@@ -25,4 +27,9 @@ test('#combineLEDs', () => {
     const first = [256 * 256 * 13 + 256 * 24 + 253, 256 * 256 * 13 + 256 * 24 + 253]
     const second = [256 * 256 * 100 + 256 * 200 + 20, 256 * 256 * 100 + 256 * 200 + 20]
     expect(combineLEDs(first, second)).toEqual([256 * 256 * 113 + 256 * 224 + 255, 256 * 256 * 113 + 256 * 224 + 255])
+})
+
+test('eliminateLEDsConfigRepetition', () => {
+    const ledsConfig = [{ number: 10, color: 256 * 256 * 13 + 256 * 24 + 17 }, { number: 10, color: 256 * 256 * 9 + 256 * 100 + 253 }, { number: 9, color: 255 }]
+    expect(eliminateLEDsConfigRepetition(ledsConfig)).toEqual([{ number: 10, color: 256 * 256 * 13 + 256 * 100 + 253 }, { number: 9, color: 255 }])
 })
