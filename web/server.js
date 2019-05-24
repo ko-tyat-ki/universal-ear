@@ -99,7 +99,6 @@ io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
 
 	socket.on('measurements', (measurements) => {
-		console.log('we are here', measurements)
 		if (!measurements) return
 		// TODO: log measurements into file (+ rotate log and remove zero values)
 
