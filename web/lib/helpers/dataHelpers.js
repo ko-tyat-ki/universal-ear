@@ -1,3 +1,5 @@
+/* global Math */
+
 const addColor = (ledOne, ledTwo) => {
     const ledOneRGB = transformHexToRgb(ledOne)
     const ledTwoRGB = transformHexToRgb(ledTwo)
@@ -8,6 +10,26 @@ const combineLEDs = (first, second) => {
     return first.map((el, key) => {
         return addColor(el, second[key])
     })
+}
+
+const eliminateLEDsConfigRepetition = (ledsConfig) => {
+    const cleanedConfig = []
+    ledsConfig.map(led => {
+        const foundLed = cleanedConfig.find(cleanLed => cleanLed.number === led.number)
+        if (!cleanedConfig.find(cleanLed => cleanLed.number === led.number)) {
+            cleanedConfig.push(led)
+            return
+        }
+        const oldColor = transformHexToRgb(foundLed.color)
+        const newColor = transformHexToRgb(led.color)
+        const color = Math.max(oldColor.r, newColor.r) * 256 * 256 + Math.max(oldColor.g, newColor.g) * 256 + Math.max(oldColor.b, newColor.b)
+        cleanedConfig[cleanedConfig.indexOf(foundLed)] = {
+            number: foundLed.number,
+            color
+        }
+
+    })
+    return cleanedConfig
 }
 
 const regroupConfig = (ledsConfig) => {
@@ -41,5 +63,6 @@ export {
     addColor,
     combineLEDs,
     regroupConfig,
-    transformHexToRgb
+    transformHexToRgb,
+    eliminateLEDsConfigRepetition
 }
