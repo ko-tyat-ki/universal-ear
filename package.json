@@ -5,7 +5,8 @@
   "main": "web/server.js",
   "scripts": {
     "server": "node web/server.js",
-    "start": "babel-watch --watch web web/server.js"
+    "start": "babel-watch --watch web web/server.js",
+    "test": "jest"
   },
   "watch": {
     "server": {
@@ -39,6 +40,7 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-google": "^0.12.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
+    "jest": "^24.8.0",
     "npm-watch": "^0.6.0"
   }
 }
