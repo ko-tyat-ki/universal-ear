@@ -10,7 +10,7 @@ import { calculateConfiguration } from './lib/helpers/configuration.js'
 let socket = io()
 let scene
 
-const buildColumns = (structure, regime) => {
+const buildEar = (structure, regime) => {
 	const selectedStructure = structure.options[structure.options.selectedIndex].value
 	const selectedRegime = regime.options[regime.options.selectedIndex].value
 
@@ -36,7 +36,7 @@ const onConfigure = () => {
 	const structure = document.getElementById('select-structure')
 	const regime = document.getElementById('select-regime')
 
-	const update = buildColumns(structure, regime)
+	const update = buildEar(structure, regime)
 	sticks = update.sticks
 	sensors = update.sensors
 
