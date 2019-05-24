@@ -7,6 +7,7 @@ export class Sensor {
 		this.isBeingPulled = false
 		this.tensionSpeed = 0.05
 		this.key = sensor.key
+		this.column = sensor.column
 		this.sensorPosition = sensor.sensorPosition
 
 		this.setKeyDownEventListener()

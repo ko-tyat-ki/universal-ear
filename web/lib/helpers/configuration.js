@@ -6,24 +6,32 @@ export const calculateConfiguration = (selectedStructure) => {
             return {
                 sticks: [
                     {
-                        x: 122,
-                        y: -180,
-                        z: 0
+                        name: '1',
+                        init: {
+                            x: 122,
+                            y: -180,
+                            z: 0
+                        }
                     },
                     {
-                        x: -122,
-                        y: -180,
-                        z: 0
+                        name: '2',
+                        init: {
+                            x: -122,
+                            y: -180,
+                            z: 0
+                        }
                     }
                 ],
                 sensors: [
                     {
                         key: 'a',
-                        sensorPosition: 10
+                        sensorPosition: 10,
+                        column: '1'
                     },
                     {
                         key: 's',
-                        sensorPosition: 30
+                        sensorPosition: 30,
+                        column: '2'
                     }
                 ],
                 poles: [

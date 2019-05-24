@@ -2,12 +2,10 @@ const flicker = (measurements, sticks, sensors) => {
 	const brightColor = 0x55ffff
 
 	return measurements.map((measurement) => {
-		const key = measurement.name
+		const name = measurement.name
 
-		let sensor = sensors.find(sensor => sensor.key === key)
-
-		const stickKey = sensors.indexOf(sensor)
-		const stick = sticks[stickKey]
+		const sensor = sensors.find(sensor => sensor.key === name)
+		const stick = sticks.find(stick => stick.name === sensor.column)
 
 		const tension = measurement.tension
 		const numberOfLEDs = stick.numberOfLEDs
@@ -25,7 +23,7 @@ const flicker = (measurements, sticks, sensors) => {
 			})
 		}
 		return [{
-			key: stickKey,
+			key: stick.name,
 			leds
 		}]
 	})

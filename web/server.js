@@ -122,8 +122,7 @@ io.on('connection', socket => {
 		ledsConfig.map(ledConfig => socket.emit('ledsChanged', ledConfig))
 	})
 
-	socket.on('configure', function (configuration) {
-		console.log('configuration', configuration)
+	socket.on('configure', configuration => {
 		clientConfigurations[socket.id] = configuration
 	})
 
