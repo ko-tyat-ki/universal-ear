@@ -47,7 +47,7 @@ const onConfigure = () => {
 
 		changes.map(change => {
 			if (!change) return
-			let stick = sticks.find(stick => stick.stickName === change.key)
+			let stick = sticks.find(stick => stick.name === change.key)
 			stick.colorLeds(change.leds)
 		})
 	})

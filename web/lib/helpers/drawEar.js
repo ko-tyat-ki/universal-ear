@@ -48,9 +48,9 @@ const drawStick = (stick, scene) => {
 	return [...Array(NUMBER_OF_LEDS)].map((num, key) => {
 		return addLED({
 			size: STICK_SIZE,
-			x: stick.x,
-			y: stick.y + key * ONE_LED_SIZE,
-			z: stick.z,
+			x: stick.init.x,
+			y: stick.init.y + key * ONE_LED_SIZE,
+			z: stick.init.z,
 			color: INIT_STICK_COLOR
 		}, scene)
 	})
@@ -59,9 +59,9 @@ const drawStick = (stick, scene) => {
 export const drawEar = (configuration, scene) => {
 	drawStructure(configuration.poles, scene)
 
-	const sticks = configuration.sticks.map((stick, key) => {
+	const sticks = configuration.sticks.map(stick => {
 		const stickLEDS = drawStick(stick, scene)
-		return new Stick(NUMBER_OF_LEDS, stickLEDS, key)
+		return new Stick(NUMBER_OF_LEDS, stickLEDS, stick.name)
 	})
 
 	const sensors = configuration.sensors.map(sensor => {
