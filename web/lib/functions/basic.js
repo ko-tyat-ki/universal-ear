@@ -14,7 +14,7 @@ const basic = (measurements, sticks, sensors) => {
 
 		const leds = []
 
-		for (let key = 0; key < Math.min(tension, numberOfLEDs / 2); key++) {
+		for (let key = 0; key < tension; key++) {
 			leds.push({
 				number: Math.max(sensor.sensorPosition - key, 0),
 				color: brightColor
