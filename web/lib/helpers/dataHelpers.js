@@ -71,8 +71,9 @@ const eliminateLEDsConfigRepetition = (ledsConfig) => {
 const regroupConfig = (ledsConfig) => {
     const regroupedConfig = []
 
-    ledsConfig.forEach(ledConfig => {
-        ledConfig.forEach(stickConfig => {
+
+    ledsConfig.filter(Boolean).forEach(ledConfig => {
+        ledConfig.filter(Boolean).forEach(stickConfig => {
             const found = regroupedConfig.find(el => el.key === stickConfig.key)
             if (!found) {
                 regroupedConfig.push(stickConfig)
