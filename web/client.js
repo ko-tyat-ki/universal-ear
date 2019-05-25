@@ -40,14 +40,13 @@ const onConfigure = () => {
 	sticks = update.sticks
 	sensors = update.sensors
 
-	socket.on('ledsChanged', (changes) => {
+	socket.on('ledsChanged', changes => {
 		if (!changes) return
 		if (!sticks) return
 		if (changes.length <= 0) return
 
 		changes.map(change => {
-			if (!change) return
-			let stick = sticks.find(stick => stick.name === change.key)
+			const stick = sticks.find(stick => stick.name === change.key)
 			stick.colorLeds(change.leds)
 		})
 	})

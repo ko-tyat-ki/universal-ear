@@ -6,7 +6,10 @@ import path from 'path'
 import http from 'http'
 import socketio from 'socket.io'
 import modes from './lib/visualisations'
-import { putLedsInBufferArray } from './lib/helpers/dataHelpers'
+import {
+	putLedsInBufferArray,
+	regroupConfig
+} from './lib/helpers/dataHelpers'
 
 import 'babel-polyfill'
 
@@ -27,6 +30,12 @@ server.listen(3000, () => {
 const connectedSockets = {}
 const clientConfigurations = {}
 let ledsConfig
+let currentMode = modes[0]
+const measurements = [
+	{ name: 'a', tension: 0 },
+	{ name: 's', tension: 0 },
+	{ name: 'real', tension: 0 }
+]
 
 const BAUD_RATE = 115200
 const NUMBER_OF_LEDS = 40
@@ -58,7 +67,7 @@ parser.on('data', data => {
 	if (areWeWriting && ledsConfig) {
 		console.log('DATA IN', data)
 
-		const ledsBufferArray = putLedsInBufferArray(ledsConfig[0][0].leds, NUMBER_OF_LEDS)
+		const ledsBufferArray = putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
 		port.write(ledsBufferArray)
 		areWeWriting = false
 	} else {
@@ -66,7 +75,9 @@ parser.on('data', data => {
 		if (data == 'eat me\r') {
 			areWeWriting = true
 		} else {
-			console.log('SENSOR DATA', data.split('\t')[0])
+			const sensorData = data.split('\t')[0]
+			console.log('SENSOR DATA', sensorData)
+			// const measurements = []
 		}
 	}
 })
@@ -74,8 +85,9 @@ parser.on('data', data => {
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
 
-	socket.on('measurements', (measurements) => {
-		if (!measurements) return
+	socket.on('measurements', (clientMeasurements) => {
+		console.log('measurements', clientMeasurements)
+		if (!clientMeasurements) return
 		// TODO: log measurements into file (+ rotate log and remove zero values)
 
 		let config = clientConfigurations[socket.id]
@@ -88,15 +100,15 @@ io.on('connection', socket => {
 			return
 		} // TODO: logging
 
-		const currentMode = modes[config.mode]
+		currentMode = modes[config.mode]
 		if (!currentMode) {
 			return
 		} // TODO: logging
 
-		ledsConfig = currentMode(measurements, sticks, config.sensors).filter(Boolean)
-		console.log(ledsConfig)
-
-		ledsConfig.map(ledConfig => socket.emit('ledsChanged', ledConfig))
+		const ledsConfigFromClient = currentMode(clientMeasurements, sticks, config.sensors).filter(Boolean)
+		ledsConfig = regroupConfig(ledsConfigFromClient)
+		socket.emit('ledsChanged', ledsConfig)
+		// ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig))
 	})
 
 	socket.on('configure', configuration => {
