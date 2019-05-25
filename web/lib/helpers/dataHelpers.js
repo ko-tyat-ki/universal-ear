@@ -3,13 +3,28 @@
 const addColor = (ledOne, ledTwo) => {
     const ledOneRGB = transformHexToRgb(ledOne)
     const ledTwoRGB = transformHexToRgb(ledTwo)
-    return Math.min(ledOneRGB.r + ledTwoRGB.r, 255) * 256 * 256 + Math.min(ledOneRGB.g + ledTwoRGB.g, 255) * 256 + Math.min(ledOneRGB.b + ledTwoRGB.b, 255)
+    return Math.min(ledOneRGB.r + ledTwoRGB.r, 255) * 256 * 256
+        + Math.min(ledOneRGB.g + ledTwoRGB.g, 255) * 256
+        + Math.min(ledOneRGB.b + ledTwoRGB.b, 255)
 }
 
 const combineLEDs = (first, second) => {
-    return first.map((el, key) => {
-        return addColor(el, second[key])
+    const outcome = []
+    first.forEach(ledOne => {
+        const thatSecond = second.find(ledTwo => ledTwo.number === ledOne.number)
+        outcome.push({
+            number: ledOne.number,
+            color: thatSecond ? addColor(ledOne.color, thatSecond.color) : ledOne.color
+        })
     })
+    second.forEach(ledOne => {
+        const notMissing = outcome.find(ledTwo => ledTwo.number === ledOne.number)
+        if (!notMissing) {
+            outcome.push(ledOne)
+        }
+    })
+
+    return outcome
 }
 
 const eliminateLEDsConfigRepetition = (ledsConfig) => {
@@ -33,18 +48,17 @@ const eliminateLEDsConfigRepetition = (ledsConfig) => {
 }
 
 const regroupConfig = (ledsConfig) => {
-    const regroupedConfig = {}
+    const regroupedConfig = []
 
     ledsConfig.forEach(ledConfig => {
-        if (ledConfig) {
-            ledConfig.forEach(stickConfig => {
-                if (!regroupedConfig[stickConfig.key]) {
-                    regroupedConfig[stickConfig.key] = stickConfig.leds
-                    return
-                }
-                regroupedConfig[stickConfig.key] = combineLEDs(regroupedConfig[stickConfig.key], stickConfig.leds)
-            })
-        }
+        ledConfig.forEach(stickConfig => {
+            const found = regroupedConfig.find(el => el.key === stickConfig.key)
+            if (!found) {
+                regroupedConfig.push(stickConfig)
+            } else {
+                found.leds = combineLEDs(found.leds, stickConfig.leds)
+            }
+        })
     })
 
     return regroupedConfig
