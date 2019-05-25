@@ -1,4 +1,25 @@
 /* global Math */
+/* global ArrayBuffer */
+/* global Uint8Array */
+
+const putLedsInBufferArray = (columnLedsConfig, numberOfLeds) => {
+    const bufferArray = new ArrayBuffer(numberOfLeds * 3 + 3)
+    const ledsBufferArray = new Uint8Array(bufferArray)
+    const startByte = 0x10
+    const sizeByte = 0x11
+    const checkSum = 0x12
+
+    ledsBufferArray[0] = startByte
+    ledsBufferArray[1] = sizeByte
+    columnLedsConfig.slice(0, numberOfLeds).forEach(led => {
+        const rgb = transformHexToRgb(led.color)
+        ledsBufferArray[led.number * 3 + 2] = rgb.r
+        ledsBufferArray[led.number * 3 + 3] = rgb.g
+        ledsBufferArray[led.number * 3 + 4] = rgb.b
+    })
+    ledsBufferArray[numberOfLeds * 3 + 2] = checkSum
+    return ledsBufferArray
+}
 
 const addColor = (ledOne, ledTwo) => {
     const ledOneRGB = transformHexToRgb(ledOne)
@@ -78,5 +99,6 @@ export {
     combineLEDs,
     regroupConfig,
     transformHexToRgb,
+    putLedsInBufferArray,
     eliminateLEDsConfigRepetition
 }

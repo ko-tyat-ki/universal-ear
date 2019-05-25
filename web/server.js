@@ -1,14 +1,12 @@
 /* global console */
 /* global __dirname */
-/* global Uint8Array */
-/* global ArrayBuffer */
 
 import express from 'express'
 import path from 'path'
 import http from 'http'
 import socketio from 'socket.io'
 import modes from './lib/visualisations'
-import { transformHexToRgb } from './lib/helpers/dataHelpers'
+import { putLedsInBufferArray } from './lib/helpers/dataHelpers'
 
 import 'babel-polyfill'
 
@@ -31,6 +29,7 @@ const clientConfigurations = {}
 let ledsConfig
 
 const BAUD_RATE = 115200
+const NUMBER_OF_LEDS = 40
 
 import SerialPort from 'serialport'
 import Readline from '@serialport/parser-readline'
@@ -59,30 +58,15 @@ parser.on('data', data => {
 	if (areWeWriting && ledsConfig) {
 		console.log('DATA IN', data)
 
-		const numberOfLeds = 40
-		const bufferArray = new ArrayBuffer(numberOfLeds * 3 + 3)
-		const dataForBuffer = new Uint8Array(bufferArray)
-		const startByte = 0x10
-		const sizeByte = 0x11
-		const checkSum = 0x12
-
-		dataForBuffer[0] = startByte
-		dataForBuffer[1] = sizeByte
-		ledsConfig[0][0].leds.slice(0, numberOfLeds).forEach(led => {
-			const rgb = transformHexToRgb(led.color)
-			dataForBuffer[led.number * 3 + 2] = rgb.r
-			dataForBuffer[led.number * 3 + 3] = rgb.g
-			dataForBuffer[led.number * 3 + 4] = rgb.b
-		})
-		dataForBuffer[numberOfLeds * 3 + 2] = checkSum
-		port.write(dataForBuffer)
+		const ledsBufferArray = putLedsInBufferArray(ledsConfig[0][0].leds, NUMBER_OF_LEDS)
+		port.write(ledsBufferArray)
 		areWeWriting = false
 	} else {
 		console.log('Data IN, listen', data)
 		if (data == 'eat me\r') {
 			areWeWriting = true
 		} else {
-			console.log(data.split('\t')[0])
+			console.log('SENSOR DATA', data.split('\t')[0])
 		}
 	}
 })
@@ -110,6 +94,7 @@ io.on('connection', socket => {
 		} // TODO: logging
 
 		ledsConfig = currentMode(measurements, sticks, config.sensors).filter(Boolean)
+		console.log(ledsConfig)
 
 		ledsConfig.map(ledConfig => socket.emit('ledsChanged', ledConfig))
 	})
