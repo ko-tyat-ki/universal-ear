@@ -30,12 +30,7 @@ server.listen(3000, () => {
 const connectedSockets = {}
 const clientConfigurations = {}
 let ledsConfig
-let currentMode = modes[0]
-const measurements = [
-	{ name: 'a', tension: 0 },
-	{ name: 's', tension: 0 },
-	{ name: 'real', tension: 0 }
-]
+let currentMode = modes.basic
 
 const BAUD_RATE = 115200
 const NUMBER_OF_LEDS = 40
@@ -67,17 +62,30 @@ parser.on('data', data => {
 	if (areWeWriting && ledsConfig) {
 		console.log('DATA IN', data)
 
+		const sensorData = data.split('\t')[0].split('! ')[1]
+		// console.log('SENSOR', sensorData)
+		const realMeasurements = [{ name: 'real', tension: sensorData - 80 }]
+		// socket.emit('measurements', realMeasurements)
+		const sticks = [
+			{ numberOfLEDs: NUMBER_OF_LEDS, name: '1' },
+			{ numberOfLEDs: NUMBER_OF_LEDS, name: '2' }
+		]
+		const realSensors = [{
+			key: 'real',
+			column: '1',
+			sensorPosition: 20
+		}]
+		const ledsConfigFromClient = currentMode(realMeasurements, sticks, realSensors).filter(Boolean)
+		console.log('LEDS', ledsConfigFromClient[0][0].leds)
+		ledsConfig = regroupConfig(ledsConfigFromClient)
+
 		const ledsBufferArray = putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
 		port.write(ledsBufferArray)
 		areWeWriting = false
 	} else {
 		console.log('Data IN, listen', data)
-		if (data == 'eat me\r') {
+		if (data === 'eat me\r') {
 			areWeWriting = true
-		} else {
-			const sensorData = data.split('\t')[0]
-			console.log('SENSOR DATA', sensorData)
-			// const measurements = []
 		}
 	}
 })
@@ -85,8 +93,7 @@ parser.on('data', data => {
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
 
-	socket.on('measurements', (clientMeasurements) => {
-		console.log('measurements', clientMeasurements)
+	socket.on('measurements', clientMeasurements => {
 		if (!clientMeasurements) return
 		// TODO: log measurements into file (+ rotate log and remove zero values)
 
