@@ -1,11 +1,14 @@
 /* global test */
 /* global expect */
+/* global ArrayBuffer */
+/* global Uint8Array */
 
 import {
     addColor,
     combineLEDs,
     regroupConfig,
     transformHexToRgb,
+    putLedsInBufferArray,
     eliminateLEDsConfigRepetition
 } from '../web/lib/helpers/dataHelpers'
 
@@ -73,4 +76,12 @@ test('#regroupConfig', () => {
     ]
 
     expect(regroupConfig(ledsConfig)).toEqual(expected)
+})
+
+test('#putLedsInBufferArray', () => {
+    const leds = [{ number: 0, color: 7 }, { number: 1, color: 8 }, { number: 2, color: 9 }]
+    const buffer = new ArrayBuffer(3 * leds.length + 3)
+    const expected = new Uint8Array(buffer)
+    expected.set([0x10, 0x11, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0x12], 0)
+    expect(putLedsInBufferArray(leds, 3)).toEqual(expected)
 })
