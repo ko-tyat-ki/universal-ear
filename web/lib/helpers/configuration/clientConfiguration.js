@@ -352,7 +352,7 @@ export const calculateConfiguration = (selectedStructure) => {
                         name: '1',
                         init: {
                             x: 0,
-                            y: -50,
+                            y: 0,
                             z: 0
                         }
                     },
@@ -360,7 +360,7 @@ export const calculateConfiguration = (selectedStructure) => {
                         name: '2',
                         init: {
                             x: 147,
-                            y: -180,
+                            y: -130,
                             z: 0
                         }
                     },
@@ -368,7 +368,7 @@ export const calculateConfiguration = (selectedStructure) => {
                         name: '3',
                         init: {
                             x: 72,
-                            y: -180,
+                            y: -130,
                             z: 126
                         }
                     },
@@ -376,7 +376,7 @@ export const calculateConfiguration = (selectedStructure) => {
                         name: '4',
                         init: {
                             x: -72,
-                            y: -180,
+                            y: -130,
                             z: 126
                         }
                     },
@@ -384,7 +384,7 @@ export const calculateConfiguration = (selectedStructure) => {
                         name: '5',
                         init: {
                             x: -147,
-                            y: -180,
+                            y: -130,
                             z: 0
                         }
                     },
@@ -392,7 +392,7 @@ export const calculateConfiguration = (selectedStructure) => {
                         name: '6',
                         init: {
                             x: -72,
-                            y: -50,
+                            y: 0,
                             z: -126
                         }
                     },
@@ -400,7 +400,7 @@ export const calculateConfiguration = (selectedStructure) => {
                         name: '7',
                         init: {
                             x: 72,
-                            y: -50,
+                            y: 0,
                             z: -126
                         }
                     },
@@ -408,7 +408,7 @@ export const calculateConfiguration = (selectedStructure) => {
                         name: '8',
                         init: {
                             x: 297,
-                            y: -180,
+                            y: -130,
                             z: 0
                         }
                     },
@@ -416,7 +416,7 @@ export const calculateConfiguration = (selectedStructure) => {
                         name: '9',
                         init: {
                             x: 147,
-                            y: -180,
+                            y: -130,
                             z: 256
                         }
                     },
@@ -424,7 +424,7 @@ export const calculateConfiguration = (selectedStructure) => {
                         name: '10',
                         init: {
                             x: -147,
-                            y: -180,
+                            y: -130,
                             z: 256
                         }
                     },
@@ -432,7 +432,7 @@ export const calculateConfiguration = (selectedStructure) => {
                         name: '11',
                         init: {
                             x: -297,
-                            y: -180,
+                            y: -130,
                             z: 0
                         }
                     }
