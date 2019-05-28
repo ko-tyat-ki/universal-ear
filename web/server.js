@@ -40,6 +40,29 @@ import Readline from '@serialport/parser-readline'
 
 const arduinoPort = '.usbmodem14201'
 
+// port1 = {
+// 	name: '',
+// 	column: '',
+// 	sensors: [
+// 		{
+// 			name: '',
+// 			postion: ''
+// 		}
+// 	]
+// }
+
+// const ports = [port1, port2]
+
+// ports.map(port => {
+// 	createPort(port.name, BAUD_RATE)
+
+// 	const parser = serverPort()
+
+// 	parser.on('data', () => {
+
+// 	})
+// })
+
 // const port = new SerialPort('COM14', {
 const port = new SerialPort(`/dev/tty${arduinoPort}`, {
 	baudRate: BAUD_RATE
@@ -63,7 +86,6 @@ parser.on('data', data => {
 		console.log('DATA IN', data)
 
 		const sensorData = data.split('\t')[0].split('! ')[1]
-		// console.log('SENSOR', sensorData)
 		const realMeasurements = [{ name: 'real', tension: sensorData - 80 }]
 		// socket.emit('measurements', realMeasurements)
 		const sticks = [
@@ -115,7 +137,7 @@ io.on('connection', socket => {
 		const ledsConfigFromClient = currentMode(clientMeasurements, sticks, config.sensors).filter(Boolean)
 		ledsConfig = regroupConfig(ledsConfigFromClient)
 		socket.emit('ledsChanged', ledsConfig)
-		// ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig))
+		// ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig)) // keep for now for development processes
 	})
 
 	socket.on('configure', configuration => {

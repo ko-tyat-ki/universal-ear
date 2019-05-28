@@ -5,7 +5,7 @@ import express from 'express'
 import path from 'path'
 import http from 'http'
 import socketio from 'socket.io'
-import WebMeasurementsProvider from "./lib/classes/WebMeasurementsProvider"
+import WebMeasurementsProvider from "./WebMeasurementsProvider"
 import { calculateConfiguration } from "./lib/helpers/configuration"
 
 const app = express()
@@ -24,9 +24,9 @@ let clientConfiguration = calculateConfiguration('duet')
 io.on('connection', (socket) => {
 
   socket.on('configure', function (configuration) {
-		console.log('configuration', configuration)
-		clientConfiguration = configuration
-	})
+    console.log('configuration', configuration)
+    clientConfiguration = configuration
+  })
 
   webMeasurementsProvider.listenForInput(socket)
 })
