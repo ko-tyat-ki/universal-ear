@@ -5,7 +5,7 @@
 
 import { drawEar } from './lib/helpers/drawEar.js'
 import { init, animate } from './lib/helpers/setUpWorld.js'
-import { calculateConfiguration } from './lib/helpers/configuration.js'
+import { calculateConfiguration } from './lib/helpers/configuration/clientConfiguration.js'
 
 let socket = io()
 let scene
