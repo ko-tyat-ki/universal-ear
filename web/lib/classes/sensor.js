@@ -99,17 +99,32 @@ export class Sensor {
 
 	slowUpTensionFormula(timeValue) {
 		console.log("SLOW UP", this.slowSensorAmplitude * (1 - Math.exp(-timeValue * this.slowSensorSpeed)))
-		return this.slowSensorAmplitude * (1 - Math.exp(-timeValue * this.slowSensorSpeed))
+		const output = this.slowSensorAmplitude * (1 - Math.exp(-timeValue * this.slowSensorSpeed))
+		if (output < 1) {
+			return 0
+		} else {
+			return output
+		}
 	}
 
 	slowDownTensionFormula(timeValue) {
 		console.log("SLOW DOWN", this.slowSensorAmplitude * Math.exp(-timeValue * this.slowSensorSpeed))
-		return this.slowSensorAmplitude * Math.exp(-timeValue * this.slowSensorSpeed)
+		const output = this.slowSensorAmplitude * Math.exp(-timeValue * this.slowSensorSpeed)
+		if (output < 1) {
+			return 0
+		} else {
+			return output
+		}
 	}
 
 	fastTensionFormula(timeValue) {
 		console.log("FAST", this.fastSensorAmplitude * timeValue * Math.exp(-timeValue * this.fastSensorSpeed))
-		return this.fastSensorAmplitude * timeValue * Math.exp(-timeValue * this.fastSensorSpeed)
+		const output = this.fastSensorAmplitude * timeValue * Math.exp(-timeValue * this.fastSensorSpeed)
+		if (output < 1) {
+			return 0
+		} else {
+			return output
+		}
 	}
 
 
