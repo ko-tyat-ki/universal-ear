@@ -67,15 +67,16 @@ const onConfigure = () => {
 	})
 	regime.addEventListener('change', onConfigure)
 
-	let currentTime = Date.now()
+	//let currentTime = Date.now()
 
 	setInterval(() => {
-		const delta = Date.now() - currentTime
+		//const delta = Date.now() - currentTime
 
 		if (!sensors) return
 
 		sensors.forEach((sensor) => {
-			sensor.update(delta)
+		//	sensor.update(delta)
+			sensor.realisticSensorUpdate();
 		})
 
 		const measurements = sensors.map(sensor => {
@@ -86,6 +87,6 @@ const onConfigure = () => {
 		})
 
 		socket.emit('measurements', measurements)
-		currentTime = Date.now()
+		//currentTime = Date.now()
 	}, 50)
 })()
