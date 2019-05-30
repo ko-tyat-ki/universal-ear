@@ -4,7 +4,7 @@
 /* global io */
 
 import { drawEar } from './lib/helpers/drawEar.js'
-import { init, animate } from './lib/helpers/setUpWorld.js'
+import { init, animate } from './lib/helpers/setUpClientWorld.js'
 import { calculateFakeSensors } from './lib/helpers/configuration/fakeSensorsConfig.js'
 import { calculateClientSticks } from './lib/helpers/configuration/clientSticksConfig.js'
 import { calculateClientPoles } from './lib/helpers/configuration/clientPolesConfig.js'
