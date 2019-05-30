@@ -6,12 +6,12 @@ import path from 'path'
 import http from 'http'
 import socketio from 'socket.io'
 import modes from './lib/visualisations'
+import 'babel-polyfill'
 import {
 	putLedsInBufferArray,
 	regroupConfig
 } from './lib/helpers/dataHelpers'
-
-import 'babel-polyfill'
+import { connectToArduinos } from './lib/helpers/connectToArduinos.js'
 
 const app = express()
 const server = new http.Server(app)
@@ -26,91 +26,57 @@ server.listen(3000, () => {
 	console.log('I am listenning on 3000')
 })
 
-// Client socket connection
+const NUMBER_OF_LEDS = 40
+
 const connectedSockets = {}
 const clientConfigurations = {}
 let ledsConfig
 let currentMode = modes.basic
-
-const BAUD_RATE = 115200
-const NUMBER_OF_LEDS = 40
-
-import SerialPort from 'serialport'
-import Readline from '@serialport/parser-readline'
-
-const arduinoPort = '.usbmodem14201'
-
-// port1 = {
-// 	name: '',
-// 	column: '',
-// 	sensors: [
-// 		{
-// 			name: '',
-// 			postion: ''
-// 		}
-// 	]
-// }
-
-// const ports = [port1, port2]
-
-// ports.map(port => {
-// 	createPort(port.name, BAUD_RATE)
-
-// 	const parser = serverPort()
-
-// 	parser.on('data', () => {
-
-// 	})
-// })
-
-// const port = new SerialPort('COM14', {
-const port = new SerialPort(`/dev/tty${arduinoPort}`, {
-	baudRate: BAUD_RATE
-})
-
-const parser = port.pipe(new Readline({ delimiter: '\n' }))
-
-port.on('error', (err) => {
-	console.log('Port failure, removing device.', err)
-})
-
-// port failures
-port.on('close', (err) => {
-	console.log('Port was closed.', err)
-})
-
 let areWeWriting = true
 
-parser.on('data', data => {
-	if (areWeWriting && ledsConfig) {
-		console.log('DATA IN', data)
+const arduinos = connectToArduinos()
 
-		const sensorData = data.split('\t')[0].split('! ')[1]
-		const realMeasurements = [{ name: 'real', tension: sensorData - 80 }]
-		// socket.emit('measurements', realMeasurements)
-		const sticks = [
-			{ numberOfLEDs: NUMBER_OF_LEDS, name: '1' },
-			{ numberOfLEDs: NUMBER_OF_LEDS, name: '2' }
-		]
-		const realSensors = [{
-			key: 'real',
-			column: '1',
-			sensorPosition: 20
-		}]
-		const ledsConfigFromClient = currentMode(realMeasurements, sticks, realSensors).filter(Boolean)
-		console.log('LEDS', ledsConfigFromClient[0][0].leds)
-		ledsConfig = regroupConfig(ledsConfigFromClient)
+const calculateDataForRealLeds = (data) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
+	const sensorData = data.split('\t')[0].split('! ')[1]
+	const realMeasurements = [{ name: 'real', tension: sensorData - 80 }]
+	// socket.emit('measurements', realMeasurements)
+	const sticks = [
+		{ numberOfLEDs: NUMBER_OF_LEDS, name: '1' },
+		{ numberOfLEDs: NUMBER_OF_LEDS, name: '2' }
+	]
+	const realSensors = [{
+		key: 'real',
+		column: '1',
+		sensorPosition: 20
+	}]
+	const ledsConfigFromClient = currentMode(realMeasurements, sticks, realSensors).filter(Boolean)
+	console.log('LEDS', ledsConfigFromClient[0][0].leds)
+	ledsConfig = regroupConfig(ledsConfigFromClient)
 
-		const ledsBufferArray = putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
-		port.write(ledsBufferArray)
-		areWeWriting = false
-	} else {
-		console.log('Data IN, listen', data)
-		if (data === 'eat me\r') {
-			areWeWriting = true
-		}
-	}
-})
+	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
+}
+
+if (arduinos && arduinos.length > 0) {
+	arduinos.map(arduino => {
+		const port = arduino.port
+		const parser = arduino.parser
+
+		parser.on('data', data => {
+			if (areWeWriting && ledsConfig) {
+				console.log('DATA IN', data)
+
+
+				port.write(calculateDataForRealLeds(data))
+				areWeWriting = false
+			} else {
+				console.log('Data IN, listen', data)
+				if (data === 'eat me\r') {
+					areWeWriting = true
+				}
+			}
+		})
+	})
+}
 
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
