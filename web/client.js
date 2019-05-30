@@ -5,7 +5,9 @@
 
 import { drawEar } from './lib/helpers/drawEar.js'
 import { init, animate } from './lib/helpers/setUpWorld.js'
-import { calculateConfiguration } from './lib/helpers/configuration/clientConfiguration.js'
+import { calculateFakeSensors } from './lib/helpers/configuration/fakeSensorsConfig.js'
+import { calculateClientSticks } from './lib/helpers/configuration/clientSticksConfig.js'
+import { calculateClientPoles } from './lib/helpers/configuration/clientPolesConfig.js'
 
 let socket = io()
 let scene
@@ -14,7 +16,11 @@ const buildEar = (structure, regime) => {
 	const selectedStructure = structure.options[structure.options.selectedIndex].value
 	const selectedRegime = regime.options[regime.options.selectedIndex].value
 
-	const configuration = calculateConfiguration(selectedStructure)
+	const configuration = {
+		sensors: calculateFakeSensors(selectedStructure),
+		sticks: calculateClientSticks(selectedStructure),
+		poles: calculateClientPoles(selectedStructure)
+	}
 
 	const ear = drawEar(configuration, scene)
 
