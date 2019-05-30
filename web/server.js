@@ -1,30 +1,12 @@
 /* global console */
-/* global __dirname */
 
-import express from 'express'
-import path from 'path'
-import http from 'http'
-import socketio from 'socket.io'
 import modes from './lib/visualisations'
-import 'babel-polyfill'
 import {
 	putLedsInBufferArray,
 	regroupConfig
 } from './lib/helpers/dataHelpers'
 import { connectToArduinos } from './lib/helpers/connectToArduinos.js'
-
-const app = express()
-const server = new http.Server(app)
-const io = socketio(server)
-
-app.use('/', express.static(path.join(__dirname, '../static/')))
-app.use('/static/', express.static(path.join(__dirname, '../static/')))
-app.use('/web/client.js', express.static(path.join(__dirname, 'client.js')))
-app.use('/web/lib/', express.static(path.join(__dirname, 'lib')))
-
-server.listen(3000, () => {
-	console.log('I am listenning on 3000')
-})
+import { spinServer } from './lib/helpers/spinServer.js'
 
 const NUMBER_OF_LEDS = 40
 
@@ -34,6 +16,7 @@ let ledsConfig
 let currentMode = modes.basic
 let areWeWriting = true
 
+const io = spinServer()
 const arduinos = connectToArduinos()
 
 const calculateDataForRealLeds = (data) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
