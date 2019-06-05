@@ -12,7 +12,6 @@ export class Sensor {
 		this.setKeyDownEventListener()
 		this.setKeyUpEventListener()
 		this.isSlowSensor = false
-		//this.currentTime = Date.now()
 		this.startCounting
 
 		// Sensor simulation coefficients:
@@ -51,15 +50,6 @@ export class Sensor {
 		)
 	}
 
-	read() { // DO WE USE IT???
-		return this.tension
-	}
-
-	pull() { // DO WE USE IT??
-		// TODO: pull speed
-		this.tension += 1
-	}
-
 	update(delta) {
 		let tension = this.tension
 
@@ -72,15 +62,10 @@ export class Sensor {
 		this.tension = Math.max(this.minimalTension, tension)
 	}
 
-	//setCurrentTime(currentTime) {
-	//	this.currentTime = currentTime
-	//}
-
 	realisticSensorUpdate() {
 		const timePassed = Date.now() - this.startCounting
 		const timeThreshold = 500 // in milliseconds
 		if (this.isBeingPulled) {
-			//console.log("pulled", timePassed)
 			if (timePassed > timeThreshold) {
 				this.isSlowSensor = true
 				this.tension = this.slowUpTensionFormula(timePassed - timeThreshold)
@@ -88,7 +73,6 @@ export class Sensor {
 				this.isSlowSensor = false
 			}
 		} else {
-			//console.log("not pulled", timePassed)
 			if (this.isSlowSensor) {
 				this.tension = this.slowDownTensionFormula(timePassed)
 			} else {
