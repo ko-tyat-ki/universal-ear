@@ -87,5 +87,5 @@ const onConfigure = () => {
 		})
 
 		socket.emit('measurements', measurements)
-	}, 50)
+	}, 100)
 })()
