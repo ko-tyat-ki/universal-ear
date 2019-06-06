@@ -1,6 +1,5 @@
 /* global document */
 /* global setInterval */
-
 /* global io */
 
 import { drawEar } from './lib/helpers/drawEar.js'
@@ -73,16 +72,11 @@ const onConfigure = () => {
 	})
 	regime.addEventListener('change', onConfigure)
 
-	//let currentTime = Date.now()
-
 	setInterval(() => {
-		//const delta = Date.now() - currentTime
-
 		if (!sensors) return
 
 		sensors.forEach((sensor) => {
-		//	sensor.update(delta)
-			sensor.realisticSensorUpdate();
+			sensor.realisticSensorUpdate()
 		})
 
 		const measurements = sensors.map(sensor => {
@@ -93,6 +87,5 @@ const onConfigure = () => {
 		})
 
 		socket.emit('measurements', measurements)
-		//currentTime = Date.now()
 	}, 50)
 })()
