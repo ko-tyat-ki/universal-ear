@@ -1,10 +1,11 @@
 const INIT_STICK_COLOR = 0x222244
 
 export class Stick {
-	constructor(numberOfLEDs, StickLEDs, name) {
+	constructor(numberOfLEDs, StickLEDs, name, init) {
 		this.numberOfLEDs = numberOfLEDs
 		this.StickLEDs = StickLEDs
 		this.name = name
+		this.init = init
 	}
 
 	colorLeds(leds) {
