@@ -1,4 +1,4 @@
-import visualisations from "../web/lib/visualisations"
+import visualisations from "../../web/lib/visualisations"
 import DeviceReader from "../web/lib/classes/HardwareMeasurementsProvider"
 
 class MeasurementProcessor {
@@ -43,36 +43,36 @@ let processor = new MeasurementProcessor()
 let deviceReader = new DeviceReader()
 
 
-// Loop that reads measurements, stores them in collector
-// sends them to python and processor
-(async () => {
-  let stop = false
-  let currentTime = Date.now()
+  // Loop that reads measurements, stores them in collector
+  // sends them to python and processor
+  (async () => {
+    let stop = false
+    let currentTime = Date.now()
 
-  while (!stop) {
+    while (!stop) {
 
-    let deviceMeasurements = deviceReader.readMeasurements()
-    collector.collectMeasurements(deviceMeasurements)
+      let deviceMeasurements = deviceReader.readMeasurements()
+      collector.collectMeasurements(deviceMeasurements)
 
-  //   const delta = Date.now() - currentTime
-  //
-  //   if (!arduinos) continue
-  //
-  //   arduinos.forEach((arduino) => {
-  //     arduino.update(delta)
-  //   })
-  //
-  //   const measurements = arduinos.map(a => {
-  //     return {
-  //       name: a.key,
-  //       tension: a.tension
-  //     }
-  //   })
-  //
-  //   socket.emit('measurements', measurements)
-  //   currentTime = Date.now()
-  //   await sleep(10)
-  }
-})()
+      //   const delta = Date.now() - currentTime
+      //
+      //   if (!arduinos) continue
+      //
+      //   arduinos.forEach((arduino) => {
+      //     arduino.update(delta)
+      //   })
+      //
+      //   const measurements = arduinos.map(a => {
+      //     return {
+      //       name: a.key,
+      //       tension: a.tension
+      //     }
+      //   })
+      //
+      //   socket.emit('measurements', measurements)
+      //   currentTime = Date.now()
+      //   await sleep(10)
+    }
+  })()
 
 
