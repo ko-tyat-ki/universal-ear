@@ -1,6 +1,6 @@
 /* global THREE */
 
-import { Sensor } from "../classes/sensor.js"
+import { FakeSensor } from "../classes/fakeSensor.js"
 import { Stick } from "../classes/stick.js"
 
 const NUMBER_OF_LEDS = 40
@@ -64,8 +64,8 @@ export const drawEar = (configuration, scene) => {
 		return new Stick(NUMBER_OF_LEDS, stickLEDS, stick.name)
 	})
 
-	const sensors = configuration.sensors.map(sensor => {
-		return new Sensor(0, sensor)
+	const sensors = configuration.fakeSensors.map(fakeSensor => {
+		return new FakeSensor(0, fakeSensor)
 	})
 
 	return {
