@@ -1,11 +1,10 @@
 /* global document */
 
-export class Sensor {
+export class FakeSensor {
 	constructor(tension, sensor) {
 		this.minimalTension = tension
 		this.tension = tension
 		this.isBeingPulled = false
-		this.tensionSpeed = 0.05
 		this.key = sensor.key
 		this.column = sensor.column
 		this.sensorPosition = sensor.sensorPosition
@@ -110,7 +109,4 @@ export class Sensor {
 			return output
 		}
 	}
-
-
-
 }

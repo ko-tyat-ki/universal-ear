@@ -16,7 +16,7 @@ const buildEar = (structure, regime) => {
 	const selectedRegime = regime.options[regime.options.selectedIndex].value
 
 	const configuration = {
-		sensors: calculateFakeSensors(selectedStructure),
+		fakeSensors: calculateFakeSensors(selectedStructure),
 		sticks: calculateClientSticks(selectedStructure),
 		poles: calculateClientPoles(selectedStructure)
 	}
