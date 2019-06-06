@@ -4,9 +4,9 @@
 
 import { drawEar } from './lib/helpers/drawEar.js'
 import { init, animate } from './lib/helpers/setUpClientWorld.js'
-import { calculateFakeSensors } from './lib/helpers/configuration/fakeSensorsConfig.js'
-import { calculateClientSticks } from './lib/helpers/configuration/clientSticksConfig.js'
-import { calculateClientPoles } from './lib/helpers/configuration/clientPolesConfig.js'
+import { calculateFakeSensors } from './lib/configuration/fakeSensorsConfig.js'
+import { calculateClientSticks } from './lib/configuration/clientSticksConfig.js'
+import { calculateClientPoles } from './lib/configuration/clientPolesConfig.js'
 
 let socket = io()
 let scene
