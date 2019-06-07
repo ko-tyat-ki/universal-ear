@@ -45,8 +45,8 @@ You can already choose several *regimes*: "basic", "flicker" etc. This can be ch
 we encourage you to create new ones!
 
 # To add new visualisations.
-Visualisation scripts (.js) can be found under /web/lib/modes/. We ask to add new modes there. 
-After creating new visualisation, add it into web/lib/visualisations.js
+Visualisation scripts (.js) can be found under './web/lib/modes/'. Please create new js-for new modes there. 
+After creating new visualisation script, import it into './web/lib/visualisations.js and add it into './static/index.html' under "<h5>Regime:</h5>"
 
 # Support and questions
 Questions can be forwarded to Katerina or Ivan
