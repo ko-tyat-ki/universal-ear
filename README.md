@@ -23,7 +23,7 @@ pressing keys and control the outputs.
 To contribute to the visualisation creations very basic knowledge of coding
 and github should be enough.
 
-Technical prerequisites: github account, computer with installed and set up git,
+Technical prerequisites: [github account](https://help.github.com/en/articles/connecting-to-github-with-ssh), computer with installed and set up git,
 node and npm (we use node 11).
 
 ## How to run
@@ -68,5 +68,7 @@ and the name of it to export.
 ```
 
 # Support and questions
+
 Any questions, suggestions, love notes - write them either to Katya or Ivan immediately via 
 any known source of commmunication, or submit a github issue.
+
