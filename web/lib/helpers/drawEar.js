@@ -7,7 +7,7 @@ const NUMBER_OF_LEDS = 40
 const STICK_SIZE = 3
 const ONE_LED_SIZE = 6.25
 const POLE_COLOR = 0x221111
-const INIT_STICK_COLOR = 0x55ffff
+const INIT_STICK_COLOR = 0x221111
 
 const addLED = ({
 	size,
