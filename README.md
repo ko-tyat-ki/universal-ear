@@ -67,6 +67,8 @@ and the name of it to export.
 <option value="yourMode">How you want to show your mode</option>
 ```
 
+5. When you are happy with what you've done, create a Pull Request, and tag some of us.
+
 # Support and questions
 
 Any questions, suggestions, love notes - write them either to Katya or Ivan immediately via 
