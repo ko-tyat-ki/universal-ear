@@ -1,4 +1,4 @@
-import {transformHexToRgb} from '../helpers/dataHelpers'
+import { transformHexToRgb } from '../helpers/dataHelpers'
 
 const rain = (sticks, sensors) => {
 	const brightColor = 0x55ffff
@@ -6,13 +6,13 @@ const rain = (sticks, sensors) => {
 	const reduceBrightness = 0
 	return sensors.map(sensor => {
 		const stick = sticks.find(stick => stick.name === sensor.column)
-		console.log(stick.StickLEDs[0].material.color)
+		console.log(stick.StickLEDs[0])
 
 		const tension = sensor.tension
 		const numberOfLEDs = stick.numberOfLEDs
 
 		const leds = []
-		
+
 
 		for (let key = 0; key < numberOfLEDs; key++) {
 			//const ledColor = tension / numberOfLEDs > Math.random()
@@ -30,7 +30,7 @@ const rain = (sticks, sensors) => {
 				red = previousColor.r - reduceBrightness
 				green = previousColor.g - reduceBrightness
 				blue = previousColor.b - reduceBrightness
-				
+
 			}
 
 			ledColor1 = RGB2HTML(red, green, blue)
