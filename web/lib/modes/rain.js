@@ -1,7 +1,7 @@
 let ledsPersistent = []
 
 const rain = (sticks, sensors) => {
-	const brightColor = 0x55ffff
+	const brightColor = 0xffeeee
 
 	return sensors.map(sensor => {
 		const stick = sticks.find(stick => stick.name === sensor.column)
@@ -14,7 +14,7 @@ const rain = (sticks, sensors) => {
 		for (let key = 0; key < numberOfLEDs; key++) {
 			const ledColor = tension / numberOfLEDs > Math.random()
 				? brightColor
-				: 0x222222
+				: 0x222244
 
 			leds.push({
 				number: key,

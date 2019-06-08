@@ -20,7 +20,7 @@ const tensionAndRandomEcho = (sticks, sensors) => {
 
 				const leds = []
 
-				for (let key = 0; key <= tension; key++) {
+				for (let key = 0; key < tension - 1.5; key++) { // this magic number is from final tension > 1
 					if (distance === 0) {
 						leds.push({
 							number: Math.max(sensor.sensorPosition - key, 0),

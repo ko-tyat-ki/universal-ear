@@ -48,7 +48,6 @@ const onConfigure = () => {
 	socket.on('ledsChanged', changes => {
 		if (!changes) return
 		if (!sticks) return
-		if (changes.length <= 0) return
 
 		changes.map(change => {
 			const stick = sticks.find(stick => stick.name === change.key)
