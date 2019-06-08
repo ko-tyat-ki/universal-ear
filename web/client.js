@@ -79,5 +79,5 @@ const onConfigure = () => {
 			sensor.realisticSensorUpdate()
 		})
 		socket.emit('updatedSensors', sensors)
-	}, 100)
+	}, 50)
 })()

@@ -12,6 +12,7 @@ export class FakeSensor {
 		this.setKeyUpEventListener()
 		this.isSlowSensor = false
 		this.startCounting
+		this.slowAmplitude
 
 		// Sensor simulation coefficients:
 		this.sensorAmplitude = 40
@@ -72,14 +73,16 @@ export class FakeSensor {
 	slowUpTensionFormula(timeValue) {
 		const output = timeValue * this.slowSensorSpeed
 		if (output < this.sensorAmplitude) {
+			this.slowAmplitude = output
 			return output
 		} else {
+			this.slowAmplitude = this.sensorAmplitude
 			return this.sensorAmplitude
 		}
 	}
 
 	slowDownTensionFormula(timeValue) {
-		const output = this.sensorAmplitude - timeValue * this.slowSensorSpeed
+		const output = this.slowAmplitude - timeValue * this.slowSensorSpeed
 		if (output < 0) {
 			return 0
 		} else {
