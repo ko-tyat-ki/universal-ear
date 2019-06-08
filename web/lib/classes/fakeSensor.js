@@ -50,17 +50,17 @@ export class FakeSensor {
 		)
 	}
 
-	update(delta) {
-		let tension = this.tension
+	// update(delta) {
+	// 	let tension = this.tension
 
-		if (this.isBeingPulled) {
-			tension += this.tensionSpeed * delta
-		} else {
-			tension -= this.tensionSpeed * delta
-		}
+	// 	if (this.isBeingPulled) {
+	// 		tension += this.tensionSpeed * delta
+	// 	} else {
+	// 		tension -= this.tensionSpeed * delta
+	// 	}
 
-		this.tension = Math.max(this.minimalTension, tension)
-	}
+	// 	this.tension = Math.max(this.minimalTension, tension)
+	// }
 
 	realisticSensorUpdate() {
 		const timePassed = Date.now() - this.startCounting

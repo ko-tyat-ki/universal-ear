@@ -1,16 +1,13 @@
 import { getDistance } from '../helpers/getDistance.js'
 import * as THREE from '../three/three.js'
 
-const tensionAndRandomEcho = (measurements, sticks, sensors) => {
+const tensionAndRandomEcho = (sticks, sensors) => {
 	return sensors.map(sensor => {
-		const name = sensor.key
-
-		const measurement = measurements.find(measurement => measurement.name === name)
-		const tension = measurement.tension
+		const tension = sensor.tension
 
 		if (tension) {
 			return sticks.map(stick => {
-				if (!measurement || tension <= 0) {
+				if (!sensor || tension <= 0) {
 					return
 				}
 

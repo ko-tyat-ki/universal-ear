@@ -75,18 +75,10 @@ const onConfigure = () => {
 	setInterval(() => {
 		if (!sensors) return
 
-		sensors.forEach((sensor) => {
+		sensors.forEach(sensor => {
 			sensor.realisticSensorUpdate()
 			//sensor.update(2)
 		})
-		//console.log("TIME NOW: ", Date.now())
-		const measurements = sensors.map(sensor => {
-			return {
-				name: sensor.key,
-				tension: sensor.tension
-			}
-		})
-
-		socket.emit('measurements', measurements)
+		socket.emit('updatedSensors', sensors)
 	}, 100)
 })()
