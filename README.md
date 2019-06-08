@@ -57,7 +57,8 @@ We encourage you to create new ones!
 git checkout -b [your-name]-[mode-name]
 ```
 
-2. Create a new js file with the new mode name in the folder `./web/lib/modes/` (the easiest might be by copying one of the existing ones?).
+2. Go to the folder `./web/lib/modes/`. This is where all regimes (modes) live. Create a js file where your code will live (the easiest might be by copying one of the existing ones?).
+
 3. Import it into `./web/lib/visualisations.js` by adding
 
 ```js
