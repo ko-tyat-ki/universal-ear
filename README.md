@@ -51,7 +51,12 @@ your brilliant heads!
 We encourage you to create new ones!
 
 ## How can you add a new visualisation
-1. Create a new branch with a name `[your-name]-[mode-name]`
+1. Create a new branch with a name for example `[your-name]-[mode-name]` e.g. `katya-supermegacoolmode`
+
+```
+git checkout -b [your-name]-[mode-name]
+```
+
 2. Create a new js file with the new mode name in the folder `./web/lib/modes/` (the easiest might be by copying one of the existing ones?).
 3. Import it into `./web/lib/visualisations.js` by adding
 
