@@ -18,15 +18,19 @@ sound-scape changes. How the light changes is to be decided by you!
 In this project, you can simulate pulling the ropes by 
 pressing keys and control the outputs.
 
-## Basic requirements
+## Requirements
 
-Github, node-js, npm, babel, 
+To contribute to the visualisation creations very basic knowledge of coding
+and github should be enough.
 
-## Basic operations
+Technical prerequisites: github account, computer with installed and set up git,
+node and npm (we use node 11).
 
-#### To run development server:
-
+## How to run
 ```
+git clone git@github.com:ko-tyat-ki/nowhere-ear.git
+cd nowhere-ear
+npm install
 npm start
 ```
 
@@ -39,7 +43,7 @@ Navigate to http://localhost:3000 in your browser and enjoy the visualisation:
 
 You can see three *structure types*: "Duet", "Circle" and "Realistic".
 "Realistic" is the main one (with keyboard keys "1-0" representing pulling different ropes, 
-although you can do simple tests in "Duet" by pressing "a" or "s".
+although you can do simple tests in "Duet" by pressing "a" or "s".)
 
 You can already choose several *regimes*: "basic", "flicker" etc. This can be chosen to test experiences,
 we encourage you to create new ones!
