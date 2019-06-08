@@ -1,4 +1,4 @@
-const basic = (measurements, sticks, sensors) => {
+const basic_test = (measurements, sticks, sensors) => {
 	const brightColor = 0x55ffff
 
 	return measurements.map((measurement) => {
@@ -31,4 +31,4 @@ const basic = (measurements, sticks, sensors) => {
 	})
 }
 
-export default { basic }
+export default basic_test
