@@ -14,10 +14,11 @@ export class FakeSensor {
 		this.startCounting
 
 		// Sensor simulation coefficients:
-		this.fastSensorAmplitude = 0.5
-		this.slowSensorAmplitude = 40
-		this.slowSensorSpeed = 0.001
-		this.fastSensorSpeed = 0.005
+		this.sensorAmplitude = 40
+		this.slowSensorSpeed = 0.03
+		this.fastSensorSpeed = 0.3
+		this.fastSensorSpeedDown = 0.1
+		this.tensionSpeed = 1
 	}
 
 	setKeyDownEventListener() {
@@ -81,19 +82,17 @@ export class FakeSensor {
 	}
 
 	slowUpTensionFormula(timeValue) {
-		// console.log("SLOW UP", this.slowSensorAmplitude * (1 - Math.exp(-timeValue * this.slowSensorSpeed)))
-		const output = this.slowSensorAmplitude * (1 - Math.exp(-timeValue * this.slowSensorSpeed))
-		if (output < 1) {
-			return 0
-		} else {
+		const output = timeValue * this.slowSensorSpeed
+		if (output < this.sensorAmplitude) {
 			return output
+		} else {
+			return this.sensorAmplitude
 		}
 	}
 
 	slowDownTensionFormula(timeValue) {
-		// console.log("SLOW DOWN", this.slowSensorAmplitude * Math.exp(-timeValue * this.slowSensorSpeed))
-		const output = this.slowSensorAmplitude * Math.exp(-timeValue * this.slowSensorSpeed)
-		if (output < 1) {
+		const output = this.sensorAmplitude - timeValue * this.slowSensorSpeed
+		if (output < 0) {
 			return 0
 		} else {
 			return output
@@ -101,8 +100,12 @@ export class FakeSensor {
 	}
 
 	fastTensionFormula(timeValue) {
-		// console.log("FAST", this.fastSensorAmplitude * timeValue * Math.exp(-timeValue * this.fastSensorSpeed))
-		const output = this.fastSensorAmplitude * timeValue * Math.exp(-timeValue * this.fastSensorSpeed)
+		let output = 0
+		if (timeValue < this.sensorAmplitude / this.fastSensorSpeed) {
+			output = timeValue * this.fastSensorSpeed
+		} else {
+			output = this.sensorAmplitude - timeValue * this.fastSensorSpeedDown
+		}
 		if (output < 1) {
 			return 0
 		} else {

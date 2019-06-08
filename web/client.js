@@ -77,8 +77,9 @@ const onConfigure = () => {
 
 		sensors.forEach((sensor) => {
 			sensor.realisticSensorUpdate()
+			//sensor.update(2)
 		})
-
+		//console.log("TIME NOW: ", Date.now())
 		const measurements = sensors.map(sensor => {
 			return {
 				name: sensor.key,
