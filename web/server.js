@@ -84,9 +84,9 @@ io.on('connection', socket => {
 		} // TODO: logging
 
 		const ledsConfigFromClient = currentMode(sticks, sensors).filter(Boolean)
-		// ledsConfig = regroupConfig(ledsConfigFromClient)
-		// socket.emit('ledsChanged', ledsConfig)
-		ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig)) // keep for now for development processes
+		ledsConfig = regroupConfig(ledsConfigFromClient)
+		socket.emit('ledsChanged', ledsConfig)
+		// ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig)) // keep for now for development processes
 	})
 
 	socket.on('configure', configuration => {
