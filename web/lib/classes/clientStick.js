@@ -1,6 +1,6 @@
 const INIT_STICK_COLOR = 0x222244
 
-export class Stick {
+export class ClientStick {
 	constructor(numberOfLEDs, StickLEDs, name, init) {
 		this.numberOfLEDs = numberOfLEDs
 		this.StickLEDs = StickLEDs
