@@ -23,7 +23,7 @@ pressing keys and control the outputs.
 To contribute to the visualisation creations very basic knowledge of coding
 and github should be enough.
 
-Technical prerequisites: ![github account](https://help.github.com/en/articles/connecting-to-github-with-ssh), computer with installed and set up git,
+Technical prerequisites: [github account](https://help.github.com/en/articles/connecting-to-github-with-ssh), computer with installed and set up git,
 node and npm (we use node 11).
 
 ## How to run
