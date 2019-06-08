@@ -17,7 +17,7 @@ export class FakeSensor {
 		// Sensor simulation coefficients:
 		this.sensorAmplitude = 40
 		this.slowSensorSpeed = 0.01
-		this.fastSensorSpeed = 0.3
+		this.fastSensorSpeed = 0.03
 		this.fastSensorSpeedDown = 0.005
 		this.tensionSpeed = 1
 	}
