@@ -36,4 +36,4 @@ const randomEcho = (measurements, sticks, sensors) => {
 	})
 }
 
-export default { randomEcho }
+export default randomEcho
