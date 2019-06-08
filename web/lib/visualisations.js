@@ -5,9 +5,9 @@ import tensionAndRandomEcho from './modes/tensionAndRandomEcho'
 import rainEffect from './modes/rainEffect'
 
 export default {
-	basic: basic.basic,
-	flicker: flicker.flicker,
-	randomEcho: randomEcho.randomEcho,
-	tensionAndRandomEcho: tensionAndRandomEcho.tensionAndRandomEcho,
-	rainEffect: rainEffect.rainEffect
+	basic,
+	flicker,
+	randomEcho,
+	tensionAndRandomEcho,
+	rainEffect
 }

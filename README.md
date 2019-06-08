@@ -45,14 +45,28 @@ You can see three *structure types*: "Duet", "Circle" and "Realistic".
 "Realistic" is the main one (with keyboard keys "1-0" representing pulling different ropes, 
 although you can do simple tests in "Duet" by pressing "a" or "s".)
 
-You can already choose several *regimes*: "basic", "flicker" etc. This can be chosen to test experiences,
-we encourage you to create new ones!
+You can already choose several *regimes*: "basic", "flicker" etc. This sre for now just
+very basic examples of what can be done, and this is exactly where we need the input from
+your brilliant heads!
+We encourage you to create new ones!
 
-# To add new visualisations.
-Visualisation scripts (.js) can be found under './web/lib/modes/'. Please create new js-for new modes there. 
-After creating new visualisation script, import it into './web/lib/visualisations.js and add it into './static/index.html' under "<h5>Regime:</h5>"
+## How can you add a new visualisation
+1. Create a new branch with a name `[your-name]-[mode-name]`
+2. Create a new js file with the new mode name in the folder `./web/lib/modes/` (the easiest might be by copying one of the existing ones?).
+3. Import it into `./web/lib/visualisations.js` by adding
+
+```js
+import [yourMode] from './modes/[yourMode].js'
+```
+
+and the name of it to export.
+
+4. Add a new regime under the same name `./static/index.html` under `<h5>Regime:</h5>`
+
+```html
+<option value="yourMode">How you want to show your mode</option>
+```
 
 # Support and questions
-Questions can be forwarded to Katerina or Ivan
-katerina@ft.com
-ivan.isakov@gmail.com
+Any questions, suggestions, love notes - write them either to Katya or Ivan immediately via 
+any known source of commmunication, or submit a github issue.

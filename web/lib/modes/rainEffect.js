@@ -3,7 +3,7 @@ let timeIndex = 40
 const rainEffect = (measurements, sticks, sensors) => {
 	const brightColor = 0x55ffff
 	// WHY DO WE HAVE MEASUREMENTS AND SENSORS? WHAT IS THE DIFFERENCE?
-	
+
 	return sensors.map(sensor => {
 		const measurement = measurements.find(measurement => measurement.name === sensor.key)
 		timeIndex -= measurement.tension / 20
@@ -33,4 +33,4 @@ const rainEffect = (measurements, sticks, sensors) => {
 	})
 }
 
-export default { rainEffect }
+export default rainEffect

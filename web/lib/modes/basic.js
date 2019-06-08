@@ -31,4 +31,4 @@ const basic = (measurements, sticks, sensors) => {
 	})
 }
 
-export default { basic }
+export default basic

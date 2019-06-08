@@ -29,4 +29,4 @@ const flicker = (measurements, sticks, sensors) => {
 	})
 }
 
-export default { flicker }
+export default flicker
