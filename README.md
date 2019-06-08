@@ -24,7 +24,7 @@ To contribute to the visualisation creations very basic knowledge of coding
 and github should be enough.
 
 Technical prerequisites: [github account](https://help.github.com/en/articles/connecting-to-github-with-ssh), computer with installed and set up git,
-node and npm (we use node 11).
+node and npm (we use node 10).
 
 ## How to run
 ```
@@ -45,10 +45,12 @@ You can see three *structure types*: "Duet", "Circle" and "Realistic".
 "Realistic" is the main one (with keyboard keys "1-0" representing pulling different ropes, 
 although you can do simple tests in "Duet" by pressing "a" or "s".)
 
-You can already choose several *regimes*: "basic", "flicker" etc. This sre for now just
-very basic examples of what can be done, and this is exactly where we need the input from
-your brilliant heads!
+You can already choose several visual *modes* - functions that transform sensor data into lit leds: "basic", "flicker" etc. This sre for now just very basic examples of what can be done, and this is exactly where we need the input from your brilliant heads!
+
 We encourage you to create new ones!
+
+Scaffolding position are close to what we are planning in reality. LEDs position are indicative, and might change - so this is mainly for you to have an idea / rough understanding how it is going to look. It will look much cooler with sensors highlighting fluorescent ropes and stuff.
+
 
 ## How can you add a new visualisation
 1. Create a new branch with a name for example `[your-name]-[mode-name]` e.g. `katya-supermegacoolmode`
@@ -57,7 +59,7 @@ We encourage you to create new ones!
 git checkout -b [your-name]-[mode-name]
 ```
 
-2. Go to the folder `./web/lib/modes/`. This is where all regimes (modes) live. Create a js file where your code will live (the easiest might be by copying one of the existing ones?).
+2. Go to the folder `./web/lib/modes/`. This is where all visual modes live. Create a js file where your code will live (the easiest might be by copying one of the existing ones?).
 
 3. Import it into `./web/lib/visualisations.js` by adding
 
