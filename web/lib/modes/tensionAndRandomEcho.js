@@ -60,4 +60,4 @@ const tensionAndRandomEcho = (measurements, sticks, sensors) => {
 	})
 }
 
-export default { tensionAndRandomEcho }
+export default tensionAndRandomEcho

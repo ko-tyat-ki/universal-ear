@@ -1,4 +1,4 @@
-const flicker = (measurements, sticks, sensors) => {
+const basic = (measurements, sticks, sensors) => {
 	const brightColor = 0x55ffff
 
 	return measurements.map((measurement) => {
@@ -8,20 +8,22 @@ const flicker = (measurements, sticks, sensors) => {
 		const stick = sticks.find(stick => stick.name === sensor.column)
 
 		const tension = measurement.tension
-		const numberOfLEDs = stick.numberOfLEDs
+		const numberOfLEDs = stick.numberOfLEDs || 40
 
 		const leds = []
 
-		for (let key = 0; key < numberOfLEDs; key++) {
-			const ledColor = tension / numberOfLEDs > Math.random()
-				? brightColor
-				: 0x222222
+		for (let key = 0; key < tension; key++) {
+			leds.push({
+				number: Math.max(sensor.sensorPosition - key, 0),
+				color: brightColor
+			})
 
 			leds.push({
-				number: key,
-				color: ledColor,
+				number: Math.min(sensor.sensorPosition + key, numberOfLEDs - 1),
+				color: brightColor
 			})
 		}
+
 		return [{
 			key: stick.name,
 			leds
@@ -29,4 +31,4 @@ const flicker = (measurements, sticks, sensors) => {
 	})
 }
 
-export default { flicker }
+export default basic

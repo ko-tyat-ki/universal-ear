@@ -1,23 +1,84 @@
 # Nowhere Ear
 
 ```
-Doesn't have a point of view
-Knows not where he's going to
 Isn't he a bit like you and me?
-Nowhere man please listen
-You don't know what you're missing
 Nowhere man, The world is at your command
 ```
+# Introduction
 
+This project is made to simplify creation of visuals for Ko-Tyat-Ki 
+installation **EAR OF THE UNIVERSE** at Nowhere 2019. We would like to 
+invite our friends and interested people to create something 
+that will be visible on the Playa this July.
+![Structure Render](/images/structure_render.png)
 
+The principle is:
+a lot of ropes, when people touch them or pull them, the LEDs and
+sound-scape changes. How the light changes is to be decided by you!
+In this project, you can simulate pulling the ropes by 
+pressing keys and control the outputs.
 
-## Basic operations
+## Requirements
 
-To run development server:
+To contribute to the visualisation creations very basic knowledge of coding
+and github should be enough.
 
+Technical prerequisites: [github account](https://help.github.com/en/articles/connecting-to-github-with-ssh), computer with installed and set up git,
+node and npm (we use node 10).
+
+## How to run
 ```
+git clone git@github.com:ko-tyat-ki/nowhere-ear.git
+cd nowhere-ear
+npm install
 npm start
 ```
 
-This will start node server that will restart when you change code.
+This will start node server that will restart when you change the code.
 Code can be written using es2015 syntax on server and on client.
+
+#### To see the results
+Navigate to http://localhost:3000 in your browser and enjoy the visualisation:
+![Screen print](/images/screen.png)
+
+You can see three *structure types*: "Duet", "Circle" and "Realistic".
+"Realistic" is the main one (with keyboard keys "1-0" representing pulling different ropes, 
+although you can do simple tests in "Duet" by pressing "a" or "s".)
+
+You can already choose several visual *modes* - functions that transform sensor data into lit leds: "basic", "flicker" etc. This sre for now just very basic examples of what can be done, and this is exactly where we need the input from your brilliant heads!
+
+We encourage you to create new ones!
+
+Scaffolding position are close to what we are planning in reality. LEDs position are indicative, and might change - so this is mainly for you to have an idea / rough understanding how it is going to look. It will look much cooler with sensors highlighting fluorescent ropes and stuff.
+
+
+## How can you add a new visualisation
+1. Create a new branch with a name for example `[your-name]-[mode-name]` e.g. `katya-supermegacoolmode`
+
+```
+git checkout -b [your-name]-[mode-name]
+```
+
+2. Go to the folder `./web/lib/modes/`. This is where all visual modes live. Create a js file where your code will live (the easiest might be by copying one of the existing ones?).
+
+3. Import it into `./web/lib/visualisations.js` by adding
+
+```js
+import [yourMode] from './modes/[yourMode]'
+```
+
+and the name of it to export.
+
+4. Add a new regime under the same name `./static/index.html` under `<h5>Regime:</h5>`
+
+```html
+<option value="yourMode">How you want to show your mode</option>
+```
+
+5. When you are happy with what you've done, create a Pull Request, and tag some of us.
+
+# Support and questions
+
+Any questions, suggestions, love notes - write them either to Katya or Ivan immediately via 
+any known source of commmunication, or submit a github issue.
+

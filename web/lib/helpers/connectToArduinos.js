@@ -3,7 +3,7 @@
 import SerialPort from 'serialport'
 import Readline from '@serialport/parser-readline'
 
-import { arduinosConfig } from './configuration/arduinosConfig.js'
+import { arduinosConfig } from '../configuration/arduinosConfig.js'
 
 export const connectToArduinos = () => {
     return arduinosConfig.map(arduinoConfig => {

@@ -1,11 +1,11 @@
-import basic from './functions/basic'
-import flicker from './functions/flicker'
-import randomEcho from './functions/randomEcho'
-import tensionAndRandomEcho from './functions/tensionAndRandomEcho'
+import basic from './modes/basic'
+import flicker from './modes/flicker'
+import randomEcho from './modes/randomEcho'
+import tensionAndRandomEcho from './modes/tensionAndRandomEcho'
 
 export default {
-	basic: basic.basic,
-	flicker: flicker.flicker,
-	randomEcho: randomEcho.randomEcho,
-	tensionAndRandomEcho: tensionAndRandomEcho.tensionAndRandomEcho,
+	basic,
+	flicker,
+	randomEcho,
+	tensionAndRandomEcho
 }
