@@ -64,8 +64,8 @@ if (arduinos && arduinos.length > 0) {
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
 
-	socket.on('measurements', clientMeasurements => {
-		if (!clientMeasurements) return
+	socket.on('updatedSensors', sensors => {
+		if (!sensors) return
 		// TODO: log measurements into file (+ rotate log and remove zero values)
 
 		let config = clientConfigurations[socket.id]
@@ -83,7 +83,7 @@ io.on('connection', socket => {
 			return
 		} // TODO: logging
 
-		const ledsConfigFromClient = currentMode(clientMeasurements, sticks, config.sensors).filter(Boolean)
+		const ledsConfigFromClient = currentMode(sticks, sensors).filter(Boolean)
 		ledsConfig = regroupConfig(ledsConfigFromClient)
 		socket.emit('ledsChanged', ledsConfig)
 		// ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig)) // keep for now for development processes

@@ -1,13 +1,10 @@
-const basic = (measurements, sticks, sensors) => {
+const basic = (sticks, sensors) => {
 	const brightColor = 0x55ffff
 
-	return measurements.map((measurement) => {
-		const name = measurement.name
-
-		const sensor = sensors.find(sensor => sensor.key === name)
+	return sensors.map(sensor => {
 		const stick = sticks.find(stick => stick.name === sensor.column)
 
-		const tension = measurement.tension
+		const tension = sensor.tension
 		const numberOfLEDs = stick.numberOfLEDs || 40
 
 		const leds = []

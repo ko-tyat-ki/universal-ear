@@ -64,7 +64,7 @@ git checkout -b [your-name]-[mode-name]
 3. Import it into `./web/lib/visualisations.js` by adding
 
 ```js
-import [yourMode] from './modes/[yourMode].js'
+import [yourMode] from './modes/[yourMode]'
 ```
 
 and the name of it to export.

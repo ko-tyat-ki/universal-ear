@@ -1,4 +1,6 @@
-const flicker = (sticks, sensors) => {
+let ledsPersistent = []
+
+const rain = (sticks, sensors) => {
 	const brightColor = 0x55ffff
 
 	return sensors.map(sensor => {
@@ -16,7 +18,7 @@ const flicker = (sticks, sensors) => {
 
 			leds.push({
 				number: key,
-				color: ledColor,
+				color: ledColor
 			})
 		}
 		return [{
@@ -26,4 +28,4 @@ const flicker = (sticks, sensors) => {
 	})
 }
 
-export default flicker
+export default rain
