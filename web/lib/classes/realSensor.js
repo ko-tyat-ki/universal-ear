@@ -23,13 +23,19 @@ export class RealSensor {
         })
     }
 
-    update(tension) {
+	update(tension) {
+		if (!tension) return
         for (let key = 0; key < 4; key++) {
             this.oldTension[key] = (this.oldTension[key])
                 ? this.lerp(this.oldTension[key], this.tension, 0.1 * (key + 1))
-                : this.tension
-        }
-        this.tension = tension
+				: this.tension
+			this.oldTension[key] = (this.oldTension[key] < 1)
+				? 0
+				: this.oldTension[key]
+		}
+		this.tension = tension < 0 
+			? 0
+			: tension
     }
 
     lerp(inValue, outValue, fraction) {

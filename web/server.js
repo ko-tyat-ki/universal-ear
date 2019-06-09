@@ -3,7 +3,8 @@
 import modes from './lib/visualisations'
 import {
 	putLedsInBufferArray,
-	regroupConfig
+	regroupConfig,
+	combineSensors
 } from './lib/helpers/dataHelpers'
 import { connectToArduinos } from './lib/helpers/connectToArduinos.js'
 import { spinServer } from './lib/helpers/spinServer.js'
@@ -20,7 +21,7 @@ const io = spinServer()
 const realSensors = connectToArduinos()
 
 const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
-	const sensorData = data.split('\t')[0].split('! ')[1]
+	const sensorData = parseFloat(data.split('\t')[0].split('! ')[1])
 	realSensor.update(sensorData)
 
 	// let config = clientConfigurations[socket.id]
@@ -43,9 +44,11 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 			name: '2'
 		},
 	]
-	console.log(clientSensors)
+
+	// When sensor power is detached from led power, we can try this:
+	// let combinedSensor = combineSensors(clientSensors, realSensor)
+
 	const ledsConfigFromClient = currentMode(sticks, clientSensors).filter(Boolean)
-	//const ledsConfigFromHardware = currentMode(sticks, realSensor).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
 	
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
