@@ -11,7 +11,7 @@ const basic = (sticks, sensors) => {
 		const tension = sensor.tension
 		const numberOfLEDs = stick.numberOfLEDs || 40
 
-		const leds = []
+		const leds = [] // Will be an array of leds (key, colours)
 
 		for (let key = 0; key < tension; key++) {
 			leds.push({

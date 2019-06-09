@@ -4,6 +4,7 @@
 
 import { transformHexToRgb } from './colorHelpers.js'
 
+// Takes leds data for one stick, puts it into Byte array to be sent to certain Arduino
 const putLedsInBufferArray = (columnLedsConfig, numberOfLeds) => {
     const bufferArray = new ArrayBuffer(numberOfLeds * 3 + 3)
     const ledsBufferArray = new Uint8Array(bufferArray)
@@ -74,6 +75,7 @@ const eliminateLEDsConfigRepetition = (ledsConfig) => {
     return cleanedConfig
 }
 
+/*
 const regroupConfig = (ledsConfig) => {
     const regroupedConfig = []
 
@@ -90,11 +92,22 @@ const regroupConfig = (ledsConfig) => {
 
     return regroupedConfig
 }
+*/
+
+// Takes leds data for ALL sticks, and regroups it somehow (ledsConfig - is an (stick)array of (leds)arrays ?)
+const regroupConfig = (ledsConfig) => {
+	const regroupedConfig = []
+
+	ledsConfig.filter(Boolean).forEach(ledConfig => {
+		regroupedConfig.push(ledConfig[0])
+	})
+	return regroupedConfig
+}
 
 export {
     addColor,
     combineLEDs,
-    regroupConfig,
+	regroupConfig,
     putLedsInBufferArray,
     eliminateLEDsConfigRepetition
 }
