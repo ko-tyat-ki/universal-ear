@@ -23,20 +23,27 @@ const calculateDataForRealLeds = (data, sensor) => { // TO BE CHANGED WHEN HAVE 
 	const sensorData = data.split('\t')[0].split('! ')[1]
 	sensor.update(sensorData - 80) // HOW CAN WE BETTER DEAL WITH THIS
 
-	let config = clientConfigurations[socket.id]
-	if (!config) {
-		return
-	}
+	// let config = clientConfigurations[socket.id]
+	// if (!config) {
+	// 	return
+	// }
 
-	const sticks = config.sticks
-	if (!sticks) {
-		return
-	}
-	const realSensors = [{
-		key: 'real',
-		column: '1',
-		sensorPosition: 20
-	}]
+	// const sticks = config.sticks
+	// if (!sticks) {
+	// 	return
+	// }
+
+	const sticks = [
+		{
+			numberOfLeds: 40,
+			name: '1'
+		},
+		{
+			numberOfLeds: 40,
+			name: '2'
+		},
+	]
+
 	const ledsConfigFromClient = currentMode(sticks, clientSensors).filter(Boolean)
 
 	ledsConfig = regroupConfig(ledsConfigFromClient)

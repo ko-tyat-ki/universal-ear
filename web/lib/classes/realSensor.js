@@ -31,4 +31,8 @@ export class RealSensor {
         }
         this.tension = tension
     }
+
+    lerp(inValue, outValue, fraction) {
+        return inValue + (outValue - inValue) * fraction
+    }
 }
