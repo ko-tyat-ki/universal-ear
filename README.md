@@ -16,7 +16,7 @@ real installation you can practice your code on 😆.
 
 And then you ask all your friends to contribute!
 
-## About installation
+## About the installation
 
 The principle is:
 a lot of ropes, when people touch them or pull them, the LEDs and
@@ -83,9 +83,9 @@ To "trigger" the sensor you can use keys "a" and "s" for "Duet", and
 "1","2","3","4","5","6","7","8","9","0" for "Circle" and "Realistic".
 
 We did simulate two types of interaction - very fast one, similar to abruptly pulling
-the rope (keep the key on for a short period of time), and smooth one (keey key for a bit longer).
+the rope (keep the key on for a short period of time), and smooth one (keep key for a bit longer).
 
-You can already choose several visual *modes* - functions that transform sensor data into lit leds. This are very basic examples of what potentially can be done (more about this below).
+You can already choose several visual *modes* - functions that transform sensor data into lit leds. These are very basic examples of what potentially can be done (more about this below).
 
 ## How to contribute
 
@@ -118,7 +118,7 @@ and the name of it to export.
 
 Modes function accepts `(sticks, sensors)`.
 
-From sticks you can use properties that are set on cofig, such as
+From sticks you can use properties that are set on config, such as
 - `name`
 - `numberOfLEDs`
 - inital coordinates (y is vertical)
@@ -130,9 +130,8 @@ init : {
 }
 ```
 Senors have
- - `tension`
-**we calculate it like this ... ***
- - `oldTension` - an array of tension history **comprised of ...**
+ - `tension` - **we calculate it like this ... [TBD]**
+ - `oldTension` - an array of tension history **comprised of ...[TBD]**
  - `column` - which column (stick) it is attached to
  - `position` - where on the stick it is attached to; as a number of the LED
 
