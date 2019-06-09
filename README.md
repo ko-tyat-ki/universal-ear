@@ -141,8 +141,8 @@ The function should return array of arrays, where every entry has
 - array of `leds`.
 
 Every led has its `number` (integer, from `0` to `numberOfLEDs-1`) and color
-```json
-init : {
+```js
+color : {
     r: ...,
     g: ...,
     b: ...
