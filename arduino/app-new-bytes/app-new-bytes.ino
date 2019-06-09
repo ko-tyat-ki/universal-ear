@@ -5,9 +5,9 @@
 
 #include <FastLED.h>
 #define ORDER       0
-#define LED_COUNT   40
+#define LED_COUNT   150 //40
 #define LED_PIN     8
-#define NUM_LEDS    60
+#define NUM_LEDS    150 //60
 #define BRIGHTNESS  64
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
@@ -38,7 +38,6 @@ boolean received = true;
 boolean recvInProgress = false;
 
 // LEDs in Bytes:
-// TODO - change into correct number of bytes.
 // TODO - check if it's possible to make the size dependent on the incoming data.
 const byte numberOfLeds = 40;
 const byte payloadInSize = numberOfLeds * 3;
@@ -176,7 +175,8 @@ void writeToLeds() {
   FastLED.clear();
   for (int i = 0; i < payloadInSize/4; i++) {
     //leds[Signal[4*i]] = CRGB(Signal[1 + 4*i], Signal[2 + 4*i], Signal[3 + 4*i]);
-    leds[i] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][1],payloadIn.ledno[i][2]);
+    leds[i*5] = leds[i*5+1] = leds[i*5+2]= leds[i*5+3]= leds[i*5+4] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][1],payloadIn.ledno[i][2]);
+    
   }
   FastLED.show();
 }

@@ -14,6 +14,7 @@ const clientConfigurations = {}
 let ledsConfig
 let currentMode = modes.basic
 let areWeWriting = true
+let clientSensors
 
 const io = spinServer()
 const realSensors = connectToArduinos()
@@ -36,8 +37,8 @@ const calculateDataForRealLeds = (data, sensor) => { // TO BE CHANGED WHEN HAVE 
 		column: '1',
 		sensorPosition: 20
 	}]
-	const ledsConfigFromClient = currentMode(sticks, realSensors).filter(Boolean)
-	console.log('LEDS', ledsConfigFromClient[0][0].leds)
+	const ledsConfigFromClient = currentMode(sticks, clientSensors).filter(Boolean)
+
 	ledsConfig = regroupConfig(ledsConfigFromClient)
 
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
@@ -51,12 +52,10 @@ if (realSensors && realSensors.length > 0) {
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig) {
 				console.log('DATA IN', data)
-
-
 				port.write(calculateDataForRealLeds(data, sensor))
 				areWeWriting = false
 			} else {
-				console.log('Data IN, listen', data)
+				//console.log('Data IN, listen', data)
 				if (data === 'eat me\r') {
 					areWeWriting = true
 				}
@@ -86,6 +85,7 @@ io.on('connection', socket => {
 			return
 		}
 
+		clientSensors = sensors
 		const ledsConfigFromClient = currentMode(sticks, sensors).filter(Boolean)
 		ledsConfig = regroupConfig(ledsConfigFromClient)
 		socket.emit('ledsChanged', ledsConfig)
