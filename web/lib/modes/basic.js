@@ -1,5 +1,9 @@
 const basic = (sticks, sensors) => {
-	const brightColor = 0xffeeee
+	const brightColor = {
+		r: 200,
+		g: 200,
+		b: 255
+	}
 
 	return sensors.map(sensor => {
 		const stick = sticks.find(stick => stick.name === sensor.column)

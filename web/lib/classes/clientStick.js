@@ -1,3 +1,5 @@
+import { transformRgbToHex } from '../helpers/colorHelpers.js'
+
 const INIT_STICK_COLOR = 0x222244
 
 export class ClientStick {
@@ -12,7 +14,8 @@ export class ClientStick {
 		this.cleanLeds()
 
 		leds.forEach(led => {
-			this.StickLEDs[led.number].material.color.setHex(led.color)
+			const hexColor = transformRgbToHex(led.color)
+			this.StickLEDs[led.number].material.color.setHex(hexColor)
 		})
 	}
 

@@ -16,11 +16,13 @@ const randomEcho = (sticks, sensors) => {
 
 			for (let key = 0; key < stick.numberOfLEDs; key++) {
 				const colorIntensity = parseInt(255 * Math.random())
-				const rgbColor = `rgba(${Math.floor(15 / (distance / 244 + 1))}, ${Math.floor(colorIntensity / (distance / 244 + 1))}, ${Math.floor(200 / (distance / 244 + 1))})`
-				const color = new THREE.Color(rgbColor)
 				leds.push({
 					number: key,
-					color
+					color: {
+						r: Math.floor(15 / (distance / 244 + 1)),
+						g: Math.floor(colorIntensity / (distance / 244 + 1)),
+						b: Math.floor(200 / (distance / 244 + 1))
+					}
 				})
 			}
 
