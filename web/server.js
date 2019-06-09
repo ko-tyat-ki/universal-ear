@@ -16,39 +16,44 @@ let currentMode = modes.basic
 let areWeWriting = true
 
 const io = spinServer()
-const arduinos = connectToArduinos()
+const realSensors = connectToArduinos()
 
-const calculateDataForRealLeds = (data) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
+const calculateDataForRealLeds = (data, sensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
 	const sensorData = data.split('\t')[0].split('! ')[1]
-	const realMeasurements = [{ name: 'real', tension: sensorData - 80 }]
-	// socket.emit('measurements', realMeasurements)
-	const sticks = [
-		{ numberOfLEDs: NUMBER_OF_LEDS, name: '1' },
-		{ numberOfLEDs: NUMBER_OF_LEDS, name: '2' }
-	]
+	sensor.update(sensorData - 80) // HOW CAN WE BETTER DEAL WITH THIS
+
+	let config = clientConfigurations[socket.id]
+	if (!config) {
+		return
+	}
+
+	const sticks = config.sticks
+	if (!sticks) {
+		return
+	}
 	const realSensors = [{
 		key: 'real',
 		column: '1',
 		sensorPosition: 20
 	}]
-	const ledsConfigFromClient = currentMode(realMeasurements, sticks, realSensors).filter(Boolean)
+	const ledsConfigFromClient = currentMode(sticks, realSensors).filter(Boolean)
 	console.log('LEDS', ledsConfigFromClient[0][0].leds)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
 
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
 }
 
-if (arduinos && arduinos.length > 0) {
-	arduinos.map(arduino => {
-		const port = arduino.port
-		const parser = arduino.parser
+if (realSensors && realSensors.length > 0) {
+	realSensors.map(sensor => {
+		const port = sensor.port
+		const parser = sensor.parser
 
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig) {
 				console.log('DATA IN', data)
 
 
-				port.write(calculateDataForRealLeds(data))
+				port.write(calculateDataForRealLeds(data, sensor))
 				areWeWriting = false
 			} else {
 				console.log('Data IN, listen', data)

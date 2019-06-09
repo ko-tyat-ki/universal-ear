@@ -9,7 +9,8 @@ export const arduinosConfig = [
                 name: 'someName',
                 position: 20
             }
-        ]
+        ],
+        baseTension: 0
     }, {
         name: 'COM14', // first port on Windows
         column: '1',
@@ -20,6 +21,7 @@ export const arduinosConfig = [
                 name: 'someName',
                 position: 20
             }
-        ]
+        ],
+        baseTension: 0
     }
 ]
