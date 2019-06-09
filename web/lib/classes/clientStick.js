@@ -1,3 +1,5 @@
+import { transformRgbToHex } from "../helpers/colorHelpers";
+
 const INIT_STICK_COLOR = 0x222244
 
 export class ClientStick {
@@ -22,8 +24,4 @@ export class ClientStick {
 			led.material.color.setHex(INIT_STICK_COLOR)
 		})
 	}
-}
-
-const transformRgbToHex = ({ r, g, b }) => {
-	return 0x1000000 + b + 0x100 * g + 0x10000 * r
 }

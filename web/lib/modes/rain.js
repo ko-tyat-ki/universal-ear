@@ -49,8 +49,4 @@ const rain = (sticks, sensors) => {
 	})
 }
 
-const transformRgbToHex = ({ r, g, b }) => {
-	return 0x1000000 + b + 0x100 * g + 0x10000 * r
-}
-
 export default rain

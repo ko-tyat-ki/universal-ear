@@ -85,20 +85,10 @@ const regroupConfig = (ledsConfig) => {
     return regroupedConfig
 }
 
-const transformHexToRgb = (hex) => {
-    const b = hex % 256
-    const g = (hex - b) / 256 % 256
-    const r = ((hex - b) / 256 - g) / 256
-    return {
-        r, g, b
-    }
-}
-
 export {
     addColor,
     combineLEDs,
     regroupConfig,
-    transformHexToRgb,
     putLedsInBufferArray,
     eliminateLEDsConfigRepetition
 }
