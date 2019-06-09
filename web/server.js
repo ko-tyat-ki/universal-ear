@@ -19,9 +19,9 @@ let clientSensors
 const io = spinServer()
 const realSensors = connectToArduinos()
 
-const calculateDataForRealLeds = (data, sensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
+const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
 	const sensorData = data.split('\t')[0].split('! ')[1]
-	sensor.update(sensorData - 80) // HOW CAN WE BETTER DEAL WITH THIS
+	realSensor.update(sensorData)
 
 	// let config = clientConfigurations[socket.id]
 	// if (!config) {
@@ -44,6 +44,8 @@ const calculateDataForRealLeds = (data, sensor) => { // TO BE CHANGED WHEN HAVE 
 		},
 	]
 
+	console.log(clientSensors)
+
 	const ledsConfigFromClient = currentMode(sticks, clientSensors).filter(Boolean)
 
 	ledsConfig = regroupConfig(ledsConfigFromClient)
@@ -52,14 +54,14 @@ const calculateDataForRealLeds = (data, sensor) => { // TO BE CHANGED WHEN HAVE 
 }
 
 if (realSensors && realSensors.length > 0) {
-	realSensors.map(sensor => {
-		const port = sensor.port
-		const parser = sensor.parser
+	realSensors.map(realSensor => {
+		const port = realSensor.port
+		const parser = realSensor.parser
 
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig) {
 				console.log('DATA IN', data)
-				port.write(calculateDataForRealLeds(data, sensor))
+				port.write(calculateDataForRealLeds(data, realSensor))
 				areWeWriting = false
 			} else {
 				//console.log('Data IN, listen', data)
