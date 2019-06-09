@@ -35,11 +35,11 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 
 	const sticks = [
 		{
-			numberOfLeds: 40,
+			numberOfLEDs: 40,
 			name: '1'
 		},
 		{
-			numberOfLeds: 40,
+			numberOfLEDs: 40,
 			name: '2'
 		},
 	]
