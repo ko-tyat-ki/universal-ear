@@ -1,13 +1,15 @@
 /* global THREE */
 
-import { FakeSensor } from "../classes/fakeSensor.js"
-import { ClientStick } from "../classes/clientStick.js"
+import { FakeSensor } from '../classes/fakeSensor.js'
+import { ClientStick } from '../classes/clientStick.js'
+import {
+	NUMBER_OF_LEDS,
+	STICK_SIZE,
+	ONE_LED_SIZE,
+	POLE_COLOR,
+	INIT_STICK_COLOR
+} from '../configuration/constants.js'
 
-const NUMBER_OF_LEDS = 40
-const STICK_SIZE = 3
-const ONE_LED_SIZE = 6.25
-const POLE_COLOR = 0x221111
-const INIT_STICK_COLOR = 0x222244
 
 const addLED = ({
 	size,
