@@ -7,8 +7,7 @@ import {
 } from './lib/helpers/dataHelpers'
 import { connectToArduinos } from './lib/helpers/connectToArduinos.js'
 import { spinServer } from './lib/helpers/spinServer.js'
-
-const NUMBER_OF_LEDS = 40
+import { NUMBER_OF_LEDS } from './lib/configuration/constants.js'
 
 const connectedSockets = {}
 const clientConfigurations = {}

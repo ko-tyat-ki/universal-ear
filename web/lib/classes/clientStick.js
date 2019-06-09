@@ -1,6 +1,5 @@
 import { transformRgbToHex } from '../helpers/colorHelpers.js'
-
-const INIT_STICK_COLOR = 0x222244
+import { INIT_STICK_COLOR as initStickColor } from '../configuration/constants.js'
 
 export class ClientStick {
 	constructor(numberOfLEDs, StickLEDs, name, init) {
@@ -21,7 +20,7 @@ export class ClientStick {
 
 	cleanLeds() {
 		this.StickLEDs.map(led => {
-			led.material.color.setHex(INIT_STICK_COLOR)
+			led.material.color.setHex(initStickColor)
 		})
 	}
 }
