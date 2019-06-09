@@ -7,8 +7,7 @@ import {
 } from './lib/helpers/dataHelpers'
 import { connectToArduinos } from './lib/helpers/connectToArduinos.js'
 import { spinServer } from './lib/helpers/spinServer.js'
-
-const NUMBER_OF_LEDS = 40
+import { NUMBER_OF_LEDS } from './lib/configuration/constants.js'
 
 const connectedSockets = {}
 const clientConfigurations = {}
@@ -66,22 +65,21 @@ io.on('connection', socket => {
 
 	socket.on('updatedSensors', sensors => {
 		if (!sensors) return
-		// TODO: log measurements into file (+ rotate log and remove zero values)
 
 		let config = clientConfigurations[socket.id]
 		if (!config) {
 			return
-		} // TODO: logging
+		}
 
 		const sticks = config.sticks
 		if (!sticks) {
 			return
-		} // TODO: logging
+		}
 
 		currentMode = modes[config.mode]
 		if (!currentMode) {
 			return
-		} // TODO: logging
+		}
 
 		const ledsConfigFromClient = currentMode(sticks, sensors).filter(Boolean)
 		ledsConfig = regroupConfig(ledsConfigFromClient)
