@@ -4,6 +4,7 @@ export class FakeSensor {
 	constructor(tension, sensor) {
 		this.minimalTension = tension
 		this.tension = tension
+		this.oldTensiion = tension
 		this.isBeingPulled = false
 		this.key = sensor.key
 		this.column = sensor.column
@@ -52,6 +53,7 @@ export class FakeSensor {
 	}
 
 	realisticSensorUpdate() {
+		this.oldTensiion = this.tension
 		const timePassed = Date.now() - this.startCounting
 		const timeThreshold = 500 // in milliseconds
 		if (this.isBeingPulled) {
