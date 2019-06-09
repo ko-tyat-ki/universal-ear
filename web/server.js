@@ -43,13 +43,11 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 			name: '2'
 		},
 	]
-
 	console.log(clientSensors)
-
 	const ledsConfigFromClient = currentMode(sticks, clientSensors).filter(Boolean)
-
+	//const ledsConfigFromHardware = currentMode(sticks, realSensor).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
-
+	
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
 }
 
@@ -60,7 +58,7 @@ if (realSensors && realSensors.length > 0) {
 
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig) {
-				console.log('DATA IN', data)
+				//console.log('DATA IN', data)
 				port.write(calculateDataForRealLeds(data, realSensor))
 				areWeWriting = false
 			} else {

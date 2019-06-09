@@ -55,8 +55,11 @@ export class FakeSensor {
 	realisticSensorUpdate() {
 		for (let key = 0; key < 4; key++) {
 			this.oldTension[key] = (this.oldTension[key])
-				? this.lerp(this.oldTension[key], this.tension, 0.1 * (key + 1))
+				? this.lerp(this.oldTension[key], this.tension, 0.05 * (key + 1))
 				: this.tension
+			this.oldTension[key] = (this.oldTension[key] < 1)
+				? 0
+				: this.oldTension[key]
 		}
 		const timePassed = Date.now() - this.startCounting
 		const timeThreshold = 500 // in milliseconds
