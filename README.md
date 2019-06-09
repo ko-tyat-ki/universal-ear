@@ -37,6 +37,13 @@ npm start
 This will start node server that will restart when you change the code.
 Code can be written using es2015 syntax on server and on client.
 
+When starting the server you might notice some warnings in the console, e.g.
+```
+Warning: the port /dev/tty/.usbmodem14201 failed to open, did you connect the device? If not - no worries, client side can work without it
+```
+Do not worry, this is for us to monitor the real devices we sometimes connect. The simulation can work without them.
+
+
 #### To see the results
 Navigate to http://localhost:3000 in your browser and enjoy the visualisation:
 ![Screen print](/images/screen.png)

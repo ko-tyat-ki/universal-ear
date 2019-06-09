@@ -16,7 +16,7 @@ export const connectToArduinos = () => {
         const parser = port.pipe(new Readline({ delimiter: '\n' }))
 
         port.on('error', (err) => {
-            console.log(`Port failure, check the connection of the device, port: ${portName}`, err)
+            console.log(`Warning: the port ${portName} failed to open, did you connect the device? If not - no worries, client side can work without it`, err)
         })
 
         port.on('close', (err) => {
