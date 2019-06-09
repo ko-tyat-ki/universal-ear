@@ -1,4 +1,4 @@
-import { transformRgbToHex } from "../helpers/colorHelpers";
+import { transformRgbToHex } from '../helpers/colorHelpers.js'
 
 const INIT_STICK_COLOR = 0x222244
 
