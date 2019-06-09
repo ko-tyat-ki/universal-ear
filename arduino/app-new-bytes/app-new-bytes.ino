@@ -5,9 +5,9 @@
 
 #include <FastLED.h>
 #define ORDER       0
-#define LED_COUNT   40
+#define LED_COUNT   150 //40
 #define LED_PIN     8
-#define NUM_LEDS    60
+#define NUM_LEDS    150 //60
 #define BRIGHTNESS  64
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
@@ -38,7 +38,6 @@ boolean received = true;
 boolean recvInProgress = false;
 
 // LEDs in Bytes:
-// TODO - change into correct number of bytes.
 // TODO - check if it's possible to make the size dependent on the incoming data.
 const byte numberOfLeds = 40;
 const byte payloadInSize = numberOfLeds * 3;
@@ -55,8 +54,8 @@ byte inBuffer[payloadInSize];
 byte sleep = true;
 
 // Serial output
-int diffFast;
-int diffSlow;
+float diffFast;
+float diffSlow;
 
 void setup() {
     delay( 1000 ); // power-up safety delay
@@ -101,13 +100,9 @@ void readSensorData() {
     lerpingAverageSlow = lerp(lerpingAverageSlow, sensorValue, 0.01);
     lerpingAverageFast = lerp(lerpingAverageFast, sensorValue, 0.2);
     lerpingAverageVerySlow = lerp(lerpingAverageVerySlow, sensorAvg, 0.005);
-
     // Calculate the difference between the sensor value and averaged value:
     diffFast = (lerpingAverageFast - lerpingAverageVerySlow);  // fast. aka Derivative (for fast plucking)
     diffSlow = (lerpingAverageSlow - lerpingAverageVerySlow);  // slow. aka pressure (for slow pushing)
-  //Serial.println("r|" +String(LED_COUNT) + "|" + ORDER + "|"+sensorValue+"|"+String(diffFast) + "|" + String(diffSlow));
-    //Serial.println("r|" +String(Signal[0]) + "|" + String(Signal[0]) + "|"+ String(Signal[1]) + "|"+String(Signal[2]) + "|" + String(Signal[3]) + '\n');
-    
 }
 
 // When finished getting a full message, run this function.
@@ -119,7 +114,7 @@ void parseData() {
     newData = false;
   } else {
     // TODO make something so that the following code wouldn't execute when receiving data.
-    if (testEvery(500) && !recvInProgress) {
+    if (testEvery(50) && !recvInProgress) {
       sleep = true;
       Serial.print("Waiting for transmission, ");
       sendSensorData();
@@ -135,7 +130,8 @@ void sendCallforData() {
 }
 
 void sendSensorData() {
-    Serial.println(String(sensorValue) + "\t" + String(diffFast) + "\t" + String(diffSlow));
+  // TODO: Calibrate diffFast and diffSlow!
+    Serial.println(String(diffSlow * 10) + "\t" + String(diffFast * 10) + "\t" + String(sensorValue));
     Serial.println("eat me");
 }
 
@@ -176,7 +172,8 @@ void writeToLeds() {
   FastLED.clear();
   for (int i = 0; i < payloadInSize/4; i++) {
     //leds[Signal[4*i]] = CRGB(Signal[1 + 4*i], Signal[2 + 4*i], Signal[3 + 4*i]);
-    leds[i] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][1],payloadIn.ledno[i][2]);
+    leds[i*5] = leds[i*5+1] = leds[i*5+2]= leds[i*5+3]= leds[i*5+4] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][1],payloadIn.ledno[i][2]);
+    // TODO: Blend with the next LED
   }
   FastLED.show();
 }
