@@ -43,7 +43,7 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 			name: '2'
 		},
 	]
-	console.log(clientSensors)
+	//console.log(clientSensors)
 	const ledsConfigFromClient = currentMode(sticks, clientSensors).filter(Boolean)
 	//const ledsConfigFromHardware = currentMode(sticks, realSensor).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
