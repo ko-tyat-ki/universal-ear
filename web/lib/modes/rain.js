@@ -1,6 +1,7 @@
 import {transformHexToRgb} from '../helpers/dataHelpers'
 
 const rain = (sticks, sensors) => {
+
 	const brightColor = 0x55ffff
 	const brightColorRGB = transformHexToRgb(brightColor)
 	const reduceBrightness = 0

@@ -16,9 +16,9 @@ export class FakeSensor {
 
 		// Sensor simulation coefficients:
 		this.sensorAmplitude = 40
-		this.slowSensorSpeed = 0.015
-		this.fastSensorSpeed = 0.3
-		this.fastSensorSpeedDown = 0.1
+		this.slowSensorSpeed = 0.01
+		this.fastSensorSpeed = 0.03
+		this.fastSensorSpeedDown = 0.005
 		this.tensionSpeed = 1
 	}
 
@@ -50,18 +50,6 @@ export class FakeSensor {
 			false
 		)
 	}
-
-	// update(delta) {
-	// 	let tension = this.tension
-
-	// 	if (this.isBeingPulled) {
-	// 		tension += this.tensionSpeed * delta
-	// 	} else {
-	// 		tension -= this.tensionSpeed * delta
-	// 	}
-
-	// 	this.tension = Math.max(this.minimalTension, tension)
-	// }
 
 	realisticSensorUpdate() {
 		const timePassed = Date.now() - this.startCounting

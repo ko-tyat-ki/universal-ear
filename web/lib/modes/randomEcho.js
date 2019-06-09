@@ -4,9 +4,7 @@ import * as THREE from '../three/three.js'
 const randomEcho = (sticks, sensors) => {
 	return sensors.map(sensor => {
 		return sticks.map(stick => {
-			if (!sensor || sensor.tension <= 0) {
-				return
-			}
+			if (!sensor || sensor.tension <= 0) return
 
 			const distance = getDistance({
 				sensor,
