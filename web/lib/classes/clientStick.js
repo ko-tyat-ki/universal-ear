@@ -12,7 +12,8 @@ export class ClientStick {
 		this.cleanLeds()
 
 		leds.forEach(led => {
-			this.StickLEDs[led.number].material.color.setHex(led.color)
+			const hexColor = transformRgbToHex(led.color)
+			this.StickLEDs[led.number].material.color.setHex(hexColor)
 		})
 	}
 
@@ -21,4 +22,8 @@ export class ClientStick {
 			led.material.color.setHex(INIT_STICK_COLOR)
 		})
 	}
+}
+
+const transformRgbToHex = ({ r, g, b }) => {
+	return 0x1000000 + b + 0x100 * g + 0x10000 * r
 }

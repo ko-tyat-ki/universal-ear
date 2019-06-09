@@ -1,4 +1,4 @@
-import {transformHexToRgb} from '../helpers/dataHelpers'
+import { transformHexToRgb } from '../helpers/dataHelpers'
 
 const rain = (sticks, sensors) => {
 
@@ -13,7 +13,7 @@ const rain = (sticks, sensors) => {
 		const numberOfLEDs = stick.numberOfLEDs
 
 		const leds = []
-		
+
 
 		for (let key = 0; key < numberOfLEDs; key++) {
 			//const ledColor = tension / numberOfLEDs > Math.random()
@@ -31,7 +31,7 @@ const rain = (sticks, sensors) => {
 				red = previousColor.r - reduceBrightness
 				green = previousColor.g - reduceBrightness
 				blue = previousColor.b - reduceBrightness
-				
+
 			}
 
 			ledColor1 = RGB2HTML(red, green, blue)
@@ -49,9 +49,8 @@ const rain = (sticks, sensors) => {
 	})
 }
 
-function RGB2HTML(red, green, blue) {
-	var decColor = 0x1000000 + blue + 0x100 * green + 0x10000 * red;
-	return decColor;
+const transformRgbToHex = ({ r, g, b }) => {
+	return 0x1000000 + b + 0x100 * g + 0x10000 * r
 }
 
 export default rain
