@@ -114,6 +114,43 @@ and the name of it to export.
 
 5. When you are happy with what you've done, create a Pull Request, and tag some of us.
 
+### A bit more about modes
+
+Modes function accepts `(sticks, sensors)`.
+
+From sticks you can use properties that are set on cofig, such as
+- `name`
+- `numberOfLEDs`
+- inital coordinates (y is vertical)
+```json
+init : {
+    x: ...,
+    y: ...,
+    z: ...
+}
+```
+Senors have
+ - `tension`
+**we calculate it like this ... ***
+ - `oldTension` - an array of tension history **comprised of ...**
+ - `column` - which column (stick) it is attached to
+ - `position` - where on the stick it is attached to; as a number of the LED
+
+The function should return array of arrays, where every entry has
+- `key` - name of the stick you want to light up
+- array of `leds`.
+
+Every led has its `number` (integer, from `0` to `numberOfLEDs-1`) and color
+```json
+init : {
+    r: ...,
+    g: ...,
+    b: ...
+}
+```
+
+Everything else is up to your imagination.
+
 ## A bit more about existing examples
 
 ### Basic
