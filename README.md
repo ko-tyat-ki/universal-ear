@@ -117,10 +117,34 @@ and the name of it to export.
 ## A bit more about existing examples
 
 ### Basic
+
+Simply reacts to sensor tension proportionate to tension. Very basic.
+
+![duet-basic-small](/images/duet-basic-small.gif)
+
 ### Fast reaction
+
+Reacts only to fast pull and does not to slow one.
+
+![fast-duet-small](/images/fast-duet-small.gif)
+
 ### Flicker
+
+Flickers the stick when you activate the sensor attahced to it.
+
+![flicker-real-small](/images/flicker-real-small.gif)
+
 ### Random echo
+
+The active stick is the brightest, all the rest are less bright proportinate to the distance.
+
+![random-echo-circle-small](/images/random-echo-circle-small.gif)
+
 ### Tension with echo
+
+When tension reached the end of the stick, its echo goes to all other sticks.
+
+![tension-random-real-small](/images/tension-random-real-small.gif)
 
 ## Support and questions
 
