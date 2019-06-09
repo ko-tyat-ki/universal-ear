@@ -122,7 +122,7 @@ From sticks you can use properties that are set on cofig, such as
 - `name`
 - `numberOfLEDs`
 - inital coordinates (y is vertical)
-```json
+```js
 init : {
     x: ...,
     y: ...,
