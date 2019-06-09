@@ -1,5 +1,4 @@
 import { getDistance } from '../helpers/getDistance.js'
-import * as THREE from '../three/three.js'
 
 const randomEcho = (sticks, sensors) => {
 	return sensors.map(sensor => {
