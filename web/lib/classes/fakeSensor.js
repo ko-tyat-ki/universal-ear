@@ -4,7 +4,7 @@ export class FakeSensor {
 	constructor(tension, sensor) {
 		this.minimalTension = tension
 		this.tension = tension
-		this.oldTensiion = tension
+		this.oldTension = [tension, tension, tension, tension]
 		this.isBeingPulled = false
 		this.key = sensor.key
 		this.column = sensor.column
@@ -18,8 +18,8 @@ export class FakeSensor {
 		// Sensor simulation coefficients:
 		this.sensorAmplitude = 40
 		this.slowSensorSpeed = 0.01
-		this.fastSensorSpeed = 0.03
-		this.fastSensorSpeedDown = 0.005
+		this.fastSensorSpeed = 0.1
+		this.fastSensorSpeedDown = 0.05
 		this.tensionSpeed = 1
 	}
 
@@ -53,7 +53,11 @@ export class FakeSensor {
 	}
 
 	realisticSensorUpdate() {
-		this.oldTensiion = this.tension
+		for (let key = 0; key < 4; key++) {
+			this.oldTension[key] = (this.oldTension[key])
+				? this.lerp(this.oldTension[key], this.tension, 0.1 * (key + 1))
+				: this.tension
+		}
 		const timePassed = Date.now() - this.startCounting
 		const timeThreshold = 500 // in milliseconds
 		if (this.isBeingPulled) {
@@ -104,5 +108,9 @@ export class FakeSensor {
 		} else {
 			return output
 		}
+	}
+
+	lerp(inValue, outValue, fraction) {
+		return inValue + (outValue - inValue) * fraction
 	}
 }

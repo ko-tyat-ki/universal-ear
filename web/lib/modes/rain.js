@@ -6,8 +6,13 @@ const rain = (sticks, sensors) => {
 		g: 200,
 		b: 255
 	}
+	const offColor = { // get from contants
+		r: 34,
+		g: 34,
+		b: 68
+	}
 
-	const reduceBrightness = 50
+	const reduceBrightness = 25
 	return sensors.map(sensor => {
 		const stick = sticks.find(stick => stick.name === sensor.column)
 
@@ -18,26 +23,26 @@ const rain = (sticks, sensors) => {
 		const leds = []
 
 		for (let key = 0; key < numberOfLEDs; key++) {
-			let r1, r2, g1, g2, b1, b2
+			let ledColor
 			if (key < tension) {
-				r1 = brightColor.r
-				g1 = brightColor.g
-				b1 = brightColor.b
+				ledColor = brightColor
+			} else if (key < oldTension[3]) {
+				ledColor = ReduceBrightnessFunction(brightColor, reduceBrightness)
+			} else if (key < oldTension[2]) {
+				ledColor = ReduceBrightnessFunction(brightColor, reduceBrightness * 2)
+			} else if (key < oldTension[1]) {
+				ledColor = ReduceBrightnessFunction(brightColor, reduceBrightness * 3)
+			} else if (key < oldTension[0]) {
+				ledColor = ReduceBrightnessFunction(brightColor, reduceBrightness * 4)
 			}
-
-			if (key < oldTension) {
-				r2 = brightColor.r - reduceBrightness
-				g2 = brightColor.g - reduceBrightness
-				b2 = brightColor.b - reduceBrightness
+			else {
+				ledColor = offColor
 			}
 
 			leds.push({
 				number: key,
-				color: {
-					r: Math.min(r1, r2),
-					g: Math.min(g1, g2),
-					b: Math.min(b1, b2)
-				}
+				//color: { r, g, b }
+				color: ledColor
 			})
 		}
 		return [{
@@ -45,6 +50,15 @@ const rain = (sticks, sensors) => {
 			leds
 		}]
 	})
+
+}
+
+const ReduceBrightnessFunction = (inRGB, reduction) => {
+	let outRGB = { r: 0, g: 0, b: 0 }
+	outRGB.r = inRGB.r - reduction
+	outRGB.g = inRGB.g - reduction
+	outRGB.b = inRGB.b - reduction
+	return outRGB
 }
 
 export default rain
