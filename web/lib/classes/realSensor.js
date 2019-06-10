@@ -4,10 +4,11 @@ import Readline from '@serialport/parser-readline'
 export class RealSensor {
     constructor(arduinoConfig) {
         this.tension = arduinoConfig.baseTension
-        this.oldTension = [this.tension, this.tension, this.tension, this.tension]
-
+		this.oldTension = [this.tension, this.tension, this.tension, this.tension]
+		this.sensorPosition = arduinoConfig.sensors[0].position
+		this.column = arduinoConfig.column
         const portName = arduinoConfig.name
-
+		
         this.port = new SerialPort(`${portName}`, {
             baudRate: arduinoConfig.baudRate
         })

@@ -45,12 +45,10 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 		},
 	]
 
-	// When sensor power is detached from led power, we can try this:
-	// let combinedSensor = combineSensors(clientSensors, realSensor)
-
-	const ledsConfigFromClient = currentMode(sticks, clientSensors).filter(Boolean)
+	let combinedSensors = [...clientSensors, ...realSensors]
+	const ledsConfigFromClient = currentMode(sticks, combinedSensors).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
-	
+	console.log(ledsConfig[0].leds)
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
 }
 

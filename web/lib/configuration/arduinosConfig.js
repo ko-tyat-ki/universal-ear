@@ -1,7 +1,7 @@
 export const arduinosConfig = [
     {
         name: '/dev/tty.usbmodem14201', // first port on MAC
-        column: '1',
+        column: '2',
         baudRate: 115200,
         numberOfLEDs: 40,
         sensors: [

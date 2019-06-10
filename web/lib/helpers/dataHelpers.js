@@ -75,7 +75,6 @@ const eliminateLEDsConfigRepetition = (ledsConfig) => {
     return cleanedConfig
 }
 
-/*
 const regroupConfig = (ledsConfig) => {
     const regroupedConfig = []
 
@@ -92,25 +91,14 @@ const regroupConfig = (ledsConfig) => {
 
     return regroupedConfig
 }
-*/
 
-// Takes leds data for ALL sticks, and regroups it somehow (ledsConfig - is an (stick)array of (leds)arrays ?)
-const regroupConfig = (ledsConfig) => {
-	const regroupedConfig = []
-
-	ledsConfig.filter(Boolean).forEach(ledConfig => {
-		regroupedConfig.push(ledConfig[0])
-	})
-	return regroupedConfig
-}
 
 // Combines first simulated sensor data with real sensor data:
 // HOWEVER: if 5V is connected to both the sensor and LEDs, the sensor data will be skewed and wrong and biased
 const combineSensors = (fkSensor, rlSensor) => {
-	let combineSensors = []
-	combineSensors.push(fkSensor[0])
-	combineSensors[0].tension += rlSensor.tension
-	return combineSensors
+	let combinedSensors = fkSensor
+	combinedSensors[0].tension += fkSensor[0].tension + rlSensor.tension
+	return combinedSensors
 }
 
 export {
