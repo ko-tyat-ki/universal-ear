@@ -24,7 +24,7 @@ sound-scape changes.
 
 How the light changes can be decided by you!
 
-In this simulation, you can simulate pulling the ropes by 
+In this simulation, you can simulate pulling the ropes by
 pressing keys on the keyboard, and see the results on the web page.
 
 ![Structure Render](/images/structure_render.png)
@@ -40,7 +40,7 @@ This is basically to create a bit of a transformation code in between.
 We did come up with several examples that represent what potantially can be done.
 We hope they will be helpful, but please feel free to go wild.
 
-When we recieve all the beautiful ideas, we will select the best, and figure out the 
+When we recieve all the beautiful ideas, we will select the best, and figure out the
 way to present them (e.g. one stick per idea? or one hour gig for each idea?)
 
 And your idea and your name will be on Playa making all of nobodies super happy.
@@ -130,7 +130,7 @@ init : {
 }
 ```
 Senors have
- - `tension` - the tension that depends on key press. There are two distinct tension modes,  
+ - `tension` - the tension that depends on key press. There are two distinct tension modes,
  -- if the user releases the key after less than 0.5s pressing, the sensor gets quickly to the highest value and back
  -- if the user continues pressing the key after 0.5s, the sensor value slowly increases, and slowly decreases after the button is released
  - `oldTension` - an array of tension history (four values slowly following the current tension value: [0] the furthest away from tension value, [3] the closest value)
@@ -186,6 +186,6 @@ When tension reached the end of the stick, its echo goes to all other sticks.
 
 ## Support and questions
 
-Any questions, suggestions, love notes - write them either to Katya or Ivan immediately via 
+Any questions, suggestions, love notes - write them either to Katya or Ivan immediately via
 any known source of commmunication, or submit a github issue.
 
