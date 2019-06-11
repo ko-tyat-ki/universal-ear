@@ -12,72 +12,73 @@ let socket = io()
 let scene
 
 const buildEar = (structure, regime) => {
-	const selectedStructure = structure.options[structure.options.selectedIndex].value
-	const selectedRegime = regime.options[regime.options.selectedIndex].value
+  const selectedStructure = structure.options[structure.options.selectedIndex].value
+  const selectedRegime = regime.options[regime.options.selectedIndex].value
 
-	const configuration = {
-		fakeSensors: calculateFakeSensors(selectedStructure),
-		sticks: calculateClientSticks(selectedStructure),
-		poles: calculateClientPoles(selectedStructure)
-	}
+  const configuration = {
+    fakeSensors: calculateFakeSensors(selectedStructure),
+    sticks: calculateClientSticks(selectedStructure),
+    poles: calculateClientPoles(selectedStructure)
+  }
 
-	const ear = drawEar(configuration, scene)
+  const ear = drawEar(configuration, scene)
 
-	socket.emit('configure', {
-		'mode': selectedRegime,
-		'sticks': ear.sticks,
-		'sensors': ear.sensors,
-	})
+  socket.emit('configure', {
+    'mode': selectedRegime,
+    'sticks': ear.sticks,
+    'sensors': ear.sensors,
+  })
 
-	return ear
+  return ear
 }
 
 let sensors
 let sticks
 
 const onConfigure = () => {
-	init()
-	scene = animate()
-	const structure = document.getElementById('select-structure')
-	const regime = document.getElementById('select-regime')
+  init()
+  scene = animate()
+  const structure = document.getElementById('select-structure')
+  const regime = document.getElementById('select-regime')
 
-	const update = buildEar(structure, regime)
-	sticks = update.sticks
-	sensors = update.sensors
+  const update = buildEar(structure, regime)
+  sticks = update.sticks
+  sensors = update.sensors
 
-	socket.on('ledsChanged', changes => {
-		if (!sticks) return
+  socket.on('ledsChanged', changes => {
+    console.log(changes)
+    if (!sticks) return
 
-		changes.map(change => {
-			if (change) {
-				const stick = sticks.find(stick => stick.name === change.key)
-				stick.colorLeds(change.leds)
-			}
-		})
-	})
+    changes.map(change => {
+      if (change) {
+        const stick = sticks.find(stick => stick.name === change.key)
+        stick.colorLeds(change.leds)
+      }
+    })
+  })
 }
 
 (() => {
-	onConfigure()
+  onConfigure()
 
-	const regime = document.getElementById('select-regime')
-	const structure = document.getElementById('select-structure')
-	structure.addEventListener('change', () => {
-		while (scene.children.length > 0) {
-			scene.remove(scene.children[0])
-		}
-		sticks = null
-		sensors = null
-		onConfigure()
-	})
-	regime.addEventListener('change', onConfigure)
+  const regime = document.getElementById('select-regime')
+  const structure = document.getElementById('select-structure')
+  structure.addEventListener('change', () => {
+    while (scene.children.length > 0) {
+      scene.remove(scene.children[0])
+    }
+    sticks = null
+    sensors = null
+    onConfigure()
+  })
+  regime.addEventListener('change', onConfigure)
 
-	setInterval(() => {
-		if (!sensors) return
+  setInterval(() => {
+    if (!sensors) return
 
-		sensors.forEach(sensor => {
-			sensor.realisticSensorUpdate()
-		})
-		socket.emit('updatedSensors', sensors)
-	}, 50)
+    sensors.forEach(sensor => {
+      sensor.realisticSensorUpdate()
+    })
+    socket.emit('updatedSensors', sensors)
+  }, 1000)
 })()

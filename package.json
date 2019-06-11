@@ -4,7 +4,7 @@
   "description": "Web interface for the Universal Ear project",
   "main": "web/server.js",
   "scripts": {
-    "start": "babel-watch --watch web web/server.js",
+    "start": "nodemon --exec babel-watch --watch web web/server.js",
     "test": "jest"
   },
   "watch": {
@@ -23,6 +23,7 @@
     "babel-polyfill": "^6.26.0",
     "express": "^4.16.4",
     "microjob": "^0.5.2",
+    "nodemon": "^1.19.1",
     "regenerator": "^0.14.1",
     "serialport": "^7.1.5",
     "socket.io": "^2.2.0"

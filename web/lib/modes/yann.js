@@ -16,19 +16,14 @@ const yann = (sticks, sensors) => {
     const middleLEDIndex = parseInt(stick.numberOfLEDs / 2)
 
     for (let key = 0; key < stick.numberOfLEDs; key++) {
-
-
+      const sinwave = Math.sin(parseInt(stick.name))
       const movingIndexOfColouredLed = parseInt(sinwave * stick.numberOfLEDs  - parseInt(stick.numberOfLEDs / 2))
 
-
-
       for(let LedIndex = 0; LedIndex < stick.numberOfLEDs; LedIndex++) {
-        const sinwave = Math.sin(parseInt(stick.name))
+
         console.log({stick_name: stick.name, middleLEDIndex: middleLEDIndex, key: key, sinwave: sinwave, movingIndexOfColouredLed: movingIndexOfColouredLed})
 
         if (LedIndex > Math.abs(movingIndexOfColouredLed) || LedIndex > Math.abs(movingIndexOfColouredLed)) {
-          leds[LedIndex] = { number: key, color: offColour }
-        } else {
           leds[LedIndex] = { number: key, color: offColour }
         }
       }
