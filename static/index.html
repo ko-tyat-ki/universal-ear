@@ -1,41 +1,43 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Playground</title>
+    <link rel="icon" href="images/moon-icon.jpeg" />
+    <link rel="stylesheet" href="static/main.css" type="text/css" />
+  </head>
 
-<head>
-  <title>Playground</title>
-  <link rel=icon href="images/moon-icon.jpeg">
-  <link rel="stylesheet" href="static/main.css" type="text/css" />
-</head>
-
-<body>
-  <div class="container" id="container"></div>
-  <div class="menu">
-    <div id="select-regime--container">
-      <h5>Regime:</h5>
-      <select id="select-regime">
-        <option value="basic" selected="selected">Basic</option>
-        <option value="randomEcho">Random echo</option>
-        <option value="flicker">Flicker</option>
-        <option value="tensionWithEcho">Tension with echo</option>
-        <option value="fastReaction">React if trigger is fast</option>
-        <option value="rain">Rain</option>
-        <option value="empty">Empty</option>
-      </select>
+  <body>
+    <div class="container" id="container"></div>
+    <div class="menu">
+      <div id="select-regime--container">
+        <h5>Regime:</h5>
+        <select id="select-regime">
+          <option value="basic" selected="selected">Basic</option>
+          <option value="randomEcho">Random echo</option>
+          <option value="flicker">Flicker</option>
+          <option value="tensionWithEcho">Tension with echo</option>
+          <option value="fastReaction">React if trigger is fast</option>
+          <option value="rain">Rain</option>
+          <option value="empty">Empty</option>
+          <option value="sinus">Sinus (Yann's idea)</option>
+        </select>
+      </div>
+      <div id="select-structure--container">
+        <h5>Structure type:</h5>
+        <select id="select-structure">
+          <option value="duet" selected="selected">Duet</option>
+          <option value="circle">Circle</option>
+          <option value="realistic">Realistic</option>
+        </select>
+      </div>
     </div>
-    <div id="select-structure--container">
-      <h5>Structure type:</h5>
-      <select id="select-structure">
-        <option value="duet" selected="selected">Duet</option>
-        <option value="circle">Circle</option>
-        <option value="realistic">Realistic</option>
-      </select>
-    </div>
-  </div>
 
-  <script src="http://localhost:3000/socket.io/socket.io.js" type="application/javascript"></script>
-  <script src="web/lib/three/three.js"></script>
-  <script src="web/lib/three/OrbitControls.js"></script>
-  <script src="web/client.js" type="module"></script>
-</body>
-
+    <script
+      src="http://localhost:3000/socket.io/socket.io.js"
+      type="application/javascript"
+    ></script>
+    <script src="web/lib/three/three.js"></script>
+    <script src="web/lib/three/OrbitControls.js"></script>
+    <script src="web/client.js" type="module"></script>
+  </body>
 </html>
