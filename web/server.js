@@ -3,8 +3,7 @@
 import modes from './lib/visualisations'
 import {
 	putLedsInBufferArray,
-	regroupConfig,
-	combineSensors
+	regroupConfig
 } from './lib/helpers/dataHelpers'
 import { connectToArduinos } from './lib/helpers/connectToArduinos.js'
 import { spinServer } from './lib/helpers/spinServer.js'
@@ -16,6 +15,7 @@ let ledsConfig
 let currentMode = modes.basic
 let areWeWriting = true
 let clientSensors
+let realSensorsData
 
 const io = spinServer()
 const realSensors = connectToArduinos()
@@ -23,16 +23,6 @@ const realSensors = connectToArduinos()
 const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
 	const sensorData = parseFloat(data.split('\t')[0].split('! ')[1])
 	realSensor.update(sensorData)
-
-	// let config = clientConfigurations[socket.id]
-	// if (!config) {
-	// 	return
-	// }
-
-	// const sticks = config.sticks
-	// if (!sticks) {
-	// 	return
-	// }
 
 	const sticks = [
 		{
@@ -45,10 +35,16 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 		},
 	]
 
+	realSensorsData = realSensors.map(sensor => ({
+		tension: sensor.tension,
+		oldTension: sensor.oldTension,
+		sensorPosition: sensor.sensorPosition,
+		column: sensor.column,
+	}))
+
 	let combinedSensors = [...clientSensors, ...realSensors]
 	const ledsConfigFromClient = currentMode(sticks, combinedSensors).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
-	console.log(ledsConfig[0].leds)
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
 }
 
@@ -88,7 +84,7 @@ io.on('connection', socket => {
 			return
 		}
 
-		currentMode = modes[config.mode]
+		currentMode = modes[config.mode || 'basic']
 		if (!currentMode) {
 			return
 		}
