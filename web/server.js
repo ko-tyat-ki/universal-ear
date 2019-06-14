@@ -20,20 +20,20 @@ let realSensorsData
 const io = spinServer()
 const realSensors = connectToArduinos()
 
+const realSticks = [ // TODO move to some config
+	{
+		numberOfLEDs: 40,
+		name: '1'
+	},
+	{
+		numberOfLEDs: 40,
+		name: '2'
+	},
+]
+
 const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
 	const sensorData = parseFloat(data.split('\t')[0].split('! ')[1])
 	realSensor.update(sensorData)
-
-	const sticks = [
-		{
-			numberOfLEDs: 40,
-			name: '1'
-		},
-		{
-			numberOfLEDs: 40,
-			name: '2'
-		},
-	]
 
 	realSensorsData = realSensors.map(sensor => ({
 		tension: sensor.tension,
@@ -43,7 +43,7 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 	}))
 
 	let combinedSensors = [...clientSensors, ...realSensors]
-	const ledsConfigFromClient = currentMode(sticks, combinedSensors).filter(Boolean)
+	const ledsConfigFromClient = currentMode(realSticks, combinedSensors).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
 }
