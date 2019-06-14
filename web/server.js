@@ -90,7 +90,8 @@ io.on('connection', socket => {
 		}
 
 		clientSensors = sensors
-		const ledsConfigFromClient = currentMode(sticks, sensors).filter(Boolean)
+		const sensorToPass = realSensorsData && realSensorsData.length > 0 ? [...clientSensors, ...realSensorsData] : clientSensors
+		const ledsConfigFromClient = currentMode(sticks, sensorToPass).filter(Boolean)
 		ledsConfig = regroupConfig(ledsConfigFromClient)
 		socket.emit('ledsChanged', ledsConfig)
 		// ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig)) // keep for now for development processes
