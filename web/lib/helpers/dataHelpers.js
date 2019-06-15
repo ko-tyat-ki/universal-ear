@@ -94,7 +94,6 @@ export {
     addColor,
     combineLEDs,
     regroupConfig,
-    combineSensors,
     putLedsInBufferArray,
     eliminateLEDsConfigRepetition
 }
