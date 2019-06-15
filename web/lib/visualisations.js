@@ -9,12 +9,7 @@ export default {
 	basic,
 	flicker,
 	randomEcho,
-<<<<<<< HEAD
-	tensionAndRandomEcho,
-rain
-=======
 	tensionWithEcho,
 	fastReaction,
 	rain
->>>>>>> master
 }
