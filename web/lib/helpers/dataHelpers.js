@@ -2,8 +2,6 @@
 /* global ArrayBuffer */
 /* global Uint8Array */
 
-import { transformHexToRgb } from './colorHelpers.js'
-
 // Takes leds data for one stick, puts it into Byte array to be sent to certain Arduino
 const putLedsInBufferArray = (columnLedsConfig, numberOfLeds) => {
     const bufferArray = new ArrayBuffer(numberOfLeds * 3 + 3)
@@ -92,20 +90,11 @@ const regroupConfig = (ledsConfig) => {
     return regroupedConfig
 }
 
-
-// Combines first simulated sensor data with real sensor data:
-// HOWEVER: if 5V is connected to both the sensor and LEDs, the sensor data will be skewed and wrong and biased
-const combineSensors = (fkSensor, rlSensor) => {
-	let combinedSensors = fkSensor
-	combinedSensors[0].tension += fkSensor[0].tension + rlSensor.tension
-	return combinedSensors
-}
-
 export {
     addColor,
     combineLEDs,
-	regroupConfig,
-	combineSensors,
+    regroupConfig,
+    combineSensors,
     putLedsInBufferArray,
     eliminateLEDsConfigRepetition
 }
