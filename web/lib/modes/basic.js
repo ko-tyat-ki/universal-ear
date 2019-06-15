@@ -2,7 +2,7 @@
 // Returns a large array of all LED colours of all the STICKS
 
 // This particular function linearly depends on the tension of the sensor, i.e. the number of LEDs that will be turned ON linearly depends on the tension
-const basic = (sticks, sensors) => { 
+const basic = (sticks, sensors) => {
 	const brightColor = {
 		r: 200,
 		g: 200,
@@ -10,7 +10,7 @@ const basic = (sticks, sensors) => {
 	}
 
 	// Cycle through array of sensors from each stick:
-	return sensors.map(sensor => { 
+	return sensors.map(sensor => {
 		// Find a Stick that corresponds to current Sensor
 		const stick = sticks.find(stick => stick.name === sensor.column)
 
@@ -18,8 +18,7 @@ const basic = (sticks, sensors) => {
 		const tension = sensor.tension
 		const numberOfLEDs = stick.numberOfLEDs || 40 // at the moment we are using 40 LEDs
 
-		// Initialise array that will hold the order numbers of LEDs and their colours
-		const leds = []
+		const leds = [] // Will be an array of leds (key, colours)
 
 		// Cycle through the keys up to the tension value
 		for (let key = 0; key < tension; key++) {
