@@ -2,6 +2,8 @@
 /* global ArrayBuffer */
 /* global Uint8Array */
 
+import { transformHexToRgb } from './colorHelpers.js'
+
 const putLedsInBufferArray = (columnLedsConfig, numberOfLeds) => {
     const bufferArray = new ArrayBuffer(numberOfLeds * 3 + 3)
     const ledsBufferArray = new Uint8Array(bufferArray)
@@ -12,7 +14,7 @@ const putLedsInBufferArray = (columnLedsConfig, numberOfLeds) => {
     ledsBufferArray[0] = startByte
     ledsBufferArray[1] = sizeByte
     columnLedsConfig.slice(0, numberOfLeds).forEach(led => {
-        const rgb = transformHexToRgb(led.color)
+        const rgb = led.color
         ledsBufferArray[led.number * 3 + 2] = rgb.r
         ledsBufferArray[led.number * 3 + 3] = rgb.g
         ledsBufferArray[led.number * 3 + 4] = rgb.b
@@ -22,11 +24,11 @@ const putLedsInBufferArray = (columnLedsConfig, numberOfLeds) => {
 }
 
 const addColor = (ledOne, ledTwo) => {
-    const ledOneRGB = transformHexToRgb(ledOne)
-    const ledTwoRGB = transformHexToRgb(ledTwo)
-    return Math.min(ledOneRGB.r + ledTwoRGB.r, 255) * 256 * 256
-        + Math.min(ledOneRGB.g + ledTwoRGB.g, 255) * 256
-        + Math.min(ledOneRGB.b + ledTwoRGB.b, 255)
+    return {
+        r: Math.min(ledOne.r + ledTwo.r, 255),
+        g: Math.min(ledOne.g + ledTwo.g, 255),
+        b: Math.min(ledOne.b + ledTwo.b, 255)
+    }
 }
 
 const combineLEDs = (first, second) => {
@@ -56,9 +58,13 @@ const eliminateLEDsConfigRepetition = (ledsConfig) => {
             cleanedConfig.push(led)
             return
         }
-        const oldColor = transformHexToRgb(foundLed.color)
-        const newColor = transformHexToRgb(led.color)
-        const color = Math.max(oldColor.r, newColor.r) * 256 * 256 + Math.max(oldColor.g, newColor.g) * 256 + Math.max(oldColor.b, newColor.b)
+        const oldColor = foundLed.color
+        const newColor = led.color
+        const color = {
+            r: Math.max(oldColor.r, newColor.r),
+            g: Math.max(oldColor.g, newColor.g),
+            b: Math.max(oldColor.b, newColor.b)
+        }
         cleanedConfig[cleanedConfig.indexOf(foundLed)] = {
             number: foundLed.number,
             color
@@ -77,7 +83,7 @@ const regroupConfig = (ledsConfig) => {
             if (!found) {
                 regroupedConfig.push(stickConfig)
             } else {
-                found.leds = combineLEDs(found.leds, stickConfig.leds)
+                found.leds = combineLEDs([...found.leds], stickConfig.leds)
             }
         })
     })
@@ -85,20 +91,10 @@ const regroupConfig = (ledsConfig) => {
     return regroupedConfig
 }
 
-const transformHexToRgb = (hex) => {
-    const b = hex % 256
-    const g = (hex - b) / 256 % 256
-    const r = ((hex - b) / 256 - g) / 256
-    return {
-        r, g, b
-    }
-}
-
 export {
     addColor,
     combineLEDs,
     regroupConfig,
-    transformHexToRgb,
     putLedsInBufferArray,
     eliminateLEDsConfigRepetition
 }

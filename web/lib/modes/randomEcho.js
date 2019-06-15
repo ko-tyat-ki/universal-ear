@@ -1,13 +1,14 @@
 import { getDistance } from '../helpers/getDistance.js'
-import * as THREE from '../three/three.js'
 
+// Function that increases brigthness of a stick with tension and then some lights travel to other poles.
 const randomEcho = (sticks, sensors) => {
+	// Cycle through sensors:
 	return sensors.map(sensor => {
+		// Cycle through sticks:
 		return sticks.map(stick => {
-			if (!sensor || sensor.tension <= 0) {
-				return
-			}
+			if (!sensor || sensor.tension <= 0) return
 
+			// Get the distance between the Sensor and each stick in the structure
 			const distance = getDistance({
 				sensor,
 				stick,
@@ -16,13 +17,16 @@ const randomEcho = (sticks, sensors) => {
 
 			const leds = []
 
+			// The further the stick is from the structure, the less the intensity of the "echo"
 			for (let key = 0; key < stick.numberOfLEDs; key++) {
 				const colorIntensity = parseInt(255 * Math.random())
-				const rgbColor = `rgba(${Math.floor(15 / (distance / 244 + 1))}, ${Math.floor(colorIntensity / (distance / 244 + 1))}, ${Math.floor(200 / (distance / 244 + 1))})`
-				const color = new THREE.Color(rgbColor)
 				leds.push({
 					number: key,
-					color
+					color: {
+						r: Math.floor(15 / (distance / 244 + 1)),
+						g: Math.floor(colorIntensity / (distance / 244 + 1)),
+						b: Math.floor(200 / (distance / 244 + 1))
+					}
 				})
 			}
 

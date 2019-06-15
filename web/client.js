@@ -46,13 +46,13 @@ const onConfigure = () => {
 	sensors = update.sensors
 
 	socket.on('ledsChanged', changes => {
-		if (!changes) return
 		if (!sticks) return
-		if (changes.length <= 0) return
 
 		changes.map(change => {
-			const stick = sticks.find(stick => stick.name === change.key)
-			stick.colorLeds(change.leds)
+			if (change) {
+				const stick = sticks.find(stick => stick.name === change.key)
+				stick.colorLeds(change.leds)
+			}
 		})
 	})
 }
@@ -77,7 +77,6 @@ const onConfigure = () => {
 
 		sensors.forEach(sensor => {
 			sensor.realisticSensorUpdate()
-			//sensor.update(2)
 		})
 		socket.emit('updatedSensors', sensors)
 	}, 50)

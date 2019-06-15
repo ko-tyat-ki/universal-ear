@@ -1,5 +1,15 @@
 const flicker = (sticks, sensors) => {
-	const brightColor = 0x55ffff
+	const brightColor = {
+		r: 200,
+		g: 200,
+		b: 255
+	}
+
+	const offColor = { // get from contants
+		r: 34,
+		g: 34,
+		b: 68
+	}
 
 	return sensors.map(sensor => {
 		const stick = sticks.find(stick => stick.name === sensor.column)
@@ -12,7 +22,7 @@ const flicker = (sticks, sensors) => {
 		for (let key = 0; key < numberOfLEDs; key++) {
 			const ledColor = tension / numberOfLEDs > Math.random()
 				? brightColor
-				: 0x222222
+				: offColor
 
 			leds.push({
 				number: key,

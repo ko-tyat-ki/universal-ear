@@ -1,6 +1,6 @@
 export const arduinosConfig = [
     {
-        name: '/dev/tty/.usbmodem14201', // first port on MAC
+        name: '/dev/tty.usbmodem14201', // first port on MAC
         column: '1',
         baudRate: 115200,
         numberOfLEDs: 40,
@@ -9,7 +9,8 @@ export const arduinosConfig = [
                 name: 'someName',
                 position: 20
             }
-        ]
+        ],
+        baseTension: 0
     }, {
         name: 'COM14', // first port on Windows
         column: '1',
@@ -20,6 +21,7 @@ export const arduinosConfig = [
                 name: 'someName',
                 position: 20
             }
-        ]
+        ],
+        baseTension: 0
     }
 ]

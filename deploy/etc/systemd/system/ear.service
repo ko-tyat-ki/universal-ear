@@ -1,0 +1,13 @@
+[Unit]
+Description=Nowhere Ear
+
+[Service]
+ExecStart=/usr/bin/npm run prod
+WorkingDirectory=/home/pi/nowhere-ear/
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target

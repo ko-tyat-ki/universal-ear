@@ -1,7 +1,7 @@
 /* global console */
 /* global __dirname */
 
-import 'babel-polyfill'
+import '@babel/polyfill'
 
 import express from 'express'
 import path from 'path'
@@ -19,6 +19,9 @@ export const spinServer = () => {
     app.use('/web/lib/', express.static(path.join(__dirname, '../../lib')))
 
     server.listen(3000, () => {
+        // Load config from file
+
+
         console.log('I am listenning on 3000')
     })
 
