@@ -8,9 +8,10 @@ import {
 import { connectToArduinos } from './lib/helpers/connectToArduinos.js'
 import { spinServer } from './lib/helpers/spinServer.js'
 import { NUMBER_OF_LEDS } from './lib/configuration/constants.js'
+import earConfig from './lib/helpers/config'
 
 const connectedSockets = {}
-const clientConfigurations = {}
+const clientConfigurations = earConfig.read()
 let ledsConfig
 let currentMode = modes.basic
 let areWeWriting = true
@@ -45,6 +46,7 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 	let combinedSensors = [...clientSensors, ...realSensors]
 	const ledsConfigFromClient = currentMode(realSticks, combinedSensors).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
+
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
 }
 
@@ -99,6 +101,7 @@ io.on('connection', socket => {
 
 	socket.on('configure', configuration => {
 		clientConfigurations[socket.id] = configuration
+		earConfig.save()
 	})
 
 	socket.on('disconnect', () => {
