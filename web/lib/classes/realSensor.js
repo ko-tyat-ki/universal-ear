@@ -3,9 +3,10 @@ import Readline from '@serialport/parser-readline'
 
 export class RealSensor {
     constructor(arduinoConfig) {
-        this.tension = arduinoConfig.baseTension
+        this.tension = Math.max(arduinoConfig.baseTension, 0)
         this.oldTension = [this.tension, this.tension, this.tension, this.tension]
-
+        this.sensorPosition = arduinoConfig.sensors[0].position
+        this.column = arduinoConfig.column
         const portName = arduinoConfig.name
 
         this.port = new SerialPort(`${portName}`, {
@@ -24,12 +25,16 @@ export class RealSensor {
     }
 
     update(tension) {
+        if (!tension) return
         for (let key = 0; key < 4; key++) {
             this.oldTension[key] = (this.oldTension[key])
                 ? this.lerp(this.oldTension[key], this.tension, 0.1 * (key + 1))
                 : this.tension
+            this.oldTension[key] = (this.oldTension[key] < 1)
+                ? 0
+                : this.oldTension[key]
         }
-        this.tension = tension
+        this.tension = Math.max(tension, 0)
     }
 
     lerp(inValue, outValue, fraction) {

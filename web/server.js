@@ -16,37 +16,35 @@ let ledsConfig
 let currentMode = modes.basic
 let areWeWriting = true
 let clientSensors
+let realSensorsData
 
 const io = spinServer()
 const realSensors = connectToArduinos()
 
+const realSticks = [ // TODO move to some config
+	{
+		numberOfLEDs: 40,
+		name: '1'
+	},
+	{
+		numberOfLEDs: 40,
+		name: '2'
+	},
+]
+
 const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
-	const sensorData = data.split('\t')[0].split('! ')[1]
+	const sensorData = parseFloat(data.split('\t')[0].split('! ')[1])
 	realSensor.update(sensorData)
 
-	// let config = clientConfigurations[socket.id]
-	// if (!config) {
-	// 	return
-	// }
+	realSensorsData = realSensors.map(sensor => ({
+		tension: sensor.tension,
+		oldTension: sensor.oldTension,
+		sensorPosition: sensor.sensorPosition,
+		column: sensor.column,
+	}))
 
-	// const sticks = config.sticks
-	// if (!sticks) {
-	// 	return
-	// }
-
-	const sticks = [
-		{
-			numberOfLEDs: 40,
-			name: '1'
-		},
-		{
-			numberOfLEDs: 40,
-			name: '2'
-		},
-	]
-	//console.log(clientSensors)
-	const ledsConfigFromClient = currentMode(sticks, clientSensors).filter(Boolean)
-	//const ledsConfigFromHardware = currentMode(sticks, realSensor).filter(Boolean)
+	let combinedSensors = [...clientSensors, ...realSensors]
+	const ledsConfigFromClient = currentMode(realSticks, combinedSensors).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
 
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
@@ -88,13 +86,14 @@ io.on('connection', socket => {
 			return
 		}
 
-		currentMode = modes[config.mode]
+		currentMode = modes[config.mode || 'basic']
 		if (!currentMode) {
 			return
 		}
 
 		clientSensors = sensors
-		const ledsConfigFromClient = currentMode(sticks, sensors).filter(Boolean)
+		const sensorToPass = realSensorsData && realSensorsData.length > 0 ? [...clientSensors, ...realSensorsData] : clientSensors
+		const ledsConfigFromClient = currentMode(sticks, sensorToPass).filter(Boolean)
 		ledsConfig = regroupConfig(ledsConfigFromClient)
 		socket.emit('ledsChanged', ledsConfig)
 		// ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig)) // keep for now for development processes
