@@ -3,12 +3,14 @@
 import modes from './lib/visualisations'
 import {
 	putLedsInBufferArray,
-	regroupConfig
+	regroupConfig,
+	getInfoFromSensors
 } from './lib/helpers/dataHelpers'
-import { connectToArduinos } from './lib/helpers/connectToArduinos.js'
-import { spinServer } from './lib/helpers/spinServer.js'
-import { NUMBER_OF_LEDS } from './lib/configuration/constants.js'
+import { connectToArduinos } from './lib/helpers/connectToArduinos'
+import { spinServer } from './lib/helpers/spinServer'
+import { NUMBER_OF_LEDS } from './lib/configuration/constants'
 import earConfig from './lib/helpers/config'
+import { writeToPython } from './lib/helpers/communicateWithPython';
 
 //////////////////// TODO move to some initial config file
 const realSticks = [
@@ -36,7 +38,7 @@ const io = spinServer()
 const realSensors = connectToArduinos()
 
 const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
-	const sensorData = parseFloat(data.split('\t')[0].split('! ')[1])
+	const sensorData = getInfoFromSensors(data)
 	realSensor.update(sensorData)
 
 	realSensorsData = realSensors.map(sensor => ({
@@ -49,6 +51,8 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 	const sensorToPass = clientSensors && clientSensors.length > 0 ? [...clientSensors, ...realSensors] : realSensors
 	const ledsConfigFromClient = currentMode(realSticks, sensorToPass).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
+
+	writeToPython(combinedSensors, currentMode)
 
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
 }
@@ -95,10 +99,12 @@ io.on('connection', socket => {
 		}
 
 		clientSensors = sensors
-		const sensorToPass = realSensorsData && realSensorsData.length > 0 ? [...clientSensors, ...realSensorsData] : clientSensors
-		const ledsConfigFromClient = currentMode(sticks, sensorToPass).filter(Boolean)
+		const sensorsToPass = realSensorsData && realSensorsData.length > 0 ? [...clientSensors, ...realSensorsData] : clientSensors
+		const ledsConfigFromClient = currentMode(sticks, sensorsToPass).filter(Boolean)
 		ledsConfig = regroupConfig(ledsConfigFromClient)
 		socket.emit('ledsChanged', ledsConfig)
+
+		writeToPython(sensorsToPass, currentMode)
 		// ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig)) // keep for now for development processes
 	})
 
