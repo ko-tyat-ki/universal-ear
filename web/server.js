@@ -10,18 +10,8 @@ import { spinServer } from './lib/helpers/spinServer.js'
 import { NUMBER_OF_LEDS } from './lib/configuration/constants.js'
 import earConfig from './lib/helpers/config'
 
-const connectedSockets = {}
-const clientConfigurations = earConfig.read()
-let ledsConfig
-let currentMode = modes.basic
-let areWeWriting = true
-let clientSensors
-let realSensorsData
-
-const io = spinServer()
-const realSensors = connectToArduinos()
-
-const realSticks = [ // TODO move to some config
+//////////////////// TODO move to some initial config file
+const realSticks = [
 	{
 		numberOfLEDs: 40,
 		name: '1'
@@ -31,6 +21,19 @@ const realSticks = [ // TODO move to some config
 		name: '2'
 	},
 ]
+//////////////////// TODO move to some config
+
+const connectedSockets = {}
+// const clientConfigurations = earConfig.read()
+const clientConfigurations = {}
+let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
+let currentMode = modes.basic
+let areWeWriting = true
+let clientSensors
+let realSensorsData
+
+const io = spinServer()
+const realSensors = connectToArduinos()
 
 const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
 	const sensorData = parseFloat(data.split('\t')[0].split('! ')[1])
@@ -43,8 +46,8 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 		column: sensor.column,
 	}))
 
-	let combinedSensors = [...clientSensors, ...realSensors]
-	const ledsConfigFromClient = currentMode(realSticks, combinedSensors).filter(Boolean)
+	const sensorToPass = clientSensors && clientSensors.length > 0 ? [...clientSensors, ...realSensors] : realSensors
+	const ledsConfigFromClient = currentMode(realSticks, sensorToPass).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
 
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
@@ -57,7 +60,7 @@ if (realSensors && realSensors.length > 0) {
 
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig) {
-				//console.log('DATA IN', data)
+				// console.log('DATA IN', data)
 				port.write(calculateDataForRealLeds(data, realSensor))
 				areWeWriting = false
 			} else {
