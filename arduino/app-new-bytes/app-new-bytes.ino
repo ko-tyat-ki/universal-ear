@@ -177,7 +177,7 @@ void writeToLeds() {
   FastLED.clear();
   for (int i = 0; i < payloadInSize/4; i++) {
     //leds[Signal[4*i]] = CRGB(Signal[1 + 4*i], Signal[2 + 4*i], Signal[3 + 4*i]);
-    leds[i*5] = leds[i*5+1] = leds[i*5+2]= leds[i*5+3]= leds[i*5+4] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][1],payloadIn.ledno[i][2]);
+    leds[i*5] = leds[i*5+1] = leds[i*5+2] = leds[i*5+3] = leds[i*5+4] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][1],payloadIn.ledno[i][2]);
     // TODO: Blend with the next LED
   }
   FastLED.show();
