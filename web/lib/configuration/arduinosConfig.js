@@ -12,7 +12,7 @@ export const arduinosConfig = [
         ],
         baseTension: 0
     }, {
-        name: 'COM14', // first port on Windows
+        name: 'COM7', // first port on Windows
         column: '1',
         baudRate: 115200,
         numberOfLEDs: 40,

@@ -23,6 +23,7 @@ const realSensors = connectToArduinos()
 const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
 	const sensorData = parseFloat(data.split('\t')[0].split('! ')[1])
 	realSensor.update(sensorData)
+	if (sensorData) console.log("SENSOR ", sensorData)
 
 	// let config = clientConfigurations[socket.id]
 	// if (!config) {
@@ -48,7 +49,7 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 	let combinedSensors = [...clientSensors, ...realSensors]
 	const ledsConfigFromClient = currentMode(sticks, combinedSensors).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
-	console.log(ledsConfig[0].leds)
+	//console.log(ledsConfig[0].leds)
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
 }
 
