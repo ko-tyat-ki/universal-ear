@@ -23,5 +23,29 @@ export const arduinosConfig = [
             }
         ],
         baseTension: 0
+    }, {
+        name: '/dev/tty.usbmodem142601',
+        column: '1',
+        baudRate: 115200,
+        numberOfLEDs: 40,
+        sensors: [
+            {
+                name: 'someName',
+                position: 20
+            }
+        ],
+        baseTension: 0
+    }, {
+        name: '/dev/tty.usbserial-14250',
+        column: '2',
+        baudRate: 115200,
+        numberOfLEDs: 40,
+        sensors: [
+            {
+                name: 'someName',
+                position: 30
+            }
+        ],
+        baseTension: 0
     }
 ]
