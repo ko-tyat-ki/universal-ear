@@ -6,7 +6,7 @@ const DefaultPath = os.homedir() + '/ear_config.json'
 function read(path) {
   path = path || DefaultPath;
 
-  let res  = {}
+  let res = {}
   try {
     let configData = fs.readFileSync(path, 'utf-8')
     res = JSON.parse(configData)
@@ -14,7 +14,7 @@ function read(path) {
     console.log(err)
   }
 
-  return res
+  return res || {}
 }
 
 

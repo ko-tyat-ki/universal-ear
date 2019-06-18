@@ -36,8 +36,8 @@ const realSticks = [
 //////////////////// TODO move to some config
 
 const connectedSockets = {}
-// const clientConfigurations = earConfig.read()
-const clientConfigurations = {}
+const clientConfigurations = earConfig.read()
+// const clientConfigurations = {}
 let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
 let currentMode = modes.basic
 let clientSensors
