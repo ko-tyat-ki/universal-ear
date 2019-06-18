@@ -34,19 +34,21 @@ export class RealSensor {
     }
 
     update(sensorData) {
-        const tension = sensorData.fast
-        this.fastSensorSpeed = Math.max(sensorData.fast, 0)
-        this.slowSensorSpeed = Math.max(sensorData.slow, 0)
-        if (!tension) return
-        for (let key = 0; key < 4; key++) {
-            this.oldTension[key] = (this.oldTension[key])
-                ? this.lerp(this.oldTension[key], this.tension, 0.1 * (key + 1))
-                : this.tension
-            this.oldTension[key] = (this.oldTension[key] < 1)
-                ? 0
-                : this.oldTension[key]
+        if (sensorData) {
+            const tension = sensorData.fast
+            this.fastSensorSpeed = Math.max(sensorData.fast, 0)
+            this.slowSensorSpeed = Math.max(sensorData.slow, 0)
+            if (!tension) return
+            for (let key = 0; key < 4; key++) {
+                this.oldTension[key] = (this.oldTension[key])
+                    ? this.lerp(this.oldTension[key], this.tension, 0.1 * (key + 1))
+                    : this.tension
+                this.oldTension[key] = (this.oldTension[key] < 1)
+                    ? 0
+                    : this.oldTension[key]
+            }
+            this.tension = Math.max(tension, 0)
         }
-        this.tension = Math.max(tension, 0)
     }
 
     lerp(inValue, outValue, fraction) {

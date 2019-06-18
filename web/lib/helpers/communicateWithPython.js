@@ -1,7 +1,7 @@
 import net from 'net'
 
 const pythonClient = net.createConnection({ port: 8124 }).on('error', () => {
-    console.log('python disconnected')
+    // console.log('python disconnected')
 })
 
 export const writeToPython = (sensorsData, currentMode) => {
