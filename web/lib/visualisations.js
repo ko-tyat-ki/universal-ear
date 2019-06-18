@@ -1,5 +1,6 @@
 import basic from './modes/basic'
 import changing_colors from './modes/changing_colors'
+import random_flashes from './modes/random_flashes'
 import flicker from './modes/flicker'
 import randomEcho from './modes/randomEcho'
 import tensionWithEcho from './modes/tensionWithEcho'
@@ -9,6 +10,7 @@ import rain from './modes/rain'
 export default {
 	basic,
 	changing_colors,
+	random_flashes,
 	flicker,
 	randomEcho,
 	tensionWithEcho,

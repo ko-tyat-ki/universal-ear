@@ -4,8 +4,8 @@
 // This particular function linearly depends on the tension of the sensor, i.e. the number of LEDs that will be turned ON linearly depends on the tension
 const basic = (sticks, sensors) => {
 	const brightColor = {
-		r: 200,
-		g: 200,
+		r: 255,
+		g: 255,
 		b: 255
 	}
 

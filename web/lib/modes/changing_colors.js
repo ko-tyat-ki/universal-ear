@@ -2,17 +2,12 @@
 // Returns a large array of all LED colours of all the STICKS
 
 const brightColor = {
-	r: 200,
-	g: 200,
+	r: 255,
+	g: 255,
 	b: 255
 }
 
-// somehow this random doesn't work?
-let offColor = { // get from contants
-	r: 34 + 500 * (Math.random() - 0.5),
-	g: 34 + 500 * (Math.random() - 0.5),
-	b: 68 + 500 * (Math.random() - 0.5)
-}
+const startTime = Date.now()
 
 // This particular function linearly depends on the tension of the sensor, i.e. the number of LEDs that will be turned ON linearly depends on the tension
 const changing_colors = (sticks, sensors) => { 
@@ -22,6 +17,7 @@ const changing_colors = (sticks, sensors) => {
 		
 		// Find a Stick that corresponds to current Sensor
 		const stick = sticks.find(stick => stick.name === sensor.column)
+		if (!stick) return
 
 		// Get tension of current sensor
 		const tension = sensor.tension
@@ -47,7 +43,7 @@ const changing_colors = (sticks, sensors) => {
 		for (let key = 0; key < numberOfLEDs; key++) {
 			let ledColor
 			
-			ledColor = ReduceBrightnessFunction(offColor, tension_parameter)
+			ledColor = ReduceBrightnessFunction(tension_parameter)
 
 			leds.push({
 				number: key,
@@ -67,25 +63,49 @@ const changing_colors = (sticks, sensors) => {
 	})
 }
 
-const ReduceBrightnessFunction = (inRGB, tension_parameter) => {
+const ReduceBrightnessFunction = (tension_parameter) => {
 
 	// adding shimmering - the default boundary gets unstable
-	offColor = { // get from contants
-		r: 34 + (Math.random() - 0.5) * 0.1,
-		g: 34 + (Math.random() - 0.5) * 0.1,
-		b: 68 + (Math.random() - 0.5) * 0.1
+	const offColor = { // get from contants
+		r: 0 + (Math.random() - 0.5) * 10,
+		g: 0 + (Math.random() - 0.5) * 10,
+		b: 0 + (Math.random() - 0.5) * 10
 	}
 
-	// tension parameter - a number between 0 and 1
-	const a = Math.max(0, tension_parameter) * 3 * 200
-	const b = Math.min(1, Math.max(0, tension_parameter - 0.15)) * 3 * 200
-	const c = Math.min(1, Math.max(0, tension_parameter - 0)) * 3 * 400
+// bad coding creating different colour fainting schemes :)
+	let aa
+	let bb
+	let cc
+	const colour_case = ((Date.now() - startTime) / 10000) % 3
+
+	if (colour_case < 1) {
+		aa = 1
+		bb = 0.6
+		cc = 0.3
+	}
+	else if (colour_case < 2) {
+		aa = 0.3
+		bb = 0.6
+		cc = 1
+	}
+	else {
+		aa = 0.3
+		bb = 1
+		cc = 0.6
+	}
+	//console.log(colour_case)
+	//console.log(Date.now() - startTime)
+
+	// tension parameter shall be calibrated to be a number between 0 and 1
+	const a = Math.min(1, Math.max(0, tension_parameter - aa))  * 255
+	const b = Math.min(1, Math.max(0, tension_parameter - bb)) * 255
+	const c = Math.min(1, Math.max(0, tension_parameter - cc)) * 255
 
 	let outRGB = { r: 0, g: 0, b: 0 }
 	// minmax - boundaries for color change
-	outRGB.r = Math.max(Math.min(inRGB.r + a, brightColor.r), offColor.r)
-	outRGB.g = Math.max(Math.min(inRGB.g + b, brightColor.g), offColor.g)
-	outRGB.b = Math.max(Math.min(inRGB.b + c, brightColor.b), offColor.b)
+	outRGB.r = Math.max(Math.min(a, brightColor.r), offColor.r)
+	outRGB.g = Math.max(Math.min(b, brightColor.g), offColor.g)
+	outRGB.b = Math.max(Math.min(c, brightColor.b), offColor.b)
 	return outRGB
 }
 
