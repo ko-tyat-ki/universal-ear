@@ -40,7 +40,7 @@ const realSensors = connectToArduinos()
 const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
 	const sensorData = getInfoFromSensors(data)
 	realSensor.update(sensorData)
-	if (sensorData) console.log("SENSOR ", sensorData)
+	//if (sensorData) console.log("SENSOR ", sensorData)
 	
 	realSensorsData = realSensors.map(sensor => ({
 		tension: sensor.tension,
@@ -53,7 +53,7 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 	const ledsConfigFromClient = currentMode(realSticks, sensorToPass).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
 
-	writeToPython(combinedSensors, currentMode)
+	//writeToPython(combinedSensors, currentMode)
 	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
 }
 

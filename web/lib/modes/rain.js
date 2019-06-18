@@ -29,17 +29,24 @@ const rain = (sticks, sensors) => {
 			let timeValue = Date.now()
 			let speed = 0.01
 			let displace = tension * 0.5
-			let ledColor = MoveWithTime(key, timeValue, displace, numberOfLEDs, rainColor, offColor, speed, tension)
-			leds.push({
-				number: key,
-				color: ledColor
-			})
+			let ledColor //= MoveWithTime(key, timeValue, displace, numberOfLEDs, rainColor, offColor, speed, tension)
+			if (parseInt(tension) > 0) {
+				//ledColor = MoveWithTime(key, timeValue, displace, numberOfLEDs, brightColor, offColor, speed, tension)
+				ledColor = RandomMove(key, timeValue, parseInt(tension), numberOfLEDs)
+			}
+			if (ledColor) {
+				leds.push({
+					number: key,
+					color: ledColor
+				})
+			}
 		}
 		return [{
 			key: stick.name,
 			leds
 		}]
 	})
+	
 
 }
 const MoveWithTime = (key, timeValue, displace, num, bright, dark, speed, tension) => {
@@ -57,12 +64,30 @@ const MoveWithTime = (key, timeValue, displace, num, bright, dark, speed, tensio
 		b: dark.b
 	}
 	if (key < pos + 3 && key > pos - 3) {
-		ledColor = bright
+		ledColor = {
+			r: bright.r + ten * 6 < 255
+				? dark.r + ten * 6
+				: 255,
+			g: bright.g,
+			b: bright.b
+		}
 	} else if (key < pos + 6 && key > pos - 6) {
 		ledColor = ReduceBrightnessFunction(bright, 30)
 	} else
 	{
-		ledColor = outColor
+	//	ledColor = outColor
+	}
+	return ledColor
+}
+
+const RandomMove = (key, timeValue, tension, num) => {
+	let ledColor
+	const randNom = Math.round(Math.random() * tension / num * 255)
+	//console.log(randNom)
+	ledColor = {
+		r: randNom,
+		g: randNom,//Math.random() * tension / num,
+		b: 0 //Math.random() * tension / num
 	}
 	return ledColor
 }
