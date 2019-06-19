@@ -16,11 +16,21 @@ import { writeToPython } from './lib/helpers/communicateWithPython';
 const realSticks = [
 	{
 		numberOfLEDs: 40,
-		name: '1'
+		name: '1',
+		init: {
+			x: 122,
+			y: -180,
+			z: 0
+		}
 	},
 	{
 		numberOfLEDs: 40,
-		name: '2'
+		name: '2',
+		init: {
+			x: -122,
+			y: -180,
+			z: 0
+		}
 	},
 ]
 //////////////////// TODO move to some config
@@ -30,14 +40,13 @@ const connectedSockets = {}
 const clientConfigurations = {}
 let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
 let currentMode = modes.basic
-let areWeWriting = true
 let clientSensors
 let realSensorsData
 
 const io = spinServer()
 const realSensors = connectToArduinos()
 
-const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
+const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
 	const sensorData = getInfoFromSensors(data)
 	realSensor.update(sensorData)
 	//if (sensorData) console.log("SENSOR ", sensorData)
@@ -53,19 +62,24 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 	const ledsConfigFromClient = currentMode(realSticks, sensorToPass).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
 
-	//writeToPython(combinedSensors, currentMode)
-	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
+	// writeToPython(sensorToPass, currentMode)
+
+	const columnLeds = ledsConfig.find(config => config.key === column).leds
+	return putLedsInBufferArray(columnLeds, NUMBER_OF_LEDS)
+
+	// return putLedsInBufferArray(ledsConfig[column - 1].leds, NUMBER_OF_LEDS)
 }
 
 if (realSensors && realSensors.length > 0) {
 	realSensors.map(realSensor => {
 		const port = realSensor.port
 		const parser = realSensor.parser
+		let areWeWriting = true
 
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig) {
-				// console.log('DATA IN', data)
-				port.write(calculateDataForRealLeds(data, realSensor))
+				// console.log({ data, key: realSensor.key })
+				port.write(calculateDataForRealLeds(data, realSensor, realSensor.column))
 				areWeWriting = false
 			} else {
 				//console.log('Data IN, listen', data)
@@ -104,7 +118,7 @@ io.on('connection', socket => {
 		ledsConfig = regroupConfig(ledsConfigFromClient)
 		socket.emit('ledsChanged', ledsConfig)
 
-		writeToPython(sensorsToPass, currentMode)
+		// writeToPython(sensorsToPass, currentMode)
 		// ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig)) // keep for now for development processes
 	})
 
