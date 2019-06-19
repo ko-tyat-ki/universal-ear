@@ -1,4 +1,5 @@
 import basic from './modes/basic'
+import basic_with_rainbow from './modes/basic_with_rainbow'
 import changing_colors from './modes/changing_colors'
 import random_flashes from './modes/random_flashes'
 import flicker from './modes/flicker'
@@ -9,6 +10,7 @@ import rain from './modes/rain'
 
 export default {
 	basic,
+	basic_with_rainbow,
 	changing_colors,
 	random_flashes,
 	flicker,
