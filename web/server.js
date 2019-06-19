@@ -16,11 +16,21 @@ import { writeToPython } from './lib/helpers/communicateWithPython';
 const realSticks = [
 	{
 		numberOfLEDs: 40,
-		name: '1'
+		name: '1',
+		init: {
+			x: 122,
+			y: -180,
+			z: 0
+		}
 	},
 	{
 		numberOfLEDs: 40,
-		name: '2'
+		name: '2',
+		init: {
+			x: -122,
+			y: -180,
+			z: 0
+		}
 	},
 ]
 //////////////////// TODO move to some config
@@ -67,7 +77,7 @@ if (realSensors && realSensors.length > 0) {
 
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig) {
-				console.log({ data, key: realSensor.key })
+				// console.log({ data, key: realSensor.key })
 				port.write(calculateDataForRealLeds(data, realSensor, realSensor.column))
 				areWeWriting = false
 			} else {
