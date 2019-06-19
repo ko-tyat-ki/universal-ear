@@ -104,7 +104,7 @@ const getInfoFromSensors = (data) => {
 export {
     addColor,
     combineLEDs,
-    regroupConfig,
+	regroupConfig,
     putLedsInBufferArray,
     getInfoFromSensors,
     eliminateLEDsConfigRepetition

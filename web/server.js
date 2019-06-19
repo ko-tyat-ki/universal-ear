@@ -49,6 +49,7 @@ const realSensors = connectToArduinos()
 const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
 	const sensorData = getInfoFromSensors(data)
 	realSensor.update(sensorData)
+	//if (sensorData) console.log("SENSOR ", sensorData)
 
 	realSensorsData = realSensors.map(sensor => ({
 		tension: sensor.tension,
@@ -106,7 +107,7 @@ io.on('connection', socket => {
 			return
 		}
 
-		currentMode = modes[config.mode || 'basic']
+		currentMode = modes[config.mode] || modes.basic
 		if (!currentMode) {
 			return
 		}

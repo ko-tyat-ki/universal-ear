@@ -3,6 +3,7 @@ import Readline from '@serialport/parser-readline'
 
 export class RealSensor {
     constructor(arduinoConfig) {
+
         this.tension = Math.max(arduinoConfig.baseTension, 0)
         this.fastSensorSpeed = 0
         this.slowSensorSpeed = 0
@@ -17,7 +18,7 @@ export class RealSensor {
 
     init() {
         const portName = this.key
-
+		
         this.port = new SerialPort(`${portName}`, {
             baudRate: this.baudRate
         })
@@ -32,7 +33,7 @@ export class RealSensor {
             console.log(`Port was closed., port: ${portName}`, error)
         })
     }
-
+	
     update(sensorData) {
         if (sensorData) {
             const tension = sensorData.fast
