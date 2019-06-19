@@ -50,7 +50,7 @@ const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGE
 	const sensorData = getInfoFromSensors(data)
 	realSensor.update(sensorData)
 	//if (sensorData) console.log("SENSOR ", sensorData)
-	
+
 	realSensorsData = realSensors.map(sensor => ({
 		tension: sensor.tension,
 		oldTension: sensor.oldTension,
@@ -107,7 +107,7 @@ io.on('connection', socket => {
 			return
 		}
 
-		currentMode = modes[config.mode || 'basic']
+		currentMode = modes[config.mode] || modes.basic
 		if (!currentMode) {
 			return
 		}
