@@ -179,18 +179,19 @@ float lerp(float from, float to, float fraction) {
 void writeToLeds() {
   FastLED.clear();
   for (int i = 0; i < payloadInSize/4; i++) {
-    //leds[Signal[4*i]] = CRGB(Signal[1 + 4*i], Signal[2 + 4*i], Signal[3 + 4*i]);
+    // Smooth with the previous frame:
     for (int j = 0; j < 3; j++) {
       leds_united[i][j] = lerp(leds_united[i][j], payloadIn.ledno[i][j], 0.2);
     }
-    // TODO: Blend with the next LED
-  }
-
-  for (int i = 0; i < payloadInSize/4; i++) {
+    // Smooth with the next led:
     for (int j = 0; j < 5; j++) {
-      // LEDS_GROUPING
-      //leds[i*5 + j] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][1],payloadIn.ledno[i][2]);    
-      leds[i*5 + j] = CRGB (leds_united[i][0], leds_united[i][1], leds_united[i][2]);
+      if (i < payloadInSize/4 - 1) {
+        leds[i*5 + j] =  CRGB(lerp (leds_united[i][0], leds_united[i + 1][0], 0.2 * j),
+                              lerp (leds_united[i][1], leds_united[i + 1][1], 0.2 * j),
+                              lerp (leds_united[i][2], leds_united[i + 1][2], 0.2 * j)) ;      
+      } else {
+        leds[i*5 + j] = CRGB (leds_united[i][0], leds_united[i][1], leds_united[i][2]);
+      }
     }
   }
   FastLED.show();
