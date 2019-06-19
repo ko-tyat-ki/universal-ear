@@ -3,13 +3,23 @@ import Readline from '@serialport/parser-readline'
 
 export class RealSensor {
     constructor(arduinoConfig) {
-        this.tension = arduinoConfig.baseTension
+        this.tension = Math.max(arduinoConfig.baseTension, 0)
+        this.fastSensorSpeed = 0
+        this.slowSensorSpeed = 0
         this.oldTension = [this.tension, this.tension, this.tension, this.tension]
+        this.sensorPosition = arduinoConfig.sensors[0].position
+        this.column = arduinoConfig.column
+        this.key = arduinoConfig.name
+        this.baudRate = arduinoConfig.baudRate
 
-        const portName = arduinoConfig.name
+        this.init()
+    }
+
+    init() {
+        const portName = this.key
 
         this.port = new SerialPort(`${portName}`, {
-            baudRate: arduinoConfig.baudRate
+            baudRate: this.baudRate
         })
 
         this.parser = this.port.pipe(new Readline({ delimiter: '\n' }))
@@ -23,13 +33,22 @@ export class RealSensor {
         })
     }
 
-    update(tension) {
-        for (let key = 0; key < 4; key++) {
-            this.oldTension[key] = (this.oldTension[key])
-                ? this.lerp(this.oldTension[key], this.tension, 0.1 * (key + 1))
-                : this.tension
+    update(sensorData) {
+        if (sensorData) {
+            const tension = sensorData.fast
+            this.fastSensorSpeed = Math.max(sensorData.fast, 0)
+            this.slowSensorSpeed = Math.max(sensorData.slow, 0)
+            if (!tension) return
+            for (let key = 0; key < 4; key++) {
+                this.oldTension[key] = (this.oldTension[key])
+                    ? this.lerp(this.oldTension[key], this.tension, 0.1 * (key + 1))
+                    : this.tension
+                this.oldTension[key] = (this.oldTension[key] < 1)
+                    ? 0
+                    : this.oldTension[key]
+            }
+            this.tension = Math.max(tension, 0)
         }
-        this.tension = tension
     }
 
     lerp(inValue, outValue, fraction) {

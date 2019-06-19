@@ -22,6 +22,7 @@ extern CRGBPalette16 myRedWhiteBluePalette;
 extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
 
 int sensorPin = A0;    // select the input pin for the potentiometer
+int sensorPowerPin = 9; // select the sensor power pin
 int sensorValue = 0;  // variable to store the value coming from the sensor
 int sensorAvg, sensorMed, longAverage; // moving average of the sensor values
 const int AverageN = 10; // for first fast integration
@@ -59,6 +60,7 @@ float diffSlow;
 
 void setup() {
     delay( 1000 ); // power-up safety delay
+    pinMode(sensorPowerPin, OUTPUT); // declare sensor power pin as output
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(  BRIGHTNESS );
     Serial.begin(115200);
@@ -88,18 +90,19 @@ void loop()
     receiveBytes();
     // Serial: Put data into "Signal" struct & send data back to server
     parseData();
-    //sendCallforData();
-    
+    //sendCallforData();   
 }
 
 void readSensorData() {
   // read the value from the sensor:
+    digitalWrite(sensorPowerPin,HIGH); 
     sensorValue = analogRead(sensorPin);
+    digitalWrite(sensorPowerPin,LOW);
     // Calculate the averages
     sensorAvg = runningAverage(sensorValue);
-    lerpingAverageSlow = lerp(lerpingAverageSlow, sensorValue, 0.01);
-    lerpingAverageFast = lerp(lerpingAverageFast, sensorValue, 0.2);
-    lerpingAverageVerySlow = lerp(lerpingAverageVerySlow, sensorAvg, 0.005);
+    lerpingAverageSlow = lerp(lerpingAverageSlow, sensorValue, 0.001);
+    lerpingAverageFast = lerp(lerpingAverageFast, sensorValue, 0.05);
+    lerpingAverageVerySlow = lerp(lerpingAverageVerySlow, sensorAvg, 0.0005);
     // Calculate the difference between the sensor value and averaged value:
     diffFast = (lerpingAverageFast - lerpingAverageVerySlow);  // fast. aka Derivative (for fast plucking)
     diffSlow = (lerpingAverageSlow - lerpingAverageVerySlow);  // slow. aka pressure (for slow pushing)
@@ -114,7 +117,7 @@ void parseData() {
     newData = false;
   } else {
     // TODO make something so that the following code wouldn't execute when receiving data.
-    if (testEvery(50) && !recvInProgress) {
+    if (testEvery(500) && !recvInProgress) {
       sleep = true;
       Serial.print("Waiting for transmission, ");
       sendSensorData();
@@ -131,7 +134,9 @@ void sendCallforData() {
 
 void sendSensorData() {
   // TODO: Calibrate diffFast and diffSlow!
-    Serial.println(String(diffSlow * 10) + "\t" + String(diffFast * 10) + "\t" + String(sensorValue));
+    Serial.println(String(diffSlow * 5) + "\t" + String(diffFast * 5) + "\t" + String(sensorValue));
+    // Leave for debugging
+    //Serial.println(String(lerpingAverageSlow) + "\t" + String(lerpingAverageFast) + "\t" + String(lerpingAverageVerySlow) + "\t" + String(sensorValue));
     Serial.println("eat me");
 }
 
@@ -172,7 +177,7 @@ void writeToLeds() {
   FastLED.clear();
   for (int i = 0; i < payloadInSize/4; i++) {
     //leds[Signal[4*i]] = CRGB(Signal[1 + 4*i], Signal[2 + 4*i], Signal[3 + 4*i]);
-    leds[i*5] = leds[i*5+1] = leds[i*5+2]= leds[i*5+3]= leds[i*5+4] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][1],payloadIn.ledno[i][2]);
+    leds[i*5] = leds[i*5+1] = leds[i*5+2] = leds[i*5+3] = leds[i*5+4] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][1],payloadIn.ledno[i][2]);
     // TODO: Blend with the next LED
   }
   FastLED.show();
