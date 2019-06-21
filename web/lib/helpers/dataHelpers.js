@@ -90,10 +90,22 @@ const regroupConfig = (ledsConfig) => {
     return regroupedConfig
 }
 
+const getInfoFromSensors = (data) => {
+    const received = data.split('\t')
+
+    if (received && received.length > 2) {
+        return {
+            fast: received[0].split('! ')[1],
+            slow: received[1]
+        }
+    }
+}
+
 export {
     addColor,
     combineLEDs,
-    regroupConfig,
+	regroupConfig,
     putLedsInBufferArray,
+    getInfoFromSensors,
     eliminateLEDsConfigRepetition
 }

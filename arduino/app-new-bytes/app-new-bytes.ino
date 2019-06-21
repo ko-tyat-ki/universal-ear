@@ -9,8 +9,9 @@
 #define LED_PIN     8
 #define NUM_LEDS    150 //60
 #define BRIGHTNESS  64
-#define LED_TYPE    WS2811
+#define LED_TYPE    WS2812B
 #define COLOR_ORDER GRB
+#define LEDS_GROUPING 5
 CRGB leds[NUM_LEDS];
 
 #define UPDATES_PER_SECOND 100
@@ -47,6 +48,8 @@ struct PayloadIn
 {
   uint8_t ledno[numberOfLeds][3];
 }payloadIn;
+
+uint8_t leds_united[numberOfLeds][3];
 
 boolean receivedBytes = false;
 byte startByte = 0x10;
@@ -176,9 +179,20 @@ float lerp(float from, float to, float fraction) {
 void writeToLeds() {
   FastLED.clear();
   for (int i = 0; i < payloadInSize/4; i++) {
-    //leds[Signal[4*i]] = CRGB(Signal[1 + 4*i], Signal[2 + 4*i], Signal[3 + 4*i]);
-    leds[i*5] = leds[i*5+1] = leds[i*5+2]= leds[i*5+3]= leds[i*5+4] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][1],payloadIn.ledno[i][2]);
-    // TODO: Blend with the next LED
+    // Smooth with the previous frame:
+    for (int j = 0; j < 3; j++) {
+      leds_united[i][j] = lerp(leds_united[i][j], payloadIn.ledno[i][j], 0.2);
+    }
+    // Smooth with the next led:
+    for (int j = 0; j < 5; j++) {
+      if (i < payloadInSize/4 - 1) {
+        leds[i*5 + j] =  CRGB(lerp (leds_united[i][0], leds_united[i + 1][0], 0.2 * j),
+                              lerp (leds_united[i][1], leds_united[i + 1][1], 0.2 * j),
+                              lerp (leds_united[i][2], leds_united[i + 1][2], 0.2 * j)) ;      
+      } else {
+        leds[i*5 + j] = CRGB (leds_united[i][0], leds_united[i][1], leds_united[i][2]);
+      }
+    }
   }
   FastLED.show();
 }

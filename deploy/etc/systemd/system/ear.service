@@ -2,11 +2,9 @@
 Description=Nowhere Ear
 
 [Service]
-ExecStart=/usr/bin/npm run prod
 WorkingDirectory=/home/pi/nowhere-ear/
-StandardOutput=inherit
-StandardError=inherit
-Restart=always
+ExecStart=/home/pi/nowhere-ear/start.sh
+Restart=on-failure
 User=pi
 
 [Install]
