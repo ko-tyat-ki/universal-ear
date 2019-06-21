@@ -124,7 +124,6 @@ let assignConfiguration = function (configuration, socketId) {
 };
 
 let realSensors = connectToArduinos()
-initSensors()
 
 const io = spinServer([
 	{
@@ -284,6 +283,8 @@ let initSensors = function () {
     })
   }
 };
+
+initSensors()
 
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
