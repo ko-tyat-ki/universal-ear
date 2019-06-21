@@ -1,8 +1,7 @@
 // Function of STICKS (initial properties of the sticks, i.e. position, names, etc.) and SENSORS (sensor data, the sticks they are connected etc.)
 // Returns a large array of all LED colours of all the STICKS
 
-const brightColor = {r: 255, g: 255, b: 255}
-const offColor = {r: 34, g: 34, b: 68}
+const brightColor = { r: 255, g: 255, b: 255 }
 
 // This particular function linearly depends on the tension of the sensor, i.e. the number of LEDs that will be turned ON linearly depends on the tension
 const basic = (sticks, sensors) => {
