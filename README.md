@@ -189,3 +189,31 @@ When tension reached the end of the stick, its echo goes to all other sticks.
 Any questions, suggestions, love notes - write them either to Katya or Ivan immediately via
 any known source of commmunication, or submit a github issue.
 
+## API
+
+### Switch mode
+
+Path: `/mode`
+Method: `POST`
+Headers: `Content-Type: application/json`
+Body Example:
+```
+{
+  "method": "flicker"
+}
+```
+
+Available modes:
+```
+basic
+basic_with_rainbow
+changing_colors
+fastReaction
+flicker
+rain
+rainEffect
+random_flashes
+randomEcho
+tensionWithEcho
+workshop
+```
