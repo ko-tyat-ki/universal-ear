@@ -1,3 +1,5 @@
+import { rainbowColors } from "../helpers/rainbowColors";
+
 const start = Date.now();
 
 const sinus = (sticks, sensors) => {
@@ -13,18 +15,20 @@ const sinus = (sticks, sensors) => {
 
       const tensionContribution =
         tension && stick.name === sensor.column ? Math.floor(tension) : 0;
+
+      const rainbowColor = rainbowColors(parseInt(stick.name))
       const leds = [
         {
           number: normalise(litCenter, ledsNumber),
-          color: { r: 200, g: 200, b: 200 }
+          color: rainbowColor
         },
         {
           number: normalise(litCenter - tensionContribution, ledsNumber),
-          color: { r: 200, g: 200, b: 200 }
+          color: rainbowColor
         },
         {
           number: normalise(litCenter + tensionContribution, ledsNumber),
-          color: { r: 200, g: 200, b: 200 }
+          color: rainbowColor
         }
       ];
       return {
