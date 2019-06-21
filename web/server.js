@@ -214,12 +214,15 @@ const io = spinServer([
 			res.send(JSON.stringify(arduinosConfig, null, 2))
 		}
 	}
-
 ])
 
 
 
 const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
+	if (!writeLogsForAndrey) {
+		return
+	}
+
 	const sensorData = getInfoFromSensors(data)
 	realSensor.update(sensorData)
 
@@ -240,19 +243,19 @@ const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGE
 
 	ledsConfig = regroupConfig(ledsConfigFromClient)
 
-  let forAndrey = {
-	  ts: 0 + new Date(),
-	  sensors: sensorToPass,
-    currentMode: currentMode,
-  }
+  // let forAndrey = {
+	 //  ts: 0 + new Date(),
+	 //  sensors: sensorToPass,
+    // currentMode: currentMode,
+  // }
 
-  let now = (new Date()).getTime();
-  let logDelay = now - lastLogSent;
-  if (writeLogsForAndrey && logDelay > 500) {
-    // TODO: optimize speed
-  	console.log(JSON.stringify(forAndrey))
-    lastLogSent = now
-  }
+  // let now = (new Date()).getTime();
+  // let logDelay = now - lastLogSent;
+  // if (writeLogsForAndrey && logDelay > 500) {
+  //   TODO: optimize speed
+  	// console.log(JSON.stringify(forAndrey))
+    // lastLogSent = now
+  // }
 
 	const columnLeds = ledsConfig.find(config => config.key === column)
 
