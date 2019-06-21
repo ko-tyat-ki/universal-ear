@@ -8,6 +8,7 @@ import {
 } from './lib/helpers/dataHelpers'
 import { connectToArduinos } from './lib/helpers/connectToArduinos'
 import { spinServer } from './lib/helpers/spinServer'
+import usb from './lib/helpers/usb'
 import { NUMBER_OF_LEDS } from './lib/configuration/constants'
 import earConfig from './lib/helpers/config'
 import { writeToPython } from './lib/helpers/communicateWithPython';
@@ -43,7 +44,14 @@ let currentMode = modes.basic
 let clientSensors
 let realSensorsData
 
-const io = spinServer()
+const io = spinServer(() => {
+	usb.initialize()
+
+	// TODO: check if usb list exists
+	// TODO: if not then read read usb list and save it to file
+	// TODO: if exists just read it
+})
+
 const realSensors = connectToArduinos()
 
 const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
@@ -82,7 +90,7 @@ if (realSensors && realSensors.length > 0) {
 				port.write(calculateDataForRealLeds(data, realSensor, realSensor.column))
 				areWeWriting = false
 			} else {
-				//console.log('Data IN, listen', data)
+				// console.log('Data IN, listen', data)
 				if (data === 'eat me\r') {
 					areWeWriting = true
 				}

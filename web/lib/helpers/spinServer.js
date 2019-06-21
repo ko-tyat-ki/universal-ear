@@ -8,7 +8,7 @@ import path from 'path'
 import http from 'http'
 import socketio from 'socket.io'
 
-export const spinServer = () => {
+export const spinServer = (onStartUp) => {
     const app = express()
     const server = new http.Server(app)
     const io = socketio(server)
@@ -20,7 +20,9 @@ export const spinServer = () => {
 
     server.listen(3000, () => {
         // Load config from file
-
+        if (onStartUp) {
+            onStartUp()
+        }
 
         console.log('I am listenning on 3000')
     })
