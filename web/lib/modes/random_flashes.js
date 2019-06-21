@@ -8,12 +8,23 @@ const numberOfLEDs = 40
 
 const random_flashes = (sticks, sensors) => { 
 
+	let flashesFrequency = 1 / 5000
+	let proportionSticksAlight = 1/10 // from 0 to 1
+
 	//const stickAlight = Math.floor((Math.random() * 10) % 10) //randomly choosing a stick to alight (multiple are possible at the same time)
-	const stickAlight = Math.floor((Date.now() / 5000) % 10) + 1 //choosing one at a time
+	//const stickAlight = Math.floor((Date.now() * flashesFrequency) % (1/proportionSticksAlight)) + 1 //choosing one at a time
 
 	// Cycle through array of sensors from each stick:
 	return sensors.map(sensor => { 
-		
+
+		proportionSticksAlight = Math.max(1/10, sensor.oldTension.reduce((a,b) => a+b, 0) / 50)
+		flashesFrequency = Math.max(1/2000, 1 / 1000 * sensor.tension)
+
+		console.log(proportionSticksAlight, flashesFrequency)
+
+		//const stickAlight = Math.floor((Math.random() * 10) % 10) //randomly choosing a stick to alight (multiple are possible at the same time)
+		//const stickAlight = Math.floor((Date.now() * flashesFrequency) % (1/proportionSticksAlight)) + 1 //choosing one at a time
+
 		// Find a Stick that corresponds to current Sensor
 		const stick = sticks.find(stick => stick.name === sensor.column)
 		
@@ -27,9 +38,10 @@ const random_flashes = (sticks, sensors) => {
 		for (let key = 0; key < numberOfLEDs; key++) {
 			let ledColor = offColor
 
-			let timeParameter = (Date.now() / 1000) % 10
+			let timeParameter = ((Date.now() * flashesFrequency) + parseInt(stick.name)) % 10
 			
-			if (parseInt(stick.name) == stickAlight) {
+			//if (parseInt(stick.name) == stickAlight) {
+			if (Math.random() < proportionSticksAlight) {
 				if (timeParameter < 2) {
 					ledColor = stickLightning(timeParameter)
 				}
