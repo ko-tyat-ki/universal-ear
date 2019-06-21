@@ -72,8 +72,8 @@ export const arduinosConfig = [
 		],
 		baseTension: 0
 	}, {
-		name: '/dev/tty.usbserial-14260', // first port on MAC
-		column: '2',
+		name: '/dev/tty.usbserial-1420', // first port on MAC
+		column: '1',
 		baudRate: 115200,
 		numberOfLEDs: 40,
 		sensors: [
