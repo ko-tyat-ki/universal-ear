@@ -1,5 +1,6 @@
 /* global console */
 
+import serialport from 'serialport'
 import modes from './lib/visualisations'
 import {
 	putLedsInBufferArray,
@@ -10,28 +11,98 @@ import { connectToArduinos } from './lib/helpers/connectToArduinos'
 import { spinServer } from './lib/helpers/spinServer'
 import { NUMBER_OF_LEDS } from './lib/configuration/constants'
 import earConfig from './lib/helpers/config'
-import { writeToPython } from './lib/helpers/communicateWithPython';
+import { hasArduino, addArduino, arduinosConfig } from './lib/configuration/arduinosConfig.js'
 
 //////////////////// TODO move to some initial config file
 const realSticks = [
 	{
-		numberOfLEDs: 40,
-		name: '1',
-		init: {
-			x: 122,
-			y: -180,
-			z: 0
-		}
+			name: '1',
+			init: {
+					x: 597,
+					y: -180,
+					z: 0
+			}
 	},
 	{
-		numberOfLEDs: 40,
-		name: '2',
-		init: {
-			x: -122,
-			y: -180,
-			z: 0
-		}
+			name: '2',
+			init: {
+					x: 597 * Math.cos(2 * Math.PI * 1 / 11),
+					y: -180,
+					z: 597 * Math.sin(2 * Math.PI * 1 / 11)
+			}
 	},
+	{
+			name: '3',
+			init: {
+					x: 597 * Math.cos(2 * Math.PI * 2 / 11),
+					y: -180,
+					z: 597 * Math.sin(2 * Math.PI * 2 / 11)
+			}
+	},
+	{
+			name: '4',
+			init: {
+					x: 597 * Math.cos(2 * Math.PI * 3 / 11),
+					y: -180,
+					z: 597 * Math.sin(2 * Math.PI * 3 / 11)
+			}
+	},
+	{
+			name: '5',
+			init: {
+					x: 597 * Math.cos(2 * Math.PI * 4 / 11),
+					y: -180,
+					z: 597 * Math.sin(2 * Math.PI * 4 / 11)
+			}
+	},
+	{
+			name: '6',
+			init: {
+					x: 597 * Math.cos(2 * Math.PI * 5 / 11),
+					y: -180,
+					z: 597 * Math.sin(2 * Math.PI * 5 / 11)
+			}
+	},
+	{
+			name: '7',
+			init: {
+					x: 597 * Math.cos(2 * Math.PI * 6 / 11),
+					y: -180,
+					z: 597 * Math.sin(2 * Math.PI * 6 / 11)
+			}
+	},
+	{
+			name: '8',
+			init: {
+					x: 597 * Math.cos(2 * Math.PI * 7 / 11),
+					y: -180,
+					z: 597 * Math.sin(2 * Math.PI * 7 / 11)
+			}
+	},
+	{
+			name: '9',
+			init: {
+					x: 597 * Math.cos(2 * Math.PI * 8 / 11),
+					y: -180,
+					z: 597 * Math.sin(2 * Math.PI * 8 / 11)
+			}
+	},
+	{
+			name: '10',
+			init: {
+					x: 597 * Math.cos(2 * Math.PI * 9 / 11),
+					y: -180,
+					z: 597 * Math.sin(2 * Math.PI * 9 / 11)
+			}
+	},
+	{
+			name: '11',
+			init: {
+					x: 597 * Math.cos(2 * Math.PI * 10 / 11),
+					y: -180,
+					z: 597 * Math.sin(2 * Math.PI * 10 / 11)
+			}
+	}
 ]
 //////////////////// TODO move to some config
 
@@ -53,6 +124,8 @@ let assignConfiguration = function (configuration, socketId) {
 	}
 };
 
+let realSensors = connectToArduinos()
+
 const io = spinServer([
 	{
 		method: 'post',
@@ -66,16 +139,77 @@ const io = spinServer([
 		}
 	},
 	{
-		method: 'get',
+		method: 'post',
+		path: '/stick',
+		callback: (req, res) => {
+			if (!req.body.name || !req.body.column) {
+				res.send(JSON.stringify(arduinosConfig, null, 2))
+				return
+      }
+
+			let obj = {
+				name: req.body.name,
+				column: req.body.column,
+				baudRate: 115200,
+				numberOfLEDs: 40,
+				sensors: [
+					{
+						name: 'some',
+						position: 10
+					}
+				],
+				baseTension: 0
+			}
+			// TODO: remove arduino
+			addArduino(obj)
+			realSensors = connectToArduinos(realSensors)
+			initSensors()
+			res.send(JSON.stringify(arduinosConfig, null, 2))
+		}
+	},
+	{
+		method: 'post',
+		path: '/ports',
+		callback: (req, res) => {
+			let ports = []
+			serialport.list((_, devices) => {
+				for (let i = 0; i < devices.length; i++) {
+					let device = devices[i]
+
+					if (!device.locationId || !device.vendorId || !device.productId) continue
+
+					let arduino = arduinosConfig.find((arduino) => arduino.name === device.comName)
+
+					ports.push({
+						"comName": device.comName,
+						"column": arduino && arduino.column,
+						"isConfigured": !!arduino
+					})
+				}
+				res.send(JSON.stringify(ports, null, 2))
+			})
+		}
+	},
+	{
+		method: 'post',
 		path: '/logs',
 		callback: (req, res) => {
 		  writeLogsForAndrey = !writeLogsForAndrey
 			res.send('Current log status: ' + writeLogsForAndrey)
 		}
+	},
+	{
+		method: 'post',
+		path: '/connect',
+		callback: (req, res) => {
+			realSensors = connectToArduinos(arduinosConfig)
+			initSensors()
+			res.send('Connected!')
+		}
 	}
 ])
 
-const realSensors = connectToArduinos()
+
 
 const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
 	const sensorData = getInfoFromSensors(data)
@@ -89,7 +223,13 @@ const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGE
 	}))
 
 	const sensorToPass = clientSensors && clientSensors.length > 0 ? [...clientSensors, ...realSensors] : realSensors
+
+	// for (let sensor in sensorToPass) {
+	// 	console.log(sensor)
+	// }
+
 	const ledsConfigFromClient = currentMode(realSticks, sensorToPass).filter(Boolean)
+
 	ledsConfig = regroupConfig(ledsConfigFromClient)
 
   let forAndrey = {
@@ -106,30 +246,35 @@ const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGE
     lastLogSent = now
   }
 
-	const columnLeds = ledsConfig.find(config => config.key === column).leds
-	return putLedsInBufferArray(columnLeds, NUMBER_OF_LEDS)
+	const columnLeds = ledsConfig.find(config => config.key === column)
+
+	if (!columnLeds) return
+
+	return putLedsInBufferArray(columnLeds.leds, NUMBER_OF_LEDS)
 
 	// return putLedsInBufferArray(ledsConfig[column - 1].leds, NUMBER_OF_LEDS)
 }
 
-if (realSensors && realSensors.length > 0) {
-	realSensors.map(realSensor => {
-		const port = realSensor.port
-		const parser = realSensor.parser
-		let areWeWriting = true
+let initSensors = function () {
+	if (realSensors && realSensors.length > 0) {
+    realSensors.map(realSensor => {
+      const port = realSensor.port
+      const parser = realSensor.parser
+      let areWeWriting = true
 
-		parser.on('data', data => {
-			if (areWeWriting && ledsConfig) {
-				port.write(calculateDataForRealLeds(data, realSensor, realSensor.column))
-				areWeWriting = false
-			} else {
-				if (data === 'eat me\r') {
-					areWeWriting = true
-				}
-			}
-		})
-	})
-}
+      parser.on('data', data => {
+        if (areWeWriting && ledsConfig) {
+          port.write(calculateDataForRealLeds(data, realSensor, realSensor.column))
+          areWeWriting = false
+        } else {
+          if (data === 'eat me\r') {
+            areWeWriting = true
+          }
+        }
+      })
+    })
+  }
+};
 
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket

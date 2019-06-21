@@ -18,7 +18,8 @@ export class RealSensor {
 
     init() {
         const portName = this.key
-		
+        console.log("Port open!", portName)
+
         this.port = new SerialPort(`${portName}`, {
             baudRate: this.baudRate
         })
@@ -33,7 +34,7 @@ export class RealSensor {
             console.log(`Port was closed., port: ${portName}`, error)
         })
     }
-	
+
     update(sensorData) {
         if (sensorData) {
             const tension = sensorData.fast
