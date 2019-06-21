@@ -7,8 +7,7 @@ import randomEcho from './modes/randomEcho'
 import tensionWithEcho from './modes/tensionWithEcho'
 import fastReaction from './modes/fastReaction'
 import rain from './modes/rain'
-import rain from './modes/rain';
-import sinus from './modes/workshop';
+import sinus from './modes/workshop'
 
 export default {
 	basic,
