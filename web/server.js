@@ -36,20 +36,50 @@ const realSticks = [
 //////////////////// TODO move to some config
 
 const connectedSockets = {}
-// const clientConfigurations = earConfig.read()
-const clientConfigurations = {}
 let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
+let writeLogsForAndrey = false;
 let currentMode = modes.basic
+let lastLogSent = (new Date()).getTime()
 let clientSensors
 let realSensorsData
 
-const io = spinServer()
+
+const clientConfigurations = earConfig.read()
+let assignConfiguration = function (configuration, socketId) {
+	if (!clientConfigurations[socketId]) {
+		clientConfigurations[socketId] = configuration
+	} else {
+		clientConfigurations[socketId] = Object.assign({}, clientConfigurations[socketId], configuration)
+	}
+};
+
+const io = spinServer([
+	{
+		method: 'post',
+		path: '/mode',
+		callback: (req, res) => {
+		  currentMode = modes[req.body.mode]
+			Object.keys(clientConfigurations).map(socketId => {
+				assignConfiguration(req.body, socketId)
+			})
+			res.send('Done!')
+		}
+	},
+	{
+		method: 'get',
+		path: '/logs',
+		callback: (req, res) => {
+		  writeLogsForAndrey = !writeLogsForAndrey
+			res.send('Current log status: ' + writeLogsForAndrey)
+		}
+	}
+])
+
 const realSensors = connectToArduinos()
 
 const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
 	const sensorData = getInfoFromSensors(data)
 	realSensor.update(sensorData)
-	//if (sensorData) console.log("SENSOR ", sensorData)
 
 	realSensorsData = realSensors.map(sensor => ({
 		tension: sensor.tension,
@@ -62,7 +92,19 @@ const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGE
 	const ledsConfigFromClient = currentMode(realSticks, sensorToPass).filter(Boolean)
 	ledsConfig = regroupConfig(ledsConfigFromClient)
 
-	// writeToPython(sensorToPass, currentMode)
+  let forAndrey = {
+	  ts: 0 + new Date(),
+	  sensors: sensorToPass,
+    currentMode: currentMode,
+  }
+
+  let now = (new Date()).getTime();
+  let logDelay = now - lastLogSent;
+  if (writeLogsForAndrey && logDelay > 500) {
+    // TODO: optimize speed
+  	console.log(JSON.stringify(forAndrey))
+    lastLogSent = now
+  }
 
 	const columnLeds = ledsConfig.find(config => config.key === column).leds
 	return putLedsInBufferArray(columnLeds, NUMBER_OF_LEDS)
@@ -78,11 +120,9 @@ if (realSensors && realSensors.length > 0) {
 
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig) {
-				// console.log({ data, key: realSensor.key })
 				port.write(calculateDataForRealLeds(data, realSensor, realSensor.column))
 				areWeWriting = false
 			} else {
-				//console.log('Data IN, listen', data)
 				if (data === 'eat me\r') {
 					areWeWriting = true
 				}
@@ -123,8 +163,9 @@ io.on('connection', socket => {
 	})
 
 	socket.on('configure', configuration => {
-		clientConfigurations[socket.id] = configuration
-		earConfig.save()
+		assignConfiguration(configuration, socket.id);
+
+		earConfig.save(clientConfigurations)
 	})
 
 	socket.on('disconnect', () => {

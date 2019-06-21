@@ -36,6 +36,18 @@ export const arduinosConfig = [
 		],
 		baseTension: 0
 	}, {
+		name: '/dev/ttyAMA0', // first one on pi
+		column: '1',
+		baudRate: 115200,
+		numberOfLEDs: 40,
+		sensors: [
+			{
+				name: 'someName123123',
+				position: 20
+			}
+		],
+		baseTension: 0
+	}, {
 		name: '/dev/ttyUSB0', // second arduino port
 		column: '1',
 		baudRate: 115200,
