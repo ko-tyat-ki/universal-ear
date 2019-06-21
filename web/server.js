@@ -207,7 +207,15 @@ const io = spinServer([
 			initSensors()
 			res.send('Connected!')
 		}
+	},
+	{
+		method: 'post',
+		path: '/arduino',
+		callback: (req, res) => {
+			res.send(JSON.stringify(arduinosConfig, null, 2))
+		}
 	}
+
 ])
 
 
