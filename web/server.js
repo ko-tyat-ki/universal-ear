@@ -176,13 +176,16 @@ const io = spinServer([
 				for (let i = 0; i < devices.length; i++) {
 					let device = devices[i]
 
-					if (!device.locationId || !device.vendorId || !device.productId) continue
+					// if (!device.locationId || !device.vendorId || !device.productId) continue
 
 					let arduino = arduinosConfig.find((arduino) => arduino.name === device.comName)
 
 					ports.push({
 						"comName": device.comName,
 						"column": arduino && arduino.column,
+						"locationId": arduino && arduino.locationId,
+						"vendorId": arduino && arduino.vendorId,
+						"productId": arduino && arduino.productId,
 						"isConfigured": !!arduino
 					})
 				}
