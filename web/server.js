@@ -162,8 +162,6 @@ const io = spinServer([
 			}
 			// TODO: remove arduino
 			addArduino(obj)
-			realSensors = connectToArduinos(realSensors)
-			initSensors()
 			res.send(JSON.stringify(arduinosConfig, null, 2))
 		}
 	},
