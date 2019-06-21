@@ -114,7 +114,6 @@ let lastLogSent = (new Date()).getTime()
 let clientSensors
 let realSensorsData
 
-
 const clientConfigurations = earConfig.read()
 let assignConfiguration = function (configuration, socketId) {
 	if (!clientConfigurations[socketId]) {
@@ -125,6 +124,7 @@ let assignConfiguration = function (configuration, socketId) {
 };
 
 let realSensors = connectToArduinos()
+initSensors()
 
 const io = spinServer([
 	{
