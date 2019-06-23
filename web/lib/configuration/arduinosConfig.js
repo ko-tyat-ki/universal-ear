@@ -127,19 +127,6 @@ const arduinosConfig = [
       }
     ],
     "baseTension": 0
-  },
-  {
-    "name": "/dev/ttyAMA0",
-    "column": "1",
-    "baudRate": 115200,
-    "numberOfLEDs": 40,
-    "sensors": [
-      {
-        "name": "some",
-        "position": 10
-      }
-    ],
-    "baseTension": 0
   }
 ]
 
