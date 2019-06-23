@@ -20,6 +20,7 @@ const rain = (sticks, sensors) => {
 	const reduceBrightness = 25
 	return sensors.map(sensor => {
 		const stick = sticks.find(stick => stick.name === sensor.column)
+		if (!stick) return
 		const tension = sensor.tension
 		const oldTension = sensor.oldTension
 		const numberOfLEDs = stick.numberOfLEDs

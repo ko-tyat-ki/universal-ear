@@ -27,6 +27,7 @@ const random_flashes = (sticks, sensors) => {
 
 		// Find a Stick that corresponds to current Sensor
 		const stick = sticks.find(stick => stick.name === sensor.column)
+		if (!stick) return
 		
 		//only doing smth to stick to be alight
 		if (!stick) return
