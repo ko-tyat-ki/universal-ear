@@ -1,3 +1,3 @@
 #!/bin/bash
 . /home/pi/.nvm/nvm.sh
-npm run debug
+npm run prod
