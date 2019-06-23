@@ -11,6 +11,10 @@ import { spinServer } from './lib/helpers/spinServer'
 import { NUMBER_OF_LEDS } from './lib/configuration/constants'
 import earConfig from './lib/helpers/config'
 import { writeToPython } from './lib/helpers/communicateWithPython';
+import profiler from "v8-profiler"
+
+const id = Date.now() + ".profile"
+profiler.startProfiling(id)
 
 //////////////////// TODO move to some initial config file
 const realSticks = [
@@ -132,3 +136,11 @@ io.on('connection', socket => {
 		delete clientConfigurations[socket.id]
 	})
 })
+
+setTimeout(() => {
+    const profile = JSON.stringify(profiler.stopProfiling(id))
+    fs.writeFile(`${__dirname}/${id}`, profile, () => {
+        console.log("profiling done, written to:", id)
+        process.exit() // if you want
+    })
+}, 30000)
