@@ -32,6 +32,7 @@ export class RealSensor {
         this.port.on('close', (error) => {
             console.log(`Port was closed., port: ${portName}`, error)
         })
+
     }
 	
     update(sensorData) {
