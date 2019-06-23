@@ -164,7 +164,6 @@ setTimeout(() => {
   console.log("WOW" + realSensors.length)
 
 	if (realSensors && realSensors.length > 0) {
-	// console.log(realSensors)
 
 	realSensors.map(realSensor => {
 		const port = realSensor.port
