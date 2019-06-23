@@ -162,7 +162,7 @@ const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGE
 
 setTimeout(() => {
 	if (realSensors && realSensors.length > 0) {
-	console.log(realSensors)
+	// console.log(realSensors)
 
 	realSensors.map(realSensor => {
 		const port = realSensor.port
