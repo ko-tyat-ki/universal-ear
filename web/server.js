@@ -41,7 +41,7 @@ const realSticks = [
 			z: 0
 		}
 	},
-  {
+	{
 		numberOfLEDs: 40,
 		name: '4',
 		init: {
@@ -68,7 +68,7 @@ const realSticks = [
 			z: 0
 		}
 	},
-  {
+	{
 		numberOfLEDs: 40,
 		name: '7',
 		init: {
@@ -95,7 +95,7 @@ const realSticks = [
 			z: 0
 		}
 	},
-  {
+	{
 		numberOfLEDs: 40,
 		name: '10',
 		init: {
@@ -161,25 +161,25 @@ const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGE
 }
 
 if (realSensors && realSensors.length > 0) {
+	realSensors.map(realSensor => {
+		const port = realSensor.port
+		const parser = realSensor.parser
+		let areWeWriting = true
 
-realSensors.map(realSensor => {
-	const port = realSensor.port
-	const parser = realSensor.parser
-	let areWeWriting = true
-
-	parser.on('data', data => {
-		if (areWeWriting && ledsConfig) {
-			// console.log({ data, key: realSensor.key })
-			port.write(calculateDataForRealLeds(data, realSensor, realSensor.column))
-			areWeWriting = false
-		} else {
-			//console.log('Data IN, listen', data)
-			if (data === 'eat me\r') {
-				areWeWriting = true
+		parser.on('data', data => {
+			if (areWeWriting && ledsConfig) {
+				// console.log({ data, key: realSensor.key })
+				port.write(calculateDataForRealLeds(data, realSensor, realSensor.column))
+				areWeWriting = false
+			} else {
+				//console.log('Data IN, listen', data)
+				if (data === 'eat me\r') {
+					areWeWriting = true
+				}
 			}
-		}
+		})
 	})
-})
+}
 
 
 io.on('connection', socket => {
@@ -223,3 +223,4 @@ io.on('connection', socket => {
 		delete clientConfigurations[socket.id]
 	})
 })
+
