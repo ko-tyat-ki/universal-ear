@@ -32,6 +32,15 @@ const realSticks = [
 			z: 0
 		}
 	},
+	{
+		numberOfLEDs: 40,
+		name: '3',
+		init: {
+			x: 0,
+			y: 0,
+			z: 0
+		}
+	},
 ]
 //////////////////// TODO move to some config
 
@@ -70,7 +79,10 @@ const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGE
 	// return putLedsInBufferArray(ledsConfig[column - 1].leds, NUMBER_OF_LEDS)
 }
 
-if (realSensors && realSensors.length > 0) {
+setTimeout(() => {
+	if (realSensors && realSensors.length > 0) {
+	console.log(realSensors)
+
 	realSensors.map(realSensor => {
 		const port = realSensor.port
 		const parser = realSensor.parser
@@ -89,7 +101,8 @@ if (realSensors && realSensors.length > 0) {
 			}
 		})
 	})
-}
+}}, 3000)
+
 
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
