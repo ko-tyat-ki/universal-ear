@@ -17,6 +17,7 @@ export const connectToArduinos = () => {
       }
       if (!sensor) continue
       res.push(sensor)
+
     }
 
     return res
