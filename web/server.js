@@ -161,6 +161,8 @@ const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGE
 }
 
 setTimeout(() => {
+  console.log("WOW" + realSensors.length)
+
 	if (realSensors && realSensors.length > 0) {
 	// console.log(realSensors)
 
