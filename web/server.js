@@ -160,30 +160,26 @@ const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGE
 	// return putLedsInBufferArray(ledsConfig[column - 1].leds, NUMBER_OF_LEDS)
 }
 
-setTimeout(() => {
-  console.log("WOW" + realSensors.length)
+if (realSensors && realSensors.length > 0) {
 
-	if (realSensors && realSensors.length > 0) {
+realSensors.map(realSensor => {
+	const port = realSensor.port
+	const parser = realSensor.parser
+	let areWeWriting = true
 
-	realSensors.map(realSensor => {
-		const port = realSensor.port
-		const parser = realSensor.parser
-		let areWeWriting = true
-
-		parser.on('data', data => {
-			if (areWeWriting && ledsConfig) {
-				// console.log({ data, key: realSensor.key })
-				port.write(calculateDataForRealLeds(data, realSensor, realSensor.column))
-				areWeWriting = false
-			} else {
-				//console.log('Data IN, listen', data)
-				if (data === 'eat me\r') {
-					areWeWriting = true
-				}
+	parser.on('data', data => {
+		if (areWeWriting && ledsConfig) {
+			// console.log({ data, key: realSensor.key })
+			port.write(calculateDataForRealLeds(data, realSensor, realSensor.column))
+			areWeWriting = false
+		} else {
+			//console.log('Data IN, listen', data)
+			if (data === 'eat me\r') {
+				areWeWriting = true
 			}
-		})
+		}
 	})
-}}, 3000)
+})
 
 
 io.on('connection', socket => {
