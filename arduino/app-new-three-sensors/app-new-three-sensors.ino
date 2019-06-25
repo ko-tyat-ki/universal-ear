@@ -60,7 +60,11 @@ byte inBuffer[payloadInSize];
 byte sleep = true;
 
 // Serial output
-float diffFast, diffSlow;
+float diffFast, diffFast1, diffFast2;
+float diffSlow;
+float lerpAvgFast, lerpAvgFast1 , lerpAvgFast2;
+float lerpAvgSlow, lerpAvgSlow1, lerpAvgSlow2;
+
 
 void setup() {
     delay( 1000 ); // power-up safety delay
@@ -68,13 +72,28 @@ void setup() {
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(  BRIGHTNESS );
     Serial.begin(115200);
+
+    currentPalette = RainbowColors_p;
+    currentBlending = LINEARBLEND;
+
     FastLED.clear();
 }
 
+void charToStringL(const char S[], String &D)
+{
+    byte at = 0;
+    const char *p = S;
+    D = "";
+
+    while (*p++) {
+      D.concat(S[at++]);
+    }
+}
 
 void loop()
 {
-    readSensorData();
+    //readSensorData();
+    readSensorDataNew();
     // Serial: Receive Data script:
     receiveBytes();
     // Serial: Put data into "Signal" struct & send data back to server
@@ -86,21 +105,43 @@ void readSensorData() {
     digitalWrite(sensorPowerPin,HIGH); 
     sensorValue = analogRead(sensorPin);
     digitalWrite(sensorPowerPin,LOW);
-    
     // Calculate the averages
-    sensorAvg = runningAverage(sensorValue); // average from last xxx values
-    lerpingAverageFast = lerp(lerpingAverageFast, sensorValue, 0.05); // quickest linear interpolation
-    lerpingAverageSlow = lerp(lerpingAverageSlow, sensorValue, 0.001); // medium linear interpolation
-    lerpingAverageVerySlow = lerp(lerpingAverageVerySlow, sensorAvg, 0.00005); // slowest
+    sensorAvg = runningAverage(sensorValue);
+    
+    lerpingAverageFast = lerp(lerpingAverageFast, sensorValue, 0.05);
+    lerpingAverageSlow = lerp(lerpingAverageSlow, sensorValue, 0.0005); //0.001
+    lerpingAverageVerySlow = lerp(lerpingAverageVerySlow, sensorAvg, 0.00005); //0.0005
     
     // Calculate the difference between the sensor value and averaged value:
-    diffFast = (lerpingAverageFast - lerpingAverageSlow);  // fast. aka Derivative (for fast plucking)
+    diffFast = (lerpingAverageFast - lerpingAverageVerySlow);  // fast. aka Derivative (for fast plucking)
     diffSlow = (lerpingAverageSlow - lerpingAverageVerySlow);  // slow. aka pressure (for slow pushing)
-    
-    // if slow pushing less than 0, return it to 0: 
-    if (diffSlow < 0) {
-      lerpingAverageVerySlow = lerpingAverageSlow;
+}
+
+void readSensorDataNew() {
+    digitalWrite(sensorPowerPin,HIGH); 
+    sensorValue = analogRead(sensorPin);
+    sensorValue1 = analogRead(sensorPin1);
+    sensorValue2 = analogRead(sensorPin2);
+    digitalWrite(sensorPowerPin,LOW);
+
+    lerpAvgFast = lerp(lerpAvgFast, sensorValue, 0.05);
+    lerpingAverageSlow = lerp(lerpingAverageSlow, sensorValue, 0.001);
+    lerpAvgSlow = lerp(lerpAvgSlow, sensorValue, 0.00005);
+    diffFast = (lerpAvgFast - lerpingAverageSlow);
+    diffFast1 = (lerpingAverageSlow - lerpAvgSlow);
+
+    if (diffFast1 < 0) {
+      lerpAvgSlow = lerpingAverageSlow;
     }
+    
+    lerpAvgFast1 = lerp(lerpAvgFast1, sensorValue1, 0.05);
+    lerpAvgSlow1 = lerp(lerpAvgSlow1, sensorValue1, 0.0005);
+    //diffFast1 = (lerpAvgFast1 - lerpAvgSlow1);
+    
+    lerpAvgFast2 = lerp(lerpAvgFast2, sensorValue2, 0.05);
+    lerpAvgSlow2 = lerp(lerpAvgSlow2, sensorValue2, 0.0005);
+    diffFast2 = (lerpAvgFast2 - lerpAvgSlow2);
+
 }
 
 // When finished getting a full message, run this function.
@@ -112,7 +153,7 @@ void parseData() {
     newData = false;
   } else {
     // TODO make something so that the following code wouldn't execute when receiving data.
-    if (testEvery(500) && !recvInProgress) {
+    if (testEvery(50) && !recvInProgress) {
       sleep = true;
       Serial.print("Waiting for transmission, ");
       sendSensorData();
@@ -122,7 +163,7 @@ void parseData() {
 
 void sendSensorData() {
   // TODO: Calibrate diffFast and diffSlow!
-    Serial.println(String(diffFast) + "\t" + String(diffSlow) + "\t" + String(sensorAvg));
+    Serial.println(String(diffFast) + "\t" + String(diffFast1) + "\t" + String(diffFast2));
     // Leave for debugging
     //Serial.println(String(lerpingAverageSlow) + "\t" + String(lerpingAverageFast) + "\t" + String(lerpingAverageVerySlow) + "\t" + String(sensorValue));
     Serial.println("eat me");
@@ -224,16 +265,4 @@ void receiveBytes() {
       received = false;
     }
   }
-}
-
-
-void charToStringL(const char S[], String &D)
-{
-    byte at = 0;
-    const char *p = S;
-    D = "";
-
-    while (*p++) {
-      D.concat(S[at++]);
-    }
 }
