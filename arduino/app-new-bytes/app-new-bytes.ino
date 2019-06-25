@@ -40,6 +40,7 @@ char receivedChars[numChars];
 boolean newData = false;
 boolean received = true;
 boolean recvInProgress = false;
+boolean firstMeasurement = true;
 
 // LEDs in Bytes:
 // TODO - check if it's possible to make the size dependent on the incoming data.
@@ -92,6 +93,14 @@ void readSensorData() {
     lerpingAverageFast = lerp(lerpingAverageFast, sensorValue, 0.05); // quickest linear interpolation
     lerpingAverageSlow = lerp(lerpingAverageSlow, sensorValue, 0.001); // medium linear interpolation
     lerpingAverageVerySlow = lerp(lerpingAverageVerySlow, sensorAvg, 0.00005); // slowest
+
+    // Protect everyone's eyes from an exhausting settle-down period
+    if (firstMeasurement) {
+      lerpingAverageFast = sensorValue;
+      lerpingAverageSlow = sensorValue;
+      lerpingAverageVerySlow = sensorValue;
+      firstMeasurement = false;
+    }
     
     // Calculate the difference between the sensor value and averaged value:
     diffFast = (lerpingAverageFast - lerpingAverageSlow);  // fast. aka Derivative (for fast plucking)
