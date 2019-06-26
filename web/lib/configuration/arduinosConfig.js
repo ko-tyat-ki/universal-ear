@@ -127,9 +127,61 @@ const arduinosConfig = [
       }
     ],
     "baseTension": 0
+  },
+  {
+    "name": "/dev/tty.usbserial-14240",
+    "column": "1",
+    "baudRate": 115200,
+    "numberOfLEDs": 40,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 20
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/tty.usbserial-14210",
+    "column": "2",
+    "baudRate": 115200,
+    "numberOfLEDs": 40,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 20
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/tty.usbserial-14220",
+    "column": "3",
+    "baudRate": 115200,
+    "numberOfLEDs": 40,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 20
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/tty.usbserial-14230",
+    "column": "4",
+    "baudRate": 115200,
+    "numberOfLEDs": 40,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 20
+      }
+    ],
+    "baseTension": 0
   }
 ]
 
 export {
-	arduinosConfig
+  arduinosConfig
 }

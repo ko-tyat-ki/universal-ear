@@ -18,7 +18,7 @@ export class RealSensor {
 
     init() {
         const portName = this.key
-		
+
         this.port = new SerialPort(`${portName}`, {
             baudRate: this.baudRate
         })
@@ -34,10 +34,10 @@ export class RealSensor {
         })
 
     }
-	
+
     update(sensorData) {
         if (sensorData) {
-            const tension = sensorData.fast
+            const tension = sensorData.slow
             this.fastSensorSpeed = Math.max(sensorData.fast, 0)
             this.slowSensorSpeed = Math.max(sensorData.slow, 0)
             if (!tension) return
