@@ -133,7 +133,22 @@ let currentMode = modes.basic
 let clientSensors
 let realSensorsData
 
-const io = spinServer()
+let modeHandler = (req, res) => {
+  currentMode = modes[req.body.mode]
+  Object.keys(clientConfigurations).map(socketId => {
+    connectedSockets[socketId].emit('modeChanged', req.body["mode"])
+  })
+  res.send('Done!')
+};
+
+const io = spinServer([
+	{
+		method: 'post',
+		path: '/mode',
+		callback: modeHandler
+	}
+])
+
 const realSensors = connectToArduinos()
 
 const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
@@ -198,11 +213,6 @@ io.on('connection', socket => {
 			return
 		}
 
-		currentMode = modes[config.mode] || modes.basic
-		if (!currentMode) {
-			return
-		}
-
 		clientSensors = sensors
 		const sensorsToPass = realSensorsData && realSensorsData.length > 0 ? [...clientSensors, ...realSensorsData] : clientSensors
 		const ledsConfigFromClient = currentMode(sticks, sensorsToPass).filter(Boolean)
@@ -215,7 +225,7 @@ io.on('connection', socket => {
 
 	socket.on('configure', configuration => {
 		clientConfigurations[socket.id] = configuration
-		earConfig.save()
+		earConfig.save(clientConfigurations)
 	})
 
 	socket.on('disconnect', () => {

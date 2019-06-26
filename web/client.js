@@ -55,6 +55,11 @@ const onConfigure = () => {
 			}
 		})
 	})
+
+	socket.on('modeChanged', mode => {
+		regime.value = mode
+	})
+
 }
 
 (() => {
