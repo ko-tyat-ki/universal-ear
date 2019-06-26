@@ -224,6 +224,7 @@ io.on('connection', socket => {
 	})
 
 	socket.on('configure', configuration => {
+		currentMode = modes[configuration.mode]
 		clientConfigurations[socket.id] = configuration
 		earConfig.save(clientConfigurations)
 	})
