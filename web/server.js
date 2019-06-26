@@ -10,6 +10,7 @@ import { connectToArduinos } from './lib/helpers/connectToArduinos'
 import { spinServer } from './lib/helpers/spinServer'
 import { NUMBER_OF_LEDS } from './lib/configuration/constants'
 import earConfig from './lib/helpers/config'
+import arrays from './lib/helpers/arrays'
 import { writeToPython } from './lib/helpers/communicateWithPython';
 
 //////////////////// TODO move to some initial config file
@@ -129,23 +130,61 @@ const connectedSockets = {}
 // const clientConfigurations = earConfig.read()
 const clientConfigurations = {}
 let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
+let isAutoChangingModeEnabled = false
+let modeAutoChangeTimeout = 3 * 60 * 1000 // 3 minutes
+let modeStack = []
 let currentMode = modes.basic
 let clientSensors
 let realSensorsData
 
-let modeHandler = (req, res) => {
-  currentMode = modes[req.body.mode]
-  Object.keys(clientConfigurations).map(socketId => {
-    connectedSockets[socketId].emit('modeChanged', req.body["mode"])
-  })
+const modeHandler = (req, res) => {
+  changeMode(req.body["mode"])
   res.send('Done!')
 };
+
+let changeModeLoop = () => {
+  if (!isAutoChangingModeEnabled) {
+    // NOTE: if it's disabled we want to check more often to be able react on turning on within 2 seconds
+    setTimeout(changeModeLoop, 2000)
+    return
+  }
+
+  // NOTE: guarantees that each mode will be called equal times and
+  // equally distributed in time
+  if (modeStack.length === 0) {
+    modeStack = arrays.shuffle(Object.keys(modes))
+  }
+
+  changeMode(modeStack.pop())
+  setTimeout(changeModeLoop, modeAutoChangeTimeout)
+};
+changeModeLoop()
+
+const changeMode = (modeKey) => {
+  currentMode = modes[modeKey]
+  Object.keys(clientConfigurations).map(socketId => {
+    connectedSockets[socketId].emit('modeChanged', modeKey)
+  })
+}
+
+const switchAutomaticModeHandler = (req, res) => {
+	isAutoChangingModeEnabled = !isAutoChangingModeEnabled
+	if (req.body["timeout"]) {
+		modeAutoChangeTimeout = req.body["timeout"]
+	}
+	res.send('Done! Autoswitching enabled ' + isAutoChangingModeEnabled +'. Change once in ' + modeAutoChangeTimeout + ' milliseconds')
+}
 
 const io = spinServer([
 	{
 		method: 'post',
 		path: '/mode',
 		callback: modeHandler
+	},
+	{
+		method: 'post',
+		path: '/mode/automatic',
+		callback: switchAutomaticModeHandler
 	}
 ])
 
