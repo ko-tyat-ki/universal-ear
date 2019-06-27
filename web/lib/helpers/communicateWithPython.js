@@ -1,15 +1,40 @@
 import net from 'net'
 
-const pythonClient = net.createConnection({ port: 8124 }).on('error', () => {
-    // console.log('python disconnected')
-})
+let isConnectedToPython = false
+let pythonSocket = null
+
+const connectToPython = () => {
+  if (pythonSocket) return
+
+  pythonSocket = net.createConnection({
+    port: 8124,
+    host: 'localhost'
+  }).on('error', () => {
+    pythonSocket.destroy()
+    pythonSocket = null
+    isConnectedToPython = false
+    console.log('python disconnected')
+    setTimeout(connectToPython, 2000)
+  }).on('connect', () => {
+    isConnectedToPython = true
+    console.log('connection established');
+  })
+}
+
+connectToPython()
 
 export const writeToPython = (sensorsData, currentMode) => {
-    const toPython = sensorsData.map(sensor => ({
-        name: sensor.key,
-        slow: sensor.slowSensorSpeed,
-        fast: sensor.fastSensorSpeed
+  if (!isConnectedToPython) return
+
+  const toPython = {
+    mode: currentMode,
+    sensorsData: sensorsData.map(sensor => ({
+      name: sensor.key,
+      slow: sensor.slowSensorSpeed,
+      fast: sensor.fastSensorSpeed
     }))
-    toPython.mode = currentMode
-    pythonClient.write(JSON.stringify(toPython))
+  }
+
+  let toSend = JSON.stringify(toPython);
+  pythonSocket.write(toSend)
 }

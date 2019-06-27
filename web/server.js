@@ -129,12 +129,14 @@ const connectedSockets = {}
 // const clientConfigurations = earConfig.read()
 const clientConfigurations = {}
 let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
-let currentMode = modes.basic
+let currentModeKey = 'basic'
+let currentMode = modes[currentModeKey]
 let clientSensors
 let realSensorsData
 
 let modeHandler = (req, res) => {
-  currentMode = modes[req.body.mode]
+  currentModeKey = req.body.mode
+	currentMode = modes[currentModeKey]
   Object.keys(clientConfigurations).map(socketId => {
     connectedSockets[socketId].emit('modeChanged', req.body["mode"])
   })
@@ -219,12 +221,13 @@ io.on('connection', socket => {
 		ledsConfig = regroupConfig(ledsConfigFromClient)
 		socket.emit('ledsChanged', ledsConfig)
 
-		// writeToPython(sensorsToPass, currentMode)
+		writeToPython(sensorsToPass, currentModeKey)
 		// ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig)) // keep for now for development processes
 	})
 
 	socket.on('configure', configuration => {
-		currentMode = modes[configuration.mode]
+		currentModeKey = configuration.mode
+		currentMode = modes[currentModeKey]
 		clientConfigurations[socket.id] = configuration
 		earConfig.save(clientConfigurations)
 	})
