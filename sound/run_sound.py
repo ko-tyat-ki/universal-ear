@@ -1,7 +1,17 @@
 import pygame
-import random
+import json
 import time
+import datetime as dt
 import socket
+
+FADEOUT_TIME = 3
+NUM_CHANNELS = 12
+t = time.time()
+
+channels_ignore = [0 for i in range(0, NUM_CHANNELS)]
+sounds = []
+fadeout_ignore = False
+cur_mode = "init"
 
 # set up and open read from the socket
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -17,29 +27,56 @@ while not exit:
 
 
     pygame.mixer.init(44100, -16, channels=2, buffer=4096 )
+    pygame.mixer.set_num_channels(NUM_CHANNELS)
+    channels = [pygame.mixer.Channel(i) for i in range(0,NUM_CHANNELS)]  # argument must be int
 
-    # create separate Channel objects for simultaneous playback
-    channel1 = pygame.mixer.Channel(0) # argument must be int
-    channel2 = pygame.mixer.Channel(1)
-
-    sound1 = pygame.mixer.Sound("./flicker/Casio-MT-45-16-Beat.wav")
-    sound2 = pygame.mixer.Sound("./flicker/Kawai-K3-Electric-Piano-C4.wav")
-
-    # plays loop of rain sound indefinitely until stopping playback on Channel,
-    # interruption by another Sound on same Channel, or quitting pygame
-    channel1.play(sound1, loops = -1)
-
-    # plays occasional thunder sounds
-    duration = sound2.get_length() # duration of thunder in seconds
-    down = True
 
     while True: # infinite while-loop
-        # play thunder sound if random condition met
+        json_msg = c.recv(4096) # receives sensor value from the socket
+        print("{}:{}".format(dt.datetime.now().time(),json_msg))
 
-        i = c.recv(4096) # receives sensor value from the socket
-        print(i)
+        msg = json.loads(msg)
 
-        # if i > 100:
+        if fadeout_ignore:
+            if time.time()-t > FADEOUT_TIME:
+                fadeout_ignore = False
+                cur_mode = "init"
+                channels_ignore = [False for i in range(0,NUM_CHANNELS)] #init channel ignores
+            else:
+                continue
+
+        #TODO
+        mode = msg.mode
+        if cur_mode == mode:
+            if mode == "flicker":
+                for i in msg.sensorsData:
+                    name = int(msg.sensorsData[i].name)
+                    if name in [1]:
+                        if msg.sensorsData[i].fast > 40:
+                            if time.time() > channels_ignore[i]:
+                                channels[i].play(sounds[i])
+                                channels_ignore[i] = time.time()+sounds[i].get_length()
+                    if name in [0]:
+                        channels[i].set_volume(msg.sensorsData[i].slow)
+
+        else: #change of mode
+            if cur_mode != "init":
+                t = time.time()
+                pygame.mixer.fadeout(FADEOUT_TIME)
+                fadeout_ignore = True
+             #init mode sounds
+            else:
+                if mode == "flicker":
+                    # create separate Channel objects for simultaneous playback
+
+                    sounds = [pygame.mixer.Sound("./flicker/Casio-MT-45-16-Beat.wav"),
+                              pygame.mixer.Sound("./flicker/Kawai-K3-Electric-Piano-C4.wav") ]
+
+                    # plays loop of rain sound indefinitely until stopping playback on Channel,
+                    # interruption by another Sound on same Channel, or quitting pygame
+                    channels[0].play(sounds[0], loops=-1)
+
+                    # if i > 100:
         # 	channel2.play(sound2)
         # 	channel2.set_volume(random.random(),random.random())
         # 	print('My duration', duration)
