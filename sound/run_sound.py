@@ -4,8 +4,10 @@ import time
 import datetime as dt
 import socket
 
-FADEOUT_TIME = 3
+FADEOUT_TIME = 5
 NUM_CHANNELS = 12
+MAX_LED_VALUE = 40
+TRIGGER_LED_VALUE = 0
 t = time.time()
 
 channels_ignore = [0 for i in range(0, NUM_CHANNELS)]
@@ -17,6 +19,11 @@ cur_mode = "init"
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.bind(('localhost', 8124))
 
+#init mixer
+pygame.mixer.init(44100, -16, channels=2, buffer=4096)
+pygame.mixer.set_num_channels(NUM_CHANNELS + 1)
+channels = [pygame.mixer.Channel(i) for i in range(0, NUM_CHANNELS + 1)]  # argument must be int
+
 exit = False
 
 while not exit:
@@ -24,12 +31,6 @@ while not exit:
     client.listen(1)
     c, addr = client.accept()
     print('Got connection from ', addr)
-
-
-    pygame.mixer.init(44100, -16, channels=2, buffer=4096 )
-    pygame.mixer.set_num_channels(NUM_CHANNELS+1)
-    channels = [pygame.mixer.Channel(i) for i in range(0,NUM_CHANNELS)]  # argument must be int
-
 
     while True: # infinite while-loop
         json_msg = c.recv(4096) # receives sensor value from the socket
@@ -57,30 +58,47 @@ while not exit:
         mode = msg['mode']
         if cur_mode == mode:
             if mode == "flicker":
-                for i in msg['sensorsData']:
-                    name = int(msg['sensorsData'][i]['name'])
-                    if name in [1]:
-                        if msg['sensorsData'][i]['fast'] > 40:
-                            if time.time() > channels_ignore[i]:
-                                channels[i].play(sounds[i])
-                                channels_ignore[i] = time.time()+sounds[i].get_length()
-                    if name in [0]:
-                        channels[i].set_volume(msg['sensorsData'][i]['slow'])
+                for sensor in msg['sensorsData']:
+                    try:
+                        name = int(sensor['name'])
+                    except:
+                        continue
+                    if name in [1,4,7,8]:
+                        if sensor['fast'] > TRIGGER_LED_VALUE:
+                            if time.time() > channels_ignore[name]:
+                                channels[name].play(sounds[name])
+                                channels_ignore[name] = time.time()+sounds[name].get_length()
+                    if name in [0,2,3,5,6,9,10,11]:
+                        slow = sensor['slow']
+                        if slow < 0:
+                            slow = 0
+                        if slow > MAX_LED_VALUE:
+                            slow = MAX_LED_VALUE
+                        channels[name].set_volume(slow/MAX_LED_VALUE)
 
         else: #change of mode
             if cur_mode != "init":
                 t = time.time()
-                pygame.mixer.fadeout(FADEOUT_TIME)
+                pygame.mixer.fadeout(FADEOUT_TIME*1000)
                 fadeout_ignore = True
              #init mode sounds
             else:
                 if mode == "flicker":
                     # create separate Channel objects for simultaneous playback
 
-                    sounds = ["./flicker/"+x+".mp3" for x in range(1, NUM_CHANNELS+1)].append(pygame.mixer.Sound("./flicker/Base.mp3"))
+                    sounds = [pygame.mixer.Sound("./flicker/"+str(x)+".ogg") for x in range(0, NUM_CHANNELS)]
+                    sounds.append(pygame.mixer.Sound("./flicker/Base.ogg"))
 
                     # play Base sound
                     channels[12].play(sounds[12], loops=-1)
+
+                    for i in [1,4,7,8]:
+                        channels[i].set_volume(1)
+
+                    for i in [0,2,3,5,6,9,10,11]:
+                        channels[i].set_volume(0)
+                        channels[i].play(sounds[i], loops=-1)
+
                     cur_mode = "flicker"
 
                     # if i > 100:
