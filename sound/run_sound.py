@@ -7,7 +7,7 @@ import socket
 FADEOUT_TIME = 5
 NUM_CHANNELS = 12
 MAX_LED_VALUE = 40
-TRIGGER_LED_VALUE = 0
+TRIGGER_LED_VALUE = 30
 t = time.time()
 
 channels_ignore = [0 for i in range(0, NUM_CHANNELS)]
