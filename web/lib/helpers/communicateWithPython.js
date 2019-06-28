@@ -1,4 +1,5 @@
 import net from 'net'
+import { realSticks } from '../configuration/realSticksConfig';
 
 let isConnectedToPython = false
 let pythonSocket = null
@@ -31,10 +32,10 @@ export const writeToPython = (sensorsData, currentMode) => {
   const toPython = {
     mode: currentMode || 'RESETTING',
     sensorsData: sensorsData.map(sensor => ({
-      name: sensor.key || 'n/a',
       slow: sensor.slowSensorValue || 0, // in case if null or undefined
       fast: sensor.fastSensorValue || 0, // in case if null or undefined
-      column: sensor.column || 'n/a'
+      LEDShtuka: sensor.column || 'n/a',
+      where: realSticks.find(stick => stick.name === sensor.column) ? (realSticks.find(stick => stick.name === sensor.column).init.x > 0 ? 'right' : 'left') : 'n/a'
     }))
   }
 
