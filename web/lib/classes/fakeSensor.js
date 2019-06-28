@@ -15,6 +15,9 @@ export class FakeSensor {
 		this.startCounting
 		this.slowAmplitude
 
+		this.fastSensorValue = 0
+		this.slowSensorValue = 0
+
 		// Sensor simulation coefficients:
 		this.sensorAmplitude = 40
 		this.slowSensorSpeed = 0.01
@@ -63,7 +66,11 @@ export class FakeSensor {
 		}
 		const timePassed = Date.now() - this.startCounting
 		const timeThreshold = 500 // in milliseconds
+
+		this.fastSensorValue = this.fastTensionFormula(timePassed)
+
 		if (this.isBeingPulled) {
+			this.slowSensorValue = this.slowUpTensionFormula(timePassed)
 			if (timePassed > timeThreshold) {
 				this.isSlowSensor = true
 				this.tension = this.slowUpTensionFormula(timePassed - timeThreshold)
@@ -71,6 +78,7 @@ export class FakeSensor {
 				this.isSlowSensor = false
 			}
 		} else {
+			this.slowSensorValue = this.slowDownTensionFormula(timePassed)
 			if (this.isSlowSensor) {
 				this.tension = this.slowDownTensionFormula(timePassed)
 			} else {

@@ -32,8 +32,8 @@ export const writeToPython = (sensorsData, currentMode) => {
     mode: currentMode || 'RESETTING',
     sensorsData: sensorsData.map(sensor => ({
       name: sensor.key || 'n/a',
-      slow: sensor.slowSensorSpeed || -1, // in case if undefined
-      fast: sensor.fastSensorSpeed || -1, // in case if undefined
+      slow: sensor.slowSensorValue || 0, // in case if null or undefined
+      fast: sensor.fastSensorValue || 0, // in case if null or undefined
       column: sensor.column || 'n/a'
     }))
   }

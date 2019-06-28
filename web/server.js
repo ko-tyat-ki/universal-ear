@@ -50,8 +50,8 @@ const calculateDataForRealLeds = (data, realSensor, column) => {
 		oldTension: sensor.oldTension,
 		sensorPosition: sensor.sensorPosition,
 		column: sensor.column,
-		slowSensorSpeed: sensor.slowSensorSpeed,
-		fastSensorSpeed: sensor.fastSensorSpeed,
+		slowSensorValue: sensor.slowSensorValue,
+		fastSensorValue: sensor.fastSensorValue,
 		key: sensor.key
 	}))
 
