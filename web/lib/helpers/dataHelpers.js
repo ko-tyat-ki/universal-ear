@@ -95,7 +95,7 @@ const getInfoFromSensors = (data) => {
 
     if (received && received.length > 2) {
         return {
-            fast: received[0].split('! ')[1],
+            fast: received[0].split('! ')[1] || received[0].split(', ')[1],
             slow: received[1]
         }
     }
@@ -104,7 +104,7 @@ const getInfoFromSensors = (data) => {
 export {
     addColor,
     combineLEDs,
-	regroupConfig,
+    regroupConfig,
     putLedsInBufferArray,
     getInfoFromSensors,
     eliminateLEDsConfigRepetition
