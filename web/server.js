@@ -134,11 +134,11 @@ let clientSensors
 let realSensorsData
 
 let modeHandler = (req, res) => {
-  currentMode = modes[req.body.mode]
-  Object.keys(clientConfigurations).map(socketId => {
-    connectedSockets[socketId].emit('modeChanged', req.body["mode"])
-  })
-  res.send('Done!')
+	currentMode = modes[req.body.mode]
+	Object.keys(clientConfigurations).map(socketId => {
+		connectedSockets[socketId].emit('modeChanged', req.body["mode"])
+	})
+	res.send('Done!')
 };
 
 const io = spinServer([
@@ -195,7 +195,6 @@ if (realSensors && realSensors.length > 0) {
 		})
 	})
 }
-
 
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
