@@ -41,7 +41,7 @@ const io = spinServer([
 
 const realSensors = connectToArduinos()
 
-const calculateDataForRealLeds = (data, realSensor, column) => {
+const calculateDataForRealLeds = (data, realSensor, stick) => {
 	const sensorData = getInfoFromSensors(data)
 	realSensor.update(sensorData)
 
@@ -49,17 +49,17 @@ const calculateDataForRealLeds = (data, realSensor, column) => {
 		tension: sensor.tension,
 		oldTension: sensor.oldTension,
 		sensorPosition: sensor.sensorPosition,
-		column: sensor.column,
-		slowSensorSpeed: sensor.slowSensorSpeed,
-		fastSensorSpeed: sensor.fastSensorSpeed,
+		stick: sensor.stick,
+		slowSensorValue: sensor.slowSensorValue,
+		fastSensorValue: sensor.fastSensorValue,
 		key: sensor.key
 	}))
 
 	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData]).filter(Boolean)
 	ledsConfig = regroupConfig(combinedLedsConfig)
 
-	const columnLeds = ledsConfig.find(config => config.key === column).leds
-	return putLedsInBufferArray(columnLeds, NUMBER_OF_LEDS)
+	const stickLeds = ledsConfig.find(config => config.key === stick).leds
+	return putLedsInBufferArray(stickLeds, NUMBER_OF_LEDS)
 }
 
 if (realSensors && realSensors.length > 0) {
@@ -71,7 +71,7 @@ if (realSensors && realSensors.length > 0) {
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig) {
 				// console.log({ data, key: realSensor.key })
-				port.write(calculateDataForRealLeds(data, realSensor, realSensor.column))
+				port.write(calculateDataForRealLeds(data, realSensor, realSensor.stick))
 				areWeWriting = false
 			} else {
 				//console.log('Data IN, listen', data)

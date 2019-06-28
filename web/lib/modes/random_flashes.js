@@ -26,7 +26,7 @@ const random_flashes = (sticks, sensors) => {
 		//const stickAlight = Math.floor((Date.now() * flashesFrequency) % (1/proportionSticksAlight)) + 1 //choosing one at a time
 
 		// Find a Stick that corresponds to current Sensor
-		const stick = sticks.find(stick => stick.name === sensor.column)
+		const stick = sticks.find(stick => stick.name === sensor.stick)
 		if (!stick) return
 
 		//only doing smth to stick to be alight

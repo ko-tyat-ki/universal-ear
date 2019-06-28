@@ -134,7 +134,7 @@ Senors have
  -- if the user releases the key after less than 0.5s pressing, the sensor gets quickly to the highest value and back
  -- if the user continues pressing the key after 0.5s, the sensor value slowly increases, and slowly decreases after the button is released
  - `oldTension` - an array of tension history (four values slowly following the current tension value: [0] the furthest away from tension value, [3] the closest value)
- - `column` - which column (stick) it is attached to
+ - `stick` - which column (stick) it is attached to
  - `position` - where on the stick it is attached to; as a number of the LED
 
 The function should return array of arrays, where every entry has

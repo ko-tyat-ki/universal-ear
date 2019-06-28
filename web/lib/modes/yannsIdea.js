@@ -14,7 +14,7 @@ const sinus = (sticks, sensors) => {
         Math.floor(Math.sin((stick.name + seconds) % sticks.length) * 10);
 
       const tensionContribution =
-        tension && stick.name === sensor.column ? Math.floor(tension) : 0;
+        tension && stick.name === sensor.stick ? Math.floor(tension) : 0;
 
       const rainbowColor = rainbowColors(parseInt(stick.name))
       const leds = [
