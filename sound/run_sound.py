@@ -60,7 +60,7 @@ while not exit:
             if mode == "flicker":
                 for sensor in msg['sensorsData']:
                     try:
-                        name = int(sensor['name'])
+                        name = int(sensor['LEDShtuka'])-1
                     except:
                         continue
                     if name in [1,4,7,8]:
