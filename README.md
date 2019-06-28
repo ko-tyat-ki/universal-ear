@@ -106,7 +106,7 @@ import [yourMode] from './modes/[yourMode]'
 
 and the name of it to export.
 
-4. Add a new regime under the same name `./static/index.html` under `<h5>Regime:</h5>`
+4. Add a new mode under the same name `./static/index.html` under `<h5>mode:</h5>`
 
 ```html
 <option value="yourMode">How you want to show your mode</option>
