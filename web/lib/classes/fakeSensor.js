@@ -7,7 +7,7 @@ export class FakeSensor {
 		this.oldTension = [tension, tension, tension, tension]
 		this.isBeingPulled = false
 		this.key = sensor.key
-		this.column = sensor.column
+		this.stick = sensor.stick
 		this.sensorPosition = sensor.sensorPosition
 		this.setKeyDownEventListener()
 		this.setKeyUpEventListener()

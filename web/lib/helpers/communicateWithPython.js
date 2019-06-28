@@ -34,8 +34,8 @@ export const writeToPython = (sensorsData, currentMode) => {
     sensorsData: sensorsData.map(sensor => ({
       slow: sensor.slowSensorValue || 0, // in case if null or undefined
       fast: sensor.fastSensorValue || 0, // in case if null or undefined
-      LEDShtuka: sensor.column || 'n/a',
-      where: realSticks.find(stick => stick.name === sensor.column) ? (realSticks.find(stick => stick.name === sensor.column).init.x > 0 ? 'right' : 'left') : 'n/a'
+      LEDShtuka: sensor.stick || 'n/a',
+      where: realSticks.find(stick => stick.name === sensor.stick) ? (realSticks.find(stick => stick.name === sensor.stick).init.x > 0 ? 'right' : 'left') : 'n/a'
     }))
   }
 

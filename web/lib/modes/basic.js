@@ -9,7 +9,7 @@ const basic = (sticks, sensors) => {
 	// Cycle through array of sensors from each stick:
 	return sensors.map(sensor => {
 		// Find a Stick that corresponds to current Sensor
-		const stick = sticks.find(stick => stick.name === sensor.column)
+		const stick = sticks.find(stick => stick.name === sensor.stick)
 		if (!stick) return
 
 		// Get tension of current sensor

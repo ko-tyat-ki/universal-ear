@@ -9,7 +9,7 @@ export class RealSensor {
         this.slowSensorSpeed = 0
         this.oldTension = [this.tension, this.tension, this.tension, this.tension]
         this.sensorPosition = arduinoConfig.sensors[0].position
-        this.column = arduinoConfig.column
+        this.stick = arduinoConfig.stick
         this.key = arduinoConfig.name
         this.baudRate = arduinoConfig.baudRate
 

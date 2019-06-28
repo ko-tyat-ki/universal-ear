@@ -7,12 +7,12 @@ export const calculateFakeSensors = (selectedStructure) => {
                 {
                     key: 'a',
                     sensorPosition: 10,
-                    column: '1'
+                    stick: '1'
                 },
                 {
                     key: 's',
                     sensorPosition: 30,
-                    column: '2'
+                    stick: '2'
                 }
             ]
         case 'circle':
@@ -20,57 +20,57 @@ export const calculateFakeSensors = (selectedStructure) => {
                 {
                     key: '0',
                     sensorPosition: 25,
-                    column: '1'
+                    stick: '1'
                 },
                 {
                     key: '1',
                     sensorPosition: 25,
-                    column: '2'
+                    stick: '2'
                 },
                 {
                     key: '2',
                     sensorPosition: 25,
-                    column: '3'
+                    stick: '3'
                 },
                 {
                     key: '3',
                     sensorPosition: 25,
-                    column: '4'
+                    stick: '4'
                 },
                 {
                     key: '4',
                     sensorPosition: 25,
-                    column: '5'
+                    stick: '5'
                 },
                 {
                     key: '5',
                     sensorPosition: 25,
-                    column: '6'
+                    stick: '6'
                 },
                 {
                     key: '6',
                     sensorPosition: 25,
-                    column: '7'
+                    stick: '7'
                 },
                 {
                     key: '7',
                     sensorPosition: 25,
-                    column: '8'
+                    stick: '8'
                 },
                 {
                     key: '8',
                     sensorPosition: 25,
-                    column: '9'
+                    stick: '9'
                 },
                 {
                     key: '9',
                     sensorPosition: 25,
-                    column: '10'
+                    stick: '10'
                 },
                 {
                     key: '-',
                     sensorPosition: 20,
-                    column: '11'
+                    stick: '11'
                 }
             ]
         case 'realistic':
@@ -78,57 +78,57 @@ export const calculateFakeSensors = (selectedStructure) => {
                 {
                     key: '0',
                     sensorPosition: 25,
-                    column: '1'
+                    stick: '1'
                 },
                 {
                     key: '1',
                     sensorPosition: 25,
-                    column: '2'
+                    stick: '2'
                 },
                 {
                     key: '2',
                     sensorPosition: 25,
-                    column: '3'
+                    stick: '3'
                 },
                 {
                     key: '3',
                     sensorPosition: 25,
-                    column: '4'
+                    stick: '4'
                 },
                 {
                     key: '4',
                     sensorPosition: 25,
-                    column: '5'
+                    stick: '5'
                 },
                 {
                     key: '5',
                     sensorPosition: 25,
-                    column: '6'
+                    stick: '6'
                 },
                 {
                     key: '6',
                     sensorPosition: 25,
-                    column: '7'
+                    stick: '7'
                 },
                 {
                     key: '7',
                     sensorPosition: 25,
-                    column: '8'
+                    stick: '8'
                 },
                 {
                     key: '8',
                     sensorPosition: 25,
-                    column: '9'
+                    stick: '9'
                 },
                 {
                     key: '9',
                     sensorPosition: 25,
-                    column: '10'
+                    stick: '10'
                 },
                 {
                     key: '-',
                     sensorPosition: 20,
-                    column: '11'
+                    stick: '11'
                 }
             ]
         default:
