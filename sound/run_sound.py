@@ -27,12 +27,20 @@ while not exit:
 
 
     pygame.mixer.init(44100, -16, channels=2, buffer=4096 )
-    pygame.mixer.set_num_channels(NUM_CHANNELS)
+    pygame.mixer.set_num_channels(NUM_CHANNELS+1)
     channels = [pygame.mixer.Channel(i) for i in range(0,NUM_CHANNELS)]  # argument must be int
 
 
     while True: # infinite while-loop
-        json_msg = c.recv(65536) # receives sensor value from the socket
+        json_msg = c.recv(4096) # receives sensor value from the socket
+        # drain buffer
+        if len(json_msg) == 4096 or json_msg[:7] != b'{"mode"':
+            continue
+        #if two messages made it only take first
+        msg_point = json_msg.find(b'}{"mode"')
+        if msg_point != -1:
+            json_msg = json_msg[:msg_point+1]
+
         print("{}:{}".format(dt.datetime.now().time(),json_msg))
 
         msg = json.loads(json_msg)
@@ -46,20 +54,18 @@ while not exit:
                 continue
 
         #TODO
-        # mode = mdg.mode
-        # NOT SURE WHY BELOW IS A FIX BUT ERRORED OTHERWISE
-        mode = msg["mode"]
+        mode = msg['mode']
         if cur_mode == mode:
             if mode == "flicker":
-                for i in msg.sensorsData:
-                    name = int(msg.sensorsData[i].name)
+                for i in msg['sensorsData']:
+                    name = int(msg['sensorsData'][i]['name'])
                     if name in [1]:
-                        if msg.sensorsData[i].fast > 40:
+                        if msg['sensorsData'][i]['fast'] > 40:
                             if time.time() > channels_ignore[i]:
                                 channels[i].play(sounds[i])
                                 channels_ignore[i] = time.time()+sounds[i].get_length()
                     if name in [0]:
-                        channels[i].set_volume(msg.sensorsData[i].slow)
+                        channels[i].set_volume(msg['sensorsData'][i]['slow'])
 
         else: #change of mode
             if cur_mode != "init":
@@ -71,12 +77,11 @@ while not exit:
                 if mode == "flicker":
                     # create separate Channel objects for simultaneous playback
 
-                    sounds = [pygame.mixer.Sound("./flicker/Casio-MT-45-16-Beat.wav"),
-                              pygame.mixer.Sound("./flicker/Kawai-K3-Electric-Piano-C4.wav") ]
+                    sounds = ["./flicker/"+x+".mp3" for x in range(1, NUM_CHANNELS+1)].append(pygame.mixer.Sound("./flicker/Base.mp3"))
 
-                    # plays loop of rain sound indefinitely until stopping playback on Channel,
-                    # interruption by another Sound on same Channel, or quitting pygame
-                    channels[0].play(sounds[0], loops=-1)
+                    # play Base sound
+                    channels[12].play(sounds[12], loops=-1)
+                    cur_mode = "flicker"
 
                     # if i > 100:
         # 	channel2.play(sound2)
