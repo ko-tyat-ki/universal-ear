@@ -32,10 +32,10 @@ while not exit:
 
 
     while True: # infinite while-loop
-        json_msg = c.recv(4096) # receives sensor value from the socket
+        json_msg = c.recv(65536) # receives sensor value from the socket
         print("{}:{}".format(dt.datetime.now().time(),json_msg))
 
-        msg = json.loads(msg)
+        msg = json.loads(json_msg)
 
         if fadeout_ignore:
             if time.time()-t > FADEOUT_TIME:
@@ -46,7 +46,9 @@ while not exit:
                 continue
 
         #TODO
-        mode = msg.mode
+        # mode = mdg.mode
+        # NOT SURE WHY BELOW IS A FIX BUT ERRORED OTHERWISE
+        mode = msg["mode"]
         if cur_mode == mode:
             if mode == "flicker":
                 for i in msg.sensorsData:
