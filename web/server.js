@@ -151,7 +151,7 @@ const io = spinServer([
 
 const realSensors = connectToArduinos()
 
-const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
+const calculateDataForRealLeds = (data, realSensor, column) => {
 	const sensorData = getInfoFromSensors(data)
 	realSensor.update(sensorData)
 	//if (sensorData) console.log("SENSOR ", sensorData)
