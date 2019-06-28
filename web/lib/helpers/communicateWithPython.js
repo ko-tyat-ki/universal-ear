@@ -21,20 +21,22 @@ const connectToPython = () => {
   })
 }
 
-connectToPython()
+(() => {
+  connectToPython()
+})()
 
 export const writeToPython = (sensorsData, currentMode) => {
-  if (!isConnectedToPython) return
+  if (!isConnectedToPython || !sensorsData || sensorsData.length === 0) return
 
   const toPython = {
-    mode: currentMode,
+    mode: currentMode || 'RESETTING',
     sensorsData: sensorsData.map(sensor => ({
-      name: sensor.key,
-      slow: sensor.slowSensorSpeed,
-      fast: sensor.fastSensorSpeed
+      name: sensor.key || 'n/a',
+      slow: sensor.slowSensorSpeed || -1, // in case if undefined
+      fast: sensor.fastSensorSpeed || -1, // in case if undefined
+      column: sensor.column || 'n/a'
     }))
   }
 
-  let toSend = JSON.stringify(toPython);
-  pythonSocket.write(toSend)
+  pythonSocket.write(JSON.stringify(toPython))
 }
