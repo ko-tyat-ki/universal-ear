@@ -8,6 +8,7 @@ import tensionWithEcho from './modes/tensionWithEcho'
 import fastReaction from './modes/fastReaction'
 import rain from './modes/rain'
 import yannsIdea from './modes/yannsIdea'
+import jasmine from './modes/jasmine'
 
 export default {
 	basic,
@@ -19,5 +20,6 @@ export default {
 	tensionWithEcho,
 	fastReaction,
 	rain,
-	yannsIdea
+	yannsIdea,
+	jasmine
 }
