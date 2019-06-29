@@ -37,22 +37,17 @@ const random_flashes = (sticks, sensors) => {
 
 		// Cycle through the keys up to the tension value
 		for (let key = 0; key < numberOfLEDs; key++) {
-			let ledColor = offColor
-
-			let timeParameter = ((Date.now() * flashesFrequency) + parseInt(stick.name)) % 10
-
-			//if (parseInt(stick.name) == stickAlight) {
 			if (Math.random() < proportionSticksAlight) {
+				const timeParameter = ((Date.now() * flashesFrequency) + parseInt(stick.name)) % 10
 				if (timeParameter < 2) {
-					ledColor = stickLightning(timeParameter)
+					const ledColor = stickLightning(timeParameter)
+
+					leds.push({
+						number: key,
+						color: ledColor
+					})
 				}
 			}
-
-			leds.push({
-				number: key,
-				//color: { r, g, b }
-				color: ledColor
-			})
 		}
 
 		// Return leds array of a particular stick:
