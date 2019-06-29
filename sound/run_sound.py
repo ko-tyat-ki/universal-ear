@@ -3,6 +3,7 @@ import json
 import time
 import datetime as dt
 import socket
+import os
 
 FADEOUT_TIME = 5
 NUM_CHANNELS = 12
@@ -14,6 +15,8 @@ channels_ignore = [0 for i in range(0, NUM_CHANNELS)]
 sounds = []
 fadeout_ignore = False
 cur_mode = "init"
+
+cur_dir = (os.path.dirname(os.path.abspath(__file__)))
 
 # set up and open read from the socket
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -86,8 +89,10 @@ while not exit:
                 if mode == "flicker":
                     # create separate Channel objects for simultaneous playback
 
-                    sounds = [pygame.mixer.Sound("./flicker/"+str(x)+".ogg") for x in range(0, NUM_CHANNELS)]
-                    sounds.append(pygame.mixer.Sound("./flicker/Base.ogg"))
+
+
+                    sounds = [pygame.mixer.Sound(os.path.join(cur_dir, 'flicker',str(x)+'.ogg')) for x in range(0, NUM_CHANNELS)]
+                    sounds.append(pygame.mixer.Sound(os.path.join(cur_dir, 'flicker','Base.ogg')))
 
                     # play Base sound
                     channels[12].play(sounds[12], loops=-1)
