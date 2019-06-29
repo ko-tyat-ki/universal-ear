@@ -9,6 +9,7 @@ import fastReaction from './modes/fastReaction'
 import rain from './modes/rain'
 import yannsIdea from './modes/yannsIdea'
 import jasmine from './modes/jasmine'
+import ocean from './modes/ocean'
 
 export default {
 	basic,
@@ -21,5 +22,6 @@ export default {
 	fastReaction,
 	rain,
 	yannsIdea,
-	jasmine
+	jasmine,
+	ocean
 }
