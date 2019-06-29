@@ -1,5 +1,4 @@
 import { getDistance } from '../helpers/getDistance.js'
-import { rainbowColors } from '../helpers/rainbowColors.js';
 
 const communistColor = {
     r: 255,
