@@ -7,6 +7,10 @@ import randomEcho from './modes/randomEcho'
 import tensionWithEcho from './modes/tensionWithEcho'
 import fastReaction from './modes/fastReaction'
 import rain from './modes/rain'
+<<<<<<< HEAD
+=======
+import yannsIdea from './modes/yannsIdea'
+>>>>>>> master
 
 export default {
 	basic,
@@ -17,5 +21,6 @@ export default {
 	randomEcho,
 	tensionWithEcho,
 	fastReaction,
-	rain
+	rain,
+	yannsIdea
 }

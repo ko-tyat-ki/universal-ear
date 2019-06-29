@@ -1,16 +1,29 @@
+<<<<<<< HEAD
 // Function of STICKS (initial properties of the sticks, i.e. position, names, etc.) and SENSORS (sensor data, the sticks they are connected etc.)
 // Returns a large array of all LED colours of all the STICKS
 
 const brightColor = {r: 255, g: 255, b: 255}
 const offColor = {r: 34, g: 34, b: 68}
 
+=======
+import { rainbowColors } from "../helpers/rainbowColors";
+
+// Function of STICKS (initial properties of the sticks, i.e. position, names, etc.) and SENSORS (sensor data, the sticks they are connected etc.)
+// Returns a large array of all LED colours of all the STICKS
+
+>>>>>>> master
 // This particular function linearly depends on the tension of the sensor, i.e. the number of LEDs that will be turned ON linearly depends on the tension
 const basic_with_rainbow = (sticks, sensors) => {
 
 	// Cycle through array of sensors from each stick:
 	return sensors.map(sensor => {
 		// Find a Stick that corresponds to current Sensor
+<<<<<<< HEAD
 		const stick = sticks.find(stick => stick.name === sensor.column)
+=======
+		const stick = sticks.find(stick => stick.name === sensor.stick)
+		if (!stick) return
+>>>>>>> master
 
 		// Get tension of current sensor
 		const tension = sensor.tension
@@ -43,6 +56,7 @@ const basic_with_rainbow = (sticks, sensors) => {
 	})
 }
 
+<<<<<<< HEAD
 const rainbowColors = (stickFactor) => {
 
 	const steps = 7 // number of steps in the rainbow logic
@@ -82,4 +96,6 @@ const rainbowColors = (stickFactor) => {
 	return outRGB
 }
 
+=======
+>>>>>>> master
 export default basic_with_rainbow

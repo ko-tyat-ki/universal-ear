@@ -5,6 +5,7 @@
   "main": "web/server.js",
   "scripts": {
     "prod": "babel-node web/server.js",
+    "debug": "babel-node --inspect=0.0.0.0:8000 web/server.js",
     "start": "babel-watch --watch web web/server.js",
     "test": "jest"
   },

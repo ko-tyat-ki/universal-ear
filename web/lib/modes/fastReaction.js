@@ -1,5 +1,3 @@
-import { getDistance } from '../helpers/getDistance.js'
-
 const tensionAndRandomEcho = (sticks, sensors) => {
     const superBrightColor = {
         r: 255,
@@ -8,14 +6,14 @@ const tensionAndRandomEcho = (sticks, sensors) => {
     }
 
     return sensors.map(sensor => {
-        const stick = sticks.find(stick => stick.name === sensor.column)
-
+        const stick = sticks.find(stick => stick.name === sensor.stick)
+        if (!stick) return
         const tension = sensor.tension
         const numberOfLEDs = stick.numberOfLEDs || 40
 
         const leds = []
 
-        if (!sensor.isSlowSensor && sensor.column === stick.name && tension >= 10) {
+        if (!sensor.isSlowSensor && sensor.stick === stick.name && tension >= 10) {
             [...Array(numberOfLEDs)].map((el, key) => leds.push({
                 number: key,
                 color: superBrightColor

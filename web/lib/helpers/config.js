@@ -7,13 +7,14 @@ function read(path) {
   path = path || DefaultPath;
 
   let res  = {}
-  try {
+/*
+	try {
     let configData = fs.readFileSync(path, 'utf-8')
     res = JSON.parse(configData)
   } catch (err) {
     console.log(err)
   }
-
+*/
   return res
 }
 
@@ -21,9 +22,11 @@ function read(path) {
 function save(config, path) {
   path = path || DefaultPath;
 
+/*
   fs.writeFileSync(path, JSON.stringify(config), {'flag': 'w+'}, (err) => {
     console.log("Saving config failed:", err, )
   })
+  */
 }
 
 export default {

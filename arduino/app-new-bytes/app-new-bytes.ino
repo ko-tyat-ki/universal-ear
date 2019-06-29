@@ -9,8 +9,9 @@
 #define LED_PIN     8
 #define NUM_LEDS    150 //60
 #define BRIGHTNESS  64
-#define LED_TYPE    WS2811
+#define LED_TYPE    WS2812B
 #define COLOR_ORDER GRB
+#define LEDS_GROUPING 5
 CRGB leds[NUM_LEDS];
 
 #define UPDATES_PER_SECOND 100
@@ -20,10 +21,12 @@ TBlendType    currentBlending;
 
 extern CRGBPalette16 myRedWhiteBluePalette;
 extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
-
+ 
 int sensorPin = A0;    // select the input pin for the potentiometer
+int sensorPin1 = A1;    // select the input pin for the potentiometer
+int sensorPin2 = A2;    // select the input pin for the potentiometer
 int sensorPowerPin = 9; // select the sensor power pin
-int sensorValue = 0;  // variable to store the value coming from the sensor
+int sensorValue, sensorValue1, sensorValue2 = 0;  // variable to store the value coming from the sensor
 int sensorAvg, sensorMed, longAverage; // moving average of the sensor values
 const int AverageN = 10; // for first fast integration
 const int AverageN2 = 50; // for slower integration
@@ -37,6 +40,7 @@ char receivedChars[numChars];
 boolean newData = false;
 boolean received = true;
 boolean recvInProgress = false;
+boolean firstMeasurement = true;
 
 // LEDs in Bytes:
 // TODO - check if it's possible to make the size dependent on the incoming data.
@@ -48,6 +52,8 @@ struct PayloadIn
   uint8_t ledno[numberOfLeds][3];
 }payloadIn;
 
+uint8_t leds_united[numberOfLeds][3];
+
 boolean receivedBytes = false;
 byte startByte = 0x10;
 byte endByte = 0x12;
@@ -55,8 +61,7 @@ byte inBuffer[payloadInSize];
 byte sleep = true;
 
 // Serial output
-float diffFast;
-float diffSlow;
+float diffFast, diffSlow;
 
 void setup() {
     delay( 1000 ); // power-up safety delay
@@ -64,33 +69,17 @@ void setup() {
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness(  BRIGHTNESS );
     Serial.begin(115200);
-
-    currentPalette = RainbowColors_p;
-    currentBlending = LINEARBLEND;
-
     FastLED.clear();
 }
 
-void charToStringL(const char S[], String &D)
-{
-    byte at = 0;
-    const char *p = S;
-    D = "";
-
-    while (*p++) {
-      D.concat(S[at++]);
-    }
-}
 
 void loop()
 {
     readSensorData();
-    
     // Serial: Receive Data script:
     receiveBytes();
     // Serial: Put data into "Signal" struct & send data back to server
     parseData();
-    //sendCallforData();   
 }
 
 void readSensorData() {
@@ -98,14 +87,29 @@ void readSensorData() {
     digitalWrite(sensorPowerPin,HIGH); 
     sensorValue = analogRead(sensorPin);
     digitalWrite(sensorPowerPin,LOW);
+    
     // Calculate the averages
-    sensorAvg = runningAverage(sensorValue);
-    lerpingAverageSlow = lerp(lerpingAverageSlow, sensorValue, 0.001);
-    lerpingAverageFast = lerp(lerpingAverageFast, sensorValue, 0.05);
-    lerpingAverageVerySlow = lerp(lerpingAverageVerySlow, sensorAvg, 0.0005);
+    sensorAvg = runningAverage(sensorValue); // average from last xxx values
+    lerpingAverageFast = lerp(lerpingAverageFast, sensorValue, 0.05); // quickest linear interpolation
+    lerpingAverageSlow = lerp(lerpingAverageSlow, sensorValue, 0.001); // medium linear interpolation
+    lerpingAverageVerySlow = lerp(lerpingAverageVerySlow, sensorAvg, 0.00005); // slowest
+
+    // Protect everyone's eyes from an exhausting settle-down period
+    if (firstMeasurement) {
+      lerpingAverageFast = sensorValue;
+      lerpingAverageSlow = sensorValue;
+      lerpingAverageVerySlow = sensorValue;
+      firstMeasurement = false;
+    }
+    
     // Calculate the difference between the sensor value and averaged value:
-    diffFast = (lerpingAverageFast - lerpingAverageVerySlow);  // fast. aka Derivative (for fast plucking)
+    diffFast = (lerpingAverageFast - lerpingAverageSlow);  // fast. aka Derivative (for fast plucking)
     diffSlow = (lerpingAverageSlow - lerpingAverageVerySlow);  // slow. aka pressure (for slow pushing)
+    
+    // if slow pushing less than 0, return it to 0: 
+    if (diffSlow < 0) {
+      lerpingAverageVerySlow = lerpingAverageSlow;
+    }
 }
 
 // When finished getting a full message, run this function.
@@ -125,16 +129,9 @@ void parseData() {
   }
 }
 
-void sendCallforData() {
-  if (testEvery(500) && sleep) {
-    Serial.print("Received! ");
-    sendSensorData();
-  }
-}
-
 void sendSensorData() {
   // TODO: Calibrate diffFast and diffSlow!
-    Serial.println(String(diffSlow * 5) + "\t" + String(diffFast * 5) + "\t" + String(sensorValue));
+    Serial.println(String(diffFast) + "\t" + String(diffSlow) + "\t" + String(sensorAvg));
     // Leave for debugging
     //Serial.println(String(lerpingAverageSlow) + "\t" + String(lerpingAverageFast) + "\t" + String(lerpingAverageVerySlow) + "\t" + String(sensorValue));
     Serial.println("eat me");
@@ -175,10 +172,22 @@ float lerp(float from, float to, float fraction) {
 
 void writeToLeds() {
   FastLED.clear();
-  for (int i = 0; i < payloadInSize/4; i++) {
-    //leds[Signal[4*i]] = CRGB(Signal[1 + 4*i], Signal[2 + 4*i], Signal[3 + 4*i]);
-    leds[i*5] = leds[i*5+1] = leds[i*5+2]= leds[i*5+3]= leds[i*5+4] = CRGB(payloadIn.ledno[i][0],payloadIn.ledno[i][1],payloadIn.ledno[i][2]);
-    // TODO: Blend with the next LED
+  int ledArraySize = NUM_LEDS / LEDS_GROUPING;
+  for (int i = 0; i < ledArraySize; i++) {
+    // Smooth with the previous frame:
+    for (int j = 0; j < 3; j++) {
+      leds_united[i][j] = lerp(leds_united[i][j], payloadIn.ledno[i][j], 0.2);
+    }
+    // Smooth with the next led:
+    for (int j = 0; j < 5; j++) {
+      if (i < ledArraySize - 1) {
+        leds[i*5 + j] =  CRGB(lerp (leds_united[i][0], leds_united[i + 1][0], 0.2 * j),
+                              lerp (leds_united[i][1], leds_united[i + 1][1], 0.2 * j),
+                              lerp (leds_united[i][2], leds_united[i + 1][2], 0.2 * j)) ;      
+      } else {
+        leds[i*5 + j] = CRGB (leds_united[i][0], leds_united[i][1], leds_united[i][2]);
+      }
+    }
   }
   FastLED.show();
 }
@@ -224,4 +233,16 @@ void receiveBytes() {
       received = false;
     }
   }
+}
+
+
+void charToStringL(const char S[], String &D)
+{
+    byte at = 0;
+    const char *p = S;
+    D = "";
+
+    while (*p++) {
+      D.concat(S[at++]);
+    }
 }
