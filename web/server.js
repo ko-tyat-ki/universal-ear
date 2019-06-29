@@ -11,33 +11,37 @@ import { spinServer } from './lib/helpers/spinServer'
 import { NUMBER_OF_LEDS } from './lib/configuration/constants'
 import earConfig from './lib/helpers/config'
 import { writeToPython } from './lib/helpers/communicateWithPython';
-
-//////////////////// TODO move to some initial config file
-const realSticks = [
-	{
-		numberOfLEDs: 40,
-		name: '1'
-	},
-	{
-		numberOfLEDs: 40,
-		name: '2'
-	},
-]
-//////////////////// TODO move to some config
+import { realSticks } from './lib/configuration/realSticksConfig';
 
 const connectedSockets = {}
 // const clientConfigurations = earConfig.read()
 const clientConfigurations = {}
 let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
-let currentMode = modes.basic
-let areWeWriting = true
-let clientSensors
-let realSensorsData
+let currentModeKey = 'basic'
+let currentMode = modes[currentModeKey]
+let clientSensors = []
+let realSensorsData = []
 
-const io = spinServer()
+const modeHandler = (req, res) => {
+	currentModeKey = req.body.mode
+	currentMode = modes[currentModeKey]
+	Object.keys(clientConfigurations).map(socketId => {
+		connectedSockets[socketId].emit('modeChanged', req.body["mode"])
+	})
+	res.send('Done!')
+};
+
+const io = spinServer([
+	{
+		method: 'post',
+		path: '/mode',
+		callback: modeHandler
+	}
+])
+
 const realSensors = connectToArduinos()
 
-const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
+const calculateDataForRealLeds = (data, realSensor, stick) => {
 	const sensorData = getInfoFromSensors(data)
 	realSensor.update(sensorData)
 	//if (sensorData) console.log("SENSOR ", sensorData)
@@ -46,26 +50,29 @@ const calculateDataForRealLeds = (data, realSensor) => { // TO BE CHANGED WHEN H
 		tension: sensor.tension,
 		oldTension: sensor.oldTension,
 		sensorPosition: sensor.sensorPosition,
-		column: sensor.column,
+		stick: sensor.stick,
+		slowSensorValue: sensor.slowSensorValue,
+		fastSensorValue: sensor.fastSensorValue,
+		key: sensor.key
 	}))
 
-	const sensorToPass = clientSensors && clientSensors.length > 0 ? [...clientSensors, ...realSensors] : realSensors
-	const ledsConfigFromClient = currentMode(realSticks, sensorToPass).filter(Boolean)
-	ledsConfig = regroupConfig(ledsConfigFromClient)
+	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData]).filter(Boolean)
+	ledsConfig = regroupConfig(combinedLedsConfig)
 
-	//writeToPython(combinedSensors, currentMode)
-	return putLedsInBufferArray(ledsConfig[0].leds, NUMBER_OF_LEDS)
+	const stickLeds = ledsConfig.find(config => config.key === stick).leds
+	return putLedsInBufferArray(stickLeds, NUMBER_OF_LEDS)
 }
 
 if (realSensors && realSensors.length > 0) {
 	realSensors.map(realSensor => {
 		const port = realSensor.port
 		const parser = realSensor.parser
+		let areWeWriting = true
 
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig) {
-				// console.log('DATA IN', data)
-				port.write(calculateDataForRealLeds(data, realSensor))
+				// console.log({ data, key: realSensor.key })
+				port.write(calculateDataForRealLeds(data, realSensor, realSensor.stick))
 				areWeWriting = false
 			} else {
 				//console.log('Data IN, listen', data)
@@ -76,6 +83,11 @@ if (realSensors && realSensors.length > 0) {
 		})
 	})
 }
+
+setInterval(() => {
+	const combinedSensors = [...clientSensors, ...realSensorsData]
+	if (combinedSensors.length > 0) writeToPython(combinedSensors, currentModeKey)
+}, 100)
 
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
@@ -93,24 +105,17 @@ io.on('connection', socket => {
 			return
 		}
 
-		currentMode = modes[config.mode || 'basic']
-		if (!currentMode) {
-			return
-		}
-
 		clientSensors = sensors
-		const sensorsToPass = realSensorsData && realSensorsData.length > 0 ? [...clientSensors, ...realSensorsData] : clientSensors
-		const ledsConfigFromClient = currentMode(sticks, sensorsToPass).filter(Boolean)
+		const ledsConfigFromClient = currentMode(sticks, [...clientSensors, ...realSensorsData]).filter(Boolean)
 		ledsConfig = regroupConfig(ledsConfigFromClient)
 		socket.emit('ledsChanged', ledsConfig)
-
-		writeToPython(sensorsToPass, currentMode)
-		// ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig)) // keep for now for development processes
 	})
 
 	socket.on('configure', configuration => {
+		currentModeKey = configuration.mode
+		currentMode = modes[currentModeKey]
 		clientConfigurations[socket.id] = configuration
-		earConfig.save()
+		earConfig.save(clientConfigurations)
 	})
 
 	socket.on('disconnect', () => {
@@ -118,3 +123,4 @@ io.on('connection', socket => {
 		delete clientConfigurations[socket.id]
 	})
 })
+

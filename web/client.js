@@ -11,9 +11,9 @@ import { calculateClientPoles } from './lib/configuration/clientPolesConfig.js'
 let socket = io()
 let scene
 
-const buildEar = (structure, regime) => {
+const buildEar = (structure, mode) => {
 	const selectedStructure = structure.options[structure.options.selectedIndex].value
-	const selectedRegime = regime.options[regime.options.selectedIndex].value
+	const selectedMode = mode.options[mode.options.selectedIndex].value
 
 	const configuration = {
 		fakeSensors: calculateFakeSensors(selectedStructure),
@@ -24,7 +24,7 @@ const buildEar = (structure, regime) => {
 	const ear = drawEar(configuration, scene)
 
 	socket.emit('configure', {
-		'mode': selectedRegime,
+		'mode': selectedMode,
 		'sticks': ear.sticks,
 		'sensors': ear.sensors,
 	})
@@ -39,9 +39,9 @@ const onConfigure = () => {
 	init()
 	scene = animate()
 	const structure = document.getElementById('select-structure')
-	const regime = document.getElementById('select-regime')
+	const mode = document.getElementById('select-mode')
 
-	const update = buildEar(structure, regime)
+	const update = buildEar(structure, mode)
 	sticks = update.sticks
 	sensors = update.sensors
 
@@ -55,12 +55,17 @@ const onConfigure = () => {
 			}
 		})
 	})
+
+	socket.on('modeChanged', mode => {
+		mode.value = mode
+	})
+
 }
 
 (() => {
 	onConfigure()
 
-	const regime = document.getElementById('select-regime')
+	const mode = document.getElementById('select-mode')
 	const structure = document.getElementById('select-structure')
 	structure.addEventListener('change', () => {
 		while (scene.children.length > 0) {
@@ -70,7 +75,7 @@ const onConfigure = () => {
 		sensors = null
 		onConfigure()
 	})
-	regime.addEventListener('change', onConfigure)
+	mode.addEventListener('change', onConfigure)
 
 	setInterval(() => {
 		if (!sensors) return

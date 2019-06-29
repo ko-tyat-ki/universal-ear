@@ -306,7 +306,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		return function panLeft( distance, objectMatrix ) {
 
-			v.setFromMatrixColumn( objectMatrix, 0 ); // get X column of objectMatrix
+			v.setFromMatrixstick( objectMatrix, 0 ); // get X stick of objectMatrix
 			v.multiplyScalar( - distance );
 
 			panOffset.add( v );
@@ -323,11 +323,11 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 			if ( scope.screenSpacePanning === true ) {
 
-				v.setFromMatrixColumn( objectMatrix, 1 );
+				v.setFromMatrixstick( objectMatrix, 1 );
 
 			} else {
 
-				v.setFromMatrixColumn( objectMatrix, 0 );
+				v.setFromMatrixstick( objectMatrix, 0 );
 				v.crossVectors( scope.object.up, v );
 
 			}
