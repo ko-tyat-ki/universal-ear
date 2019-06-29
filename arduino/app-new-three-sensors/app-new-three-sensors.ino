@@ -130,13 +130,13 @@ void parseData() {
 }
 
 void sendSensorData() {
-  // TODO: Calibrate diffFast and diffSlow!
-    for (int i = 0; i < 3; i++) {
-      Serial.print(String(diffFast[i]) + "\t" + String(diffSlow[i]) + "\t");
-    }
+    //for (int i = 0; i < 3; i++) {
+    //  Serial.print(String(diffFast[i]) + "\t" + String(diffSlow[i]) + "\t");
+    //}
+    float diffFastMax = max(diffFast[0], max(diffFast[1], diffFast[2]));
+    float diffSlowMax = max(diffSlow[0], max(diffSlow[1], diffSlow[2]));
+    Serial.print(String(diffFastMax) + "\t" + String(diffSlowMax) + "\t");
     Serial.println("");
-    // Leave for debugging
-    //Serial.println(String(lerpingAverageSlow) + "\t" + String(lerpingAverageFast) + "\t" + String(lerpingAverageVerySlow) + "\t" + String(sensorValue));
     Serial.println("eat me");
 }
 
