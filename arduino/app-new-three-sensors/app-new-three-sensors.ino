@@ -5,7 +5,6 @@
 
 #include <FastLED.h>
 #define ORDER       0
-#define LED_COUNT   150 //40
 #define LED_PIN     8
 #define NUM_LEDS    150 //60
 #define BRIGHTNESS  64
@@ -22,25 +21,17 @@ TBlendType    currentBlending;
 extern CRGBPalette16 myRedWhiteBluePalette;
 extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
  
-int sensorPin = A0;    // select the input pin for the potentiometer
-int sensorPin1 = A1;    // select the input pin for the potentiometer
-int sensorPin2 = A2;    // select the input pin for the potentiometer
+int sensorPin[3];    // select the input pin for the potentiometer
 int sensorPowerPin = 9; // select the sensor power pin
-int sensorValue, sensorValue1, sensorValue2 = 0;  // variable to store the value coming from the sensor
-int sensorAvg, sensorMed, longAverage; // moving average of the sensor values
-const int AverageN = 10; // for first fast integration
-const int AverageN2 = 50; // for slower integration
-float lerpingAverageFast, lerpingAverageSlow, lerpingAverageVerySlow; // Alternative to averages
+int sensorValue[3] = {0};  // variable to store the value coming from the sensor
 String input = "";
 
 // Serial helper variables
-
 const byte numChars = 64;
 char receivedChars[numChars];
 boolean newData = false;
 boolean received = true;
 boolean recvInProgress = false;
-boolean firstMeasurement = true;
 
 // LEDs in Bytes:
 // TODO - check if it's possible to make the size dependent on the incoming data.
@@ -59,11 +50,21 @@ byte startByte = 0x10;
 byte endByte = 0x12;
 byte inBuffer[payloadInSize];
 byte sleep = true;
+boolean firstMeasurement = true;
 
-// Serial output
-float diffFast, diffSlow;
+// Serial output for three sensors
+float diffFast[3];
+float diffSlow[3];
+float lerpAvgFast[3];
+float lerpAvgSlow[3];
+float lerpAvgVerySlow[3];
 
 void setup() {
+    // Initialise sensor pins:
+    sensorPin[0] = A0;    // select the input pin for the potentiometer
+    sensorPin[1] = A1;    // select the input pin for the potentiometer
+    sensorPin[2] = A2;
+    
     delay( 1000 ); // power-up safety delay
     pinMode(sensorPowerPin, OUTPUT); // declare sensor power pin as output
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
@@ -72,43 +73,42 @@ void setup() {
     FastLED.clear();
 }
 
-
 void loop()
 {
-    readSensorData();
+    readSensorDataNew();
     // Serial: Receive Data script:
     receiveBytes();
     // Serial: Put data into "Signal" struct & send data back to server
     parseData();
 }
 
-void readSensorData() {
-  // read the value from the sensor:
+void readSensorDataNew() {
     digitalWrite(sensorPowerPin,HIGH); 
-    sensorValue = analogRead(sensorPin);
+    for (int i = 0; i < 3; i++) {
+      sensorValue[i] = analogRead(sensorPin[i]);
+    }
     digitalWrite(sensorPowerPin,LOW);
-    
-    // Calculate the averages
-    sensorAvg = runningAverage(sensorValue); // average from last xxx values
-    lerpingAverageFast = lerp(lerpingAverageFast, sensorValue, 0.05); // quickest linear interpolation
-    lerpingAverageSlow = lerp(lerpingAverageSlow, sensorValue, 0.001); // medium linear interpolation
-    lerpingAverageVerySlow = lerp(lerpingAverageVerySlow, sensorAvg, 0.00005); // slowest
 
     // Protect everyone's eyes from an exhausting settle-down period
     if (firstMeasurement) {
-      lerpingAverageFast = sensorValue;
-      lerpingAverageSlow = sensorValue;
-      lerpingAverageVerySlow = sensorValue;
+      for (int i = 0; i < 3; i++) {
+        lerpAvgFast[i] = sensorValue[i];
+        lerpAvgSlow[i] = sensorValue[i];
+        lerpAvgVerySlow[i] = sensorValue[i];
+      }
       firstMeasurement = false;
     }
-    
-    // Calculate the difference between the sensor value and averaged value:
-    diffFast = (lerpingAverageFast - lerpingAverageSlow);  // fast. aka Derivative (for fast plucking)
-    diffSlow = (lerpingAverageSlow - lerpingAverageVerySlow);  // slow. aka pressure (for slow pushing)
-    
-    // if slow pushing less than 0, return it to 0: 
-    if (diffSlow < 0) {
-      lerpingAverageVerySlow = lerpingAverageSlow;
+
+    // Calculate averages:
+    for (int i = 0; i < 3; i++) {
+      lerpAvgFast[i] = lerp(lerpAvgFast[i], sensorValue[i], 0.05);
+      lerpAvgSlow[i] = lerp(lerpAvgSlow[i], sensorValue[i], 0.001);
+      lerpAvgVerySlow[i] = lerp(lerpAvgVerySlow[i], sensorValue[i], 0.00005);
+      diffFast[i] = (lerpAvgFast[i] - lerpAvgSlow[i]);
+      diffSlow[i] = (lerpAvgSlow[i] - lerpAvgVerySlow[i]);
+      if (diffSlow[i] < 0) {
+        lerpAvgVerySlow[i] = lerpAvgSlow[i];
+      }
     }
 }
 
@@ -130,10 +130,13 @@ void parseData() {
 }
 
 void sendSensorData() {
-  // TODO: Calibrate diffFast and diffSlow!
-    Serial.println(String(diffFast) + "\t" + String(diffSlow) + "\t" + String(sensorAvg));
-    // Leave for debugging
-    //Serial.println(String(lerpingAverageSlow) + "\t" + String(lerpingAverageFast) + "\t" + String(lerpingAverageVerySlow) + "\t" + String(sensorValue));
+    //for (int i = 0; i < 3; i++) {
+    //  Serial.print(String(diffFast[i]) + "\t" + String(diffSlow[i]) + "\t");
+    //}
+    float diffFastMax = max(diffFast[0], max(diffFast[1], diffFast[2]));
+    float diffSlowMax = max(diffSlow[0], max(diffSlow[1], diffSlow[2]));
+    Serial.print(String(diffFastMax) + "\t" + String(diffSlowMax) + "\t");
+    Serial.println("");
     Serial.println("eat me");
 }
 
@@ -149,21 +152,6 @@ boolean testEvery(long millisecondsPeriod) {
     return true;
   }
   return timeOut;
-}
-
-// Functions for direct averaging the sensor value
-int runningAverage(int NewSensorValue) {
-  static int index = 0;
-  static int LMvar[AverageN];
-  static long sum = 0;
-  static byte count = 0;
-  sum -= LMvar[index];
-  LMvar[index] = NewSensorValue;
-  sum += LMvar[index];
-  index++;
-  index = index % AverageN;
-  if (count < AverageN) count++;
-  return sum/count;
 }
 
 float lerp(float from, float to, float fraction) {
