@@ -45,7 +45,7 @@ while not exit:
         if msg_point != -1:
             json_msg = json_msg[:msg_point+1]
 
-        print("{}:{}".format(dt.datetime.now().time(),json_msg))
+        #print("{}:{}".format(dt.datetime.now().time(),json_msg))
 
         msg = json.loads(json_msg)
 
