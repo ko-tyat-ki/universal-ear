@@ -2,10 +2,12 @@ import { NUMBER_OF_LEDS } from "../configuration/constants";
 
 const start = Date.now();
 
+const speed = 500 // in change per milisecond
+
 const superBrightColor = () => {
     return {
         r: Math.floor(Math.random() * 100),
-        g: Math.floor(Math.random() * 195),
+        g: Math.floor(Math.random() * 255),
         b: Math.floor(Math.random() * 195)
     }
 }
@@ -33,8 +35,6 @@ const ledsCalculation = ({ numberOfParts, timeImput, raiseFactor, tension }) => 
         }
     }).filter(Boolean)
 }
-
-const speed = 333 // in change per milisecond
 
 const risingStairs = (sticks, sensors) => {
     // sum all sensors on one column to one
