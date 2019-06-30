@@ -107,7 +107,6 @@ const realSensors = connectToArduinos()
 
 const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
 	realSensor.update(sensorData)
-	//if (sensorData) console.log("SENSOR ", sensorData)
 
 	realSensorsData = realSensors.map(sensor => ({
 		tension: sensor.tension,
