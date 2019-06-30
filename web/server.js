@@ -28,7 +28,7 @@ let clientSensors = []
 let realSensorsData = []
 
 const modeHandler = (req, res) => {
-	currentModeKey = req.query.mode
+	currentModeKey = req.query.name
 	currentMode = modes[currentModeKey]
 	Object.keys(clientConfigurations).map(socketId => {
 		connectedSockets[socketId].emit('modeChanged', currentModeKey)
