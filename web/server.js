@@ -41,11 +41,10 @@ const io = spinServer([
 
 const realSensors = connectToArduinos()
 
-const calculateDataForRealLeds = (data, realSensor, stick) => {
-	const sensorData = getInfoFromSensors(data)
+const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
 	realSensor.update(sensorData)
 	//if (sensorData) console.log("SENSOR ", sensorData)
-	
+
 	realSensorsData = realSensors.map(sensor => ({
 		tension: sensor.tension,
 		oldTension: sensor.oldTension,
@@ -72,7 +71,7 @@ if (realSensors && realSensors.length > 0) {
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig) {
 				// console.log({ data, key: realSensor.key })
-				port.write(calculateDataForRealLeds(data, realSensor, realSensor.stick))
+				port.write(calculateDataForRealLeds(getInfoFromSensors(data), realSensor, realSensor.stick))
 				areWeWriting = false
 			} else {
 				//console.log('Data IN, listen', data)

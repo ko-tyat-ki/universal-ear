@@ -203,6 +203,105 @@ export const calculateClientSticks = (selectedStructure) => {
                     }
                 }
             ]
+        case 'final':
+            return [
+                {
+                    name: '1',
+                    init: {
+                        x: -75,
+                        y: -150,
+                        z: 225
+                    }
+                },
+                {
+                    name: '2',
+                    init: {
+                        x: 75,
+                        y: -140,
+                        z: 225
+                    }
+                },
+                {
+                    name: '3',
+                    init: {
+                        x: -225,
+                        y: -140,
+                        z: 75
+                    }
+                },
+                {
+                    name: '4',
+                    init: {
+                        x: -75,
+                        y: -140,
+                        z: 75
+                    }
+                },
+                {
+                    name: '5',
+                    init: {
+                        x: 75,
+                        y: -140,
+                        z: 75
+                    }
+                },
+                {
+                    name: '6',
+                    init: {
+                        x: 225,
+                        y: -140,
+                        z: 75
+                    }
+                },
+                {
+                    name: '7',
+                    init: {
+                        x: -225,
+                        y: -140,
+                        z: -75
+                    }
+                },
+                {
+                    name: '8',
+                    init: {
+                        x: -75,
+                        y: -140,
+                        z: -75
+                    }
+                },
+                {
+                    name: '9',
+                    init: {
+                        x: 75,
+                        y: -140,
+                        z: -75
+                    }
+                },
+                {
+                    name: '10',
+                    init: {
+                        x: 225,
+                        y: -140,
+                        z: -75
+                    }
+                },
+                {
+                    name: '11',
+                    init: {
+                        x: -75,
+                        y: -140,
+                        z: -225
+                    }
+                },
+                {
+                    name: '12',
+                    init: {
+                        x: 75,
+                        y: -140,
+                        z: -225
+                    }
+                }
+            ]
         default:
             console.log('You need to pick up structure you would use')
             return

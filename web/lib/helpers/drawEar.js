@@ -10,7 +10,6 @@ import {
 	INIT_STICK_COLOR
 } from '../configuration/constants.js'
 
-
 const addLED = ({
 	size,
 	x,
