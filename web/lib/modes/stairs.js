@@ -11,40 +11,25 @@ const superBrightColor = () => {
 }
 
 const ledsCalculation = ({ numberOfParts, timeImput, raiseFactor, tension }) => {
-    return [...Array(NUMBER_OF_LEDS / numberOfParts)].map((el, key) => {
-        const liftFactor = (timeImput + raiseFactor) % numberOfParts
-        const lift = NUMBER_OF_LEDS / numberOfParts * liftFactor
+    const fakeNumberOfLeds = (numberOfParts === 2) ? NUMBER_OF_LEDS : 32
+    const fakeFactor = (numberOfParts === 2) ? 0 : 4
+    return [...Array(fakeNumberOfLeds / numberOfParts)].map((el, key) => {
         let number
-        let color
         if (tension > 10) {
-            if (numberOfParts === 2) {
-                if (liftFactor === 0) {
-                    if (key < NUMBER_OF_LEDS / 4) {
-                        number = key + lift
-                    } else {
-                        number = key + lift + NUMBER_OF_LEDS / 4
-                    }
-                } else if (liftFactor === 1) {
-                    if (key < NUMBER_OF_LEDS / 4) {
-                        number = key + lift - NUMBER_OF_LEDS / 4
-                    } else {
-                        number = key + lift
-                    }
-                }
-            }
-            color = {
-                r: 255,
-                g: 0,
-                b: 0
-            }
+            const liftFactor = (timeImput + raiseFactor) % numberOfParts
+            const lift = fakeNumberOfLeds / numberOfParts / numberOfParts * liftFactor
+            const additionalLiftFactor = Math.floor(key / (fakeNumberOfLeds / numberOfParts / numberOfParts))
+            const additionalLift = (fakeNumberOfLeds / numberOfParts * (1 - 1 / numberOfParts)) * additionalLiftFactor
+            number = key + additionalLift + lift + fakeFactor
         } else {
+            const liftFactor = (timeImput + raiseFactor) % numberOfParts
+            const lift = NUMBER_OF_LEDS / numberOfParts * liftFactor
             number = key + lift
-            color = superBrightColor()
         }
         if (number < 0 || number > NUMBER_OF_LEDS - 1) return
         return {
             number,
-            color
+            color: superBrightColor()
         }
     }).filter(Boolean)
 }
