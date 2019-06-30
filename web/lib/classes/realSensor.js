@@ -11,6 +11,7 @@ export class RealSensor {
         this.stick = arduinoConfig.stick
         this.key = arduinoConfig.name
         this.baudRate = arduinoConfig.baudRate
+        this.active = true
 
         this.init()
     }
@@ -26,12 +27,13 @@ export class RealSensor {
 
         this.port.on('error', (error) => {
             console.log(`Warning: the port ${portName} failed to open, did you connect the device? If not - no worries, client side can work without it`, error)
+            this.active = false
         })
 
         this.port.on('close', (error) => {
             console.log(`Port was closed., port: ${portName}`, error)
+            this.active = false
         })
-
     }
 
     update(sensorData) {

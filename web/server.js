@@ -36,7 +36,22 @@ const modeHandler = (req, res) => {
 	res.send('Done!')
 };
 
-let changeModeLoop = () => {
+const arduinosStatusHandler = (req, res) => {
+	const activeArduinos = realSensors.filter(sensor => sensor.active).map(sensor => ({
+		name: sensor.key,
+		stick: sensor.stick
+	}))
+	const arduinosThatDidNotOpen = realSensors.filter(sensor => !sensor.active).map(sensor => ({
+		name: sensor.key,
+		stick: sensor.stick
+	}))
+	res.json({
+		activeArduinos,
+		arduinosThatDidNotOpen
+	})
+};
+
+const changeModeLoop = () => {
 	if (!isAutoChangingModeEnabled) {
 		// NOTE: if it's disabled we want to check more often to be able react on turning on within 2 seconds
 		setTimeout(changeModeLoop, 2000)
@@ -63,8 +78,9 @@ const changeMode = (modeKey) => {
 
 const switchAutomaticModeHandler = (req, res) => {
 	isAutoChangingModeEnabled = !isAutoChangingModeEnabled
-	if (req.body["timeout"]) {
-		modeAutoChangeTimeout = req.body["timeout"]
+	const timeout = req.query.timeout
+	if (timeout) {
+		modeAutoChangeTimeout = timeout
 	}
 	res.send('Done! Autoswitching enabled ' + isAutoChangingModeEnabled + '. Change once in ' + modeAutoChangeTimeout + ' milliseconds')
 }
@@ -76,9 +92,14 @@ const io = spinServer([
 		callback: modeHandler
 	},
 	{
-		method: 'post',
+		method: 'get',
 		path: '/mode/automatic',
 		callback: switchAutomaticModeHandler
+	},
+	{
+		method: 'get',
+		path: '/arduinosStatus',
+		callback: arduinosStatusHandler
 	}
 ])
 
