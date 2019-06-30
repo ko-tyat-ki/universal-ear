@@ -28,10 +28,10 @@ let clientSensors = []
 let realSensorsData = []
 
 const modeHandler = (req, res) => {
-	currentModeKey = req.body.mode
+	currentModeKey = req.query.mode
 	currentMode = modes[currentModeKey]
 	Object.keys(clientConfigurations).map(socketId => {
-		connectedSockets[socketId].emit('modeChanged', req.body["mode"])
+		connectedSockets[socketId].emit('modeChanged', currentModeKey)
 	})
 	res.send('Done!')
 };
@@ -71,7 +71,7 @@ const switchAutomaticModeHandler = (req, res) => {
 
 const io = spinServer([
 	{
-		method: 'post',
+		method: 'get',
 		path: '/mode',
 		callback: modeHandler
 	},
