@@ -82,7 +82,7 @@ const switchAutomaticModeHandler = (req, res) => {
 	if (timeout) {
 		modeAutoChangeTimeout = timeout
 	}
-	res.send('Done! Autoswitching enabled ' + isAutoChangingModeEnabled + '. Change once in ' + modeAutoChangeTimeout + ' milliseconds')
+	res.send('Done! Autoswitching enabled ' + isAutoChangingModeEnabled + '. Change once in ' + modeAutoChangeTimeout / 1000 / 60 + ' minutes')
 }
 
 const io = spinServer([
