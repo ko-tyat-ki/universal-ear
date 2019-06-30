@@ -10,6 +10,7 @@ import rain from './modes/rain'
 import yannsIdea from './modes/yannsIdea'
 import jasmine from './modes/jasmine'
 import ocean from './modes/ocean'
+import risingStairs from './modes/stairs'
 
 export default {
 	basic,
@@ -23,5 +24,6 @@ export default {
 	rain,
 	yannsIdea,
 	jasmine,
-	ocean
+	ocean,
+	risingStairs
 }
