@@ -2,11 +2,21 @@ import { NUMBER_OF_LEDS } from "../configuration/constants";
 
 const start = Date.now();
 
-const superBrightColor = {
-    r: 255,
-    g: 255,
-    b: 255
+const superBrightColor = () => {
+    return {
+        r: Math.floor(Math.random() * 100),
+        g: Math.floor(Math.random() * 195),
+        b: Math.floor(Math.random() * 195)
+    }
 }
+
+// const superBrightColor = () => {
+//     return {
+//         r: Math.floor(Math.random() * 1),
+//         g: Math.floor(Math.random() * 20),
+//         b: Math.floor(Math.random() * 20)
+//     }
+// }
 
 const speed = 333 // in change per milisecond
 
@@ -21,12 +31,12 @@ const risingStairs = (sticks, sensors) => {
                 if ((stick.name === '1' && timeImput === 0) || (stick.name === '2' && timeImput === 1)) {
                     [...Array(NUMBER_OF_LEDS / 2)].map((el, key) => leds.push({
                         number: key,
-                        color: superBrightColor
+                        color: superBrightColor()
                     }))
                 } else {
                     [...Array(NUMBER_OF_LEDS / 2)].map((el, key) => leds.push({
                         number: key + NUMBER_OF_LEDS / 2,
-                        color: superBrightColor
+                        color: superBrightColor()
                     }))
                 }
             }
@@ -39,7 +49,7 @@ const risingStairs = (sticks, sensors) => {
                 if (['6', '10'].indexOf(stick.name) > -1) { raiseFactor = 3 }
                 [...Array(NUMBER_OF_LEDS / 4)].map((el, key) => leds.push({
                     number: key + NUMBER_OF_LEDS / 4 * ((timeImput + raiseFactor) % 4),
-                    color: superBrightColor
+                    color: superBrightColor()
                 }))
             }
             return {
