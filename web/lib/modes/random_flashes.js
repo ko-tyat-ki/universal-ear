@@ -34,21 +34,17 @@ const random_flashes = (sticks, sensors) => {
 
 		// Cycle through the keys up to the tension value
 		for (let key = 0; key < numberOfLEDs; key++) {
-			let ledColor = offColor
-
-			let timeParameter = ((Date.now() * flashesFrequency) + parseInt(stick.name)) % 10
-			
 			if (Math.random() < proportionSticksAlight) {
+				const timeParameter = ((Date.now() * flashesFrequency) + parseInt(stick.name)) % 10
 				if (timeParameter < 2) {
-					ledColor = stickLightning(timeParameter)
+					const ledColor = stickLightning(timeParameter)
+
+					leds.push({
+						number: key,
+						color: ledColor
+					})
 				}
 			}
-
-			leds.push({
-				number: key,
-				//color: { r, g, b }
-				color: ledColor
-			})
 		}
 
 		// Return leds array of a particular stick:
@@ -60,14 +56,11 @@ const random_flashes = (sticks, sensors) => {
 }
 
 const stickLightning = (timeParameter) => {
-
-	let outRGB = { r: 0, g: 0, b: 0 }
-
-	outRGB.r = Math.max(Math.min((2 - timeParameter) * 255 / 2, brightColor.r), offColor.r)
-	outRGB.g = Math.max(Math.min((2 - timeParameter) * 255 / 2, brightColor.g), offColor.g)
-	outRGB.b = Math.max(Math.min((2 - timeParameter) * 255 / 2, brightColor.b), offColor.b)
-
-	return outRGB
+	return {
+		r: Math.floor(Math.max(Math.min((2 - timeParameter) * 255 / 2, brightColor.r), offColor.r) / 2),
+		g: Math.floor(Math.max(Math.min((2 - timeParameter) * 255 / 2, brightColor.g), offColor.g)),
+		b: Math.floor(Math.max(Math.min((2 - timeParameter) * 255 / 2, brightColor.b), offColor.b) / 2)
+	}
 }
 
 export default random_flashes
