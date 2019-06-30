@@ -11,6 +11,7 @@ import yannsIdea from './modes/yannsIdea'
 import jasmine from './modes/jasmine'
 import ocean from './modes/ocean'
 import risingStairs from './modes/stairs'
+import easterEgg from './modes/easterEgg'
 
 export default {
 	basic,
@@ -25,5 +26,6 @@ export default {
 	yannsIdea,
 	jasmine,
 	ocean,
-	risingStairs
+	risingStairs,
+	easterEgg
 }

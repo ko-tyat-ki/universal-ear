@@ -10,11 +10,11 @@ const brightColor = {
 const startTime = Date.now()
 
 // This particular function linearly depends on the tension of the sensor, i.e. the number of LEDs that will be turned ON linearly depends on the tension
-const changing_colors = (sticks, sensors) => { 
+const changing_colors = (sticks, sensors) => {
 
 	// Cycle through array of sensors from each stick:
-	return sensors.map(sensor => { 
-		
+	return sensors.map(sensor => {
+
 		// Find a Stick that corresponds to current Sensor
 		const stick = sticks.find(stick => stick.name === sensor.stick)
 		if (!stick) return
@@ -30,7 +30,7 @@ const changing_colors = (sticks, sensors) => {
 		const color_change_speed = 3 //gives priority to Tension over oldTension
 		const maxTension = 50
 
-		let tension_parameter = oldTension.reduce((a,b) => a+b, 0) // summing up old tension
+		let tension_parameter = oldTension.reduce((a, b) => a + b, 0) // summing up old tension
 		tension_parameter = tension_parameter + tension * color_change_speed // adding current tension
 		tension_parameter = tension_parameter / maxTension // scaling down to the number between 0 and 1
 
@@ -42,7 +42,7 @@ const changing_colors = (sticks, sensors) => {
 		// Cycle through the keys up to the tension value
 		for (let key = 0; key < numberOfLEDs; key++) {
 			let ledColor
-			
+
 			ledColor = ReduceBrightnessFunction(tension_parameter)
 
 			leds.push({
@@ -72,7 +72,7 @@ const ReduceBrightnessFunction = (tension_parameter) => {
 		b: 0 + (Math.random() - 0.5) * 10
 	}
 
-// bad coding creating different colour fainting schemes :)
+	// bad coding creating different colour fainting schemes :)
 	let aa
 	let bb
 	let cc
@@ -97,7 +97,7 @@ const ReduceBrightnessFunction = (tension_parameter) => {
 	//console.log(Date.now() - startTime)
 
 	// tension parameter shall be calibrated to be a number between 0 and 1
-	const a = Math.min(1, Math.max(0, tension_parameter - aa))  * 255
+	const a = Math.min(1, Math.max(0, tension_parameter - aa)) * 255
 	const b = Math.min(1, Math.max(0, tension_parameter - bb)) * 255
 	const c = Math.min(1, Math.max(0, tension_parameter - cc)) * 255
 

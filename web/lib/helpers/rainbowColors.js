@@ -36,3 +36,39 @@ export const rainbowColors = (stickFactor) => {
 
     return outRGB
 }
+
+export const simpleRainbow = (ledsKey) => {
+    const steps = 6
+
+    const ledParameter = ledsKey / steps
+    let outRGB = { r: 0, g: 0, b: 0 }
+
+    if (ledParameter < 1)
+        outRGB.r = ledParameter * 246
+    else if (ledParameter < 3) {
+        outRGB.r = 246
+        outRGB.g = (ledParameter - 1) * 240 / 2 // through 2 as this step is 2 times longer
+    }
+    else if (ledParameter < 3) {
+        outRGB.r = 246 - (ledParameter - 2) * 166 // 166 = 246 - 80
+        outRGB.g = 246
+        outRGB.g = (ledParameter - 2) * 80
+    }
+    else if (ledParameter < 4) {
+        outRGB.r = 80 - (ledParameter - 3) * 25 // 25 = 80 - 55
+        outRGB.g = 246 - (ledParameter - 3) * 115 // 246 - 131
+        outRGB.g = 80 + (ledParameter - 3) * 175 // 255 - 80
+    }
+    else if (ledParameter < 5) {
+        outRGB.r = 70 - (ledParameter - 4) * 10 // 10 = 80 - 70
+        outRGB.g = 115 - (ledParameter - 4) * 95 // 115 - 20
+        outRGB.g = 170 - (ledParameter - 4) * 85 // 255 - 170
+    }
+    else { // if (ledParameter < 7) {
+        outRGB.r = 70 - (ledParameter - 5) * 10 // 10 = 80 - 70
+        outRGB.g = 115 - (ledParameter - 5) * 95 // 115 - 20
+        outRGB.g = 170 - (ledParameter - 5) * 85 // 255 - 170
+    }
+
+    return outRGB
+}
