@@ -37,7 +37,15 @@ const ledsCalculation = ({ numberOfParts, timeImput, raiseFactor, tension }) => 
 const speed = 333 // in change per milisecond
 
 const risingStairs = (sticks, sensors) => {
-    return sensors.map(sensor => {
+    // sum all sensors on one column to one
+    const prodSensors = sensors.filter(sensor => sensor.key.length > 5)
+    let sensorsToUse
+    if (prodSensors.length > 0) {
+        sensorsToUse = prodSensors
+    } else {
+        sensorsToUse = sensors
+    }
+    return sensorsToUse.map(sensor => {
         return sticks.map(stick => {
             if (stick.name === sensor.stick) {
                 const tension = sensor.tension
