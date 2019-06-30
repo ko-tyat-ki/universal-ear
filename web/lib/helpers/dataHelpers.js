@@ -3,7 +3,7 @@
 /* global Uint8Array */
 
 // Takes leds data for one stick, puts it into Byte array to be sent to certain Arduino
-const putLedsInBufferArray = (columnLedsConfig, numberOfLeds) => {
+const putLedsInBufferArray = (stickLedsConfig, numberOfLeds) => {
     const bufferArray = new ArrayBuffer(numberOfLeds * 3 + 3)
     const ledsBufferArray = new Uint8Array(bufferArray)
     const startByte = 0x10
@@ -12,7 +12,7 @@ const putLedsInBufferArray = (columnLedsConfig, numberOfLeds) => {
 
     ledsBufferArray[0] = startByte
     ledsBufferArray[1] = sizeByte
-    columnLedsConfig.slice(0, numberOfLeds).forEach(led => {
+    stickLedsConfig.slice(0, numberOfLeds).forEach(led => {
         const rgb = led.color
         ledsBufferArray[led.number * 3 + 2] = rgb.r
         ledsBufferArray[led.number * 3 + 3] = rgb.g
@@ -95,7 +95,7 @@ const getInfoFromSensors = (data) => {
 
     if (received && received.length > 2) {
         return {
-            fast: received[0].split('! ')[1],
+            fast: received[0].split('! ')[1] || received[0].split(', ')[1],
             slow: received[1]
         }
     }

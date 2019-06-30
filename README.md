@@ -106,7 +106,7 @@ import [yourMode] from './modes/[yourMode]'
 
 and the name of it to export.
 
-4. Add a new regime under the same name `./static/index.html` under `<h5>Regime:</h5>`
+4. Add a new mode under the same name `./static/index.html` under `<h5>mode:</h5>`
 
 ```html
 <option value="yourMode">How you want to show your mode</option>
@@ -134,7 +134,7 @@ Senors have
  -- if the user releases the key after less than 0.5s pressing, the sensor gets quickly to the highest value and back
  -- if the user continues pressing the key after 0.5s, the sensor value slowly increases, and slowly decreases after the button is released
  - `oldTension` - an array of tension history (four values slowly following the current tension value: [0] the furthest away from tension value, [3] the closest value)
- - `column` - which column (stick) it is attached to
+ - `stick` - which column (stick) it is attached to
  - `position` - where on the stick it is attached to; as a number of the LED
 
 The function should return array of arrays, where every entry has

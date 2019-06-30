@@ -2249,9 +2249,9 @@
 
 		setFromMatrixScale: function ( m ) {
 
-			var sx = this.setFromMatrixColumn( m, 0 ).length();
-			var sy = this.setFromMatrixColumn( m, 1 ).length();
-			var sz = this.setFromMatrixColumn( m, 2 ).length();
+			var sx = this.setFromMatrixstick( m, 0 ).length();
+			var sy = this.setFromMatrixstick( m, 1 ).length();
+			var sz = this.setFromMatrixstick( m, 2 ).length();
 
 			this.x = sx;
 			this.y = sy;
@@ -2261,7 +2261,7 @@
 
 		},
 
-		setFromMatrixColumn: function ( m, index ) {
+		setFromMatrixstick: function ( m, index ) {
 
 			return this.fromArray( m.elements, index * 4 );
 
@@ -5168,9 +5168,9 @@
 
 		extractBasis: function ( xAxis, yAxis, zAxis ) {
 
-			xAxis.setFromMatrixColumn( this, 0 );
-			yAxis.setFromMatrixColumn( this, 1 );
-			zAxis.setFromMatrixColumn( this, 2 );
+			xAxis.setFromMatrixstick( this, 0 );
+			yAxis.setFromMatrixstick( this, 1 );
+			zAxis.setFromMatrixstick( this, 2 );
 
 			return this;
 
@@ -5200,9 +5200,9 @@
 				var te = this.elements;
 				var me = m.elements;
 
-				var scaleX = 1 / v1.setFromMatrixColumn( m, 0 ).length();
-				var scaleY = 1 / v1.setFromMatrixColumn( m, 1 ).length();
-				var scaleZ = 1 / v1.setFromMatrixColumn( m, 2 ).length();
+				var scaleX = 1 / v1.setFromMatrixstick( m, 0 ).length();
+				var scaleY = 1 / v1.setFromMatrixstick( m, 1 ).length();
+				var scaleZ = 1 / v1.setFromMatrixstick( m, 2 ).length();
 
 				te[ 0 ] = me[ 0 ] * scaleX;
 				te[ 1 ] = me[ 1 ] * scaleX;
@@ -5348,7 +5348,7 @@
 			te[ 7 ] = 0;
 			te[ 11 ] = 0;
 
-			// last column
+			// last stick
 			te[ 12 ] = 0;
 			te[ 13 ] = 0;
 			te[ 14 ] = 0;
@@ -24419,7 +24419,7 @@
 						if ( skeleton.boneTexture === undefined ) {
 
 							// layout (1 matrix = 4 pixels)
-							//      RGBA RGBA RGBA RGBA (=> column1, column2, column3, column4)
+							//      RGBA RGBA RGBA RGBA (=> stick1, stick2, stick3, stick4)
 							//  with  8x8  pixel texture max   16 bones * 4 pixels =  (8 * 8)
 							//       16x16 pixel texture max   64 bones * 4 pixels = (16 * 16)
 							//       32x32 pixel texture max  256 bones * 4 pixels = (32 * 32)
@@ -47271,7 +47271,7 @@
 
 				if ( v1 === undefined ) v1 = new Vector3();
 				console.warn( 'THREE.Matrix4: .getPosition() has been removed. Use Vector3.setFromMatrixPosition( matrix ) instead.' );
-				return v1.setFromMatrixColumn( this, 3 );
+				return v1.setFromMatrixstick( this, 3 );
 
 			};
 
@@ -47520,10 +47520,10 @@
 			return this.setFromMatrixScale( m );
 
 		},
-		getColumnFromMatrix: function ( index, matrix ) {
+		getstickFromMatrix: function ( index, matrix ) {
 
-			console.warn( 'THREE.Vector3: .getColumnFromMatrix() has been renamed to .setFromMatrixColumn().' );
-			return this.setFromMatrixColumn( matrix, index );
+			console.warn( 'THREE.Vector3: .getstickFromMatrix() has been renamed to .setFromMatrixstick().' );
+			return this.setFromMatrixstick( matrix, index );
 
 		},
 		applyProjection: function ( m ) {

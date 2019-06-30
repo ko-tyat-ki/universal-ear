@@ -7,7 +7,10 @@ import randomEcho from './modes/randomEcho'
 import tensionWithEcho from './modes/tensionWithEcho'
 import fastReaction from './modes/fastReaction'
 import rain from './modes/rain'
-import sinus from './modes/workshop'
+import yannsIdea from './modes/yannsIdea'
+import jasmine from './modes/jasmine'
+import ocean from './modes/ocean'
+import risingStairs from './modes/stairs'
 
 export default {
 	basic,
@@ -19,5 +22,8 @@ export default {
 	tensionWithEcho,
 	fastReaction,
 	rain,
-	sinus
+	yannsIdea,
+	jasmine,
+	ocean,
+	risingStairs
 }

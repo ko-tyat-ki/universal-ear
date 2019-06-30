@@ -12,119 +12,7 @@ import { NUMBER_OF_LEDS } from './lib/configuration/constants'
 import earConfig from './lib/helpers/config'
 import arrays from './lib/helpers/arrays'
 import { writeToPython } from './lib/helpers/communicateWithPython';
-
-//////////////////// TODO move to some initial config file
-const realSticks = [
-	{
-		numberOfLEDs: 40,
-		name: '1',
-		init: {
-			x: 122,
-			y: -180,
-			z: 0
-		}
-	},
-	{
-		numberOfLEDs: 40,
-		name: '2',
-		init: {
-			x: -122,
-			y: -180,
-			z: 0
-		}
-	},
-	{
-		numberOfLEDs: 40,
-		name: '3',
-		init: {
-			x: 0,
-			y: 0,
-			z: 0
-		}
-	},
-	{
-		numberOfLEDs: 40,
-		name: '4',
-		init: {
-			x: 122,
-			y: -180,
-			z: 0
-		}
-	},
-	{
-		numberOfLEDs: 40,
-		name: '5',
-		init: {
-			x: -122,
-			y: -180,
-			z: 0
-		}
-	},
-	{
-		numberOfLEDs: 40,
-		name: '6',
-		init: {
-			x: 0,
-			y: 0,
-			z: 0
-		}
-	},
-	{
-		numberOfLEDs: 40,
-		name: '7',
-		init: {
-			x: 122,
-			y: -180,
-			z: 0
-		}
-	},
-	{
-		numberOfLEDs: 40,
-		name: '8',
-		init: {
-			x: -122,
-			y: -180,
-			z: 0
-		}
-	},
-	{
-		numberOfLEDs: 40,
-		name: '9',
-		init: {
-			x: 0,
-			y: 0,
-			z: 0
-		}
-	},
-	{
-		numberOfLEDs: 40,
-		name: '10',
-		init: {
-			x: 122,
-			y: -180,
-			z: 0
-		}
-	},
-	{
-		numberOfLEDs: 40,
-		name: '11',
-		init: {
-			x: -122,
-			y: -180,
-			z: 0
-		}
-	},
-	{
-		numberOfLEDs: 40,
-		name: '12',
-		init: {
-			x: 0,
-			y: 0,
-			z: 0
-		}
-	},
-]
-//////////////////// TODO move to some config
+import { realSticks } from './lib/configuration/realSticksConfig';
 
 const connectedSockets = {}
 // const clientConfigurations = earConfig.read()
@@ -133,38 +21,44 @@ let ledsConfig = [] // Needs to be initially an empty array to trigger communica
 let isAutoChangingModeEnabled = false
 let modeAutoChangeTimeout = 3 * 60 * 1000 // 3 minutes
 let modeStack = []
-let currentMode = modes.basic
-let clientSensors
-let realSensorsData
+
+let currentModeKey = 'basic'
+let currentMode = modes[currentModeKey]
+let clientSensors = []
+let realSensorsData = []
 
 const modeHandler = (req, res) => {
-  changeMode(req.body["mode"])
-  res.send('Done!')
+	currentModeKey = req.body.mode
+	currentMode = modes[currentModeKey]
+	Object.keys(clientConfigurations).map(socketId => {
+		connectedSockets[socketId].emit('modeChanged', req.body["mode"])
+	})
+	res.send('Done!')
 };
 
 let changeModeLoop = () => {
-  if (!isAutoChangingModeEnabled) {
-    // NOTE: if it's disabled we want to check more often to be able react on turning on within 2 seconds
-    setTimeout(changeModeLoop, 2000)
-    return
-  }
+	if (!isAutoChangingModeEnabled) {
+		// NOTE: if it's disabled we want to check more often to be able react on turning on within 2 seconds
+		setTimeout(changeModeLoop, 2000)
+		return
+	}
 
-  // NOTE: guarantees that each mode will be called equal times and
-  // equally distributed in time
-  if (modeStack.length === 0) {
-    modeStack = arrays.shuffle(Object.keys(modes))
-  }
+	// NOTE: guarantees that each mode will be called equal times and
+	// equally distributed in time
+	if (modeStack.length === 0) {
+		modeStack = arrays.shuffle(Object.keys(modes))
+	}
 
-  changeMode(modeStack.pop())
-  setTimeout(changeModeLoop, modeAutoChangeTimeout)
+	changeMode(modeStack.pop())
+	setTimeout(changeModeLoop, modeAutoChangeTimeout)
 };
 changeModeLoop()
 
 const changeMode = (modeKey) => {
-  currentMode = modes[modeKey]
-  Object.keys(clientConfigurations).map(socketId => {
-    connectedSockets[socketId].emit('modeChanged', modeKey)
-  })
+	currentMode = modes[modeKey]
+	Object.keys(clientConfigurations).map(socketId => {
+		connectedSockets[socketId].emit('modeChanged', modeKey)
+	})
 }
 
 const switchAutomaticModeHandler = (req, res) => {
@@ -172,7 +66,7 @@ const switchAutomaticModeHandler = (req, res) => {
 	if (req.body["timeout"]) {
 		modeAutoChangeTimeout = req.body["timeout"]
 	}
-	res.send('Done! Autoswitching enabled ' + isAutoChangingModeEnabled +'. Change once in ' + modeAutoChangeTimeout + ' milliseconds')
+	res.send('Done! Autoswitching enabled ' + isAutoChangingModeEnabled + '. Change once in ' + modeAutoChangeTimeout + ' milliseconds')
 }
 
 const io = spinServer([
@@ -190,8 +84,7 @@ const io = spinServer([
 
 const realSensors = connectToArduinos()
 
-const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGED WHEN HAVE ACCESS TO HARDWARE
-	const sensorData = getInfoFromSensors(data)
+const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
 	realSensor.update(sensorData)
 	//if (sensorData) console.log("SENSOR ", sensorData)
 
@@ -199,19 +92,17 @@ const calculateDataForRealLeds = (data, realSensor, column) => { // TO BE CHANGE
 		tension: sensor.tension,
 		oldTension: sensor.oldTension,
 		sensorPosition: sensor.sensorPosition,
-		column: sensor.column,
+		stick: sensor.stick,
+		slowSensorValue: sensor.slowSensorValue,
+		fastSensorValue: sensor.fastSensorValue,
+		key: sensor.key
 	}))
 
-	const sensorToPass = clientSensors && clientSensors.length > 0 ? [...clientSensors, ...realSensors] : realSensors
-	const ledsConfigFromClient = currentMode(realSticks, sensorToPass).filter(Boolean)
-	ledsConfig = regroupConfig(ledsConfigFromClient)
+	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData]).filter(Boolean)
+	ledsConfig = regroupConfig(combinedLedsConfig)
 
-	// writeToPython(sensorToPass, currentMode)
-
-	const columnLeds = ledsConfig.find(config => config.key === column).leds
-	return putLedsInBufferArray(columnLeds, NUMBER_OF_LEDS)
-
-	// return putLedsInBufferArray(ledsConfig[column - 1].leds, NUMBER_OF_LEDS)
+	const stickLeds = ledsConfig.find(config => config.key === stick).leds
+	return putLedsInBufferArray(stickLeds, NUMBER_OF_LEDS)
 }
 
 if (realSensors && realSensors.length > 0) {
@@ -223,7 +114,7 @@ if (realSensors && realSensors.length > 0) {
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig) {
 				// console.log({ data, key: realSensor.key })
-				port.write(calculateDataForRealLeds(data, realSensor, realSensor.column))
+				port.write(calculateDataForRealLeds(getInfoFromSensors(data), realSensor, realSensor.stick))
 				areWeWriting = false
 			} else {
 				//console.log('Data IN, listen', data)
@@ -235,6 +126,10 @@ if (realSensors && realSensors.length > 0) {
 	})
 }
 
+setInterval(() => {
+	const combinedSensors = [...clientSensors, ...realSensorsData]
+	if (combinedSensors.length > 0) writeToPython(combinedSensors, currentModeKey)
+}, 100)
 
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
@@ -253,17 +148,14 @@ io.on('connection', socket => {
 		}
 
 		clientSensors = sensors
-		const sensorsToPass = realSensorsData && realSensorsData.length > 0 ? [...clientSensors, ...realSensorsData] : clientSensors
-		const ledsConfigFromClient = currentMode(sticks, sensorsToPass).filter(Boolean)
+		const ledsConfigFromClient = currentMode(sticks, [...clientSensors, ...realSensorsData]).filter(Boolean)
 		ledsConfig = regroupConfig(ledsConfigFromClient)
 		socket.emit('ledsChanged', ledsConfig)
-
-		// writeToPython(sensorsToPass, currentMode)
-		// ledsConfigFromClient.map(ledConfig => socket.emit('ledsChanged', ledConfig)) // keep for now for development processes
 	})
 
 	socket.on('configure', configuration => {
-		currentMode = modes[configuration.mode]
+		currentModeKey = configuration.mode
+		currentMode = modes[currentModeKey]
 		clientConfigurations[socket.id] = configuration
 		earConfig.save(clientConfigurations)
 	})

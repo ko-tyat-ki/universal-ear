@@ -3,13 +3,12 @@ import Readline from '@serialport/parser-readline'
 
 export class RealSensor {
     constructor(arduinoConfig) {
-
         this.tension = Math.max(arduinoConfig.baseTension, 0)
         this.fastSensorSpeed = 0
         this.slowSensorSpeed = 0
         this.oldTension = [this.tension, this.tension, this.tension, this.tension]
         this.sensorPosition = arduinoConfig.sensors[0].position
-        this.column = arduinoConfig.column
+        this.stick = arduinoConfig.stick
         this.key = arduinoConfig.name
         this.baudRate = arduinoConfig.baudRate
 
@@ -38,8 +37,8 @@ export class RealSensor {
     update(sensorData) {
         if (sensorData) {
             const tension = sensorData.slow
-            this.fastSensorSpeed = Math.max(sensorData.fast, 0)
-            this.slowSensorSpeed = Math.max(sensorData.slow, 0)
+            this.fastSensorValue = Math.max(sensorData.fast, 0)
+            this.slowSensorValue = Math.max(sensorData.slow, 0)
             if (!tension) return
             for (let key = 0; key < 4; key++) {
                 this.oldTension[key] = (this.oldTension[key])

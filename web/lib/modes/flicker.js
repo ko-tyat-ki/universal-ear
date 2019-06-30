@@ -12,7 +12,7 @@ const flicker = (sticks, sensors) => {
 	}
 
 	return sensors.map(sensor => {
-		const stick = sticks.find(stick => stick.name === sensor.column)
+		const stick = sticks.find(stick => stick.name === sensor.stick)
 		if (!stick) return
 
 		const tension = sensor.tension
