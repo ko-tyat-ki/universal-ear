@@ -97,7 +97,7 @@ const ReduceBrightnessFunction = (tension_parameter) => {
 	//console.log(Date.now() - startTime)
 
 	// tension parameter shall be calibrated to be a number between 0 and 1
-	const a = Math.min(1, Math.max(0, tension_parameter - aa))  * 255
+	const a = Math.min(1, Math.max(0, tension_parameter - aa)) * 255
 	const b = Math.min(1, Math.max(0, tension_parameter - bb)) * 255
 	const c = Math.min(1, Math.max(0, tension_parameter - cc)) * 255
 
