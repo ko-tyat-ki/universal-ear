@@ -50,5 +50,8 @@
     },
     "tensionWithEchoConfig": {
         "tensionTreshold": 1.5
+    },
+    "onChangeConfig": {
+        "speed": 700
     }
 }

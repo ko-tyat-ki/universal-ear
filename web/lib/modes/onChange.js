@@ -1,8 +1,9 @@
 // import { onChange } from "../helpers/rainbowColors";
+import { onChangeConfig } from '../../../modes_config.json'
 import { NUMBER_OF_LEDS } from "../configuration/constants";
 
 const start = Date.now()
-const speed = 700
+const speed = onChangeConfig.speed
 
 const whiteColor = {
     r: 255,
