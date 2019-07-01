@@ -12,6 +12,7 @@ import yannsIdea from './modes/yannsIdea'
 import jasmine from './modes/jasmine'
 import ocean from './modes/ocean'
 import polzynki from './modes/polzynki'
+import risingStairs from './modes/stairs'
 
 export default {
 	basic,
@@ -27,5 +28,6 @@ export default {
 	yannsIdea,
 	jasmine,
 	ocean,
-	polzynki
+	polzynki,
+	risingStairs
 }

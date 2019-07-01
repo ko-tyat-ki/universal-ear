@@ -3,7 +3,6 @@ import Readline from '@serialport/parser-readline'
 
 export class RealSensor {
     constructor(arduinoConfig) {
-
         this.tension = Math.max(arduinoConfig.baseTension, 0)
         this.fastSensorSpeed = 0
         this.slowSensorSpeed = 0
