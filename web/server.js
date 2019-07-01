@@ -13,6 +13,9 @@ import earConfig from './lib/helpers/config'
 import arrays from './lib/helpers/arrays'
 import { writeToPython } from './lib/helpers/communicateWithPython';
 import { realSticks } from './lib/configuration/realSticksConfig';
+import easterEgg from './lib/modes/easterEgg';
+
+const easterEggModeKey = "easterEgg"
 
 const connectedSockets = {}
 // const clientConfigurations = earConfig.read()
@@ -24,6 +27,7 @@ let modeStack = []
 
 let currentModeKey = 'jasmine'
 let currentMode = modes[currentModeKey]
+let previousModeKey
 let clientSensors = []
 let realSensorsData = []
 
@@ -58,18 +62,31 @@ const changeModeLoop = () => {
 		return
 	}
 
+	// NOTE: do not switch mode while easter egg is active
+	if (currentModeKey === easterEggModeKey) {
+		setTimeout(changeModeLoop, 1000)
+		return
+	}
+
 	// NOTE: guarantees that each mode will be called equal times and
 	// equally distributed in time
 	if (modeStack.length === 0) {
 		modeStack = arrays.shuffle(Object.keys(modes))
 	}
 
-	changeMode(modeStack.pop())
+	// TODO: ugly crotch
+	let nextModeKey = modeStack.pop();
+	if (nextModeKey === easterEggModeKey) {
+		nextModeKey = modeStack.pop();
+	}
+  changeMode(nextModeKey)
 	setTimeout(changeModeLoop, modeAutoChangeTimeout)
 };
 changeModeLoop()
 
 const changeMode = (modeKey) => {
+	previousModeKey = currentModeKey
+	currentModeKey = modeKey
 	currentMode = modes[modeKey]
 	Object.keys(clientConfigurations).map(socketId => {
 		connectedSockets[socketId].emit('modeChanged', modeKey)
@@ -105,6 +122,25 @@ const io = spinServer([
 
 const realSensors = connectToArduinos()
 
+const applyMode = (sticks, sensors) => {
+	// Check if enought sensors are pressed and activate easter egg
+	if (currentModeKey !== easterEggModeKey && easterEgg.canActivate(sticks, sensors)) {
+		changeMode(easterEggModeKey)
+	}
+
+	// If easter is no longer active change to previous mode
+	if (currentModeKey === easterEggModeKey && !easterEgg.isActive()) {
+		changeMode(previousModeKey)
+	}
+
+	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData])
+
+	if (!combinedLedsConfig) return []
+
+	return regroupConfig(combinedLedsConfig.filter(Boolean))
+};
+
+
 const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
 	realSensor.update(sensorData)
 
@@ -118,8 +154,7 @@ const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
 		key: sensor.key
 	}))
 
-	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData]).filter(Boolean)
-	ledsConfig = regroupConfig(combinedLedsConfig)
+  ledsConfig = applyMode(realSticks, [...clientSensors, ...realSensorsData])
 
 	const stickLeds = ledsConfig.find(config => config.key === stick).leds
 	return putLedsInBufferArray(stickLeds, NUMBER_OF_LEDS)
@@ -168,8 +203,7 @@ io.on('connection', socket => {
 		}
 
 		clientSensors = sensors
-		const ledsConfigFromClient = currentMode(sticks, [...clientSensors, ...realSensorsData]).filter(Boolean)
-		ledsConfig = regroupConfig(ledsConfigFromClient)
+		const ledsConfig = applyMode(sticks, [...clientSensors, ...realSensorsData])
 		socket.emit('ledsChanged', ledsConfig)
 	})
 
