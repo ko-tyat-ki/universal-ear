@@ -12,6 +12,7 @@ import jasmine from './modes/jasmine'
 import ocean from './modes/ocean'
 import risingStairs from './modes/stairs'
 import easterEgg from './modes/easterEgg'
+import onChange from './modes/onChange'
 
 export default {
 	basic,
@@ -27,5 +28,6 @@ export default {
 	jasmine,
 	ocean,
 	risingStairs,
-	easterEgg
+	easterEgg,
+	onChange
 }
