@@ -10,5 +10,8 @@
         "color_change_speed": 3,
         "maxTension": 50,
         "reduceBrightnessFunctionTime": 10000
+    },
+    "jasmine": {
+        "tensionTrigger": 10
     }
 }
