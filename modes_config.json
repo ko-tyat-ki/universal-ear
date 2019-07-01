@@ -47,5 +47,8 @@
     "stairs": {
         "speed": 500,
         "numberOfLedsOf16": 32
+    },
+    "tensionWithEchoConfig": {
+        "tensionTreshold": 1.5
     }
 }
