@@ -1,0 +1,9 @@
+{
+    "fastReaction": {
+        "tensionTrigger": 10
+    },
+    "basicWithRainbow": {
+        "rainbowLength": 1,
+        "rainbowTime": 60000
+    }
+}
