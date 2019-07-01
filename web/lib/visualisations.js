@@ -8,6 +8,8 @@ import jasmine from './modes/jasmine'
 import ocean from './modes/ocean'
 import polzynki from './modes/polzynki'
 import risingStairs from './modes/stairs'
+import easterEgg from './modes/easterEgg'
+import onChange from './modes/onChange'
 
 export default {
 	basic_with_rainbow,
@@ -18,6 +20,8 @@ export default {
 	tensionWithEcho,
 	jasmine,
 	ocean,
-	polzynki,
-	risingStairs
+	risingStairs,
+	easterEgg,
+	onChange,
+	polzynki
 }

@@ -10,6 +10,7 @@ import { connectToArduinos } from './lib/helpers/connectToArduinos'
 import { spinServer } from './lib/helpers/spinServer'
 import { NUMBER_OF_LEDS } from './lib/configuration/constants'
 import earConfig from './lib/helpers/config'
+import arrays from './lib/helpers/arrays'
 import { writeToPython } from './lib/helpers/communicateWithPython';
 import { realSticks } from './lib/configuration/realSticksConfig';
 
@@ -17,25 +18,88 @@ const connectedSockets = {}
 // const clientConfigurations = earConfig.read()
 const clientConfigurations = {}
 let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
+let isAutoChangingModeEnabled = false
+let modeAutoChangeTimeout = 3 * 60 * 1000 // 3 minutes
+let modeStack = []
+
 let currentModeKey = 'jasmine'
 let currentMode = modes[currentModeKey]
 let clientSensors = []
 let realSensorsData = []
 
 const modeHandler = (req, res) => {
-	currentModeKey = req.body.mode
+	currentModeKey = req.query.name
 	currentMode = modes[currentModeKey]
 	Object.keys(clientConfigurations).map(socketId => {
-		connectedSockets[socketId].emit('modeChanged', req.body["mode"])
+		connectedSockets[socketId].emit('modeChanged', currentModeKey)
 	})
 	res.send('Done!')
 };
 
+const arduinosStatusHandler = (req, res) => {
+	const activeArduinos = realSensors.filter(sensor => sensor.active).map(sensor => ({
+		name: sensor.key,
+		stick: sensor.stick
+	}))
+	const arduinosThatDidNotOpen = realSensors.filter(sensor => !sensor.active).map(sensor => ({
+		name: sensor.key,
+		stick: sensor.stick
+	}))
+	res.json({
+		activeArduinos,
+		arduinosThatDidNotOpen
+	})
+};
+
+const changeModeLoop = () => {
+	if (!isAutoChangingModeEnabled) {
+		// NOTE: if it's disabled we want to check more often to be able react on turning on within 2 seconds
+		setTimeout(changeModeLoop, 2000)
+		return
+	}
+
+	// NOTE: guarantees that each mode will be called equal times and
+	// equally distributed in time
+	if (modeStack.length === 0) {
+		modeStack = arrays.shuffle(Object.keys(modes))
+	}
+
+	changeMode(modeStack.pop())
+	setTimeout(changeModeLoop, modeAutoChangeTimeout)
+};
+changeModeLoop()
+
+const changeMode = (modeKey) => {
+	currentMode = modes[modeKey]
+	Object.keys(clientConfigurations).map(socketId => {
+		connectedSockets[socketId].emit('modeChanged', modeKey)
+	})
+}
+
+const switchAutomaticModeHandler = (req, res) => {
+	isAutoChangingModeEnabled = !isAutoChangingModeEnabled
+	const timeout = req.query.timeout
+	if (timeout) {
+		modeAutoChangeTimeout = timeout
+	}
+	res.send('Done! Autoswitching enabled ' + isAutoChangingModeEnabled + '. Change once in ' + modeAutoChangeTimeout / 1000 / 60 + ' minutes')
+}
+
 const io = spinServer([
 	{
-		method: 'post',
+		method: 'get',
 		path: '/mode',
 		callback: modeHandler
+	},
+	{
+		method: 'get',
+		path: '/mode/automatic',
+		callback: switchAutomaticModeHandler
+	},
+	{
+		method: 'get',
+		path: '/arduinosStatus',
+		callback: arduinosStatusHandler
 	}
 ])
 
@@ -43,7 +107,6 @@ const realSensors = connectToArduinos()
 
 const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
 	realSensor.update(sensorData)
-	//if (sensorData) console.log("SENSOR ", sensorData)
 
 	realSensorsData = realSensors.map(sensor => ({
 		tension: sensor.tension,
