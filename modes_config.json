@@ -5,5 +5,10 @@
     "basicWithRainbow": {
         "rainbowLength": 1,
         "rainbowTime": 60000
+    },
+    "changingColors": {
+        "color_change_speed": 3,
+        "maxTension": 50,
+        "reduceBrightnessFunctionTime": 10000
     }
 }
