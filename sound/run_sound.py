@@ -6,7 +6,7 @@ import socket
 import os
 
 FADEOUT_TIME = 5
-NUM_CHANNELS = 12
+NUM_CHANNELS = 5
 MAX_LED_VALUE = 40
 TRIGGER_LED_VALUE = 30
 t = time.time()
@@ -72,18 +72,18 @@ while not exit:
                         name = int(sensor['LEDShtuka'])-1
                     except:
                         continue
-                    if name in [1,4,7,8]:
-                        if sensor['fast'] > TRIGGER_LED_VALUE:
-                            if time.time() > channels_ignore[name]:
-                                channels[name].play(sounds[name])
-                                channels_ignore[name] = time.time()+sounds[name].get_length()
-                    if name in [0,2,3,5,6,9,10,11]:
-                        slow = sensor['slow']
-                        if slow < 0:
-                            slow = 0
-                        if slow > MAX_LED_VALUE:
-                            slow = MAX_LED_VALUE
-                        channels[name].set_volume(slow/MAX_LED_VALUE)
+                    # if name in [1,4,7,8]:
+                    #     if sensor['fast'] > TRIGGER_LED_VALUE:
+                    #         if time.time() > channels_ignore[name]:
+                    #             channels[name].play(sounds[name])
+                    #             channels_ignore[name] = time.time()+sounds[name].get_length()
+                    # if name in [0,2,3,5,6,9,10,11]:
+                    #     slow = sensor['slow']
+                    #     if slow < 0:
+                    #         slow = 0
+                    #     if slow > MAX_LED_VALUE:
+                    #         slow = MAX_LED_VALUE
+                    #     channels[name].set_volume(slow/MAX_LED_VALUE)
 
         else: #change of mode
             if cur_mode != "init":
@@ -101,14 +101,14 @@ while not exit:
 
                     # play Base sound
 
-                    channels[12].play(sounds[12], loops=-1)
+                    channels[NUM_CHANNELS].play(sounds[NUM_CHANNELS], loops=-1)
 
-                    for i in [1,4,7,8]:
+                    for i in [0,1,2,3,4,5]:
                         channels[i].set_volume(1)
 
-                    for i in [0,2,3,5,6,9,10,11]:
-                        channels[i].set_volume(0)
-                        channels[i].play(sounds[i], loops=-1)
+                    # for i in [0,2,3,5,6,9,10,11]:
+                    #     channels[i].set_volume(0)
+                    #     channels[i].play(sounds[i], loops=-1)
 
                     cur_mode = "flicker"
 
