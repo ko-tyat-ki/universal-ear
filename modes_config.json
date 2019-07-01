@@ -17,5 +17,15 @@
     "oceanConfig": {
         "speed": 100,
         "distance": 250
+    },
+    "polzynkiConfig": {
+        "length": 2,
+        "sensitivity": 0.02,
+        "default_speed": 0.05,
+        "secondary_effect": 0.1,
+        "rainbowLength": 1,
+        "positionFactor": 15,
+        "positionStickAdjustmentFactor": 10,
+        "timeFactor": 60000
     }
 }
