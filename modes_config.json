@@ -11,7 +11,7 @@
         "maxTension": 50,
         "reduceBrightnessFunctionTime": 10000
     },
-    "jasmine": {
+    "jasmineConfig": {
         "tensionTrigger": 10
     }
 }

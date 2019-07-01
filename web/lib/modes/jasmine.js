@@ -1,6 +1,6 @@
-import { jasmine } from '../../../modes_config.json'
+import { jasmineConfig } from '../../../modes_config.json'
 import { getDistance } from '../helpers/getDistance.js'
-import { NUMBER_OF_LEDS } from '../configuration/constants.js';
+import { NUMBER_OF_LEDS } from '../configuration/constants.js'
 
 const communistColor = {
     r: 255,
@@ -23,7 +23,7 @@ const jasmine = (sticks, sensors) => {
                     })
 
                     if (distance === 0) {
-                        if (!sensor.isSlowSensor && sensor.stick === stick.name && tension >= jasmine.tensionTrigger) {
+                        if (!sensor.isSlowSensor && sensor.stick === stick.name && tension >= jasmineConfig.tensionTrigger) {
                             [...Array(NUMBER_OF_LEDS)].map((el, key) => leds.push({
                                 number: key,
                                 color: communistColor
