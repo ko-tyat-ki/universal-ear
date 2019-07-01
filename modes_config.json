@@ -13,5 +13,9 @@
     },
     "jasmineConfig": {
         "tensionTrigger": 10
+    },
+    "oceanConfig": {
+        "speed": 100,
+        "distance": 250
     }
 }
