@@ -1,10 +1,11 @@
-export const rainbowColors = (stickFactor) => {
+export const rainbowColors = (rainbowLength) => {
 
     const steps = 6 // number of steps in the rainbow logic
-    const colorChangeSpeed = 1 / 5000
+    const colorChangeSpeed = 1 / rainbowLength
     // cycle length is steps / colorChangeSpeed * 1000
     // stickFactor is needed to put different sticks into different phases of Rainbow Cycle
-    const timeParameter = (Date.now() * colorChangeSpeed + stickFactor) % steps
+    //const timeParameter = (Date.now() * colorChangeSpeed + stickFactor) % steps
+    const timeParameter = (Date.now() * colorChangeSpeed) % steps
     let outRGB = { r: 0, g: 0, b: 0 }
 
     if (timeParameter < 1)

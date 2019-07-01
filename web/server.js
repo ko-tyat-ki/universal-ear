@@ -22,7 +22,7 @@ let isAutoChangingModeEnabled = false
 let modeAutoChangeTimeout = 3 * 60 * 1000 // 3 minutes
 let modeStack = []
 
-let currentModeKey = 'basic'
+let currentModeKey = 'jasmine'
 let currentMode = modes[currentModeKey]
 let clientSensors = []
 let realSensorsData = []

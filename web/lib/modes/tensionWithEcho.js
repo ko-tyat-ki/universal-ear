@@ -1,4 +1,6 @@
 import { getDistance } from '../helpers/getDistance.js'
+import { tensionWithEchoConfig } from '../../../modes_config.json'
+
 
 const tensionWithEcho = (sticks, sensors) => {
 	return sensors.map(sensor => {
@@ -16,7 +18,7 @@ const tensionWithEcho = (sticks, sensors) => {
 					})
 
 
-					for (let key = 0; key < tension - 1.5; key++) { // this magic number is from final tension > 1
+					for (let key = 0; key < tension - tensionWithEchoConfig.tensionTreshold; key++) { // this magic number is from final tension > 1
 						if (distance === 0) {
 							leds.push({
 								number: Math.max(sensor.sensorPosition - key, 0),

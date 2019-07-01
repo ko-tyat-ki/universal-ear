@@ -2,7 +2,7 @@ import { rainbowColors } from "../helpers/rainbowColors";
 
 const start = Date.now();
 
-const sinus = (sticks, sensors) => {
+const yannsIdea = (sticks, sensors) => {
   return sensors.map(sensor => {
     const tension = sensor.tension;
 
@@ -43,4 +43,4 @@ const normalise = (ledNumber, ledsNumber) => {
   return Math.min(Math.max(ledNumber, 0), ledsNumber - 1);
 };
 
-export default sinus;
+export default yannsIdea;

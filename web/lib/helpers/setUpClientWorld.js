@@ -77,7 +77,7 @@ const setUpGround = () => {
 
 const setUpRenderer = () => {
     renderer = new THREE.WebGLRenderer({ antialias: true })
-    renderer.setPixelRatio(window.devicePixelRatio / 4)
+    renderer.setPixelRatio(window.devicePixelRatio / 3)
     renderer.setSize(window.innerWidth, window.innerHeight)
     container.appendChild(renderer.domElement)
     renderer.gammaInput = true

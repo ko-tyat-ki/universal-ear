@@ -20,9 +20,15 @@ cur_dir = (os.path.dirname(os.path.abspath(__file__)))
 
 # set up and open read from the socket
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.bind(('localhost', 8124))
+while True:
+    try:
+        client.bind(('localhost', 8124))
+        break
+    except:
+        print("Can't bind to 8124. Retry")
+        time.sleep(1)
 
-#init mixer
+# init mixer
 pygame.mixer.init(44100, -16, channels=2, buffer=4096)
 pygame.mixer.set_num_channels(NUM_CHANNELS + 1)
 channels = [pygame.mixer.Channel(i) for i in range(0, NUM_CHANNELS + 1)]  # argument must be int
@@ -90,11 +96,11 @@ while not exit:
                     # create separate Channel objects for simultaneous playback
 
 
-
                     sounds = [pygame.mixer.Sound(os.path.join(cur_dir, 'flicker',str(x)+'.ogg')) for x in range(0, NUM_CHANNELS)]
                     sounds.append(pygame.mixer.Sound(os.path.join(cur_dir, 'flicker','Base.ogg')))
 
                     # play Base sound
+
                     channels[12].play(sounds[12], loops=-1)
 
                     for i in [1,4,7,8]:

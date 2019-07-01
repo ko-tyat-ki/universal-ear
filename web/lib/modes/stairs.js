@@ -1,8 +1,10 @@
 import { NUMBER_OF_LEDS } from "../configuration/constants";
+import { stairs } from '../../../modes_config.json'
 
 const start = Date.now();
 
-const speed = 500 // in change per milisecond
+const speed = stairs.speed // in change per milisecond
+const numberOfLedsOf16 = stairs.numberOfLedsOf16
 
 const superBrightColor = () => {
     return {
@@ -13,7 +15,7 @@ const superBrightColor = () => {
 }
 
 const ledsCalculation = ({ numberOfParts, timeImput, raiseFactor, tension }) => {
-    const fakeNumberOfLeds = (numberOfParts === 2) ? NUMBER_OF_LEDS : 32
+    const fakeNumberOfLeds = (numberOfParts === 2) ? NUMBER_OF_LEDS : numberOfLedsOf16
     const fakeFactor = (numberOfParts === 2) ? 0 : 4
     return [...Array(fakeNumberOfLeds / numberOfParts)].map((el, key) => {
         let number
