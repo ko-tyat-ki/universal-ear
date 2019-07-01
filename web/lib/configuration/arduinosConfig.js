@@ -167,7 +167,7 @@ export const arduinosConfig = [
   //   "baseTension": 0
   // },
   {
-    "name": "/dev/tty.usbserial-14210",
+    "name": "/dev/tty.wchusbserial14150",
     "stick": "2",
     "baudRate": 115200,
     "numberOfLEDs": 40,
@@ -180,8 +180,8 @@ export const arduinosConfig = [
     "baseTension": 0
   },
   {
-    "name": "/dev/tty.usbserial-14220",
-    "stick": "3",
+    "name": "/dev/tty.wchusbserial14160",
+    "stick": "1",
     "baudRate": 115200,
     "numberOfLEDs": 40,
     "sensors": [

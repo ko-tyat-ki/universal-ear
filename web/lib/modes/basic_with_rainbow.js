@@ -1,4 +1,5 @@
 import { rainbowColors } from "../helpers/rainbowColors";
+const rainbowLength = 1 // rainbow phase in min
 
 // Function of STICKS (initial properties of the sticks, i.e. position, names, etc.) and SENSORS (sensor data, the sticks they are connected etc.)
 // Returns a large array of all LED colours of all the STICKS
@@ -21,7 +22,7 @@ const basic_with_rainbow = (sticks, sensors) => {
 		// Cycle through the keys up to the tension value
 		for (let key = 0; key < tension; key++) {
 
-			const rainbowColor = rainbowColors(parseInt(stick.name))
+			const rainbowColor = rainbowColors(rainbowLength * 60000)
 			// LEDs start "running" from a particular point on the led-strip (a "sensorPosition") in both directions.
 			// Add the lit LEDs to the array "leds":
 			leds.push({
