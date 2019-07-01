@@ -1,4 +1,3 @@
-import basic from './modes/basic'
 import basic_with_rainbow from './modes/basic_with_rainbow'
 import changing_colors from './modes/changing_colors'
 import random_flashes from './modes/random_flashes'
@@ -15,7 +14,6 @@ import polzynki from './modes/polzynki'
 import risingStairs from './modes/stairs'
 
 export default {
-	basic,
 	basic_with_rainbow,
 	changing_colors,
 	random_flashes,
