@@ -36,5 +36,12 @@
         "flashesFactor": 20,
         "timeFactor": 60000,
         "timeParameterFactor": 10
+    },
+    "randomFlashes": {
+        "sensitivity": 0.4,
+        "flashesFrequency_default": 0.0005,
+        "proportionLEDSAlight_default": 0.1,
+        "flashesFactor": 20,
+        "timeParameterFactor": 10
     }
 }
