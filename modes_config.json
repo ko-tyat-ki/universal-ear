@@ -43,5 +43,9 @@
         "proportionLEDSAlight_default": 0.1,
         "flashesFactor": 20,
         "timeParameterFactor": 10
+    },
+    "stairs": {
+        "speed": 500,
+        "numberOfLedsOf16": 32
     }
 }
