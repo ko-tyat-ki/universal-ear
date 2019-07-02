@@ -4,9 +4,9 @@ import { easterEggConfig } from '../../../modes_config.json'
 
 let start = Date.now()
 const speed = easterEggConfig.speed // 150
-const duration = easterEggConfig.speed// 10 seconds, 30 Seconds of fun! - needs to be 2 times melody
-const tensionThreshold = easterEggConfig.speed // 10
-const activationStickCount = easterEggConfig.speed // 3
+const duration = easterEggConfig.duration// 10 seconds, 30 Seconds of fun! - needs to be 2 times melody
+const tensionThreshold = easterEggConfig.tensionThreshold // 10
+const activationStickCount = easterEggConfig.activationStickCount // 3
 
 let modeIsActive = false;
 
