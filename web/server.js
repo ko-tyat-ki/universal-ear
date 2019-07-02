@@ -167,7 +167,7 @@ if (realSensors && realSensors.length > 0) {
 		let areWeWriting = true
 
 		parser.on('data', data => {
-			if (areWeWriting && ledsConfig) {
+			if (areWeWriting && ledsConfig && ledsConfig.length > 0) {
 				// console.log({ data, key: realSensor.key })
 				port.write(calculateDataForRealLeds(getInfoFromSensors(data), realSensor, realSensor.stick))
 				areWeWriting = false
