@@ -29,7 +29,7 @@ while True:
         time.sleep(1)
 
 # init mixer
-pygame.mixer.init(44100, -16, channels=2, buffer=1024)
+pygame.mixer.init(44100, -16, channels=2, buffer=4096)
 pygame.mixer.set_num_channels(NUM_CHANNELS + 1)
 channels = [pygame.mixer.Channel(i) for i in range(0, NUM_CHANNELS + 1)]  # argument must be int
 
