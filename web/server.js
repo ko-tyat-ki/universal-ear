@@ -79,7 +79,7 @@ const changeModeLoop = () => {
 	if (nextModeKey === easterEggModeKey) {
 		nextModeKey = modeStack.pop();
 	}
-  changeMode(nextModeKey)
+	changeMode(nextModeKey)
 	setTimeout(changeModeLoop, modeAutoChangeTimeout)
 };
 changeModeLoop()
@@ -154,7 +154,7 @@ const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
 		key: sensor.key
 	}))
 
-  ledsConfig = applyMode(realSticks, [...clientSensors, ...realSensorsData])
+	ledsConfig = applyMode(realSticks, [...clientSensors, ...realSensorsData])
 
 	const stickLeds = ledsConfig.find(config => config.key === stick).leds
 	return putLedsInBufferArray(stickLeds, NUMBER_OF_LEDS)
@@ -203,7 +203,7 @@ io.on('connection', socket => {
 		}
 
 		clientSensors = sensors
-		const ledsConfig = applyMode(sticks, [...clientSensors, ...realSensorsData])
+		ledsConfig = applyMode(sticks, [...clientSensors, ...realSensorsData])
 		socket.emit('ledsChanged', ledsConfig)
 	})
 
