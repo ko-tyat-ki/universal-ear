@@ -38,7 +38,7 @@ export class RealSensor {
 
     update(sensorData) {
         if (sensorData) {
-            const tension = sensorData.slow
+            const tension = sensorData.fast
             this.fastSensorValue = Math.max(sensorData.fast, 0)
             this.slowSensorValue = Math.max(sensorData.slow, 0)
             if (!tension) return
