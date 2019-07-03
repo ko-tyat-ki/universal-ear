@@ -11,10 +11,10 @@ import { spinServer } from './lib/helpers/spinServer'
 import { NUMBER_OF_LEDS } from './lib/configuration/constants'
 import earConfig from './lib/helpers/config'
 import arrays from './lib/helpers/arrays'
-import { writeToPython } from './lib/helpers/communicateWithPython';
-import { realSticks } from './lib/configuration/realSticksConfig';
-import easterEgg from './lib/modes/easterEgg';
-
+import { writeToPython } from './lib/helpers/communicateWithPython'
+import { realSticks } from './lib/configuration/realSticksConfig'
+import easterEgg from './lib/modes/easterEgg'
+import sleepTracker from './lib/helpers/sleepTracker'
 const easterEggModeKey = "easterEgg"
 
 const connectedSockets = {}
@@ -30,6 +30,7 @@ let currentMode = modes[currentModeKey]
 let previousModeKey
 let clientSensors = []
 let realSensorsData = []
+
 
 const modeHandler = (req, res) => {
 	currentModeKey = req.query.name
@@ -56,8 +57,14 @@ const arduinosStatusHandler = (req, res) => {
 };
 
 const changeModeLoop = () => {
+
 	if (!isAutoChangingModeEnabled) {
 		// NOTE: if it's disabled we want to check more often to be able react on turning on within 2 seconds
+		setTimeout(changeModeLoop, 2000)
+		return
+	}
+
+	if (!sleepTracker.checkIfSleeping()) {
 		setTimeout(changeModeLoop, 2000)
 		return
 	}
@@ -122,7 +129,21 @@ const io = spinServer([
 
 const realSensors = connectToArduinos()
 
+sleepTracker.onSleep(() => {
+	changeMode("sleep")
+})
+
+sleepTracker.onWakeUp(() => {
+	// NOTE: crotch. need to reimplement easter egg as a tracker. Sooooo I'm trying to avoid calling easter egg again
+	while (previousModeKey === 'easterEgg') {
+		previousModeKey = arrays.shuffle(Object.keys(modes)).pop()
+	}
+	changeMode(previousModeKey)
+})
+
 const applyMode = (sticks, sensors) => {
+	sleepTracker.track(sticks, sensors)
+
 	// Check if enought sensors are pressed and activate easter egg
 	if (currentModeKey !== easterEggModeKey && easterEgg.canActivate(sticks, sensors)) {
 		changeMode(easterEggModeKey)
