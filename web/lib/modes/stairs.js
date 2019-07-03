@@ -3,8 +3,8 @@ import { stairs } from '../../../modes_config.json'
 
 const start = Date.now();
 
-const speed = stairs.speed // in change per milisecond
-const numberOfLedsOf16 = stairs.numberOfLedsOf16
+const speed = stairs.speed // in change per milisecond, default 500
+const numberOfLedsOf16 = stairs.numberOfLedsOf16 // default 32
 
 const superBrightColor = () => {
     return {

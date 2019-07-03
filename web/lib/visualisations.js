@@ -21,7 +21,7 @@ export default {
 	jasmine,
 	ocean,
 	risingStairs,
-	easterEgg,
+	easterEgg: easterEgg.mode,
 	onChange,
 	polzynki
 }
