@@ -52,7 +52,7 @@ const jasmine = (sticks, sensors) => {
                                     b: randomGenerator[count][key].b
                                 }
                                 count++
-                                if (count === numberOfRandomness - 1) count = 0
+                                if (count >= numberOfRandomness - 1) count = 0
                                 if (randomWarmColor.r + randomWarmColor.g + randomWarmColor.b > 450) {
                                     leds.push({
                                         number: key,
