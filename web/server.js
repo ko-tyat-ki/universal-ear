@@ -52,56 +52,56 @@ let isOnChange = false
 const onChangeDuration = onChangeSpeed * 14 // This magic number comed from the nature of onChange
 
 // Select visualisation modes
-// setInterval(() => {
-// 	const combinedSensors = [...clientSensors, ...realSensorsData]
-// 	if (useEasterEgg) {
-// 		if (!isEaster && isEasterTriggered(combinedSensors)) {
-// 			previousModeKey = currentModeKey
-// 			currentMode = easterEgg
-// 			easterEggTriggeredAt = Date.now()
-// 			isEaster = true
-// 		}
+setInterval(() => {
+	const combinedSensors = [...clientSensors, ...realSensorsData]
+	if (useEasterEgg) {
+		if (!isEaster && isEasterTriggered(combinedSensors)) {
+			previousModeKey = currentModeKey
+			currentMode = easterEgg
+			easterEggTriggeredAt = Date.now()
+			isEaster = true
+		}
 
-// 		if (isEaster && Date.now() - easterEggTriggeredAt > easterEggDuration) {
-// 			changeMode(previousModeKey)
-// 			isEaster = false
-// 		}
-// 	}
+		if (isEaster && Date.now() - easterEggTriggeredAt > easterEggDuration) {
+			changeMode(previousModeKey)
+			isEaster = false
+		}
+	}
 
-// 	const modesKeys = Object.keys(modes)
-// 	if (!isSleeping && isAutoChangingModeEnabled && Date.now() - lastTimeAutoChangedMode > modeAutoChangeInterval) {
-// 		const nextRandomKey = modesKeys.filter(modeKey => modeKey !== currentModeKey)[Math.floor(Math.random() * (modesKeys.length - 1))]
-// 		if (useOnChange) {
-// 			onChangeStarted = Date.now()
-// 			currentModeKey = nextRandomKey
-// 			currentMode = onChange
-// 			isOnChange = true
-// 		} else changeMode(nextRandomKey)
-// 		lastTimeAutoChangedMode = Date.now()
-// 		return
-// 	}
+	const modesKeys = Object.keys(modes)
+	if (!isSleeping && isAutoChangingModeEnabled && Date.now() - lastTimeAutoChangedMode > modeAutoChangeInterval) {
+		const nextRandomKey = modesKeys.filter(modeKey => modeKey !== currentModeKey)[Math.floor(Math.random() * (modesKeys.length - 1))]
+		if (useOnChange) {
+			onChangeStarted = Date.now()
+			currentModeKey = nextRandomKey
+			currentMode = onChange
+			isOnChange = true
+		} else changeMode(nextRandomKey)
+		lastTimeAutoChangedMode = Date.now()
+		return
+	}
 
-// 	if (isOnChange && Date.now() - onChangeStarted > onChangeDuration) {
-// 		onChangeStarted = false
-// 		isOnChange = false
-// 		changeMode(currentModeKey)
-// 	}
+	if (isOnChange && Date.now() - onChangeStarted > onChangeDuration) {
+		onChangeStarted = false
+		isOnChange = false
+		changeMode(currentModeKey)
+	}
 
-// 	if (useSleepMode) {
-// 		if (wasStretchedHardEnoughToWakeUp(combinedSensors)) {
-// 			if (isSleeping) changeMode(previousModeKey)
-// 			noActionsSince = Date.now()
-// 			isSleeping = false
-// 			return
-// 		}
+	if (useSleepMode) {
+		if (wasStretchedHardEnoughToWakeUp(combinedSensors)) {
+			if (isSleeping) changeMode(previousModeKey)
+			noActionsSince = Date.now()
+			isSleeping = false
+			return
+		}
 
-// 		if (Date.now() - noActionsSince > goToSleepAfter) {
-// 			if (!isSleeping) currentMode = sleep
-// 			isSleeping = true
-// 			return
-// 		}
-// 	}
-// }, 500)
+		if (Date.now() - noActionsSince > goToSleepAfter) {
+			if (!isSleeping) currentMode = sleep
+			isSleeping = true
+			return
+		}
+	}
+}, 500)
 
 const changeMode = (modeKey) => {
 	console.log(`Mode was changed from ${previousModeKey} to ${currentModeKey}`)
@@ -159,10 +159,10 @@ if (realSensors && realSensors.length > 0) {
 }
 
 // Talk to python
-setInterval(() => {
-	const combinedSensors = [...clientSensors, ...realSensorsData]
-	if (combinedSensors.length > 0) writeToPython(combinedSensors, currentModeKey)
-}, 100)
+// setInterval(() => {
+// 	const combinedSensors = [...clientSensors, ...realSensorsData]
+// 	if (combinedSensors.length > 0) writeToPython(combinedSensors, currentModeKey)
+// }, 100)
 
 // Special requests handlers
 // Are here to talk to global variables as it is a bit cheaper
