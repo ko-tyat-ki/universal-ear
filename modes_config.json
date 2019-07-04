@@ -1,4 +1,12 @@
 {
+    "serverConfig": {
+        "useOnChange": true,
+        "useEasterEgg": true,
+        "useSleepMode": true,
+        "modeAutoChangeInterval": 1000000,
+        "goToSleepAfter": 1200000,
+        "isAutoChangingModeEnabled": true
+    },
     "fastReaction": {
         "tensionTrigger": 10
     },
@@ -16,7 +24,8 @@
     },
     "oceanConfig": {
         "speed": 100,
-        "distance": 250
+        "distanceBetweenSticks": 250,
+        "tensionTrigger": 4
     },
     "polzynkiConfig": {
         "length": 2,
@@ -52,7 +61,10 @@
         "tensionTreshold": 1.5
     },
     "onChangeConfig": {
-        "speed": 700
+        "speed": 300
+    },
+    "flickerConfig": {
+        "factor": 1
     },
     "easterEggConfig": {
         "speed": 150,
