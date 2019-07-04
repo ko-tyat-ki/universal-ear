@@ -23,8 +23,6 @@ export const easterEgg = (sticks, sensors) => {
 	if (!isGoing) start = Date.now()
 	isGoing = true
 
-	console.log(sticks.length)
-
 	return sticks.map((stick, key) => {
 		const leds = []
 		const numberOfLeds = Math.floor((Date.now() - start) / speed) % NUMBER_OF_LEDS
