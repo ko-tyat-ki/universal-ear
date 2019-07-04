@@ -1,7 +1,6 @@
 import { getDistance } from '../helpers/getDistance.js'
 import { tensionWithEchoConfig } from '../../../modes_config.json'
 
-
 const tensionWithEcho = (sticks, sensors) => {
 	return sensors.map(sensor => {
 		const tension = sensor.tension

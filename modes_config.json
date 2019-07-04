@@ -3,7 +3,7 @@
         "useOnChange": true,
         "useEasterEgg": true,
         "useSleepMode": true,
-        "modeAutoChangeInterval": 1000000,
+        "modeAutoChangeInterval": 180000,
         "goToSleepAfter": 1200000,
         "isAutoChangingModeEnabled": true
     },
