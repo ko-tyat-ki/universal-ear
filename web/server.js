@@ -216,6 +216,11 @@ const io = spinServer([
 		method: 'get',
 		path: '/arduinosStatus',
 		callback: arduinosStatusHandler
+	},
+	{
+		method: 'get',
+		path: '/modesNames',
+		callback: (req, res) => (res.json([...Object.keys(modes), 'easterEgg', 'onChange']))
 	}
 ])
 
