@@ -8,6 +8,22 @@ const communistColor = {
     b: 20
 }
 
+const numberOfRandomness = 100
+
+const randomGenerator = [...Array(numberOfRandomness)].map(row => (
+    [...Array(NUMBER_OF_LEDS)].map(color => (
+        {
+            r: Math.floor(Math.random() * 255),
+            g: Math.floor(Math.random() * 150),
+            b: Math.floor(Math.random() * 100)
+        }
+    ))
+))
+
+let count = 0
+
+console.log(randomGenerator)
+
 const jasmine = (sticks, sensors) => {
     return sensors.map(sensor => {
         const tension = sensor.tension
@@ -30,14 +46,15 @@ const jasmine = (sticks, sensors) => {
                 }
             } else {
                 if (tension) {
-                    const randomWarmColor = {
-                        r: Math.floor(Math.random() * 255),
-                        g: Math.floor(Math.random() * 150),
-                        b: Math.floor(Math.random() * 100)
-                    }
                     {
                         [...Array(NUMBER_OF_LEDS)].map((el, key) => {
-
+                            const randomWarmColor = {
+                                r: randomGenerator[count][key].r,
+                                g: randomGenerator[count][key].g,
+                                b: randomGenerator[count][key].b
+                            }
+                            count++
+                            if (count === numberOfRandomness - 1) count = 0
                             if (randomWarmColor.r + randomWarmColor.g + randomWarmColor.b > 450) {
                                 leds.push({
                                     number: key,
