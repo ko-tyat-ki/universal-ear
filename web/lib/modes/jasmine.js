@@ -30,20 +30,22 @@ const jasmine = (sticks, sensors) => {
                 }
             } else {
                 if (tension) {
-                    [...Array(NUMBER_OF_LEDS)].map((el, key) => {
-                        const random = Math.random()
-                        const randomWarmColor = {
-                            r: Math.floor(random * 255),
-                            g: Math.floor(random * 150),
-                            b: Math.floor(random * 100)
-                        }
+                    const randomWarmColor = {
+                        r: Math.floor(Math.random() * 255),
+                        g: Math.floor(Math.random() * 150),
+                        b: Math.floor(Math.random() * 100)
+                    }
+                    {
+                        [...Array(NUMBER_OF_LEDS)].map((el, key) => {
 
-                        if (randomWarmColor.r + randomWarmColor.g + randomWarmColor.b > 450)
-                            leds.push({
-                                number: key,
-                                color: randomWarmColor
-                            })
-                    })
+                            if (randomWarmColor.r + randomWarmColor.g + randomWarmColor.b > 450) {
+                                leds.push({
+                                    number: key,
+                                    color: randomWarmColor
+                                })
+                            }
+                        })
+                    }
                 }
             }
             // }
