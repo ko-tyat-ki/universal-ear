@@ -230,48 +230,5 @@ export const arduinosConfig = [
   //     }
   //   ],
   //   "baseTension": 0
-<<<<<<< HEAD
-  // },
-  {
-    "name": "/dev/tty.wchusbserial14150",
-    "stick": "2",
-    "baudRate": 115200,
-    "numberOfLEDs": 40,
-    "sensors": [
-      {
-        "name": "some",
-        "position": 20
-      }
-    ],
-    "baseTension": 0
-  },
-  {
-    "name": "/dev/tty.wchusbserial14160",
-    "stick": "1",
-    "baudRate": 115200,
-    "numberOfLEDs": 40,
-    "sensors": [
-      {
-        "name": "some",
-        "position": 20
-      }
-    ],
-    "baseTension": 0
-  },
-  {
-    "name": "/dev/tty.usbserial-14230",
-    "stick": "4",
-    "baudRate": 115200,
-    "numberOfLEDs": 40,
-    "sensors": [
-      {
-        "name": "some",
-        "position": 20
-      }
-    ],
-    "baseTension": 0
-  }
-=======
   // }
->>>>>>> master
 ]

@@ -7,10 +7,7 @@ import tensionWithEcho from './modes/tensionWithEcho'
 import jasmine from './modes/jasmine'
 import ocean from './modes/ocean'
 import polzynki from './modes/polzynki'
-<<<<<<< HEAD
-=======
 import risingStairs from './modes/stairs'
->>>>>>> master
 
 export default {
 	basic_with_rainbow,
@@ -21,9 +18,6 @@ export default {
 	tensionWithEcho,
 	jasmine,
 	ocean,
-<<<<<<< HEAD
-=======
 	risingStairs,
->>>>>>> master
 	polzynki
 }
