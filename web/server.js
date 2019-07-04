@@ -15,10 +15,6 @@ import { writeToPython } from './lib/helpers/communicateWithPython'
 import { realSticks } from './lib/configuration/realSticksConfig'
 import easterEgg from './lib/modes/easterEgg'
 import {
-	checkIfSleeping,
-	track,
-	onSleep,
-	onWakeUp,
 	wasStretchedHardEnoughToWakeUp
 } from './lib/helpers/sleepTracker'
 const easterEggModeKey = 'easterEgg'
@@ -124,19 +120,7 @@ const changeMode = (modeKey) => {
 // 	changeMode(previousModeKey)
 // })
 
-const applyMode = (sticks, sensors) => {
-	// track(sticks, sensors)
-
-	// // Check if enought sensors are pressed and activate easter egg
-	// if (currentModeKey !== easterEggModeKey && easterEgg.canActivate(sticks, sensors)) {
-	// 	changeMode(easterEggModeKey)
-	// }
-
-	// // If easter is no longer active change to previous mode
-	// if (currentModeKey === easterEggModeKey && !easterEgg.isActive()) {
-	// 	changeMode(previousModeKey)
-	// }
-
+const applyMode = () => {
 	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData])
 
 	if (!combinedLedsConfig) return []
@@ -160,7 +144,7 @@ const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
 		key: sensor.key
 	}))
 
-	ledsConfig = applyMode(realSticks, [...clientSensors, ...realSensorsData])
+	ledsConfig = applyMode()
 
 	const stickLeds = ledsConfig.find(config => config.key === stick).leds
 	return putLedsInBufferArray(stickLeds, NUMBER_OF_LEDS)
@@ -259,13 +243,8 @@ io.on('connection', socket => {
 			return
 		}
 
-		const sticks = config.sticks
-		if (!sticks) {
-			return
-		}
-
 		clientSensors = sensors
-		ledsConfig = applyMode(sticks, [...clientSensors, ...realSensorsData])
+		ledsConfig = applyMode()
 		socket.emit('ledsChanged', ledsConfig)
 	})
 
