@@ -24,7 +24,8 @@
     },
     "oceanConfig": {
         "speed": 100,
-        "distance": 250
+        "distanceBetweenSticks": 250,
+        "tensionTrigger": 4
     },
     "polzynkiConfig": {
         "length": 2,
