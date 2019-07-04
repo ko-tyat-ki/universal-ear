@@ -29,19 +29,22 @@ const jasmine = (sticks, sensors) => {
                     }))
                 }
             } else {
-                [...Array(NUMBER_OF_LEDS)].map((el, key) => {
-                    const randomWarmColor = {
-                        r: Math.floor(Math.random() * 255),
-                        g: Math.floor(Math.random() * 150),
-                        b: Math.floor(Math.random() * 100)
-                    }
+                if (tension) {
+                    [...Array(NUMBER_OF_LEDS)].map((el, key) => {
+                        const random = Math.random()
+                        const randomWarmColor = {
+                            r: Math.floor(random * 255),
+                            g: Math.floor(random * 150),
+                            b: Math.floor(random * 100)
+                        }
 
-                    if (randomWarmColor.r + randomWarmColor.g + randomWarmColor.b > 450 && tension)
-                        leds.push({
-                            number: key,
-                            color: randomWarmColor
-                        })
-                })
+                        if (randomWarmColor.r + randomWarmColor.g + randomWarmColor.b > 450)
+                            leds.push({
+                                number: key,
+                                color: randomWarmColor
+                            })
+                    })
+                }
             }
             // }
 
