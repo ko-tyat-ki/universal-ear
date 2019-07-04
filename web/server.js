@@ -23,7 +23,7 @@ const connectedSockets = {}
 const clientConfigurations = {}
 let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
 let isAutoChangingModeEnabled = true
-let modeAutoChangeInterval = 3 * 60 * 1000 // 3 minutes
+let modeAutoChangeInterval = 20 * 1000 // 3 minutes
 
 let currentModeKey = 'flicker'
 let currentMode = modes[currentModeKey]
@@ -44,7 +44,7 @@ let isOnChange = false
 const useOnChange = true
 const useEasterEgg = true
 const useSleepMode = true
-const onChangeDuration = onChangeSpeed * 15 // This magic number comed from the nature of onChange
+const onChangeDuration = onChangeSpeed * 14 // This magic number comed from the nature of onChange
 
 // Select visualisation modes
 setInterval(() => {

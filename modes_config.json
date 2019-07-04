@@ -52,7 +52,7 @@
         "tensionTreshold": 1.5
     },
     "onChangeConfig": {
-        "speed": 700
+        "speed": 300
     },
     "easterEggConfig": {
         "speed": 150,

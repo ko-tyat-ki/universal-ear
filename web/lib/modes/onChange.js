@@ -2,7 +2,9 @@
 import { onChangeConfig } from '../../../modes_config.json'
 import { NUMBER_OF_LEDS } from "../configuration/constants";
 
-const start = Date.now()
+let start
+let isGoing = false
+
 export const onChangeSpeed = onChangeConfig.speed
 
 const whiteColor = {
@@ -12,6 +14,8 @@ const whiteColor = {
 }
 
 export const onChange = (sticks, sensors) => {
+    if (!isGoing) start = Date.now()
+    isGoing = true
     return sticks.map((stick, key) => {
         const leds = []
         const timeImput = Math.floor((Date.now() - start) / onChangeSpeed)
@@ -36,6 +40,8 @@ export const onChange = (sticks, sensors) => {
                 }))
             }
         }
+
+        if (timeFactor === 14) isGoing = false
         return [
             {
                 key: stick.name,
