@@ -22,7 +22,6 @@ import {
 const easterEggModeKey = 'easterEgg'
 
 const connectedSockets = {}
-// const clientConfigurations = earConfig.read()
 const clientConfigurations = {}
 let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
 let isAutoChangingModeEnabled = true
@@ -49,6 +48,7 @@ let isOnChange = false
 const useOnChange = true
 const onChangeDuration = onChangeSpeed * 15 // This magic number comed from the nature of onChange
 
+// Select visualisation modes
 setInterval(() => {
 	const combinedSensors = [...clientSensors, ...realSensorsData]
 	if (!isEaster && isEasterTriggered(combinedSensors)) {
@@ -105,52 +105,6 @@ const changeMode = (modeKey) => {
 		connectedSockets[socketId].emit('modeChanged', modeKey)
 	})
 }
-
-// const changeModeLoop = () => {
-// 	if (!isAutoChangingModeEnabled) {
-// 		// NOTE: if it's disabled we want to check more often to be able react on turning on within 2 seconds
-// 		setTimeout(changeModeLoop, 2000)
-// 		return
-// 	}
-
-// 	if (!checkIfSleeping()) {
-// 		setTimeout(changeModeLoop, 2000)
-// 		return
-// 	}
-
-// 	// NOTE: do not switch mode while easter egg is active
-// 	if (currentModeKey === easterEggModeKey) {
-// 		setTimeout(changeModeLoop, 1000)
-// 		return
-// 	}
-
-// 	// NOTE: guarantees that each mode will be called equal times and
-// 	// equally distributed in time
-// 	if (modeStack.length === 0) {
-// 		modeStack = arrays.shuffle(Object.keys(modes))
-// 	}
-
-// 	// TODO: ugly crotch
-// 	let nextModeKey = modeStack.pop();
-// 	if (nextModeKey === easterEggModeKey) {
-// 		nextModeKey = modeStack.pop();
-// 	}
-// 	changeMode(nextModeKey)
-// 	setTimeout(changeModeLoop, modeAutoChangeInterval)
-// };
-// changeModeLoop()
-
-// onSleep(() => {
-// 	changeMode("sleep")
-// })
-
-// onWakeUp(() => {
-// 	// NOTE: crotch. need to reimplement easter egg as a tracker. Sooooo I'm trying to avoid calling easter egg again
-// 	while (previousModeKey === 'easterEgg') {
-// 		previousModeKey = arrays.shuffle(Object.keys(modes)).pop()
-// 	}
-// 	changeMode(previousModeKey)
-// })
 
 const applyMode = () => {
 	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData])
@@ -245,7 +199,6 @@ const arduinosStatusHandler = (req, res) => {
 };
 
 // Talk to client
-
 const io = spinServer([
 	{
 		method: 'get',
