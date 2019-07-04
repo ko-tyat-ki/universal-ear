@@ -14,7 +14,7 @@ const jasmine = (sticks, sensors) => {
 
         return sticks.map(stick => {
             const leds = []
-            if (sensor && tension >= 0) {
+            if (tension >= 0) {
                 const distance = getDistance({
                     sensor,
                     stick,
@@ -47,7 +47,7 @@ const jasmine = (sticks, sensors) => {
 
             return {
                 key: stick.name,
-                leds: leds.filter(Boolean)
+                leds: leds
             }
         })
     })
