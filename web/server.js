@@ -96,14 +96,13 @@ setInterval(() => {
 			return
 		}
 	}
-
 }, 50)
 
 const changeMode = (modeKey) => {
+	console.log(`Mode was changed from ${previousModeKey} to ${currentModeKey}`)
 	previousModeKey = currentModeKey
 	currentModeKey = modeKey
 	currentMode = modes[modeKey]
-	console.log(`Mode was changed from ${previousModeKey} to ${currentModeKey}`)
 	Object.keys(clientConfigurations).map(socketId => {
 		connectedSockets[socketId].emit('modeChanged', modeKey)
 	})
