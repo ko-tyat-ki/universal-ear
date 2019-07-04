@@ -101,7 +101,7 @@ setInterval(() => {
 			return
 		}
 	}
-}, 50)
+}, 500)
 
 const changeMode = (modeKey) => {
 	console.log(`Mode was changed from ${previousModeKey} to ${currentModeKey}`)
