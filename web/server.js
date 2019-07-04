@@ -10,7 +10,6 @@ import { connectToArduinos } from './lib/helpers/connectToArduinos'
 import { spinServer } from './lib/helpers/spinServer'
 import { NUMBER_OF_LEDS } from './lib/configuration/constants'
 import earConfig from './lib/helpers/config'
-import arrays from './lib/helpers/arrays'
 import { writeToPython } from './lib/helpers/communicateWithPython'
 import { realSticks } from './lib/configuration/realSticksConfig'
 import { easterEgg, isEasterTriggered, easterEggDuration } from './lib/modes/easterEgg'
@@ -19,7 +18,6 @@ import sleep from './lib/modes/sleep'
 import {
 	wasStretchedHardEnoughToWakeUp
 } from './lib/helpers/sleepTracker'
-const easterEggModeKey = 'easterEgg'
 
 const connectedSockets = {}
 const clientConfigurations = {}
@@ -27,7 +25,6 @@ let ledsConfig = [] // Needs to be initially an empty array to trigger communica
 let isAutoChangingModeEnabled = true
 // let modeAutoChangeInterval = 3 * 60 * 1000 // 3 minutes
 let modeAutoChangeInterval = 20 * 1000
-let modeStack = []
 
 let currentModeKey = 'flicker'
 let currentMode = modes[currentModeKey]
