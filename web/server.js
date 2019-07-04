@@ -113,13 +113,13 @@ const changeMode = (modeKey) => {
 	})
 }
 
-const applyMode = () => {
-	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData])
+// const applyMode = () => {
+// 	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData])
 
-	if (!combinedLedsConfig) return []
+// 	if (!combinedLedsConfig) return
 
-	return regroupConfig(combinedLedsConfig.filter(Boolean))
-};
+// 	return regroupConfig(combinedLedsConfig.filter(Boolean))
+// };
 
 // Talk to arduinos
 const realSensors = connectToArduinos()
@@ -137,7 +137,9 @@ const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
 		key: sensor.key
 	}))
 
-	ledsConfig = applyMode()
+	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData])
+
+	ledsConfig = regroupConfig(combinedLedsConfig.filter(Boolean))
 
 	const stickLeds = ledsConfig.find(config => config.key === stick).leds
 	return putLedsInBufferArray(stickLeds, NUMBER_OF_LEDS)
@@ -259,7 +261,9 @@ io.on('connection', socket => {
 		}
 
 		clientSensors = sensors
-		ledsConfig = applyMode()
+		const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData])
+
+		ledsConfig = regroupConfig(combinedLedsConfig.filter(Boolean))
 		socket.emit('ledsChanged', ledsConfig)
 	})
 
