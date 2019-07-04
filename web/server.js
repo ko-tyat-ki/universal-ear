@@ -23,8 +23,7 @@ const connectedSockets = {}
 const clientConfigurations = {}
 let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
 let isAutoChangingModeEnabled = true
-// let modeAutoChangeInterval = 3 * 60 * 1000 // 3 minutes
-let modeAutoChangeInterval = 20 * 1000
+let modeAutoChangeInterval = 3 * 60 * 1000 // 3 minutes
 
 let currentModeKey = 'flicker'
 let currentMode = modes[currentModeKey]
@@ -43,21 +42,24 @@ let isEaster = false
 let isOnChange = false
 
 const useOnChange = true
+const useEasterEgg = true
 const onChangeDuration = onChangeSpeed * 15 // This magic number comed from the nature of onChange
 
 // Select visualisation modes
 setInterval(() => {
 	const combinedSensors = [...clientSensors, ...realSensorsData]
-	if (!isEaster && isEasterTriggered(combinedSensors)) {
-		previousModeKey = currentModeKey
-		currentMode = easterEgg
-		easterEggTriggeredAt = Date.now()
-		isEaster = true
-	}
+	if (useEasterEgg) {
+		if (!isEaster && isEasterTriggered(combinedSensors)) {
+			previousModeKey = currentModeKey
+			currentMode = easterEgg
+			easterEggTriggeredAt = Date.now()
+			isEaster = true
+		}
 
-	if (isEaster && Date.now() - easterEggTriggeredAt > easterEggDuration) {
-		changeMode(previousModeKey)
-		isEaster = false
+		if (isEaster && Date.now() - easterEggTriggeredAt > easterEggDuration) {
+			changeMode(previousModeKey)
+			isEaster = false
+		}
 	}
 
 	const modesKeys = Object.keys(modes)
