@@ -159,10 +159,10 @@ if (realSensors && realSensors.length > 0) {
 }
 
 // Talk to python
-// setInterval(() => {
-// 	const combinedSensors = [...clientSensors, ...realSensorsData]
-// 	if (combinedSensors.length > 0) writeToPython(combinedSensors, currentModeKey)
-// }, 100)
+setInterval(() => {
+	const combinedSensors = [...clientSensors, ...realSensorsData]
+	if (combinedSensors.length > 0) writeToPython(combinedSensors, currentModeKey)
+}, 100)
 
 // Special requests handlers
 // Are here to talk to global variables as it is a bit cheaper
