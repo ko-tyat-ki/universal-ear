@@ -18,7 +18,8 @@ import {
 	checkIfSleeping,
 	track,
 	onSleep,
-	onWakeUp
+	onWakeUp,
+	wasStretchedHardEnoughToWakeUp
 } from './lib/helpers/sleepTracker'
 const easterEggModeKey = 'easterEgg'
 
@@ -26,86 +27,115 @@ const connectedSockets = {}
 // const clientConfigurations = earConfig.read()
 const clientConfigurations = {}
 let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
-let isAutoChangingModeEnabled = false
-let modeAutoChangeInterval = 3 * 60 * 1000 // 3 minutes
+let isAutoChangingModeEnabled = true
+// let modeAutoChangeInterval = 3 * 60 * 1000 // 3 minutes
+let modeAutoChangeInterval = 1 * 60 * 1000
 let modeStack = []
 
 let currentModeKey = 'flicker'
 let currentMode = modes[currentModeKey]
-let previousModeKey
+let previousModeKey = 'flicker'
 let clientSensors = []
 let realSensorsData = []
 
 let isSleeping = false
 let noActionsSince = Date.now()
+let lastTimeAutoChangedMode = Date.now()
+const goToSleepAfter = 5 * 1000
 
-const changeModeLoop = () => {
-	if (!isAutoChangingModeEnabled) {
-		// NOTE: if it's disabled we want to check more often to be able react on turning on within 2 seconds
-		setTimeout(changeModeLoop, 2000)
+setInterval(() => {
+	const modesKeys = Object.keys(modes)
+	if (isAutoChangingModeEnabled && Date.now() - lastTimeAutoChangedMode > modeAutoChangeInterval) {
+		const nextRandomKey = modesKeys.filter(modeKey => modeKey !== currentModeKey)[Math.floor(Math.random() * (modesKeys.length - 1))];
+		changeMode(nextRandomKey)
+		lastTimeAutoChangedMode = Date.now()
+	}
+
+	if (wasStretchedHardEnoughToWakeUp([...clientSensors, ...realSensorsData])) {
+		if (isSleeping) changeMode(previousModeKey)
+		noActionsSince = Date.now()
+		isSleeping = false
 		return
 	}
 
-	if (!checkIfSleeping()) {
-		setTimeout(changeModeLoop, 2000)
+	if (Date.now() - noActionsSince > goToSleepAfter) {
+		if (!isSleeping) changeMode('sleep')
+		isSleeping = true
 		return
 	}
 
-	// NOTE: do not switch mode while easter egg is active
-	if (currentModeKey === easterEggModeKey) {
-		setTimeout(changeModeLoop, 1000)
-		return
-	}
+	console.log(wasStretchedHardEnoughToWakeUp([...clientSensors, ...realSensorsData]))
 
-	// NOTE: guarantees that each mode will be called equal times and
-	// equally distributed in time
-	if (modeStack.length === 0) {
-		modeStack = arrays.shuffle(Object.keys(modes))
-	}
-
-	// TODO: ugly crotch
-	let nextModeKey = modeStack.pop();
-	if (nextModeKey === easterEggModeKey) {
-		nextModeKey = modeStack.pop();
-	}
-	changeMode(nextModeKey)
-	setTimeout(changeModeLoop, modeAutoChangeInterval)
-};
-changeModeLoop()
+}, 50)
 
 const changeMode = (modeKey) => {
 	previousModeKey = currentModeKey
 	currentModeKey = modeKey
 	currentMode = modes[modeKey]
+	console.log(`Mode was changed from ${previousModeKey} to ${currentModeKey}`)
 	Object.keys(clientConfigurations).map(socketId => {
 		connectedSockets[socketId].emit('modeChanged', modeKey)
 	})
 }
 
-onSleep(() => {
-	changeMode("sleep")
-})
+// const changeModeLoop = () => {
+// 	if (!isAutoChangingModeEnabled) {
+// 		// NOTE: if it's disabled we want to check more often to be able react on turning on within 2 seconds
+// 		setTimeout(changeModeLoop, 2000)
+// 		return
+// 	}
 
-onWakeUp(() => {
-	// NOTE: crotch. need to reimplement easter egg as a tracker. Sooooo I'm trying to avoid calling easter egg again
-	while (previousModeKey === 'easterEgg') {
-		previousModeKey = arrays.shuffle(Object.keys(modes)).pop()
-	}
-	changeMode(previousModeKey)
-})
+// 	if (!checkIfSleeping()) {
+// 		setTimeout(changeModeLoop, 2000)
+// 		return
+// 	}
+
+// 	// NOTE: do not switch mode while easter egg is active
+// 	if (currentModeKey === easterEggModeKey) {
+// 		setTimeout(changeModeLoop, 1000)
+// 		return
+// 	}
+
+// 	// NOTE: guarantees that each mode will be called equal times and
+// 	// equally distributed in time
+// 	if (modeStack.length === 0) {
+// 		modeStack = arrays.shuffle(Object.keys(modes))
+// 	}
+
+// 	// TODO: ugly crotch
+// 	let nextModeKey = modeStack.pop();
+// 	if (nextModeKey === easterEggModeKey) {
+// 		nextModeKey = modeStack.pop();
+// 	}
+// 	changeMode(nextModeKey)
+// 	setTimeout(changeModeLoop, modeAutoChangeInterval)
+// };
+// changeModeLoop()
+
+// onSleep(() => {
+// 	changeMode("sleep")
+// })
+
+// onWakeUp(() => {
+// 	// NOTE: crotch. need to reimplement easter egg as a tracker. Sooooo I'm trying to avoid calling easter egg again
+// 	while (previousModeKey === 'easterEgg') {
+// 		previousModeKey = arrays.shuffle(Object.keys(modes)).pop()
+// 	}
+// 	changeMode(previousModeKey)
+// })
 
 const applyMode = (sticks, sensors) => {
-	track(sticks, sensors)
+	// track(sticks, sensors)
 
-	// Check if enought sensors are pressed and activate easter egg
-	if (currentModeKey !== easterEggModeKey && easterEgg.canActivate(sticks, sensors)) {
-		changeMode(easterEggModeKey)
-	}
+	// // Check if enought sensors are pressed and activate easter egg
+	// if (currentModeKey !== easterEggModeKey && easterEgg.canActivate(sticks, sensors)) {
+	// 	changeMode(easterEggModeKey)
+	// }
 
-	// If easter is no longer active change to previous mode
-	if (currentModeKey === easterEggModeKey && !easterEgg.isActive()) {
-		changeMode(previousModeKey)
-	}
+	// // If easter is no longer active change to previous mode
+	// if (currentModeKey === easterEggModeKey && !easterEgg.isActive()) {
+	// 	changeMode(previousModeKey)
+	// }
 
 	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData])
 
@@ -243,6 +273,8 @@ io.on('connection', socket => {
 		currentModeKey = configuration.mode
 		currentMode = modes[currentModeKey]
 		clientConfigurations[socket.id] = configuration
+		noActionsSince = Date.now()
+		isSleeping = false
 		earConfig.save(clientConfigurations)
 	})
 

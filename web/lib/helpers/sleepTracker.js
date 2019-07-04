@@ -5,18 +5,22 @@ let getBoredAfter = 3 * 1000
 let onSleepHandler
 let onWakeUpHandler
 
-const wasStretchedHardEnoughToWakeUp = (sticks, sensors) => {
-	const countOfTenseSensors = sensors.map(sensor => {
-		// Find a Stick that corresponds to current Sensor
-		const stick = sticks.find(stick => stick.name === sensor.stick)
-		if (!stick) return
+// const wasStretchedHardEnoughToWakeUp = (sticks, sensors) => {
+// 	const countOfTenseSensors = sensors.map(sensor => {
+// 		// Find a Stick that corresponds to current Sensor
+// 		const stick = sticks.find(stick => stick.name === sensor.stick)
+// 		if (!stick) return
 
-		const tension = sensor.tension
-		return tension > tensionThreshold ? 1 : 0
-	}).reduce((a, b) => {
-		return a + b
-	}, 0);
-	return countOfTenseSensors >= 1
+// 		const tension = sensor.tension
+// 		return tension > tensionThreshold ? 1 : 0
+// 	}).reduce((a, b) => {
+// 		return a + b
+// 	}, 0);
+// 	return countOfTenseSensors >= 1
+// }
+
+export const wasStretchedHardEnoughToWakeUp = (sensors) => {
+	return sensors.filter(sensor => sensor.tension && sensor.tension > tensionThreshold).filter(Boolean).length > 0
 }
 
 const wakeUp = () => {
