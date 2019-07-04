@@ -8,7 +8,6 @@ import jasmine from './modes/jasmine'
 import ocean from './modes/ocean'
 import polzynki from './modes/polzynki'
 import risingStairs from './modes/stairs'
-import easterEgg from './modes/easterEgg'
 import sleep from './modes/sleep'
 import onChange from './modes/onChange'
 
@@ -22,7 +21,6 @@ export default {
 	jasmine,
 	ocean,
 	risingStairs,
-	easterEgg: easterEgg.mode,
 	onChange,
 	polzynki,
 	sleep

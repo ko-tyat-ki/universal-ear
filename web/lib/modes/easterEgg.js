@@ -8,53 +8,36 @@ const duration = easterEggConfig.duration// 10 seconds, 30 Seconds of fun! - nee
 const tensionThreshold = easterEggConfig.tensionThreshold // 10
 const activationStickCount = easterEggConfig.activationStickCount // 3
 
-let modeIsActive = false;
-
-const isTriggered = (sensors, sticks) => {
-  const countOfTenseSensors = sensors.map(sensor => {
-    // Find a Stick that corresponds to current Sensor
-    const stick = sticks.find(stick => stick.name === sensor.stick)
-    if (!stick) return
-
-    const tension = sensor.tension
-    // console.log(tension, tensionThreshold)
-    return tension > tensionThreshold ? 1 : 0
-  }).reduce(function (a, b) {
-    return a + b
-  }, 0);
-  return countOfTenseSensors >= activationStickCount;
+export const isEasterTriggered = (sensors) => {
+  return sensors.filter(sensor => sensor.tension && sensor.tension > tensionThreshold).filter(Boolean).length >= activationStickCount
 }
 
-const isActive = () => {
-  return modeIsActive
-}
+export const easterEggDuration = duration
 
-const activate = () => {
-  modeIsActive = true
-  start = Date.now()
-}
 
-const deactivate = () => {
-  console.log("deactivated")
-  modeIsActive = false
-}
+// const isActive = () => {
+//   return modeIsActive
+// }
 
-const canActivate = (sticks, sensors) => {
-  if (!modeIsActive && isTriggered(sensors, sticks)) {
-    activate()
-    return true
-  }
-}
+// const activate = () => {
+//   modeIsActive = true
+//   start = Date.now()
+// }
+
+// const deactivate = () => {
+//   console.log("deactivated")
+//   modeIsActive = false
+// }
+
+// const canActivate = (sticks, sensors) => {
+//   if (!modeIsActive && isTriggered(sensors, sticks)) {
+//     activate()
+//     return true
+//   }
+// }
 
 // в это время играет музыка бенни хилла
-const easterEgg = (sticks, sensors) => {
-  if (!modeIsActive) return
-
-  if (modeIsActive && Date.now() - start > duration) {
-    deactivate()
-    return
-  }
-
+export const easterEgg = (sticks, sensors) => {
   // Get tension of current sensor
   // const tension = sensor.tension
 
@@ -77,8 +60,8 @@ const easterEgg = (sticks, sensors) => {
   })
 }
 
-export default {
-  mode: easterEgg,
-  canActivate,
-  isActive
-}
+// export default {
+//   mode: easterEgg,
+//   canActivate,
+//   isActive
+// }

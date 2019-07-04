@@ -13,7 +13,7 @@ import earConfig from './lib/helpers/config'
 import arrays from './lib/helpers/arrays'
 import { writeToPython } from './lib/helpers/communicateWithPython'
 import { realSticks } from './lib/configuration/realSticksConfig'
-import easterEgg from './lib/modes/easterEgg'
+import { easterEgg, isEasterTriggered, easterEggDuration } from './lib/modes/easterEgg'
 import {
 	wasStretchedHardEnoughToWakeUp
 } from './lib/helpers/sleepTracker'
@@ -37,17 +37,34 @@ let realSensorsData = []
 let isSleeping = false
 let noActionsSince = Date.now()
 let lastTimeAutoChangedMode = Date.now()
-const goToSleepAfter = 5 * 1000
+const goToSleepAfter = 30 * 1000
+
+let easterEggTriggeredAt
+let isEaster = false
 
 setInterval(() => {
+	const combinedSensors = [...clientSensors, ...realSensorsData]
+	if (!isEaster && isEasterTriggered(combinedSensors)) {
+		previousModeKey = currentModeKey
+		currentMode = easterEgg
+		easterEggTriggeredAt = Date.now()
+		isEaster = true
+	}
+
+	if (isEaster && Date.now() - easterEggTriggeredAt > easterEggDuration) {
+		changeMode(previousModeKey)
+		isEaster = false
+	}
+
 	const modesKeys = Object.keys(modes)
-	if (isAutoChangingModeEnabled && Date.now() - lastTimeAutoChangedMode > modeAutoChangeInterval) {
+	if (!isSleeping && isAutoChangingModeEnabled && Date.now() - lastTimeAutoChangedMode > modeAutoChangeInterval) {
 		const nextRandomKey = modesKeys.filter(modeKey => modeKey !== currentModeKey)[Math.floor(Math.random() * (modesKeys.length - 1))];
 		changeMode(nextRandomKey)
 		lastTimeAutoChangedMode = Date.now()
+		return
 	}
 
-	if (wasStretchedHardEnoughToWakeUp([...clientSensors, ...realSensorsData])) {
+	if (wasStretchedHardEnoughToWakeUp(combinedSensors)) {
 		if (isSleeping) changeMode(previousModeKey)
 		noActionsSince = Date.now()
 		isSleeping = false
@@ -59,9 +76,6 @@ setInterval(() => {
 		isSleeping = true
 		return
 	}
-
-	console.log(wasStretchedHardEnoughToWakeUp([...clientSensors, ...realSensorsData]))
-
 }, 50)
 
 const changeMode = (modeKey) => {
