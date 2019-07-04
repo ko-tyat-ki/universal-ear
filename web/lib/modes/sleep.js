@@ -1,7 +1,6 @@
-let noColor = {r: 0, g: 0, b: 0};
+let noColor = { r: 0, g: 0, b: 0 };
 
 const sleep = (sticks, sensors) => {
-
   return sensors.map(sensor => {
     const stick = sticks.find(stick => stick.name === sensor.stick)
     if (!stick) return

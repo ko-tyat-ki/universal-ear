@@ -14,6 +14,7 @@ import arrays from './lib/helpers/arrays'
 import { writeToPython } from './lib/helpers/communicateWithPython'
 import { realSticks } from './lib/configuration/realSticksConfig'
 import { easterEgg, isEasterTriggered, easterEggDuration } from './lib/modes/easterEgg'
+import sleep from './lib/modes/sleep'
 import {
 	wasStretchedHardEnoughToWakeUp
 } from './lib/helpers/sleepTracker'
@@ -72,11 +73,22 @@ setInterval(() => {
 	}
 
 	if (Date.now() - noActionsSince > goToSleepAfter) {
-		if (!isSleeping) changeMode('sleep')
+		if (!isSleeping) currentMode = sleep
 		isSleeping = true
 		return
 	}
 }, 50)
+
+// const changeModeWithTransition = (modeKey) => {
+// 	currentMode =
+// 		previousModeKey = currentModeKey
+// 	currentModeKey = modeKey
+// 	currentMode = modes[modeKey]
+// 	console.log(`Mode was changed from ${previousModeKey} to ${currentModeKey}`)
+// 	Object.keys(clientConfigurations).map(socketId => {
+// 		connectedSockets[socketId].emit('modeChanged', modeKey)
+// 	})
+// }
 
 const changeMode = (modeKey) => {
 	previousModeKey = currentModeKey

@@ -8,8 +8,6 @@ import jasmine from './modes/jasmine'
 import ocean from './modes/ocean'
 import polzynki from './modes/polzynki'
 import risingStairs from './modes/stairs'
-import sleep from './modes/sleep'
-import onChange from './modes/onChange'
 
 export default {
 	basic_with_rainbow,
@@ -21,7 +19,5 @@ export default {
 	jasmine,
 	ocean,
 	risingStairs,
-	onChange,
-	polzynki,
-	sleep
+	polzynki
 }
