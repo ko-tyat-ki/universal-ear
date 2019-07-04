@@ -43,6 +43,7 @@ let isOnChange = false
 
 const useOnChange = true
 const useEasterEgg = true
+const useSleepMode = true
 const onChangeDuration = onChangeSpeed * 15 // This magic number comed from the nature of onChange
 
 // Select visualisation modes
@@ -81,18 +82,21 @@ setInterval(() => {
 		changeMode(currentModeKey)
 	}
 
-	if (wasStretchedHardEnoughToWakeUp(combinedSensors)) {
-		if (isSleeping) changeMode(previousModeKey)
-		noActionsSince = Date.now()
-		isSleeping = false
-		return
+	if (useSleepMode) {
+		if (wasStretchedHardEnoughToWakeUp(combinedSensors)) {
+			if (isSleeping) changeMode(previousModeKey)
+			noActionsSince = Date.now()
+			isSleeping = false
+			return
+		}
+
+		if (Date.now() - noActionsSince > goToSleepAfter) {
+			if (!isSleeping) currentMode = sleep
+			isSleeping = true
+			return
+		}
 	}
 
-	if (Date.now() - noActionsSince > goToSleepAfter) {
-		if (!isSleeping) currentMode = sleep
-		isSleeping = true
-		return
-	}
 }, 50)
 
 const changeMode = (modeKey) => {
