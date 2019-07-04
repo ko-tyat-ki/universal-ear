@@ -8,7 +8,7 @@ const communistColor = {
     b: 20
 }
 
-const numberOfRandomness = 100
+const numberOfRandomness = 1000
 
 const randomGenerator = [...Array(numberOfRandomness)].map(row => (
     [...Array(NUMBER_OF_LEDS)].map(color => (
