@@ -15,9 +15,10 @@
         "maxTension": 40
     },
     "changingColors": {
-        "color_change_speed": 3,
-        "maxTension": 50,
-        "reduceBrightnessFunctionTime": 10000
+        "maxTension": 100,
+        "reduceBrightnessFunctionTime": 10000,
+        "colorChangingSpeed": 3,
+        "defaultColor": [10,10,10]
     },
     "jasmineConfig": {
         "tensionTrigger": 10
@@ -29,21 +30,18 @@
     },
     "polzynkiConfig": {
         "length": 2,
-        "sensitivity": 0.02,
+        "sensitivity": 0.05,
         "default_speed": 0.05,
-        "secondary_effect": 0.1,
-        "rainbowLength": 1,
-        "positionFactor": 15,
-        "positionStickAdjustmentFactor": 10,
-        "timeFactor": 60000
+        "secondary_effect": 0.01,
+        "rainbowLength": 60000,
+        "positionStickAdjustmentFactor": 10
     },
     "randomFlashes2": {
-        "rainbowLength": 3,
+        "rainbowLength": 180000,
         "sensitivity": 0.4,
         "flashesFrequency_default": 0.0005,
         "proportionLEDSAlight_default": 0.1,
         "flashesFactor": 20,
-        "timeFactor": 60000,
         "timeParameterFactor": 10
     },
     "randomFlashes": {

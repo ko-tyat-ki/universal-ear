@@ -7,7 +7,6 @@ const sensitivity = randomFlashes2.sensitivity // the higher - the more sensitiv
 const flashesFrequency_default = randomFlashes2.flashesFrequency_default // 0/2000 - balanced
 const proportionLEDSAlight_default = randomFlashes2.proportionLEDSAlight_default // from 0 to 1, 0.1 - balanced
 const flashesFactor = randomFlashes2.flashesFactor
-const timeFactor = randomFlashes2.timeFactor
 const timeParameterFactor = randomFlashes2.timeParameterFactor
 
 const random_flashes_v2 = (sticks, sensors) => {
@@ -35,7 +34,7 @@ const random_flashes_v2 = (sticks, sensors) => {
 				const timeParameter = ((Date.now() * flashesFrequency)) % timeParameterFactor
 				if (timeParameter < 2) {
 					//const ledColor = stickLightning(timeParameter)
-					const ledColor = rainbowColors(rainbowLength * timeFactor)
+					const ledColor = rainbowColors(rainbowLength)
 
 					leds.push({
 						number: key,

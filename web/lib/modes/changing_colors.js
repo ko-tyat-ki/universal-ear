@@ -20,13 +20,9 @@ const changing_colors = (sticks, sensors) => {
 		const tension = sensor.tension
 		const oldTension = sensor.oldTension
 
-		///!?!?!?!?!?!?!  can we use smth like this   ??!?!?!?!?!?!?!?!
-		//const timePassed = Date.now() - sensor.startCounting //time information
-
 		let tension_parameter = oldTension.reduce((a, b) => a + b, 0) // summing up old tension
-		tension_parameter = tension_parameter + tension * changingColors.color_change_speed // adding current tension
+		tension_parameter = tension_parameter + tension * changingColors.colorChangingSpeed // adding current tension
 		tension_parameter = tension_parameter / changingColors.maxTension // scaling down to the number between 0 and 1
-
 		//console.log(tension_parameter)
 
 		// Initialise array that will hold the order numbers of LEDs and their colours
@@ -59,23 +55,23 @@ const changing_colors = (sticks, sensors) => {
 const ReduceBrightnessFunction = (tension_parameter) => {
 	// adding shimmering - the default boundary gets unstable
 	const offColor = { // get from contants
-		r: 0 + (Math.random() - 0.5) * 10,
-		g: 0 + (Math.random() - 0.5) * 10,
-		b: 0 + (Math.random() - 0.5) * 10
+		r: changingColors.defaultColor[0] + (Math.random() - 0.5) * 20,
+		g: changingColors.defaultColor[1] + (Math.random() - 0.5) * 20,
+		b: changingColors.defaultColor[2] + (Math.random() - 0.5) * 20
 	}
 
 	// bad coding creating different colour fainting schemes :)
 	let aa
 	let bb
 	let cc
-	const colour_case = ((Date.now() - startTime) / changingColors.reduceBrightnessFunctionTime) % changingColors.color_change_speed
+	const colour_case = ((Date.now() - startTime) / changingColors.reduceBrightnessFunctionTime) % changingColors.colorChangingSpeed
 
-	if (colour_case < 1) {
+	if (colour_case < changingColors.colorChangingSpeed % 3) {
 		aa = 1
 		bb = 0.6
 		cc = 0.3
 	}
-	else if (colour_case < 2) {
+	else if (colour_case < changingColors.colorChangingSpeed % (3/2)) {
 		aa = 0.3
 		bb = 0.6
 		cc = 1
@@ -86,7 +82,7 @@ const ReduceBrightnessFunction = (tension_parameter) => {
 		cc = 0.6
 	}
 	//console.log(colour_case)
-	//console.log(Date.now() - startTime)
+	
 
 	// tension parameter shall be calibrated to be a number between 0 and 1
 	const a = Math.min(1, Math.max(0, tension_parameter - aa)) * 255

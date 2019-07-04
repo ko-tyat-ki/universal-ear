@@ -9,6 +9,7 @@ const flashesFactor = randomFlashes.flashesFactor
 const timeParameterFactor = randomFlashes.timeParameterFactor
 
 const random_flashes = (sticks, sensors) => {
+	
 	// Cycle through array of sensors from each stick:
 	return sensors.map(sensor => {
 
