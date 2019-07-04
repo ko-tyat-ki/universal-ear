@@ -10,81 +10,101 @@ import { connectToArduinos } from './lib/helpers/connectToArduinos'
 import { spinServer } from './lib/helpers/spinServer'
 import { NUMBER_OF_LEDS } from './lib/configuration/constants'
 import earConfig from './lib/helpers/config'
-import arrays from './lib/helpers/arrays'
-import { writeToPython } from './lib/helpers/communicateWithPython';
-import { realSticks } from './lib/configuration/realSticksConfig';
-import easterEgg from './lib/modes/easterEgg';
+import { writeToPython } from './lib/helpers/communicateWithPython'
+import { realSticks } from './lib/configuration/realSticksConfig'
+import { easterEgg, isEasterTriggered, easterEggDuration } from './lib/modes/easterEgg'
+import { onChangeSpeed, onChange } from './lib/modes/onChange'
+import sleep from './lib/modes/sleep'
+import {
+	wasStretchedHardEnoughToWakeUp
+} from './lib/helpers/sleepTracker'
 
-const easterEggModeKey = "easterEgg"
+import { serverConfig } from '../modes_config.json'
+console.log(serverConfig)
 
-const connectedSockets = {}
-// const clientConfigurations = earConfig.read()
-const clientConfigurations = {}
-let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
-let isAutoChangingModeEnabled = false
-let modeAutoChangeTimeout = 3 * 60 * 1000 // 3 minutes
-let modeStack = []
-
-let currentModeKey = 'jasmine'
+// Initialise
+let currentModeKey = 'flicker'
 let currentMode = modes[currentModeKey]
-let previousModeKey
+let previousModeKey = 'flicker'
 let clientSensors = []
 let realSensorsData = []
+const connectedSockets = {}
+const clientConfigurations = {}
+let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
 
-const modeHandler = (req, res) => {
-	currentModeKey = req.query.name
-	currentMode = modes[currentModeKey]
-	Object.keys(clientConfigurations).map(socketId => {
-		connectedSockets[socketId].emit('modeChanged', currentModeKey)
-	})
-	res.send('Done!')
-};
+// Get from config
+let {
+	modeAutoChangeInterval, // 1000 seconds
+	goToSleepAfter // 20 minutes
+} = serverConfig
 
-const arduinosStatusHandler = (req, res) => {
-	const activeArduinos = realSensors.filter(sensor => sensor.active).map(sensor => ({
-		name: sensor.key,
-		stick: sensor.stick
-	}))
-	const arduinosThatDidNotOpen = realSensors.filter(sensor => !sensor.active).map(sensor => ({
-		name: sensor.key,
-		stick: sensor.stick
-	}))
-	res.json({
-		activeArduinos,
-		arduinosThatDidNotOpen
-	})
-};
+let { useOnChange, useEasterEgg, useSleepMode, isAutoChangingModeEnabled } = serverConfig
 
-const changeModeLoop = () => {
-	if (!isAutoChangingModeEnabled) {
-		// NOTE: if it's disabled we want to check more often to be able react on turning on within 2 seconds
-		setTimeout(changeModeLoop, 2000)
+//  Assign base data
+let isSleeping = false
+let noActionsSince = Date.now()
+let lastTimeAutoChangedMode = Date.now()
+let onChangeStarted
+let easterEggTriggeredAt
+let isEaster = false
+let isOnChange = false
+
+const onChangeDuration = onChangeSpeed * 14 // This magic number comed from the nature of onChange
+
+// Select visualisation modes
+setInterval(() => {
+	const combinedSensors = [...clientSensors, ...realSensorsData]
+	if (useEasterEgg) {
+		if (!isEaster && isEasterTriggered(combinedSensors)) {
+			previousModeKey = currentModeKey
+			currentMode = easterEgg
+			easterEggTriggeredAt = Date.now()
+			isEaster = true
+		}
+
+		if (isEaster && Date.now() - easterEggTriggeredAt > easterEggDuration) {
+			changeMode(previousModeKey)
+			isEaster = false
+		}
+	}
+
+	const modesKeys = Object.keys(modes)
+	if (!isSleeping && isAutoChangingModeEnabled && Date.now() - lastTimeAutoChangedMode > modeAutoChangeInterval) {
+		const nextRandomKey = modesKeys.filter(modeKey => modeKey !== currentModeKey)[Math.floor(Math.random() * (modesKeys.length - 1))]
+		if (useOnChange) {
+			onChangeStarted = Date.now()
+			currentModeKey = nextRandomKey
+			currentMode = onChange
+			isOnChange = true
+		} else changeMode(nextRandomKey)
+		lastTimeAutoChangedMode = Date.now()
 		return
 	}
 
-	// NOTE: do not switch mode while easter egg is active
-	if (currentModeKey === easterEggModeKey) {
-		setTimeout(changeModeLoop, 1000)
-		return
+	if (isOnChange && Date.now() - onChangeStarted > onChangeDuration) {
+		onChangeStarted = false
+		isOnChange = false
+		changeMode(currentModeKey)
 	}
 
-	// NOTE: guarantees that each mode will be called equal times and
-	// equally distributed in time
-	if (modeStack.length === 0) {
-		modeStack = arrays.shuffle(Object.keys(modes))
-	}
+	if (useSleepMode) {
+		if (wasStretchedHardEnoughToWakeUp(combinedSensors)) {
+			if (isSleeping) changeMode(previousModeKey)
+			noActionsSince = Date.now()
+			isSleeping = false
+			return
+		}
 
-	// TODO: ugly crotch
-	let nextModeKey = modeStack.pop();
-	if (nextModeKey === easterEggModeKey) {
-		nextModeKey = modeStack.pop();
+		if (Date.now() - noActionsSince > goToSleepAfter) {
+			if (!isSleeping) currentMode = sleep
+			isSleeping = true
+			return
+		}
 	}
-	changeMode(nextModeKey)
-	setTimeout(changeModeLoop, modeAutoChangeTimeout)
-};
-changeModeLoop()
+}, 500)
 
 const changeMode = (modeKey) => {
+	console.log(`Mode was changed from ${previousModeKey} to ${currentModeKey}`)
 	previousModeKey = currentModeKey
 	currentModeKey = modeKey
 	currentMode = modes[modeKey]
@@ -93,46 +113,7 @@ const changeMode = (modeKey) => {
 	})
 }
 
-const switchAutomaticModeHandler = (req, res) => {
-	isAutoChangingModeEnabled = !isAutoChangingModeEnabled
-	const timeout = req.query.timeout
-	if (timeout) {
-		modeAutoChangeTimeout = timeout
-	}
-	res.send('Done! Autoswitching enabled ' + isAutoChangingModeEnabled + '. Change once in ' + modeAutoChangeTimeout / 1000 / 60 + ' minutes')
-}
-
-const io = spinServer([
-	{
-		method: 'get',
-		path: '/mode',
-		callback: modeHandler
-	},
-	{
-		method: 'get',
-		path: '/mode/automatic',
-		callback: switchAutomaticModeHandler
-	},
-	{
-		method: 'get',
-		path: '/arduinosStatus',
-		callback: arduinosStatusHandler
-	}
-])
-
-const realSensors = connectToArduinos()
-
-const applyMode = (sticks, sensors) => {
-	// Check if enought sensors are pressed and activate easter egg
-	if (currentModeKey !== easterEggModeKey && easterEgg.canActivate(sticks, sensors)) {
-		changeMode(easterEggModeKey)
-	}
-
-	// If easter is no longer active change to previous mode
-	if (currentModeKey === easterEggModeKey && !easterEgg.isActive()) {
-		changeMode(previousModeKey)
-	}
-
+const applyMode = () => {
 	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData])
 
 	if (!combinedLedsConfig) return []
@@ -140,6 +121,8 @@ const applyMode = (sticks, sensors) => {
 	return regroupConfig(combinedLedsConfig.filter(Boolean))
 };
 
+// Talk to arduinos
+const realSensors = connectToArduinos()
 
 const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
 	realSensor.update(sensorData)
@@ -154,7 +137,7 @@ const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
 		key: sensor.key
 	}))
 
-	ledsConfig = applyMode(realSticks, [...clientSensors, ...realSensorsData])
+	ledsConfig = applyMode()
 
 	const stickLeds = ledsConfig.find(config => config.key === stick).leds
 	return putLedsInBufferArray(stickLeds, NUMBER_OF_LEDS)
@@ -181,10 +164,88 @@ if (realSensors && realSensors.length > 0) {
 	})
 }
 
+// Talk to python
 setInterval(() => {
 	const combinedSensors = [...clientSensors, ...realSensorsData]
 	if (combinedSensors.length > 0) writeToPython(combinedSensors, currentModeKey)
 }, 100)
+
+// Special requests handlers
+// Are here to talk to global variables as it is a bit cheaper
+const modeHandler = (req, res) => {
+	currentModeKey = req.query.name
+	currentMode = modes[currentModeKey]
+	Object.keys(clientConfigurations).map(socketId => {
+		connectedSockets[socketId].emit('modeChanged', currentModeKey)
+	})
+	res.send('Done!')
+};
+
+const switchAutomaticModeHandler = (req, res) => {
+	isAutoChangingModeEnabled = !isAutoChangingModeEnabled
+	const timeout = req.query.timeout
+	if (timeout) {
+		modeAutoChangeInterval = timeout
+	}
+	res.send('Done! Autoswitching enabled ' + isAutoChangingModeEnabled + '. Change once in ' + modeAutoChangeInterval / 1000 / 60 + ' minutes')
+}
+
+const arduinosStatusHandler = (req, res) => {
+	const activeArduinos = realSensors.filter(sensor => sensor.active).map(sensor => ({
+		name: sensor.key,
+		stick: sensor.stick
+	}))
+	const arduinosThatDidNotOpen = realSensors.filter(sensor => !sensor.active).map(sensor => ({
+		name: sensor.key,
+		stick: sensor.stick
+	}))
+	res.json({
+		activeArduinos,
+		arduinosThatDidNotOpen
+	})
+};
+
+const changeConfig = (req, res) => {
+	if (req.query.useOnChange === 'no') useOnChange = false
+	if (req.query.useOnChange === 'yes') useOnChange = true
+
+	if (req.query.useEasterEgg === 'no') useEasterEgg = false
+	if (req.query.useEasterEgg === 'yes') useEasterEgg = true
+
+	if (req.query.useSleepMode === 'no') useSleepMode = false
+	if (req.query.useSleepMode === 'yes') useSleepMode = true
+
+	res.send('Hooray! Done!')
+}
+
+// Talk to client
+const io = spinServer([
+	{
+		method: 'get',
+		path: '/mode',
+		callback: modeHandler
+	},
+	{
+		method: 'get',
+		path: '/mode/automatic',
+		callback: switchAutomaticModeHandler
+	},
+	{
+		method: 'get',
+		path: '/arduinosStatus',
+		callback: arduinosStatusHandler
+	},
+	{
+		method: 'get',
+		path: '/modesNames',
+		callback: (req, res) => (res.json([...Object.keys(modes), 'easterEgg', 'onChange']))
+	},
+	{
+		method: 'get',
+		path: '/changeConfig',
+		callback: changeConfig
+	}
+])
 
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
@@ -197,13 +258,8 @@ io.on('connection', socket => {
 			return
 		}
 
-		const sticks = config.sticks
-		if (!sticks) {
-			return
-		}
-
 		clientSensors = sensors
-		ledsConfig = applyMode(sticks, [...clientSensors, ...realSensorsData])
+		ledsConfig = applyMode()
 		socket.emit('ledsChanged', ledsConfig)
 	})
 
@@ -211,6 +267,8 @@ io.on('connection', socket => {
 		currentModeKey = configuration.mode
 		currentMode = modes[currentModeKey]
 		clientConfigurations[socket.id] = configuration
+		noActionsSince = Date.now()
+		isSleeping = false
 		earConfig.save(clientConfigurations)
 	})
 
