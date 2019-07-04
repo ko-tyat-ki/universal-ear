@@ -20,9 +20,9 @@ const basic_with_rainbow = (sticks, sensors) => {
 		const leds = [] // Will be an array of leds (key, colours)
 
 		// Cycle through the keys up to the tension value
-		for (let key = 0; key < tension; key++) {
+		for (let key = 0; key < tension / basicWithRainbow.maxTension * NUMBER_OF_LEDS; key++) {
 
-			const rainbowColor = rainbowColors(basicWithRainbow.rainbowLength * basicWithRainbow.rainbowTime) // rainbow phase in min
+			const rainbowColor = rainbowColors(basicWithRainbow.rainbowLength) // rainbow phase in min
 			// LEDs start "running" from a particular point on the led-strip (a "sensorPosition") in both directions.
 			// Add the lit LEDs to the array "leds":
 			leds.push({

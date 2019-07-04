@@ -7,10 +7,8 @@ const length = polzynkiConfig.length // length of the 'snake'
 const sensitivity = polzynkiConfig.sensitivity
 const default_speed = polzynkiConfig.default_speed
 const secondary_effect = polzynkiConfig.secondary_effect // proportion of energy going to other sticks
-const rainbowLength = polzynkiConfig.rainbowLength // rainbow phase in min
-const positionFactor = polzynkiConfig.positionFactor
+const rainbowLength = polzynkiConfig.rainbowLength // rainbow phase in ms
 const positionStickAdjustmentFactor = polzynkiConfig.positionStickAdjustmentFactor
-const timeFactor = polzynkiConfig.timeFactor
 
 // This particular function linearly depends on the tension of the sensor, i.e. the number of LEDs that will be turned ON linearly depends on the tension
 const polzynki = (sticks, sensors) => {
@@ -27,7 +25,7 @@ const polzynki = (sticks, sensors) => {
 		const leds = [] // Will be an array of leds (key, colours)
 
 		//information in 0 stores 'secondary' effects applied to all sticks
-		position[0] = position[0] + tension * sensitivity * (secondary_effect / positionFactor)
+		position[0] = position[0] + tension * sensitivity * (secondary_effect)
 
 		//informatino of position per stick
 		const st = parseInt(stick.name)
@@ -41,7 +39,7 @@ const polzynki = (sticks, sensors) => {
 			if (key < position_stick_adj || key > position_stick_adj + length)
 				continue
 
-			const ledColor = rainbowColors(rainbowLength * timeFactor)
+			const ledColor = rainbowColors(rainbowLength)
 			//const ledColor = stickColour()
 
 			leds.push({
