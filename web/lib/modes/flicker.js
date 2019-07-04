@@ -1,4 +1,5 @@
-import { NUMBER_OF_LEDS } from "../configuration/constants";
+import { NUMBER_OF_LEDS } from "../configuration/constants"
+import { flickerConfig } from '../../../modes_config.json'
 
 const flicker = (sticks, sensors) => {
 	const brightColor = {
@@ -22,7 +23,7 @@ const flicker = (sticks, sensors) => {
 		const leds = []
 
 		for (let key = 0; key < NUMBER_OF_LEDS; key++) {
-			const ledColor = tension / NUMBER_OF_LEDS > Math.random()
+			const ledColor = tension / NUMBER_OF_LEDS * flickerConfig.factor > Math.random()
 				? brightColor
 				: offColor
 			if (ledColor != offColor) {

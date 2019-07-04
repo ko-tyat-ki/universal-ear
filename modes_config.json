@@ -63,6 +63,9 @@
     "onChangeConfig": {
         "speed": 300
     },
+    "flickerConfig": {
+        "factor": 1
+    },
     "easterEggConfig": {
         "speed": 150,
         "duration": 10000,

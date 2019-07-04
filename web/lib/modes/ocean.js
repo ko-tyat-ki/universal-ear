@@ -1,6 +1,6 @@
 import { oceanConfig } from '../../../modes_config.json'
 import { getDistance } from '../helpers/getDistance.js'
-import { NUMBER_OF_LEDS } from '../configuration/constants.js';
+import { NUMBER_OF_LEDS } from '../configuration/constants.js'
 
 const { tensionTrigger, speed, distanceBetweenSticks } = oceanConfig
 
