@@ -1,0 +1,75 @@
+{
+    "serverConfig": {
+        "useOnChange": true,
+        "useEasterEgg": true,
+        "useSleepMode": true,
+        "modeAutoChangeInterval": 1000000,
+        "goToSleepAfter": 1200000,
+        "isAutoChangingModeEnabled": true
+    },
+    "fastReaction": {
+        "tensionTrigger": 10
+    },
+    "basicWithRainbow": {
+        "rainbowLength": 60000,
+        "maxTension": 40
+    },
+    "changingColors": {
+        "color_change_speed": 3,
+        "maxTension": 50,
+        "reduceBrightnessFunctionTime": 10000
+    },
+    "jasmineConfig": {
+        "tensionTrigger": 10
+    },
+    "oceanConfig": {
+        "speed": 100,
+        "distanceBetweenSticks": 250,
+        "tensionTrigger": 4
+    },
+    "polzynkiConfig": {
+        "length": 2,
+        "sensitivity": 0.02,
+        "default_speed": 0.05,
+        "secondary_effect": 0.1,
+        "rainbowLength": 1,
+        "positionFactor": 15,
+        "positionStickAdjustmentFactor": 10,
+        "timeFactor": 60000
+    },
+    "randomFlashes2": {
+        "rainbowLength": 3,
+        "sensitivity": 0.4,
+        "flashesFrequency_default": 0.0005,
+        "proportionLEDSAlight_default": 0.1,
+        "flashesFactor": 20,
+        "timeFactor": 60000,
+        "timeParameterFactor": 10
+    },
+    "randomFlashes": {
+        "sensitivity": 0.4,
+        "flashesFrequency_default": 0.0005,
+        "proportionLEDSAlight_default": 0.1,
+        "flashesFactor": 20,
+        "timeParameterFactor": 10
+    },
+    "stairs": {
+        "speed": 500,
+        "numberOfLedsOf16": 32
+    },
+    "tensionWithEchoConfig": {
+        "tensionTreshold": 1.5
+    },
+    "onChangeConfig": {
+        "speed": 300
+    },
+    "flickerConfig": {
+        "factor": 1
+    },
+    "easterEggConfig": {
+        "speed": 150,
+        "duration": 10000,
+        "tensionThreshold": 10,
+        "activationStickCount": 3
+    }
+}

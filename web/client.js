@@ -57,10 +57,9 @@ const onConfigure = () => {
 		})
 	})
 
-	socket.on('modeChanged', mode => {
-		mode.value = mode
+	socket.on('modeChanged', newMode => {
+		mode.value = newMode
 	})
-
 }
 
 (() => {

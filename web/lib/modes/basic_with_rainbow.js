@@ -1,5 +1,6 @@
+import { basicWithRainbow } from '../../../modes_config.json'
 import { rainbowColors } from "../helpers/rainbowColors";
-const rainbowLength = 1 // rainbow phase in min
+import { NUMBER_OF_LEDS } from '../configuration/constants.js';
 
 // Function of STICKS (initial properties of the sticks, i.e. position, names, etc.) and SENSORS (sensor data, the sticks they are connected etc.)
 // Returns a large array of all LED colours of all the STICKS
@@ -15,14 +16,13 @@ const basic_with_rainbow = (sticks, sensors) => {
 
 		// Get tension of current sensor
 		const tension = sensor.tension
-		const numberOfLEDs = stick.numberOfLEDs || 40 // at the moment we are using 40 LEDs
 
 		const leds = [] // Will be an array of leds (key, colours)
 
 		// Cycle through the keys up to the tension value
-		for (let key = 0; key < tension; key++) {
+		for (let key = 0; key < tension / basicWithRainbow.maxTension * NUMBER_OF_LEDS; key++) {
 
-			const rainbowColor = rainbowColors(rainbowLength * 60000)
+			const rainbowColor = rainbowColors(basicWithRainbow.rainbowLength) // rainbow phase in min
 			// LEDs start "running" from a particular point on the led-strip (a "sensorPosition") in both directions.
 			// Add the lit LEDs to the array "leds":
 			leds.push({
@@ -31,7 +31,7 @@ const basic_with_rainbow = (sticks, sensors) => {
 			})
 
 			leds.push({
-				number: Math.min(sensor.sensorPosition + key, numberOfLEDs - 1),
+				number: Math.min(sensor.sensorPosition + key, NUMBER_OF_LEDS - 1),
 				color: rainbowColor
 			})
 		}

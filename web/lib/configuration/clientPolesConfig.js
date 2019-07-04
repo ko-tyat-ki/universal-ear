@@ -985,40 +985,6 @@ export const calculateClientPoles = (selectedStructure) => {
                     },
                     init: {
                         x: 0,
-                        y: 100,
-                        z: 75
-                    },
-                    euler: {
-                        x: 0 / 180 * Math.PI,
-                        y: 0 / 180 * Math.PI,
-                        z: 90 / 180 * Math.PI
-                    }
-                },
-                {
-                    geo: {
-                        x: 5,
-                        y: 450,
-                        z: 5
-                    },
-                    init: {
-                        x: 0,
-                        y: 100,
-                        z: -75
-                    },
-                    euler: {
-                        x: 0 / 180 * Math.PI,
-                        y: 0 / 180 * Math.PI,
-                        z: 90 / 180 * Math.PI
-                    }
-                },
-                {
-                    geo: {
-                        x: 5,
-                        y: 450,
-                        z: 5
-                    },
-                    init: {
-                        x: 0,
                         y: 150,
                         z: 75
                     },
@@ -1054,40 +1020,6 @@ export const calculateClientPoles = (selectedStructure) => {
                     init: {
                         x: 75,
                         y: 150,
-                        z: 0
-                    },
-                    euler: {
-                        x: 0 / 180 * Math.PI,
-                        y: 90 / 180 * Math.PI,
-                        z: 90 / 180 * Math.PI
-                    }
-                },
-                {
-                    geo: {
-                        x: 5,
-                        y: 450,
-                        z: 5
-                    },
-                    init: {
-                        x: 75,
-                        y: 100,
-                        z: 0
-                    },
-                    euler: {
-                        x: 0 / 180 * Math.PI,
-                        y: 90 / 180 * Math.PI,
-                        z: 90 / 180 * Math.PI
-                    }
-                },
-                {
-                    geo: {
-                        x: 5,
-                        y: 450,
-                        z: 5
-                    },
-                    init: {
-                        x: -75,
-                        y: 100,
                         z: 0
                     },
                     euler: {
