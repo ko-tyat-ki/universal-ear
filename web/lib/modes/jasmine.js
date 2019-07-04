@@ -22,8 +22,6 @@ const randomGenerator = [...Array(numberOfRandomness)].map(row => (
 
 let count = 0
 
-console.log(randomGenerator)
-
 const jasmine = (sticks, sensors) => {
     return sensors.map(sensor => {
         const tension = sensor.tension
