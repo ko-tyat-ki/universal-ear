@@ -14,6 +14,7 @@ import arrays from './lib/helpers/arrays'
 import { writeToPython } from './lib/helpers/communicateWithPython'
 import { realSticks } from './lib/configuration/realSticksConfig'
 import { easterEgg, isEasterTriggered, easterEggDuration } from './lib/modes/easterEgg'
+import { onChangeSpeed, onChange } from './lib/modes/onChange'
 import sleep from './lib/modes/sleep'
 import {
 	wasStretchedHardEnoughToWakeUp
@@ -26,7 +27,7 @@ const clientConfigurations = {}
 let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
 let isAutoChangingModeEnabled = true
 // let modeAutoChangeInterval = 3 * 60 * 1000 // 3 minutes
-let modeAutoChangeInterval = 1 * 60 * 1000
+let modeAutoChangeInterval = 20 * 1000
 let modeStack = []
 
 let currentModeKey = 'flicker'
@@ -38,10 +39,15 @@ let realSensorsData = []
 let isSleeping = false
 let noActionsSince = Date.now()
 let lastTimeAutoChangedMode = Date.now()
-const goToSleepAfter = 30 * 1000
+let onChangeStarted
+const goToSleepAfter = 30 * 60 * 1000
 
 let easterEggTriggeredAt
 let isEaster = false
+let isOnChange = false
+
+const useOnChange = true
+const onChangeDuration = onChangeSpeed * 15 // This magic number comed from the nature of onChange
 
 setInterval(() => {
 	const combinedSensors = [...clientSensors, ...realSensorsData]
@@ -59,10 +65,21 @@ setInterval(() => {
 
 	const modesKeys = Object.keys(modes)
 	if (!isSleeping && isAutoChangingModeEnabled && Date.now() - lastTimeAutoChangedMode > modeAutoChangeInterval) {
-		const nextRandomKey = modesKeys.filter(modeKey => modeKey !== currentModeKey)[Math.floor(Math.random() * (modesKeys.length - 1))];
-		changeMode(nextRandomKey)
+		const nextRandomKey = modesKeys.filter(modeKey => modeKey !== currentModeKey)[Math.floor(Math.random() * (modesKeys.length - 1))]
+		if (useOnChange) {
+			onChangeStarted = Date.now()
+			currentModeKey = nextRandomKey
+			currentMode = onChange
+			isOnChange = true
+		} else changeMode(nextRandomKey)
 		lastTimeAutoChangedMode = Date.now()
 		return
+	}
+
+	if (isOnChange && Date.now() - onChangeStarted > onChangeDuration) {
+		onChangeStarted = false
+		isOnChange = false
+		changeMode(currentModeKey)
 	}
 
 	if (wasStretchedHardEnoughToWakeUp(combinedSensors)) {
@@ -78,17 +95,6 @@ setInterval(() => {
 		return
 	}
 }, 50)
-
-// const changeModeWithTransition = (modeKey) => {
-// 	currentMode =
-// 		previousModeKey = currentModeKey
-// 	currentModeKey = modeKey
-// 	currentMode = modes[modeKey]
-// 	console.log(`Mode was changed from ${previousModeKey} to ${currentModeKey}`)
-// 	Object.keys(clientConfigurations).map(socketId => {
-// 		connectedSockets[socketId].emit('modeChanged', modeKey)
-// 	})
-// }
 
 const changeMode = (modeKey) => {
 	previousModeKey = currentModeKey
