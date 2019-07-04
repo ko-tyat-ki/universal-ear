@@ -19,31 +19,36 @@ import {
 	wasStretchedHardEnoughToWakeUp
 } from './lib/helpers/sleepTracker'
 
-const connectedSockets = {}
-const clientConfigurations = {}
-let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
-let isAutoChangingModeEnabled = true
-let modeAutoChangeInterval = 3 * 60 * 1000 // 3 minutes
+import { serverConfig } from '../modes_config.json'
+console.log(serverConfig)
 
+// Initialise
 let currentModeKey = 'flicker'
 let currentMode = modes[currentModeKey]
 let previousModeKey = 'flicker'
 let clientSensors = []
 let realSensorsData = []
+const connectedSockets = {}
+const clientConfigurations = {}
+let ledsConfig = [] // Needs to be initially an empty array to trigger communication with the arduino
 
+// Get from config
+let {
+	modeAutoChangeInterval, // 1000 seconds
+	goToSleepAfter // 20 minutes
+} = serverConfig
+
+let { useOnChange, useEasterEgg, useSleepMode, isAutoChangingModeEnabled } = serverConfig
+
+//  Assign base data
 let isSleeping = false
 let noActionsSince = Date.now()
 let lastTimeAutoChangedMode = Date.now()
 let onChangeStarted
-const goToSleepAfter = 30 * 60 * 1000
-
 let easterEggTriggeredAt
 let isEaster = false
 let isOnChange = false
 
-const useOnChange = true
-const useEasterEgg = true
-const useSleepMode = true
 const onChangeDuration = onChangeSpeed * 14 // This magic number comed from the nature of onChange
 
 // Select visualisation modes
@@ -200,6 +205,19 @@ const arduinosStatusHandler = (req, res) => {
 	})
 };
 
+const changeConfig = (req, res) => {
+	if (req.query.useOnChange === 'no') useOnChange = false
+	if (req.query.useOnChange === 'yes') useOnChange = true
+
+	if (req.query.useEasterEgg === 'no') useEasterEgg = false
+	if (req.query.useEasterEgg === 'yes') useEasterEgg = true
+
+	if (req.query.useSleepMode === 'no') useSleepMode = false
+	if (req.query.useSleepMode === 'yes') useSleepMode = true
+
+	res.send('Hooray! Done!')
+}
+
 // Talk to client
 const io = spinServer([
 	{
@@ -221,6 +239,11 @@ const io = spinServer([
 		method: 'get',
 		path: '/modesNames',
 		callback: (req, res) => (res.json([...Object.keys(modes), 'easterEgg', 'onChange']))
+	},
+	{
+		method: 'get',
+		path: '/changeConfig',
+		callback: changeConfig
 	}
 ])
 
