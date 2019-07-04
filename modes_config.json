@@ -70,6 +70,6 @@
         "speed": 150,
         "duration": 10000,
         "tensionThreshold": 10,
-        "activationStickCount": 3
+        "activationStickCount": 8
     }
 }
