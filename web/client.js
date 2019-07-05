@@ -13,7 +13,6 @@ let scene
 
 const buildEar = (structure, mode) => {
 	const selectedStructure = structure.options[structure.options.selectedIndex].value
-	// const selectedMode = mode.options[mode.options.selectedIndex].value
 
 	const configuration = {
 		fakeSensors: calculateFakeSensors(selectedStructure),
