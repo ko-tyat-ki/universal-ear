@@ -27,8 +27,6 @@ const modes = Object.assign({}, prodModes)
 modes.sleep = sleep
 modes.easterEgg = easterEgg
 modes.onChange = onChange
-console.log(modes)
-console.log(prodModes)
 
 // Initialise
 let currentModeKey = 'flicker'
