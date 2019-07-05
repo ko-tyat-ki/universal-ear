@@ -53,7 +53,7 @@ while not exit:
             if msg_point != -1:
                 json_msg = json_msg[:msg_point+1]
 
-            print("{}:{}".format(dt.datetime.now().time(),json_msg))
+            #print("{}:{}".format(dt.datetime.now().time(),json_msg))
 
             msg = json.loads(json_msg)
 
@@ -101,12 +101,16 @@ while not exit:
 
             else: #change of mode
                 if mode == "easterEgg":
+                    # UNCOMMENT FOR REAL EASTER EGG :)
+                    # pygame.mixer.stop()
+
                     pygame.mixer.music.stop()
                     try:
                         pygame.mixer.music.load(os.path.join(cur_dir, mode, 'Base.mp3'))
                     except:
                         pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
                     pygame.mixer.music.play(loops=1)
+                    cur_mode = mode
                 elif cur_mode != "init":
                     t = time.time()
                     pygame.mixer.fadeout(FADEOUT_TIME * 1000)
