@@ -1,6 +1,6 @@
 /* global console */
 
-import modes from './lib/visualisations'
+import prodModes from './lib/visualisations'
 import {
 	putLedsInBufferArray,
 	regroupConfig,
@@ -21,6 +21,12 @@ import {
 
 import { serverConfig } from '../modes_config.json'
 console.log(serverConfig)
+
+
+const modes = prodModes
+modes.sleep = sleep
+modes.easterEgg = easterEgg
+modes.onChange = easterEgg
 
 // Initialise
 let currentModeKey = 'flicker'
@@ -69,7 +75,7 @@ setInterval(() => {
 		}
 	}
 
-	const modesKeys = Object.keys(modes)
+	const modesKeys = Object.keys(prodModes)
 	if (!isSleeping && isAutoChangingModeEnabled && Date.now() - lastTimeAutoChangedMode > modeAutoChangeInterval) {
 		const nextRandomKey = modesKeys.filter(modeKey => modeKey !== currentModeKey)[Math.floor(Math.random() * (modesKeys.length - 1))]
 		if (useOnChange) {
@@ -106,10 +112,7 @@ setInterval(() => {
 
 const changeMode = (modeKey) => {
 	console.log(`Mode was changed from ${previousModeKey} to ${modeKey}`)
-	if (currentModeKey === 'sleep') currentMode = sleep
-	if (currentModeKey === 'onChange') currentMode = onChange
-	if (currentModeKey === 'easterEgg') currentMode = easterEgg
-	else if (Object.keys(modes).includes(currentModeKey)) currentMode = modes[modeKey]
+	if (Object.keys(modes).includes(currentModeKey)) currentMode = modes[modeKey]
 	else {
 		throw new Error(`We can't change mode to ${modeKey}`)
 	}
@@ -240,7 +243,7 @@ const io = spinServer([
 	{
 		method: 'get',
 		path: '/modesNames',
-		callback: (req, res) => (res.json([...Object.keys(modes), 'easterEgg', 'onChange', 'sleep']))
+		callback: (req, res) => (res.json(Object.keys(modes)))
 	},
 	{
 		method: 'get',
