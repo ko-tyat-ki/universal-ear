@@ -19,9 +19,9 @@
         "reduceBrightnessFunctionTime": 10000,
         "colorChangingSpeed": 3,
         "defaultColor": [
-            10,
-            10,
-            10
+            5,
+            5,
+            5
         ],
         "defaultMult": 30
     },
