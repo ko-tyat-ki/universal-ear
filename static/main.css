@@ -30,3 +30,8 @@ h5 {
   bottom: 5vh;
   position: absolute;
 }
+
+.buttons-are-cool .button {
+  height: 5vh;
+  margin: 10px;
+}
