@@ -104,7 +104,10 @@ setInterval(() => {
 		}
 
 		if (Date.now() - noActionsSince > goToSleepAfter) {
-			if (!isSleeping) currentMode = sleep
+			if (!isSleeping) {
+				currentMode = sleep
+				currentModeKey = 'sleep'
+			}
 			console.log('zzzzzzzzzz')
 			isSleeping = true
 			return
