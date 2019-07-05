@@ -76,7 +76,6 @@ while not exit:
                     continue
 
             mode = msg['mode']
-            print(mode)
             if cur_mode == mode:
                 for sensor in msg['sensorsData']:
                     try:
