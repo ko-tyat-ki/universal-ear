@@ -9,7 +9,7 @@ const proportionLEDSAlight_default = randomFlashes2.proportionLEDSAlight_default
 const flashesFactor = randomFlashes2.flashesFactor
 const timeParameterFactor = randomFlashes2.timeParameterFactor
 
-const random_flashes_v2 = (sticks, sensors) => {
+const sleep = (sticks, sensors) => {
 
 	// Cycle through array of sensors from each stick:
 	return sensors.map(sensor => {
@@ -60,4 +60,4 @@ const random_flashes_v2 = (sticks, sensors) => {
 // 	}
 // }
 
-export default random_flashes_v2
+export default sleep

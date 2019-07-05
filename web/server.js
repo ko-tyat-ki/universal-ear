@@ -23,7 +23,7 @@ import { serverConfig } from '../modes_config.json'
 console.log(serverConfig)
 
 
-const modes = prodModes
+const modes = Object.assign({}, prodModes)
 modes.sleep = sleep
 modes.easterEgg = easterEgg
 modes.onChange = onChange
@@ -104,7 +104,10 @@ setInterval(() => {
 		}
 
 		if (Date.now() - noActionsSince > goToSleepAfter) {
-			if (!isSleeping) currentMode = sleep
+			if (!isSleeping) {
+				currentMode = sleep
+				currentModeKey = 'sleep'
+			}
 			console.log('zzzzzzzzzz')
 			isSleeping = true
 			return
