@@ -100,7 +100,14 @@ while not exit:
 
 
             else: #change of mode
-                if cur_mode != "init":
+                if mode == "EasterEgg":
+                    pygame.mixer.music.stop()
+                    try:
+                        pygame.mixer.music.load(os.path.join(cur_dir, mode, 'Base.mp3'))
+                    except:
+                        pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
+                    pygame.mixer.music.play(loops=1)
+                elif cur_mode != "init":
                     t = time.time()
                     pygame.mixer.fadeout(FADEOUT_TIME * 1000)
                     pygame.mixer.music.fadeout(FADEOUT_TIME*1000)
