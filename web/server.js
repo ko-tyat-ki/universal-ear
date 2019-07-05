@@ -58,6 +58,7 @@ setInterval(() => {
 		if (!isEaster && isEasterTriggered(combinedSensors)) {
 			previousModeKey = currentModeKey
 			currentMode = easterEgg
+			currentModeKey = 'easterEgg'
 			easterEggTriggeredAt = Date.now()
 			isEaster = true
 		}
