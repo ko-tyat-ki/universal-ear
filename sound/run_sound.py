@@ -100,7 +100,7 @@ while not exit:
 
 
             else: #change of mode
-                if mode == "EasterEgg":
+                if mode == "easterEgg":
                     pygame.mixer.music.stop()
                     try:
                         pygame.mixer.music.load(os.path.join(cur_dir, mode, 'Base.mp3'))
