@@ -66,32 +66,32 @@ const onConfigure = () => {
 	onConfigure()
 
 	const getKeyboardEventEmitter = (keyCode) => {
-	  return () => {
-	    document.dispatchEvent(new KeyboardEvent('keydown', {'key': keyCode}));
-	    setTimeout(() => {
-	      document.dispatchEvent(new KeyboardEvent('keyup', {'key': keyCode}));
-      }, 100)
-    }
+		return () => {
+			document.dispatchEvent(new KeyboardEvent('keydown', { 'key': keyCode }));
+			setTimeout(() => {
+				document.dispatchEvent(new KeyboardEvent('keyup', { 'key': keyCode }));
+			}, 100)
+		}
 	}
 
-  let buttons = {
-    "button1": "1",
-    "button2": "2",
-    "button3": "3",
-    "button4": "4",
-    "button5": "5",
-    "button6": "6",
-    "button7": "7",
-    "button8": "8",
-    "button9": "9",
-    "button10": "10",
-    "button11": "11",
-    "button12": "12",
-  }
+	let buttons = {
+		"button1": "1",
+		"button2": "2",
+		"button3": "3",
+		"button4": "4",
+		"button5": "5",
+		"button6": "6",
+		"button7": "7",
+		"button8": "8",
+		"button9": "9",
+		"button10": "0",
+		"button11": "-",
+		"button12": "=",
+	}
 
-  for (let id of Object.keys(buttons)) {
-	  let element = document.getElementById(id)
-    element.addEventListener('click', getKeyboardEventEmitter(buttons[id]))
+	for (let id of Object.keys(buttons)) {
+		let element = document.getElementById(id)
+		element.addEventListener('click', getKeyboardEventEmitter(buttons[id]))
 	}
 
 	const mode = document.getElementById('select-mode')
