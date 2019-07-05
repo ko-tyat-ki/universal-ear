@@ -105,10 +105,17 @@ setInterval(() => {
 }, 500)
 
 const changeMode = (modeKey) => {
-	console.log(`Mode was changed from ${previousModeKey} to ${currentModeKey}`)
+	console.log(`Mode was changed from ${previousModeKey} to ${modeKey}`)
+	if (currentModeKey === 'sleep') currentMode = sleep
+	if (currentModeKey === 'onChange') currentMode = onChange
+	if (currentModeKey === 'easterEgg') currentMode = easterEgg
+	else if (Object.keys(modes).includes(currentModeKey)) currentMode = modes[modeKey]
+	else {
+		throw new Error(`We can't change mode to ${modeKey}`)
+	}
 	previousModeKey = currentModeKey
 	currentModeKey = modeKey
-	currentMode = modes[modeKey]
+
 	Object.keys(clientConfigurations).map(socketId => {
 		connectedSockets[socketId].emit('modeChanged', modeKey)
 	})
@@ -168,12 +175,12 @@ setInterval(() => {
 // Special requests handlers
 // Are here to talk to global variables as it is a bit cheaper
 const modeHandler = (req, res) => {
-	currentModeKey = req.query.name
-	currentMode = modes[currentModeKey]
-	Object.keys(clientConfigurations).map(socketId => {
-		connectedSockets[socketId].emit('modeChanged', currentModeKey)
-	})
-	res.send('Done!')
+	try {
+		changeMode(req.query.name)
+		res.send('Done!')
+	} catch (error) {
+		res.send(`Sorry the mode couldn't change, reason: ${error}`)
+	}
 };
 
 const switchAutomaticModeHandler = (req, res) => {
@@ -233,7 +240,7 @@ const io = spinServer([
 	{
 		method: 'get',
 		path: '/modesNames',
-		callback: (req, res) => (res.json([...Object.keys(modes), 'easterEgg', 'onChange']))
+		callback: (req, res) => (res.json([...Object.keys(modes), 'easterEgg', 'onChange', 'sleep']))
 	},
 	{
 		method: 'get',
