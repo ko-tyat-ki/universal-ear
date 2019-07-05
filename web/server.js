@@ -1,6 +1,6 @@
 /* global console */
 
-import modes from './lib/visualisations'
+import prodModes from './lib/visualisations'
 import {
 	putLedsInBufferArray,
 	regroupConfig,
@@ -21,6 +21,12 @@ import {
 
 import { serverConfig } from '../modes_config.json'
 console.log(serverConfig)
+
+
+const modes = prodModes
+modes.sleep = sleep
+modes.easterEgg = easterEgg
+modes.onChange = onChange
 
 // Initialise
 let currentModeKey = 'flicker'
@@ -69,7 +75,7 @@ setInterval(() => {
 		}
 	}
 
-	const modesKeys = Object.keys(modes)
+	const modesKeys = Object.keys(prodModes)
 	if (!isSleeping && isAutoChangingModeEnabled && Date.now() - lastTimeAutoChangedMode > modeAutoChangeInterval) {
 		const nextRandomKey = modesKeys.filter(modeKey => modeKey !== currentModeKey)[Math.floor(Math.random() * (modesKeys.length - 1))]
 		if (useOnChange) {
@@ -91,6 +97,7 @@ setInterval(() => {
 	if (useSleepMode) {
 		if (wasStretchedHardEnoughToWakeUp(combinedSensors)) {
 			if (isSleeping) changeMode(previousModeKey)
+			console.log('good morning!')
 			noActionsSince = Date.now()
 			isSleeping = false
 			return
@@ -98,6 +105,7 @@ setInterval(() => {
 
 		if (Date.now() - noActionsSince > goToSleepAfter) {
 			if (!isSleeping) currentMode = sleep
+			console.log('zzzzzzzzzz')
 			isSleeping = true
 			return
 		}
@@ -105,10 +113,14 @@ setInterval(() => {
 }, 500)
 
 const changeMode = (modeKey) => {
-	console.log(`Mode was changed from ${previousModeKey} to ${currentModeKey}`)
+	console.log(`Mode was changed from ${previousModeKey} to ${modeKey}`)
+	if (Object.keys(modes).includes(currentModeKey)) currentMode = modes[modeKey]
+	else {
+		throw new Error(`We can't change mode to ${modeKey}`)
+	}
 	previousModeKey = currentModeKey
 	currentModeKey = modeKey
-	currentMode = modes[modeKey]
+
 	Object.keys(clientConfigurations).map(socketId => {
 		connectedSockets[socketId].emit('modeChanged', modeKey)
 	})
@@ -168,12 +180,12 @@ setInterval(() => {
 // Special requests handlers
 // Are here to talk to global variables as it is a bit cheaper
 const modeHandler = (req, res) => {
-	currentModeKey = req.query.name
-	currentMode = modes[currentModeKey]
-	Object.keys(clientConfigurations).map(socketId => {
-		connectedSockets[socketId].emit('modeChanged', currentModeKey)
-	})
-	res.send('Done!')
+	try {
+		changeMode(req.query.name)
+		res.send('Done!')
+	} catch (error) {
+		res.send(`Sorry the mode couldn't change, reason: ${error}`)
+	}
 };
 
 const switchAutomaticModeHandler = (req, res) => {
@@ -233,7 +245,7 @@ const io = spinServer([
 	{
 		method: 'get',
 		path: '/modesNames',
-		callback: (req, res) => (res.json([...Object.keys(modes), 'easterEgg', 'onChange']))
+		callback: (req, res) => (res.json(Object.keys(modes)))
 	},
 	{
 		method: 'get',

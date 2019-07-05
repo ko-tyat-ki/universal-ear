@@ -22,16 +22,26 @@ h5 {
 }
 
 .container {
-  width: 100vw;
-  display: inline-flex;
+  position: absolute;
+  top: 0;
 }
 
 .buttons-are-cool {
-  bottom: 5vh;
+  bottom: 20px;
   position: absolute;
 }
 
-.buttons-are-cool .button {
-  height: 5vh;
-  margin: 10px;
+.button {
+  height: 4vh;
+  width: 10vw;
+  padding: 0.35em 1.2em;
+  border: 0.2em solid teal;
+  margin: 0.2em 0.3em 0.5em 0;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-weight: 300;
+  color:black;
+  text-align:center;
+  transition: all 0.2s;
 }
