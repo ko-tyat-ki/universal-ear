@@ -18,7 +18,11 @@
         "maxTension": 100,
         "reduceBrightnessFunctionTime": 10000,
         "colorChangingSpeed": 3,
-        "defaultColor": [10,10,10]
+        "defaultColor": [
+            0,
+            0,
+            0
+        ]
     },
     "jasmineConfig": {
         "tensionTrigger": 10
