@@ -26,7 +26,7 @@ console.log(serverConfig)
 const modes = prodModes
 modes.sleep = sleep
 modes.easterEgg = easterEgg
-modes.onChange = easterEgg
+modes.onChange = onChange
 
 // Initialise
 let currentModeKey = 'flicker'
