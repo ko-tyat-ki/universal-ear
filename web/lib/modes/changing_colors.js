@@ -55,9 +55,9 @@ const changing_colors = (sticks, sensors) => {
 const ReduceBrightnessFunction = (tension_parameter) => {
 	// adding shimmering - the default boundary gets unstable
 	const offColor = { // get from contants
-		r: changingColors.defaultColor[0] + (Math.random() - 0.5) * 20,
-		g: changingColors.defaultColor[1] + (Math.random() - 0.5) * 20,
-		b: changingColors.defaultColor[2] + (Math.random() - 0.5) * 20
+		r: changingColors.defaultColor[0] + (Math.random() - 0.5) * changingColors.defaultMult,
+		g: changingColors.defaultColor[1] + (Math.random() - 0.5) * changingColors.defaultMult,
+		b: changingColors.defaultColor[2] + (Math.random() - 0.5) * changingColors.defaultMult
 	}
 
 	// bad coding creating different colour fainting schemes :)
