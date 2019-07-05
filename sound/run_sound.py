@@ -76,7 +76,6 @@ while not exit:
                     continue
 
             mode = msg['mode']
-            print(mode)
             if cur_mode == mode:
                 for sensor in msg['sensorsData']:
                     try:
@@ -151,6 +150,7 @@ while not exit:
                         # play Base sound
                         try:
                             pygame.mixer.music.load(os.path.join(cur_dir, mode,'Base.mp3'))
+                            logging.info("Finished loading base sound from {}".format(os.path.join(cur_dir, mode,'Base.mp3')))
                         except:
                             pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
                         pygame.mixer.music.play(loops=-1)
@@ -162,6 +162,7 @@ while not exit:
                         # play Base sound
                         try:
                             pygame.mixer.music.load(os.path.join(cur_dir, mode,'Base.mp3'))
+                            logging.info("Finished loading base from {}".format(os.path.join(cur_dir, mode,'Base.mp3')))
                         except:
                             pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
                         pygame.mixer.music.set_volume(0.8)
