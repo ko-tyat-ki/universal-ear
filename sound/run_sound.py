@@ -139,6 +139,14 @@ while not exit:
                         pygame.mixer.music.play(loops=-1)
 
                         cur_mode = mode
+                    if mode in ["sleep"]:
+                        # play Base sound
+                        try:
+                            pygame.mixer.music.load(os.path.join(cur_dir, mode,'Base.mp3'))
+                        except:
+                            pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
+                        pygame.mixer.music.set_volume(0.8)
+                        pygame.mixer.music.play(loops=-1)
 
     except Exception as e:
         print("Exception: {}".format(e))
