@@ -6,12 +6,30 @@ const start = Date.now();
 const speed = stairs.speed // in change per milisecond, default 500
 const numberOfLedsOf16 = stairs.numberOfLedsOf16 // default 32
 
-const superBrightColor = () => {
-    return {
-        r: Math.floor(Math.random() * 100),
-        g: Math.floor(Math.random() * 255),
-        b: Math.floor(Math.random() * 195)
-    }
+const numberOfRandomness = 1000
+
+const randomGenerator = [...Array(numberOfRandomness)].map(row => (
+    [...Array(NUMBER_OF_LEDS)].map(color => (
+        {
+            r: Math.floor(60 + Math.random() * 100),
+            g: Math.floor(60 + Math.random() * 255),
+            b: Math.floor(60 + Math.random() * 195)
+        }
+    ))
+))
+
+let count = 0
+
+const getRandom = (key) => {
+    count++
+
+    if (count >= numberOfRandomness - 1) count = 0
+
+    return randomGenerator[count][key]
+}
+
+const superBrightColor = (key) => {
+    return getRandom(key)
 }
 
 const ledsCalculation = ({ numberOfParts, timeImput, raiseFactor, tension }) => {
@@ -33,7 +51,7 @@ const ledsCalculation = ({ numberOfParts, timeImput, raiseFactor, tension }) => 
         if (number < 0 || number > NUMBER_OF_LEDS - 1) return
         return {
             number,
-            color: superBrightColor()
+            color: superBrightColor(key)
         }
     }).filter(Boolean)
 }

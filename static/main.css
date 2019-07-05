@@ -25,3 +25,13 @@ h5 {
   width: 100vw;
   display: inline-flex;
 }
+
+.buttons-are-cool {
+  bottom: 5vh;
+  position: absolute;
+}
+
+.buttons-are-cool .button {
+  height: 5vh;
+  margin: 10px;
+}

@@ -4,7 +4,7 @@
         "useEasterEgg": true,
         "useSleepMode": true,
         "modeAutoChangeInterval": 180000,
-        "goToSleepAfter": 1200000,
+        "goToSleepAfter": 200000,
         "isAutoChangingModeEnabled": true
     },
     "fastReaction": {
