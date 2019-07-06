@@ -106,6 +106,7 @@ while not exit:
                             if inv_sound_groups[mode] == "flicker":
                                 if sensor['fast'] > NUM_LEDS*config['flickerConfig']['factor']*config['flickerConfig']['soundTrigger']:
                                     if time.time() > channels_ignore[name]:
+                                        channels[name].set_volume(config['flickerConfig']['soundFactor'])
                                         channels[name].play(sounds[name])
                                         channels_ignore[name] = time.time()+sounds[name].get_length()
                                 if name in [10, 11]:
@@ -114,15 +115,15 @@ while not exit:
                                         slow = 0
                                     if slow > NUM_LEDS*config['flickerConfig']['factor']:
                                         slow = NUM_LEDS*config['flickerConfig']['factor']
-                                    channels[name].set_volume(slow / NUM_LEDS*config['flickerConfig']['factor'])
+                                    channels[name].set_volume((slow / NUM_LEDS*config['flickerConfig']['factor'])*config['flickerConfig']['soundFactor'])
                             elif inv_sound_groups[mode] == "jasmine":
                                 if sensor['fast'] > config['jasmineConfig']['tensionTrigger']:
                                     if time.time() > channels_ignore[name]:
                                         loc = random.uniform(0.55,0.95)
                                         if sensor['where'] == 'right':
-                                            channels[name].set_volume(1-loc,loc)
+                                            channels[name].set_volume((1-loc)*config['jasmineConfig']['soundFactor'],loc*config['jasmineConfig']['soundFactor'])
                                         else:
-                                            channels[name].set_volume(loc,1-loc)
+                                            channels[name].set_volume(loc*config['jasmineConfig']['soundFactor'],(1-loc)*config['jasmineConfig']['soundFactor'])
                                         channels[name].play(sounds[name])
                                         channels_ignore[name] = time.time()+sounds[name].get_length()
                     except Exception as e:
@@ -144,8 +145,8 @@ while not exit:
                     except:
                         logging.warning("Base sound not found at {}, loading default".format(base_sound_path))
                         pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
-                    pygame.mixer.music.set_volume(0.9)
                     pygame.mixer.music.play(loops=-1)
+                    pygame.mixer.music.set_volume(config['sleepConfig']['volume'])
                 elif mode == "easterEgg":
                     logging.info("Easter Egg!")
                     # UNCOMMENT FOR REAL EASTER EGG :)
@@ -157,6 +158,7 @@ while not exit:
                     except:
                         pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
                     pygame.mixer.music.play(loops=1)
+                    pygame.mixer.music.set_volume(config['easterEggConfig']['volume'])
                     cur_mode = mode
                 elif cur_mode != "init":
                     if inv_sound_groups[mode] == inv_sound_groups[cur_mode]:
@@ -180,8 +182,8 @@ while not exit:
                     except:
                         logging.warning("Base sound not found at {}, loading default".format(base_sound_path))
                         pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
-                    pygame.mixer.music.set_volume(0.9)
                     pygame.mixer.music.play(loops=-1)
+                    pygame.mixer.music.set_volume(config['sleepConfig']['volume'])
                     cur_mode = mode
                 else:
                     logging.info("Loading {}".format(mode))
@@ -209,6 +211,7 @@ while not exit:
                         logging.warning("Base sound not found at {}, loading default".format(base_sound_path))
                         pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
                     pygame.mixer.music.play(loops=-1)
+                    pygame.mixer.music.set_volume(1)
 
                     logging.info("Finished loading {}".format(mode))
 

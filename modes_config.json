@@ -7,6 +7,9 @@
         "goToSleepAfter": 20000,
         "isAutoChangingModeEnabled": true
     },
+    "sleepConfig": {
+	"volume": 0.9
+    },
     "fastReaction": {
         "tensionTrigger": 10
     },
@@ -26,7 +29,8 @@
         "defaultMult": 30
     },
     "jasmineConfig": {
-        "tensionTrigger": 10
+        "tensionTrigger": 10,
+	"soundFactor": 1
     },
     "oceanConfig": {
         "speed": 100,
@@ -68,12 +72,14 @@
     },
     "flickerConfig": {
         "factor": 1,
-	"soundTrigger": 0.75
+	"soundTrigger": 0.75,
+	"soundFactor": 1
     },
     "easterEggConfig": {
         "speed": 150,
         "duration": 10000,
         "tensionThreshold": 10,
-        "activationStickCount": 8
+        "activationStickCount": 8,
+	"volume": 1
     }
 }
