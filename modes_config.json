@@ -45,7 +45,7 @@
         "rainbowLength": 60000,
         "positionStickAdjustmentFactor": 10,
 	"factor": 1,
-	"soundTrigger": 0.75,
+	"soundTrigger": 0.5,
 	"soundFactor": 1,
 	"slowSoundFactor": 1
 	
