@@ -70,8 +70,6 @@ const changeMode = (modeKey) => {
 	previousModeKey = currentModeKey
 	currentModeKey = modeKey
 
-	// console.log({ previousModeKey, currentModeKey })
-
 	Object.keys(connectedSockets).map(socketId => {
 		if (prodModesKeys.includes(modeKey)) connectedSockets[socketId].emit('modeChanged', modeKey)
 	})
@@ -81,14 +79,12 @@ const changeMode = (modeKey) => {
 (() => {
 	currentModeKey = selectRandomModeKey(prodModesKeys)
 	currentMode = modes[currentModeKey]
-	console.log({ isOnChange })
 	changeMode(currentModeKey)
 })()
 
 // Select visualisation modes
 setInterval(() => {
 	const combinedSensors = [...clientSensors, ...realSensorsData]
-	console.log({ currentModeKey })
 	if (useEasterEgg) {
 		if (!isEaster && isEasterTriggered(combinedSensors)) {
 			changeMode('easterEgg')
@@ -138,7 +134,7 @@ setInterval(() => {
 				changeMode('sleep')
 				isSleeping = true
 			}
-			console.log(`zzzzzzzzzz already for ${Math.floor((Date.now() - noActionsSince) / (1000))} seconds`)
+			// console.log(`zzzzzzzzzz already for ${Math.floor((Date.now() - noActionsSince) / (1000))} seconds`)
 			return
 		}
 	}
