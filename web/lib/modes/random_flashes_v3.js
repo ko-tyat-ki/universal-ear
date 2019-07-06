@@ -8,13 +8,16 @@ const proportionLEDSAlight_default = randomFlashes.proportionLEDSAlight_default 
 const flashesFactor = randomFlashes.flashesFactor
 const timeParameterFactor = randomFlashes.timeParameterFactor
 
-const random_flashes = (sticks, sensors) => {
-	
+const random_flashes_v3 = (sticks, sensors) => {
+
+	const sum_tensions = sensors.map(sensor => sensor.tension + sensor.oldTension.reduce((a, b) => a + b, 0)).reduce((a,b) => a + b, 0) / 50
+
 	// Cycle through array of sensors from each stick:
 	return sensors.map(sensor => {
 
 		// how to have a sum over all sensors here?
-		const proportionLEDSAlight = Math.max(proportionLEDSAlight_default, sensor.oldTension.reduce((a, b) => a + b, 0) * sensitivity)
+		//const proportionLEDSAlight = Math.max(proportionLEDSAlight_default, sensor.oldTension.reduce((a, b) => a + b, 0) * sensitivity)
+		const proportionLEDSAlight = Math.max(proportionLEDSAlight_default, (sensor.tension + sum_tensions) * sensitivity)
 		const flashesFrequency = Math.max(flashesFrequency_default, sensitivity / flashesFactor * sensor.tension)
 
 		// Find a Stick that corresponds to current Sensor
@@ -51,10 +54,10 @@ const random_flashes = (sticks, sensors) => {
 
 const stickLightning = (timeParameter) => {
 	return {
-		r: Math.floor(Math.max(Math.min((2 - timeParameter) * 300 / 2, 255), 0) / 1.5),
+		r: Math.floor(Math.max(Math.min((2 - timeParameter) * 300 / 2, 255), 0) / 2),
 		g: Math.floor(Math.max(Math.min((2 - timeParameter) * 300 / 2, 255), 0)),
-		b: Math.floor(Math.max(Math.min((2 - timeParameter) * 300 / 2, 255), 0) / 3)
+		b: Math.floor(Math.max(Math.min((2 - timeParameter) * 300 / 2, 255), 0) / 1.5)
 	}
 }
 
-export default random_flashes
+export default random_flashes_v3
