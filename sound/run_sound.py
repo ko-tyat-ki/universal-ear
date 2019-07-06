@@ -9,10 +9,11 @@ import logging
 from pathlib import Path
 
 
+
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
 modeNames = ["basic_with_rainbow","changing_colors","random_flashes","flicker","tensionWithEcho","jasmine","ocean","risingStairs","polzynki","sleep","easterEgg"]
-sound_groups = {'flicker':["basic_with_rainbow","random_flashes","flicker","tensionWithEcho","ocean","risingStairs","polzynki"], 'jasmine':["jasmine","changing_colors"], 'sleep':['sleep'], 'easterEgg':['easterEgg']}
+sound_groups = {'flicker':["basic_with_rainbow","random_flashes","flicker","tensionWithEcho","ocean"], 'polzynki':["risingStairs","polzynki"], 'jasmine':["jasmine","changing_colors"], 'sleep':['sleep'], 'easterEgg':['easterEgg']}
 inv_sound_groups = {}
 for key in sound_groups.keys():
     for val in sound_groups[key]:
@@ -35,7 +36,7 @@ cur_mode = "init"
 
 cur_dir = (os.path.dirname(os.path.abspath(__file__)))
 
-config_path = os.path.join(Path(cur_dir).parent, 'modes_config.json')
+config_path = os.path.join(cur_dir, os.pardir, 'modes_config.json')
 logging.info("Loading config from {}".format(config_path))
 with open(config_path) as json_file:
     config = json.load(json_file)
@@ -113,8 +114,21 @@ while not exit:
                                     slow = sensor['slow']
                                     if slow < 0:
                                         slow = 0
-                                    if slow > NUM_LEDS*config['flickerConfig']['factor']:
-                                        slow = NUM_LEDS*config['flickerConfig']['factor']
+                                    if slow > NUM_LEDS*config['flickerConfig']['slowSoundFactor']:
+                                        slow = NUM_LEDS*config['flickerConfig']['slowSoundFactor']
+                                    channels[name].set_volume((slow / NUM_LEDS*config['flickerConfig']['factor'])*config['flickerConfig']['soundFactor'])
+                            elif inv_sound_groups[mode] == "polzynki":
+                                if sensor['fast'] > NUM_LEDS*config['polzynkiConfig']['factor']*config['polzynkiConfig']['soundTrigger']:
+                                    if time.time() > channels_ignore[name]:
+                                        channels[name].set_volume(config['polzynkiConfig']['soundFactor'])
+                                        channels[name].play(sounds[name])
+                                        channels_ignore[name] = time.time()+sounds[name].get_length()
+                                if name in [5,7,10,11]:
+                                    slow = sensor['slow']
+                                    if slow < 0:
+                                        slow = 0
+                                    if slow > NUM_LEDS*config['polzynkiConfig']['slowSoundFactor']:
+                                        slow = NUM_LEDS*config['polzynkiConfig']['slowSoundFactor']
                                     channels[name].set_volume((slow / NUM_LEDS*config['flickerConfig']['factor'])*config['flickerConfig']['soundFactor'])
                             elif inv_sound_groups[mode] == "jasmine":
                                 if sensor['fast'] > config['jasmineConfig']['tensionTrigger']:
