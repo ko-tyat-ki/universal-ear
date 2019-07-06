@@ -125,7 +125,6 @@ setInterval(() => {
 	if (useSleepMode) {
 		if (wasStretchedHardEnoughToWakeUp(combinedSensors)) {
 			if (isSleeping) {
-				console.log('this is where we sleep', { previousModeKey, currentModeKey })
 				changeMode(previousModeKey)
 				console.log('good morning!')
 			}
@@ -135,7 +134,6 @@ setInterval(() => {
 		}
 
 		if (Date.now() - noActionsSince > goToSleepAfter) {
-			console.log({ previousModeKey, currentModeKey, isSleeping })
 			if (!isSleeping) {
 				changeMode('sleep')
 				isSleeping = true
