@@ -13,7 +13,6 @@ let scene
 
 const buildEar = (structure, mode) => {
 	const selectedStructure = structure.options[structure.options.selectedIndex].value
-	const selectedMode = mode.options[mode.options.selectedIndex].value
 
 	const configuration = {
 		fakeSensors: calculateFakeSensors(selectedStructure),
@@ -21,15 +20,7 @@ const buildEar = (structure, mode) => {
 		poles: calculateClientPoles(selectedStructure)
 	}
 
-	const ear = drawEar(configuration, scene)
-
-	socket.emit('configure', {
-		'mode': selectedMode,
-		'sticks': ear.sticks,
-		'sensors': ear.sensors,
-	})
-
-	return ear
+	return drawEar(configuration, scene)
 }
 
 let sensors
@@ -104,7 +95,12 @@ const onConfigure = () => {
 		sensors = null
 		onConfigure()
 	})
-	mode.addEventListener('change', onConfigure)
+
+	mode.addEventListener('change', () => {
+		socket.emit('clientChangedMode', {
+			'mode': document.getElementById('select-mode').value
+		})
+	})
 
 	setInterval(() => {
 		if (!sensors) return
