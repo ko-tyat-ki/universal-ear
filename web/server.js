@@ -37,7 +37,7 @@ modes.onChange = onChange
 let currentMode
 let previousModeKey
 let currentModeKey
-let prodModesKeys
+const prodModesKeys = Object.keys(prodModes)
 let clientSensors = []
 let realSensorsData = []
 const connectedSockets = {}
@@ -50,7 +50,7 @@ const selectAnotherRandomModeKey = (modesKeys) => modesKeys.filter(modeKey => mo
 //  Assign base data
 let isSleeping = false
 let noActionsSince = Date.now()
-let lastTimeAutoChangedMode = Date.now()
+let lastTimeChangedMode = Date.now()
 let onChangeStarted
 let easterEggTriggeredAt
 let isEaster = false
@@ -60,7 +60,8 @@ const onChangeDuration = onChangeSpeed * 14 // This magic number comed from the 
 
 const changeMode = (modeKey) => {
 	noActionsSince = Date.now()
-	console.log(`Mode was changed ${previousModeKey ? `from ${previousModeKey} ` : ''}to ${modeKey}`)
+	lastTimeChangedMode = Date.now()
+	console.log(`Mode was changed ${currentModeKey ? `from ${currentModeKey} ` : ''}to ${modeKey}`)
 	if (Object.keys(modes).includes(currentModeKey)) currentMode = modes[modeKey]
 	else {
 		throw new Error(`We can't change mode to ${modeKey}`)
@@ -68,32 +69,28 @@ const changeMode = (modeKey) => {
 	previousModeKey = currentModeKey
 	currentModeKey = modeKey
 
+	// console.log({ previousModeKey, currentModeKey })
+
 	Object.keys(connectedSockets).map(socketId => {
-		console.log('hahah', socketId)
-		connectedSockets[socketId].emit('modeChanged', modeKey)
+		if (prodModesKeys.includes(modeKey)) connectedSockets[socketId].emit('modeChanged', modeKey)
 	})
 }
 
 // Initialise modes
 (() => {
-	prodModesKeys = Object.keys(prodModes)
 	currentModeKey = selectRandomModeKey(prodModesKeys)
 	currentMode = modes[currentModeKey]
+	console.log({ isOnChange })
 	changeMode(currentModeKey)
-	console.log({
-		currentModeKey,
-		currentMode
-	})
 })()
 
 // Select visualisation modes
 setInterval(() => {
 	const combinedSensors = [...clientSensors, ...realSensorsData]
+	console.log({ currentModeKey })
 	if (useEasterEgg) {
 		if (!isEaster && isEasterTriggered(combinedSensors)) {
-			previousModeKey = currentModeKey
-			currentMode = easterEgg
-			currentModeKey = 'easterEgg'
+			changeMode('easterEgg')
 			easterEggTriggeredAt = Date.now()
 			isEaster = true
 			return
@@ -106,21 +103,20 @@ setInterval(() => {
 		}
 	}
 
-	if (!isSleeping && isAutoChangingModeEnabled && Date.now() - lastTimeAutoChangedMode > modeAutoChangeInterval) {
-		const nextRandomKey = selectAnotherRandomModeKey(prodModesKeys)
+	if (!isOnChange && !isSleeping && isAutoChangingModeEnabled && Date.now() - lastTimeChangedMode > modeAutoChangeInterval) {
 		if (useOnChange) {
+			console.log('... starting onChange ...')
 			onChangeStarted = Date.now()
-			currentModeKey = nextRandomKey
+			currentModeKey = selectAnotherRandomModeKey(prodModesKeys)
 			currentMode = onChange
 			isOnChange = true
 		} else changeMode(nextRandomKey)
-		lastTimeAutoChangedMode = Date.now()
 		return
 	}
 
-	if (isOnChange && Date.now() - onChangeStarted > onChangeDuration) {
-		onChangeStarted = false
+	if (isOnChange && !isSleeping && Date.now() - onChangeStarted > onChangeDuration) {
 		isOnChange = false
+		console.log('... finished onChange ...')
 		changeMode(currentModeKey)
 		return
 	}
@@ -128,10 +124,8 @@ setInterval(() => {
 	if (useSleepMode) {
 		if (wasStretchedHardEnoughToWakeUp(combinedSensors)) {
 			if (isSleeping) {
-				console.log('this is where we sleep', previousModeKey)
-				currentModeKey = previousModeKey
-				previousModeKey = 'sleep'
-				changeMode(currentModeKey)
+				console.log('this is where we sleep', { previousModeKey, currentModeKey })
+				changeMode(previousModeKey)
 				console.log('good morning!')
 			}
 			noActionsSince = Date.now()
@@ -140,13 +134,12 @@ setInterval(() => {
 		}
 
 		if (Date.now() - noActionsSince > goToSleepAfter) {
+			console.log({ previousModeKey, currentModeKey, isSleeping })
 			if (!isSleeping) {
-				previousModeKey = currentModeKey
-				currentMode = sleep
-				currentModeKey = 'sleep'
+				changeMode('sleep')
+				isSleeping = true
 			}
 			console.log(`zzzzzzzzzz already for ${Math.floor((Date.now() - noActionsSince) / (1000))} seconds`)
-			isSleeping = true
 			return
 		}
 	}
@@ -307,7 +300,6 @@ io.on('connection', socket => {
 	socket.on('clientChangedMode', newConfig => {
 		const newMode = newConfig.mode
 		changeMode(newMode)
-		noActionsSince = Date.now()
 		isSleeping = false
 	})
 
