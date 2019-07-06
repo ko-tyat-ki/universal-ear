@@ -4,7 +4,7 @@ export const realSticks = [
         name: '1',
         init: {
             x: -75,
-            y: -150,
+            y: -140,
             z: 225
         }
     },
