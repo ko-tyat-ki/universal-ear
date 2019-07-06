@@ -8,7 +8,7 @@
         "isAutoChangingModeEnabled": true
     },
     "sleepConfig": {
-	"volume": 0.9
+        "volume": 0.9
     },
     "fastReaction": {
         "tensionTrigger": 10
@@ -30,7 +30,7 @@
     },
     "jasmineConfig": {
         "tensionTrigger": 10,
-	"soundFactor": 1
+        "soundFactor": 1
     },
     "oceanConfig": {
         "speed": 100,
@@ -44,11 +44,10 @@
         "secondary_effect": 0.01,
         "rainbowLength": 60000,
         "positionStickAdjustmentFactor": 10,
-	"factor": 1,
-	"soundTrigger": 0.5,
-	"soundFactor": 1,
-	"slowSoundFactor": 1
-	
+        "factor": 1,
+        "soundTrigger": 0.5,
+        "soundFactor": 1,
+        "slowSoundFactor": 1
     },
     "randomFlashes2": {
         "rainbowLength": 180000,
@@ -77,15 +76,15 @@
     },
     "flickerConfig": {
         "factor": 1,
-	"soundTrigger": 0.75,
-	"soundFactor": 1,
-	"slowSoundFactor": 1
+        "soundTrigger": 0.75,
+        "soundFactor": 1,
+        "slowSoundFactor": 1
     },
     "easterEggConfig": {
         "speed": 150,
         "duration": 10000,
         "tensionThreshold": 10,
         "activationStickCount": 8,
-	"volume": 1
+        "volume": 1
     }
 }
