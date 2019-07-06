@@ -3,9 +3,17 @@
         "useOnChange": true,
         "useEasterEgg": true,
         "useSleepMode": true,
+<<<<<<< HEAD
         "modeAutoChangeInterval": 18000,
         "goToSleepAfter": 20000,
+=======
+        "modeAutoChangeInterval": 420000,
+        "goToSleepAfter": 2100000,
+>>>>>>> 8d059ceb1fb55f4694fa3079753e247188710585
         "isAutoChangingModeEnabled": true
+    },
+    "sleepConfig": {
+        "volume": 0.9
     },
     "fastReaction": {
         "tensionTrigger": 10
@@ -26,7 +34,8 @@
         "defaultMult": 30
     },
     "jasmineConfig": {
-        "tensionTrigger": 10
+        "tensionTrigger": 10,
+        "soundFactor": 1
     },
     "oceanConfig": {
         "speed": 100,
@@ -39,7 +48,11 @@
         "default_speed": 0.05,
         "secondary_effect": 0.01,
         "rainbowLength": 60000,
-        "positionStickAdjustmentFactor": 10
+        "positionStickAdjustmentFactor": 10,
+        "factor": 1,
+        "soundTrigger": 0.5,
+        "soundFactor": 1,
+        "slowSoundFactor": 1
     },
     "randomFlashes2": {
         "rainbowLength": 180000,
@@ -67,12 +80,16 @@
         "speed": 300
     },
     "flickerConfig": {
-        "factor": 1
+        "factor": 1,
+        "soundTrigger": 0.75,
+        "soundFactor": 1,
+        "slowSoundFactor": 1
     },
     "easterEggConfig": {
         "speed": 150,
         "duration": 10000,
         "tensionThreshold": 10,
-        "activationStickCount": 8
+        "activationStickCount": 8,
+        "volume": 1
     }
 }

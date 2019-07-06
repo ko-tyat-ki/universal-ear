@@ -10,14 +10,14 @@ const timeParameterFactor = randomFlashes.timeParameterFactor
 
 const random_flashes_v3 = (sticks, sensors) => {
 
-	const sum_tensions = sensors.map(sensor => sensor.tension + sensor.oldTension.reduce((a, b) => a + b, 0)).reduce((a,b) => a + b, 0) / 50
+	const sum_tensions = sensors.map(sensor => sensor.tension + sensor.oldTension.reduce((a, b) => a + b, 0)).reduce((a,b) => a + b, 0) / 60
 
 	// Cycle through array of sensors from each stick:
 	return sensors.map(sensor => {
 
 		// how to have a sum over all sensors here?
 		//const proportionLEDSAlight = Math.max(proportionLEDSAlight_default, sensor.oldTension.reduce((a, b) => a + b, 0) * sensitivity)
-		const proportionLEDSAlight = Math.max(proportionLEDSAlight_default, (sensor.tension + sum_tensions) * sensitivity)
+		const proportionLEDSAlight = Math.max(proportionLEDSAlight_default, (sensor.tension / 2 + sum_tensions) * sensitivity)
 		const flashesFrequency = Math.max(flashesFrequency_default, sensitivity / flashesFactor * sensor.tension)
 
 		// Find a Stick that corresponds to current Sensor
