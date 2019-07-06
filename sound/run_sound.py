@@ -6,13 +6,24 @@ import random
 import socket
 import os
 import logging
+from pathlib import Path
+
 
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
+modeNames = ["basic_with_rainbow","changing_colors","random_flashes","flicker","tensionWithEcho","jasmine","ocean","risingStairs","polzynki","sleep","easterEgg"]
+sound_groups = {'flicker':["basic_with_rainbow","random_flashes","flicker","tensionWithEcho","ocean","risingStairs","polzynki"], 'jasmine':["jasmine","changing_colors"], 'sleep':['sleep'], 'easterEgg':['easterEgg']}
+inv_sound_groups = {}
+for key in sound_groups.keys():
+    for val in sound_groups[key]:
+        if val in inv_sound_groups.keys():
+            logging.warning('mode {} is in multiple sound groups!'.format(val))
+        else:
+            inv_sound_groups[val] = key
+
 FADEOUT_TIME = 5
 NUM_CHANNELS = 12
-MAX_LED_VALUE = 40
-TRIGGER_LED_VALUE = 30
+NUM_LEDS = 40
 t = time.time()
 
 logging.info("Initialisation for {} channels".format(NUM_CHANNELS))
@@ -23,6 +34,11 @@ fadeout_ignore = False
 cur_mode = "init"
 
 cur_dir = (os.path.dirname(os.path.abspath(__file__)))
+
+config_path = os.path.join(Path(cur_dir).parent, 'modes_config.json')
+logging.info("Loading config from {}".format(config_path))
+with open(config_path) as json_file:
+    config = json.load(json_file)
 
 logging.info("Trying to connect...")
 
@@ -85,93 +101,114 @@ while not exit:
                     if name not in range(0,NUM_CHANNELS):
                         continue
 
-                    if mode == "flicker":
-                        if sensor['fast'] > TRIGGER_LED_VALUE:
-                            if time.time() > channels_ignore[name]:
-                                channels[name].play(sounds[name])
-                                channels_ignore[name] = time.time()+sounds[name].get_length()
-                        if name in [10, 11]:
-                            slow = sensor['slow']
-                            if slow < 0:
-                                slow = 0
-                            if slow > MAX_LED_VALUE:
-                                slow = MAX_LED_VALUE
-                            channels[name].set_volume(slow / MAX_LED_VALUE)
-                    elif mode == "jasmine":
-                        if sensor['fast'] > TRIGGER_LED_VALUE:
-                            if time.time() > channels_ignore[name]:
-                                loc = random.uniform(0.55,0.95)
-                                if sensor['where'] == 'right':
-                                    channels[name].set_volume(1-loc,loc)
-                                else:
-                                    channels[name].set_volume(loc,1-loc)
-                                channels[name].play(sounds[name])
-                                channels_ignore[name] = time.time()+sounds[name].get_length()
+                    try:
+                        if mode in inv_sound_groups.keys():
+                            if inv_sound_groups[mode] == "flicker":
+                                if sensor['fast'] > NUM_LEDS*config['flickerConfig']['factor']*config['flickerConfig']['soundTrigger']:
+                                    if time.time() > channels_ignore[name]:
+                                        channels[name].play(sounds[name])
+                                        channels_ignore[name] = time.time()+sounds[name].get_length()
+                                if name in [10, 11]:
+                                    slow = sensor['slow']
+                                    if slow < 0:
+                                        slow = 0
+                                    if slow > NUM_LEDS*config['flickerConfig']['factor']:
+                                        slow = NUM_LEDS*config['flickerConfig']['factor']
+                                    channels[name].set_volume(slow / NUM_LEDS*config['flickerConfig']['factor'])
+                            elif inv_sound_groups[mode] == "jasmine":
+                                if sensor['fast'] > config['jasmineConfig']['tensionTrigger']:
+                                    if time.time() > channels_ignore[name]:
+                                        loc = random.uniform(0.55,0.95)
+                                        if sensor['where'] == 'right':
+                                            channels[name].set_volume(1-loc,loc)
+                                        else:
+                                            channels[name].set_volume(loc,1-loc)
+                                        channels[name].play(sounds[name])
+                                        channels_ignore[name] = time.time()+sounds[name].get_length()
+                    except Exception as e:
+                        logging.warning('Problem playing sound - {}'.format(e))
+                        pass
 
 
             else: #change of mode
                 logging.info("Change of mode from {} to {}".format(cur_mode,mode))
-                if mode == "easterEgg":
+
+                if not mode in inv_sound_groups.keys():
+                    logging.warning("Unknown mode - {}".format(mode))
+
+                    # play Sleep sound
+                    try:
+                        base_sound_path = os.path.join(cur_dir, 'sleep', 'Base.mp3')
+                        pygame.mixer.music.load(base_sound_path)
+                        logging.info("Finished loading base from {}".format(base_sound_path))
+                    except:
+                        logging.warning("Base sound not found at {}, loading default".format(base_sound_path))
+                        pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
+                    pygame.mixer.music.set_volume(0.9)
+                    pygame.mixer.music.play(loops=-1)
+                elif mode == "easterEgg":
                     logging.info("Easter Egg!")
                     # UNCOMMENT FOR REAL EASTER EGG :)
-                    # pygame.mixer.stop()
+                    pygame.mixer.stop()
 
                     pygame.mixer.music.stop()
                     try:
-                        pygame.mixer.music.load(os.path.join(cur_dir, mode, 'Base.mp3'))
+                        pygame.mixer.music.load(os.path.join(cur_dir, 'easterEgg', 'Base.mp3'))
                     except:
                         pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
                     pygame.mixer.music.play(loops=1)
                     cur_mode = mode
                 elif cur_mode != "init":
-                    logging.info("Start Fadeout")
-                    t = time.time()
-                    pygame.mixer.fadeout(FADEOUT_TIME * 1000)
-                    pygame.mixer.music.fadeout(FADEOUT_TIME*1000)
-                    fadeout_ignore = True
-                 #init mode sounds
-                else:
-                    logging.info("Load new mode {}".format(mode))
-                    if mode in ["flicker","jasmine"]:
-                        # create separate Channel objects for simultaneous playback
-
-                        logging.info("Loading {}".format(mode))
-
-                        sounds = []
-
-                        for i in range(0,NUM_CHANNELS):
-                            try:
-                                sounds.append(pygame.mixer.Sound(os.path.join(cur_dir, mode,str(i)+'.ogg')))
-                            except:
-                                sounds.append(pygame.mixer.Sound(os.path.join(cur_dir, 'system','empty.ogg')))
-                            finally:
-                                channels[i].set_volume(1)
-
-                        # play Base sound
-                        try:
-                            pygame.mixer.music.load(os.path.join(cur_dir, mode,'Base.mp3'))
-                            logging.info("Finished loading base sound from {}".format(os.path.join(cur_dir, mode,'Base.mp3')))
-                        except:
-                            pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
-                        pygame.mixer.music.play(loops=-1)
-
-                        cur_mode = mode
-                    elif mode in ["sleep"]:
-                        logging.info("Loading {}".format(mode))
-
-                        # play Base sound
-                        try:
-                            pygame.mixer.music.load(os.path.join(cur_dir, mode,'Base.mp3'))
-                            logging.info("Finished loading base from {}".format(os.path.join(cur_dir, mode,'Base.mp3')))
-                        except:
-                            pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
-                        pygame.mixer.music.set_volume(0.8)
-                        pygame.mixer.music.play(loops=-1)
-
+                    if inv_sound_groups[mode] == inv_sound_groups[cur_mode]:
+                        logging.info("Change to mode from the same group {}".format(inv_sound_groups[mode]))
                         cur_mode = mode
                     else:
-                        logging.info("Default catch - empty mode")
-                        cur_mode = mode
+                        #start Fadeout
+                        logging.info("Start Fadeout")
+                        t = time.time()
+                        pygame.mixer.fadeout(FADEOUT_TIME * 1000)
+                        pygame.mixer.music.fadeout(FADEOUT_TIME * 1000)
+                        fadeout_ignore = True
+                elif mode == "sleep":
+                    logging.info("Loading Sleep")
+
+                    # play Base sound
+                    try:
+                        base_sound_path = os.path.join(cur_dir, 'sleep', 'Base.mp3')
+                        pygame.mixer.music.load(base_sound_path)
+                        logging.info("Finished loading base from {}".format(base_sound_path))
+                    except:
+                        logging.warning("Base sound not found at {}, loading default".format(base_sound_path))
+                        pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
+                    pygame.mixer.music.set_volume(0.9)
+                    pygame.mixer.music.play(loops=-1)
+                    cur_mode = mode
+                else:
+                    logging.info("Loading {}".format(mode))
+                    cur_mode = mode
+
+                    sound_path = os.path.join(cur_dir, inv_sound_groups[mode])
+
+                    #load sounds
+                    sounds = []
+                    for i in range(0,NUM_CHANNELS):
+                        try:
+                            sounds.append(pygame.mixer.Sound(os.path.join(sound_path,str(i)+'.ogg')))
+                        except:
+                            logging.warning("Sound {} not found, loading default".format(os.path.join(sound_path,str(i)+'.ogg')))
+                            sounds.append(pygame.mixer.Sound(os.path.join(cur_dir, 'system','empty.ogg')))
+                        finally:
+                            channels[i].set_volume(1)
+
+                    #load base sound
+                    try:
+                        base_sound_path = os.path.join(sound_path, 'Base.mp3')
+                        pygame.mixer.music.load(base_sound_path)
+                        logging.info("Finished loading base sound from {}".format(base_sound_path))
+                    except:
+                        logging.warning("Base sound not found at {}, loading default".format(base_sound_path))
+                        pygame.mixer.music.load(os.path.join(cur_dir, 'system', 'Base.mp3'))
+                    pygame.mixer.music.play(loops=-1)
 
                     logging.info("Finished loading {}".format(mode))
 

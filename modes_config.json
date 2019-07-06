@@ -67,7 +67,8 @@
         "speed": 300
     },
     "flickerConfig": {
-        "factor": 1
+        "factor": 1,
+	"soundTrigger": 0.75
     },
     "easterEggConfig": {
         "speed": 150,
