@@ -134,7 +134,7 @@ setInterval(() => {
 				changeMode('sleep')
 				isSleeping = true
 			}
-			console.log(`zzzzzzzzzz already for ${Math.floor((Date.now() - noActionsSince) / (1000))} seconds`)
+			// console.log(`zzzzzzzzzz already for ${Math.floor((Date.now() - noActionsSince) / (1000))} seconds`)
 			return
 		}
 	}
