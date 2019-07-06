@@ -43,7 +43,12 @@
         "default_speed": 0.05,
         "secondary_effect": 0.01,
         "rainbowLength": 60000,
-        "positionStickAdjustmentFactor": 10
+        "positionStickAdjustmentFactor": 10,
+	"factor": 1,
+	"soundTrigger": 0.75,
+	"soundFactor": 1,
+	"slowSoundFactor": 1
+	
     },
     "randomFlashes2": {
         "rainbowLength": 180000,
@@ -73,7 +78,8 @@
     "flickerConfig": {
         "factor": 1,
 	"soundTrigger": 0.75,
-	"soundFactor": 1
+	"soundFactor": 1,
+	"slowSoundFactor": 1
     },
     "easterEggConfig": {
         "speed": 150,
