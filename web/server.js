@@ -38,6 +38,7 @@ let currentMode
 let previousModeKey
 let currentModeKey
 const prodModesKeys = Object.keys(prodModes)
+const modesKeys = Object.keys(modes)
 let clientSensors = []
 let realSensorsData = []
 const connectedSockets = {}
@@ -62,7 +63,7 @@ const changeMode = (modeKey) => {
 	noActionsSince = Date.now()
 	lastTimeChangedMode = Date.now()
 	console.log(`Mode was changed ${currentModeKey ? `from ${currentModeKey} ` : ''}to ${modeKey}`)
-	if (Object.keys(modes).includes(currentModeKey)) currentMode = modes[modeKey]
+	if (modesKeys.includes(currentModeKey)) currentMode = modes[modeKey]
 	else {
 		throw new Error(`We can't change mode to ${modeKey}`)
 	}
@@ -201,6 +202,7 @@ setInterval(() => {
 const modeHandler = (req, res) => {
 	try {
 		const modeName = req.query.name
+		if (!modesKeys.includes(modeName)) throw new Error('This mode name does not exist')
 		changeMode(modeName)
 		if (modeName === 'easterEgg' && useEasterEgg) {
 			easterEggTriggeredAt = Date.now()
@@ -273,7 +275,7 @@ const io = spinServer([
 	{
 		method: 'get',
 		path: '/modesNames',
-		callback: (req, res) => (res.json(Object.keys(modes)))
+		callback: (req, res) => (res.json(modesKeys))
 	},
 	{
 		method: 'get',
