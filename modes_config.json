@@ -6,6 +6,10 @@
         "modeAutoChangeInterval": 600000,
         "goToSleepAfter": 900000,
         "isAutoChangingModeEnabled": true
+    },    
+    "generalSoundConfig": {
+        "baseVolume": 1,
+        "timeout": 5
     },
     "sleepConfig": {
         "volume": 0.9
@@ -15,7 +19,11 @@
     },
     "basicWithRainbow": {
         "rainbowLength": 60000,
-        "maxTension": 40
+        "maxTension": 40,
+        "soundTrigger": 0.5,
+        "slowSoundTrigger": 0.3,
+        "soundFactor": 1,
+        "slowSoundFactor": 1
     },
     "changingColors": {
         "maxTension": 50,
@@ -30,12 +38,16 @@
     },
     "jasmineConfig": {
         "tensionTrigger": 10,
-        "soundFactor": 1
+        "soundFactor": 0.9
     },
     "oceanConfig": {
         "speed": 100,
         "distanceBetweenSticks": 250,
-        "tensionTrigger": 4
+        "tensionTrigger": 4,
+        "factor": 1,
+        "slowSoundTrigger": 0.3,
+        "soundFactor": 1,
+        "slowSoundFactor": 1
     },
     "polzynkiConfig": {
         "length": 2,
@@ -46,6 +58,7 @@
         "positionStickAdjustmentFactor": 10,
         "factor": 1,
         "soundTrigger": 0.5,
+        "slowSoundTrigger": 0.3,
         "soundFactor": 1,
         "slowSoundFactor": 1
     },
@@ -78,6 +91,7 @@
     "flickerConfig": {
         "factor": 1,
         "soundTrigger": 0.75,
+        "slowSoundTrigger": 0.3,
         "soundFactor": 1,
         "slowSoundFactor": 1
     },
