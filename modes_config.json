@@ -62,7 +62,8 @@
         "flashesFrequency_default": 0.0005,
         "proportionLEDSAlight_default": 0.1,
         "flashesFactor": 20,
-        "timeParameterFactor": 10
+        "timeParameterFactor": 10,
+        "sumTensionsMultiplier": 0.02
     },
     "stairs": {
         "speed": 500,

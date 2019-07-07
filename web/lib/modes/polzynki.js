@@ -31,7 +31,7 @@ const polzynki = (sticks, sensors) => {
 		const st = parseInt(stick.name)
 		position[st] = position[st] + default_speed + tension * sensitivity
 
-		const position_stick_adj = (position[st] + position[0] + parseInt(stick.name) * positionStickAdjustmentFactor) % NUMBER_OF_LEDS
+		const position_stick_adj = NUMBER_OF_LEDS - (position[st] + position[0] + parseInt(stick.name) * positionStickAdjustmentFactor) % NUMBER_OF_LEDS
 
 		// Cycle through the keys up to the tension value
 		for (let key = 0; key < NUMBER_OF_LEDS; key++) {

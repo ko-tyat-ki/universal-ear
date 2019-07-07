@@ -7,14 +7,17 @@ const flashesFrequency_default = randomFlashes.flashesFrequency_default // 0/200
 const proportionLEDSAlight_default = randomFlashes.proportionLEDSAlight_default // from 0 to 1, 0.1 - balanced
 const flashesFactor = randomFlashes.flashesFactor
 const timeParameterFactor = randomFlashes.timeParameterFactor
+const sumTensionsMultiplier = randomFlashes.sumTensionsMultiplier
 
 const random_flashes = (sticks, sensors) => {
+
+	const sum_tensions = sensors.map(sensor => sensor.tension + sensor.oldTension.reduce((a, b) => a + b, 0)).reduce((a,b) => a + b, 0) * sumTensionsMultiplier
 	
 	// Cycle through array of sensors from each stick:
 	return sensors.map(sensor => {
 
 		// how to have a sum over all sensors here?
-		const proportionLEDSAlight = Math.max(proportionLEDSAlight_default, sensor.oldTension.reduce((a, b) => a + b, 0) * sensitivity)
+		const proportionLEDSAlight = Math.max(proportionLEDSAlight_default, (sensor.tension + sum_tensions) * sensitivity)
 		const flashesFrequency = Math.max(flashesFrequency_default, sensitivity / flashesFactor * sensor.tension)
 
 		// Find a Stick that corresponds to current Sensor
@@ -31,7 +34,6 @@ const random_flashes = (sticks, sensors) => {
 
 				if (timeParameter < 2) {
 					const ledColor = stickLightning(timeParameter)
-					//const ledColor = rainbowColors(30000)
 
 					leds.push({
 						number: key,
