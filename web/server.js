@@ -85,7 +85,6 @@ const changeMode = (modeKey) => {
 // Select visualisation modes
 setInterval(() => {
 	const combinedSensors = [...clientSensors, ...realSensorsData]
-	console.log({ currentModeKey })
 	if (useEasterEgg) {
 		if (!isEaster && isEasterTriggered(combinedSensors)) {
 			changeMode('easterEgg')
