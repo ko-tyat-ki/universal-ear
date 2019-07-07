@@ -3,8 +3,8 @@
         "useOnChange": true,
         "useEasterEgg": true,
         "useSleepMode": true,
-        "modeAutoChangeInterval": 420000,
-        "goToSleepAfter": 2100000,
+        "modeAutoChangeInterval": 600000,
+        "goToSleepAfter": 900000,
         "isAutoChangingModeEnabled": true
     },
     "sleepConfig": {
@@ -72,7 +72,7 @@
         "tensionTreshold": 1.5
     },
     "onChangeConfig": {
-        "speed": 300
+        "speed": 500
     },
     "flickerConfig": {
         "factor": 1,
