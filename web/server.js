@@ -62,7 +62,7 @@ const onChangeDuration = onChangeSpeed * 14 // This magic number comed from the 
 const changeMode = (modeKey) => {
 	noActionsSince = Date.now()
 	lastTimeChangedMode = Date.now()
-	console.log(`Mode was changed ${currentModeKey ? `from ${currentModeKey} ` : ''}to ${modeKey}`)
+	console.log(`Mode was changed to ${modeKey}`)
 	if (modesKeys.includes(currentModeKey)) currentMode = modes[modeKey]
 	else {
 		throw new Error(`We can't change mode to ${modeKey}`)
