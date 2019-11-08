@@ -238,7 +238,7 @@ export const calculateClientSticks = (selectedStructure) => {
                     }
                 }
             ]
-        case 'final':
+        case 'nowhere2019':
             return [
                 {
                     name: '1',
