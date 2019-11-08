@@ -10,8 +10,10 @@ import { calculateClientPoles } from './lib/configuration/clientPolesConfig.js'
 
 let socket = io()
 let scene
+let sensors
+let sticks
 
-const buildEar = (structure, mode) => {
+const buildEar = (structure) => {
 	const selectedStructure = structure.options[structure.options.selectedIndex].value
 
 	const configuration = {
@@ -22,9 +24,6 @@ const buildEar = (structure, mode) => {
 
 	return drawEar(configuration, scene)
 }
-
-let sensors
-let sticks
 
 const onConfigure = () => {
 	init()
@@ -48,8 +47,10 @@ const onConfigure = () => {
 		})
 	})
 
-	socket.on('modeChanged', newMode => {
-		mode.value = newMode
+	socket.on('configChanged', ({ currentModeKey, currentStructureKey }) => {
+		console.log({ currentModeKey, currentStructureKey })
+		mode.value = currentModeKey
+		structure.value = currentStructureKey
 	})
 }
 
@@ -86,20 +87,27 @@ const onConfigure = () => {
 	}
 
 	const mode = document.getElementById('select-mode')
-	const structure = document.getElementById('select-structure')
-	structure.addEventListener('change', () => {
-		while (scene.children.length > 0) {
-			scene.remove(scene.children[0])
-		}
-		sticks = null
-		sensors = null
-		onConfigure()
-	})
-
 	mode.addEventListener('change', () => {
 		socket.emit('clientChangedMode', {
 			'mode': document.getElementById('select-mode').value
 		})
+	})
+
+	const structure = document.getElementById('select-structure')
+	structure.value = 'nowhere2019'
+	socket.emit('clientChangedStructure', {
+		'structure': document.getElementById('select-structure').value
+	})
+	structure.addEventListener('change', () => {
+		while (scene.children.length > 0) {
+			scene.remove(scene.children[0])
+		}
+		socket.emit('clientChangedStructure', {
+			'structure': document.getElementById('select-structure').value
+		})
+		sticks = null
+		sensors = null
+		onConfigure()
 	})
 
 	setInterval(() => {
