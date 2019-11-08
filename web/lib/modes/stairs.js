@@ -76,8 +76,7 @@ const risingStairs = (sticks, sensors) => {
                         key: stick.name,
                         leds: ledsCalculation({ numberOfParts: 2, timeImput, raiseFactor, tension })
                     };
-                }
-                if (sticks.length === 12) {
+                } else {
                     const timeImput = Math.floor((Date.now() - start) / speed)
                     let raiseFactor
                     if (['3', '7'].indexOf(stick.name) > -1) raiseFactor = 0
@@ -89,7 +88,6 @@ const risingStairs = (sticks, sensors) => {
                         leds: ledsCalculation({ numberOfParts: 4, timeImput, raiseFactor, tension })
                     };
                 }
-
             }
         });
     });
