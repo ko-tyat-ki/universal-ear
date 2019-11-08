@@ -885,7 +885,7 @@ export const calculateClientPoles = (selectedStructure) => {
                     }
                 }
             ]
-        case 'final':
+        case 'nowhere2019':
             return [
                 // vertical poles
                 {

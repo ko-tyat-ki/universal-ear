@@ -154,7 +154,7 @@ export const calculateFakeSensors = (selectedStructure) => {
                     stick: '11'
                 }
             ]
-        case 'final':
+        case 'nowhere2019':
             return [
                 {
                     key: '1',
