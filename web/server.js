@@ -10,7 +10,7 @@ import { connectToArduinos } from './lib/helpers/connectToArduinos'
 import { spinServer } from './lib/helpers/spinServer'
 import { NUMBER_OF_LEDS } from './lib/configuration/constants'
 import { writeToPython } from './lib/helpers/communicateWithPython'
-import { realSticks } from './lib/configuration/realSticksConfig'
+import { calculateRealColumns } from './lib/configuration/realColumnsConfig'
 import { easterEgg, isEasterTriggered, easterEggDuration } from './lib/modes/easterEgg'
 import { onChangeSpeed, onChange } from './lib/modes/onChange'
 import sleep from './lib/modes/sleep'
@@ -19,7 +19,7 @@ import {
 } from './lib/helpers/sleepTracker'
 
 import { serverConfig } from '../modes_config.json'
-console.log(serverConfig)
+console.log({ serverConfig })
 
 // Get from config
 let {
@@ -29,7 +29,7 @@ let {
 
 let { useOnChange, useEasterEgg, useSleepMode, isAutoChangingModeEnabled } = serverConfig
 
-const modes = Object.assign({}, prodModes)
+const modes = { ...prodModes }
 modes.sleep = sleep
 modes.easterEgg = easterEgg
 modes.onChange = onChange
@@ -37,6 +37,7 @@ modes.onChange = onChange
 let currentMode
 let previousModeKey
 let currentModeKey
+let currentStructureKey = 'nowhere2019'
 const prodModesKeys = Object.keys(prodModes)
 const modesKeys = Object.keys(modes)
 let clientSensors = []
@@ -71,7 +72,19 @@ const changeMode = (modeKey) => {
 	currentModeKey = modeKey
 
 	Object.keys(connectedSockets).map(socketId => {
-		if (prodModesKeys.includes(modeKey)) connectedSockets[socketId].emit('modeChanged', modeKey)
+		if (prodModesKeys.includes(modeKey)) connectedSockets[socketId].emit('configChanged', { currentModeKey, currentStructureKey })
+	})
+}
+
+const changeStructure = (structureKey) => {
+	noActionsSince = Date.now()
+	lastTimeChangedMode = Date.now()
+	console.log(`Structure was changed to ${structureKey}`)
+
+	currentStructureKey = structureKey
+
+	Object.keys(connectedSockets).map(socketId => {
+		connectedSockets[socketId].emit('configChanged', { currentModeKey, currentStructureKey })
 	})
 }
 
@@ -134,7 +147,7 @@ setInterval(() => {
 				changeMode('sleep')
 				isSleeping = true
 			}
-			// console.log(`zzzzzzzzzz already for ${Math.floor((Date.now() - noActionsSince) / (1000))} seconds`)
+			console.log(`zzzzzzzzzz already for ${Math.floor((Date.now() - noActionsSince) / (1000))} seconds`)
 			return
 		}
 	}
@@ -156,7 +169,7 @@ const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
 		key: sensor.key
 	}))
 
-	const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData])
+	const combinedLedsConfig = currentMode(calculateRealColumns(currentStructureKey), [...clientSensors, ...realSensorsData])
 
 	ledsConfig = regroupConfig(combinedLedsConfig.filter(Boolean))
 
@@ -188,7 +201,7 @@ if (realSensors && realSensors.length > 0) {
 // Talk to python
 setInterval(() => {
 	const combinedSensors = [...clientSensors, ...realSensorsData]
-	if (combinedSensors.length > 0) writeToPython(combinedSensors, currentModeKey)
+	if (combinedSensors.length > 0) writeToPython(combinedSensors, currentModeKey, currentStructureKey)
 }, 100)
 
 // Special requests handlers
@@ -281,13 +294,13 @@ const io = spinServer([
 io.on('connection', socket => {
 	connectedSockets[socket.id] = socket
 
-	socket.emit('modeChanged', currentModeKey)
+	socket.emit('configChanged', { currentModeKey, currentStructureKey })
 
 	socket.on('updatedSensors', sensors => {
 		if (!sensors) return
 
 		clientSensors = sensors
-		const combinedLedsConfig = currentMode(realSticks, [...clientSensors, ...realSensorsData])
+		const combinedLedsConfig = currentMode(calculateRealColumns(currentStructureKey), [...clientSensors, ...realSensorsData])
 
 		ledsConfig = regroupConfig(combinedLedsConfig.filter(Boolean))
 		socket.emit('ledsChanged', ledsConfig)
@@ -296,6 +309,12 @@ io.on('connection', socket => {
 	socket.on('clientChangedMode', newConfig => {
 		const newMode = newConfig.mode
 		changeMode(newMode)
+		isSleeping = false
+	})
+
+	socket.on('clientChangedStructure', newConfig => {
+		const newStructure = newConfig.structure
+		changeStructure(newStructure)
 		isSleeping = false
 	})
 
