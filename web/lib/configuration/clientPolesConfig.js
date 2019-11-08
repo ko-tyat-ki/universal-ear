@@ -37,6 +37,52 @@ export const calculateClientPoles = (selectedStructure) => {
                     z: 0
                 }
             }]
+        case 'summerRave2019':
+            return [{
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: 125,
+                    y: -62.5,
+                    z: 0
+                }
+            }, {
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: -125,
+                    y: -62.5,
+                    z: 0
+                }
+            }, {
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: 0,
+                    y: -62.5,
+                    z: 0
+                }
+            }, {
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: 125,
+                    y: -62.5,
+                    z: -250
+                }
+            }]
         case 'circle':
             return [
                 {

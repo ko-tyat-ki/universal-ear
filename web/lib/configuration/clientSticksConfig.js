@@ -21,6 +21,41 @@ export const calculateClientSticks = (selectedStructure) => {
                     }
                 }
             ]
+        case 'summerRave2019':
+            return [
+                {
+                    name: '1',
+                    init: {
+                        x: 125,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    name: '2',
+                    init: {
+                        x: -125,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    name: '3',
+                    init: {
+                        x: 0,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    name: '4',
+                    init: {
+                        x: 125,
+                        y: -180,
+                        z: -250
+                    }
+                }
+            ]
         case 'circle':
             return [
                 {
