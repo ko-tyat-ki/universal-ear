@@ -1,5 +1,5 @@
 import net from 'net'
-import { realSticks } from '../configuration/realSticksConfig';
+import { calculateRealColumns } from '../configuration/realColumnsConfig';
 
 let isConnectedToPython = false
 let pythonSocket = null
@@ -26,16 +26,20 @@ const connectToPython = () => {
   connectToPython()
 })()
 
-export const writeToPython = (sensorsData, currentMode) => {
-  if (!isConnectedToPython || !sensorsData || sensorsData.length === 0) return
+export const writeToPython = (sensorsData, currentModeKey, currentStructureKey) => {
+  if (!isConnectedToPython || !currentStructureKey || !sensorsData || sensorsData.length === 0) return
 
   const toPython = {
-    mode: currentMode || 'RESETTING',
+    mode: currentModeKey || 'RESETTING',
     sensorsData: sensorsData.map(sensor => ({
       slow: sensor.slowSensorValue || 0, // in case if null or undefined
       fast: sensor.fastSensorValue || 0, // in case if null or undefined
       LEDShtuka: sensor.stick || 'n/a',
-      where: realSticks.find(stick => stick.name === sensor.stick) ? (realSticks.find(stick => stick.name === sensor.stick).init.x > 0 ? 'right' : 'left') : 'n/a'
+      numberOfChannels: calculateRealColumns(currentStructureKey).length,
+      where: calculateRealColumns(currentStructureKey).find(stick => stick.name === sensor.stick) ?
+        (calculateRealColumns(currentStructureKey).find(stick => stick.name === sensor.stick).init.x > 0 ?
+          'right' : 'left') :
+        'n/a'
     }))
   }
 
