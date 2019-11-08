@@ -15,6 +15,29 @@ export const calculateFakeSensors = (selectedStructure) => {
                     stick: '2'
                 }
             ]
+        case 'summerRave2019':
+            return [
+                {
+                    key: '1',
+                    sensorPosition: 10,
+                    stick: '1'
+                },
+                {
+                    key: '2',
+                    sensorPosition: 30,
+                    stick: '2'
+                },
+                {
+                    key: '3',
+                    sensorPosition: 30,
+                    stick: '3'
+                },
+                {
+                    key: '4',
+                    sensorPosition: 30,
+                    stick: '4'
+                }
+            ]
         case 'circle':
             return [
                 {
