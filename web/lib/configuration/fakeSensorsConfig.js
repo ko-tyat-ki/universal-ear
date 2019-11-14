@@ -38,6 +38,59 @@ export const calculateFakeSensors = (selectedStructure) => {
                     stick: '4'
                 }
             ]
+        case 'londonDecompression2019':
+            return [
+                {
+                    key: '1',
+                    sensorPosition: 20,
+                    stick: '1'
+                },
+                {
+                    key: '2',
+                    sensorPosition: 20,
+                    stick: '2'
+                },
+                {
+                    key: '3',
+                    sensorPosition: 20,
+                    stick: '3'
+                },
+                {
+                    key: '4',
+                    sensorPosition: 20,
+                    stick: '4'
+                },
+                {
+                    key: '5',
+                    sensorPosition: 20,
+                    stick: '5'
+                },
+                {
+                    key: '6',
+                    sensorPosition: 20,
+                    stick: '6'
+                },
+                {
+                    key: '7',
+                    sensorPosition: 20,
+                    stick: '7'
+                },
+                {
+                    key: '8',
+                    sensorPosition: 20,
+                    stick: '8'
+                },
+                {
+                    key: '9',
+                    sensorPosition: 20,
+                    stick: '9'
+                },
+                {
+                    key: '0',
+                    sensorPosition: 20,
+                    stick: '10'
+                }
+            ]
         case 'circle':
             return [
                 {
