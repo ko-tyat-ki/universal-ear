@@ -83,6 +83,118 @@ export const calculateClientPoles = (selectedStructure) => {
                     z: -250
                 }
             }]
+        case 'londonDecompression2019':
+            return [{
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: -250,
+                    y: -62.5,
+                    z: 300
+                }
+            }, {
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: -250,
+                    y: -62.5,
+                    z: 200
+                }
+            }, {
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: -250,
+                    y: -62.5,
+                    z: 100
+                }
+            }, {
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: -150,
+                    y: -62.5,
+                    z: 0
+                }
+            }, {
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: -50,
+                    y: -62.5,
+                    z: 0
+                }
+            }, {
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: 50,
+                    y: -62.5,
+                    z: 0
+                }
+            }, {
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: 150,
+                    y: -62.5,
+                    z: 0
+                }
+            }, {
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: 250,
+                    y: -62.5,
+                    z: 100
+                }
+            }, {
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: 250,
+                    y: -62.5,
+                    z: 200
+                }
+            }, {
+                geo: {
+                    x: 5,
+                    y: 375,
+                    z: 5
+                },
+                init: {
+                    x: 250,
+                    y: -62.5,
+                    z: 300
+                }
+            }]
         case 'circle':
             return [
                 {

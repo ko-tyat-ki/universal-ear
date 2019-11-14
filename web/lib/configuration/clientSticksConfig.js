@@ -56,6 +56,89 @@ export const calculateClientSticks = (selectedStructure) => {
                     }
                 }
             ]
+        case 'londonDecompression2019':
+            return [
+                {
+                    name: '1',
+                    init: {
+                        x: -250,
+                        y: -180,
+                        z: 300
+                    }
+                },
+                {
+                    name: '2',
+                    init: {
+                        x: -250,
+                        y: -180,
+                        z: 200
+                    }
+                },
+                {
+                    name: '3',
+                    init: {
+                        x: -250,
+                        y: -180,
+                        z: 100
+                    }
+                },
+                {
+                    name: '4',
+                    init: {
+                        x: -150,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    name: '5',
+                    init: {
+                        x: -50,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    name: '6',
+                    init: {
+                        x: 50,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    name: '7',
+                    init: {
+                        x: 150,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    name: '8',
+                    init: {
+                        x: 250,
+                        y: -180,
+                        z: 100
+                    }
+                },
+                {
+                    name: '9',
+                    init: {
+                        x: 250,
+                        y: -180,
+                        z: 200
+                    }
+                },
+                {
+                    name: '10',
+                    init: {
+                        x: 250,
+                        y: -180,
+                        z: 300
+                    }
+                }
+            ]
         case 'circle':
             return [
                 {

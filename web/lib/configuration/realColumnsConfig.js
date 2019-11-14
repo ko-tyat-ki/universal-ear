@@ -267,6 +267,99 @@ export const calculateRealColumns = (selectedStructure) => {
                         z: -250
                     }
                 }]
+        case 'londonDecompression2019':
+            return [
+                {
+                    numberOfLEDs: 40,
+                    name: '1',
+                    init: {
+                        x: -250,
+                        y: -180,
+                        z: 300
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '2',
+                    init: {
+                        x: -250,
+                        y: -180,
+                        z: 200
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '3',
+                    init: {
+                        x: -250,
+                        y: -180,
+                        z: 100
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '4',
+                    init: {
+                        x: -150,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '5',
+                    init: {
+                        x: -50,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '6',
+                    init: {
+                        x: 50,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '7',
+                    init: {
+                        x: 150,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '8',
+                    init: {
+                        x: 250,
+                        y: -180,
+                        z: 100
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '9',
+                    init: {
+                        x: 250,
+                        y: -180,
+                        z: 200
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '10',
+                    init: {
+                        x: 250,
+                        y: -180,
+                        z: 300
+                    }
+                }
+            ]
         default:
             console.log('You need to pick up structure you would use')
             return
