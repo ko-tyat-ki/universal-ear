@@ -116,7 +116,7 @@ while not exit:
                             #Flicker
                             if inv_sound_groups[mode] == "flicker":
                                 max_range = NUM_LEDS*config['flickerConfig']['factor']
-                                if name in [10, 11]:
+                                if name in [7, 8]:
                                     slow = sensor['slow']
                                     if slow > max_range*config['flickerConfig']['slowSoundTrigger']:
                                         if time.time() > channels_ignore[name]:
@@ -137,7 +137,7 @@ while not exit:
                             elif inv_sound_groups[mode] == "polzynki":
                                 max_range = NUM_LEDS*config['polzynkiConfig']['factor']
 
-                                if name in [5,7,10,11]:
+                                if name in [5,7,8,10]:
                                     slow = sensor['slow']
                                     if slow > max_range*config['polzynkiConfig']['slowSoundTrigger']:
                                         if time.time() > channels_ignore[name]:
@@ -158,7 +158,7 @@ while not exit:
                             elif inv_sound_groups[mode] == "ocean":
                                 max_range = NUM_LEDS*config['oceanConfig']['factor']
 
-                                if name in [3,5,7,8,11]:
+                                if name in [3,4,5,7,8]:
                                     slow = sensor['slow']
                                     if slow > max_range*config['oceanConfig']['slowSoundTrigger']:
                                         if time.time() > channels_ignore[name]:
