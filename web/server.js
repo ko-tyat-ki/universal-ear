@@ -37,7 +37,7 @@ modes.onChange = onChange
 let currentMode
 let previousModeKey
 let currentModeKey
-let currentStructureKey = 'londonDecompression2019'
+let currentStructureKey = 'nowhere2019'
 const prodModesKeys = Object.keys(prodModes)
 const modesKeys = Object.keys(modes)
 let clientSensors = []
