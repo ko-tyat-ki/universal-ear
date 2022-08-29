@@ -17,7 +17,7 @@ sound_groups = {"basic_with_rainbow":["basic_with_rainbow","tensionWithEcho"],
                 'jasmine':["jasmine","changing_colors"],
                 'sleep':['sleep'],
                 'easterEgg':['easterEgg']}
-NUM_CHANNELS = 12
+NUM_CHANNELS = 5
 NUM_LEDS = 40
 
 ### CONSTANTS
@@ -116,94 +116,94 @@ while not exit:
                             #Flicker
                             if inv_sound_groups[mode] == "flicker":
                                 max_range = NUM_LEDS*config['flickerConfig']['factor']
-                                if name in [7, 8]:
-                                    slow = sensor['slow']
-                                    if slow > max_range*config['flickerConfig']['slowSoundTrigger']:
-                                        if time.time() > channels_ignore[name]:
-                                            channels[name].play(sounds[name])
-                                            channels_ignore[name] = time.time()+sounds[name].get_length()
-                                    if slow < 0:
-                                        slow = 0
-                                    if slow > max_range:
-                                        slow = max_range
-                                    channels[name].set_volume((slow / max_range)*config['flickerConfig']['soundFactor'])
-                                else:
-                                    if sensor['fast'] > max_range*config['flickerConfig']['soundTrigger']:
-                                        if time.time() > channels_ignore[name]:
-                                            channels[name].set_volume(config['flickerConfig']['soundFactor'])
-                                            channels[name].play(sounds[name])
-                                            channels_ignore[name] = time.time()+sounds[name].get_length()
+                                # if name in [7, 8]:
+                                #     slow = sensor['slow']
+                                #     if slow > max_range*config['flickerConfig']['slowSoundTrigger']:
+                                #         if time.time() > channels_ignore[name]:
+                                #             channels[name].play(sounds[name])
+                                #             channels_ignore[name] = time.time()+sounds[name].get_length()
+                                #     if slow < 0:
+                                #         slow = 0
+                                #     if slow > max_range:
+                                #         slow = max_range
+                                #     channels[name].set_volume((slow / max_range)*config['flickerConfig']['soundFactor'])
+                                # else:
+                                if sensor['fast'] > max_range*config['flickerConfig']['soundTrigger']:
+                                    if time.time() > channels_ignore[name]:
+                                        channels[name].set_volume(config['flickerConfig']['soundFactor'])
+                                        channels[name].play(sounds[name])
+                                        channels_ignore[name] = time.time()+sounds[name].get_length()
                             #Polzynki
                             elif inv_sound_groups[mode] == "polzynki":
                                 max_range = NUM_LEDS*config['polzynkiConfig']['factor']
 
-                                if name in [5,7,8,10]:
-                                    slow = sensor['slow']
-                                    if slow > max_range*config['polzynkiConfig']['slowSoundTrigger']:
-                                        if time.time() > channels_ignore[name]:
-                                            channels[name].play(sounds[name])
-                                            channels_ignore[name] = time.time()+sounds[name].get_length()
-                                    if slow < 0:
-                                        slow = 0
-                                    if slow > max_range:
-                                        slow = max_range
-                                    channels[name].set_volume((slow / max_range)*config['polzynkiConfig']['soundFactor'])
-                                else:
-                                    if sensor['fast'] > max_range*config['polzynkiConfig']['soundTrigger']:
-                                        if time.time() > channels_ignore[name]:
-                                            channels[name].set_volume(config['polzynkiConfig']['soundFactor'])
-                                            channels[name].play(sounds[name])
-                                            channels_ignore[name] = time.time()+sounds[name].get_length()
+                                # if name in [5,7,8,10]:
+                                #     slow = sensor['slow']
+                                #     if slow > max_range*config['polzynkiConfig']['slowSoundTrigger']:
+                                #         if time.time() > channels_ignore[name]:
+                                #             channels[name].play(sounds[name])
+                                #             channels_ignore[name] = time.time()+sounds[name].get_length()
+                                #     if slow < 0:
+                                #         slow = 0
+                                #     if slow > max_range:
+                                #         slow = max_range
+                                #     channels[name].set_volume((slow / max_range)*config['polzynkiConfig']['soundFactor'])
+                                # else:
+                                if sensor['fast'] > max_range*config['polzynkiConfig']['soundTrigger']:
+                                    if time.time() > channels_ignore[name]:
+                                        channels[name].set_volume(config['polzynkiConfig']['soundFactor'])
+                                        channels[name].play(sounds[name])
+                                        channels_ignore[name] = time.time()+sounds[name].get_length()
                             #Ocean
                             elif inv_sound_groups[mode] == "ocean":
                                 max_range = NUM_LEDS*config['oceanConfig']['factor']
 
-                                if name in [3,4,5,7,8]:
-                                    slow = sensor['slow']
-                                    if slow > max_range*config['oceanConfig']['slowSoundTrigger']:
-                                        if time.time() > channels_ignore[name]:
-                                            channels[name].play(sounds[name])
-                                            channels_ignore[name] = time.time()+sounds[name].get_length()
-                                    if slow < 0:
-                                        slow = 0
-                                    if slow > max_range:
-                                        slow = max_range
-                                    channels[name].set_volume((slow / max_range)*config['oceanConfig']['soundFactor'])
-                                else:
-                                    if sensor['fast'] > config['oceanConfig']['tensionTrigger']:
-                                        if time.time() > channels_ignore[name]:
-                                            loc = random.uniform(0.65, 0.85)
-                                            if sensor['where'] == 'right':
-                                                channels[name].set_volume((1 - loc) * config['oceanConfig']['soundFactor'],loc * config['oceanConfig']['soundFactor'])
-                                            else:
-                                                channels[name].set_volume(loc * config['oceanConfig']['soundFactor'], (1 - loc) * config['oceanConfig']['soundFactor'])
-                                            channels[name].play(sounds[name])
-                                            channels_ignore[name] = time.time() + sounds[name].get_length()
+                                # if name in [3,4,5,7,8]:
+                                #     slow = sensor['slow']
+                                #     if slow > max_range*config['oceanConfig']['slowSoundTrigger']:
+                                #         if time.time() > channels_ignore[name]:
+                                #             channels[name].play(sounds[name])
+                                #             channels_ignore[name] = time.time()+sounds[name].get_length()
+                                #     if slow < 0:
+                                #         slow = 0
+                                #     if slow > max_range:
+                                #         slow = max_range
+                                #     channels[name].set_volume((slow / max_range)*config['oceanConfig']['soundFactor'])
+                                # else:
+                                if sensor['fast'] > config['oceanConfig']['tensionTrigger']:
+                                    if time.time() > channels_ignore[name]:
+                                        loc = random.uniform(0.65, 0.85)
+                                        if sensor['where'] == 'right':
+                                            channels[name].set_volume((1 - loc) * config['oceanConfig']['soundFactor'],loc * config['oceanConfig']['soundFactor'])
+                                        else:
+                                            channels[name].set_volume(loc * config['oceanConfig']['soundFactor'], (1 - loc) * config['oceanConfig']['soundFactor'])
+                                        channels[name].play(sounds[name])
+                                        channels_ignore[name] = time.time() + sounds[name].get_length()
                             #Basic
                             elif inv_sound_groups[mode] == "basic_with_rainbow":
                                 max_range = config['basicWithRainbow']['maxTension']
 
-                                if name in [2,4,5,7,8,11]:
-                                    slow = sensor['slow']
-                                    if slow > max_range*config['basicWithRainbow']['slowSoundTrigger']:
-                                        if time.time() > channels_ignore[name]:
-                                            channels[name].play(sounds[name])
-                                            channels_ignore[name] = time.time()+sounds[name].get_length()
-                                    if slow < 0:
-                                        slow = 0
-                                    if slow > max_range:
-                                        slow = max_range
-                                    channels[name].set_volume((slow / max_range)*config['basicWithRainbow']['soundFactor'])
-                                else:
-                                    if sensor['fast'] > max_range*config['basicWithRainbow']['soundTrigger']:
-                                        if time.time() > channels_ignore[name]:
-                                            loc = random.uniform(0.55, 0.95)
-                                            if sensor['where'] == 'right':
-                                                channels[name].set_volume((1 - loc) * config['basicWithRainbow']['soundFactor'],loc * config['basicWithRainbow']['soundFactor'])
-                                            else:
-                                                channels[name].set_volume(loc * config['basicWithRainbow']['soundFactor'], (1 - loc) * config['basicWithRainbow']['soundFactor'])
-                                            channels[name].play(sounds[name])
-                                            channels_ignore[name] = time.time() + sounds[name].get_length()
+                                # if name in [2,4,5,7,8,11]:
+                                #     slow = sensor['slow']
+                                #     if slow > max_range*config['basicWithRainbow']['slowSoundTrigger']:
+                                #         if time.time() > channels_ignore[name]:
+                                #             channels[name].play(sounds[name])
+                                #             channels_ignore[name] = time.time()+sounds[name].get_length()
+                                #     if slow < 0:
+                                #         slow = 0
+                                #     if slow > max_range:
+                                #         slow = max_range
+                                #     channels[name].set_volume((slow / max_range)*config['basicWithRainbow']['soundFactor'])
+                                # else:
+                                if sensor['fast'] > max_range*config['basicWithRainbow']['soundTrigger']:
+                                    if time.time() > channels_ignore[name]:
+                                        loc = random.uniform(0.55, 0.95)
+                                        if sensor['where'] == 'right':
+                                            channels[name].set_volume((1 - loc) * config['basicWithRainbow']['soundFactor'],loc * config['basicWithRainbow']['soundFactor'])
+                                        else:
+                                            channels[name].set_volume(loc * config['basicWithRainbow']['soundFactor'], (1 - loc) * config['basicWithRainbow']['soundFactor'])
+                                        channels[name].play(sounds[name])
+                                        channels_ignore[name] = time.time() + sounds[name].get_length()
                             #Jasmine
                             elif inv_sound_groups[mode] == "jasmine":
                                 if sensor['fast'] > config['jasmineConfig']['tensionTrigger']:
