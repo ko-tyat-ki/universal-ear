@@ -270,6 +270,34 @@ export const calculateFakeSensors = (selectedStructure) => {
                     stick: '12'
                 }
             ]
+            case 'mcf-mb-2022':
+                return [
+                    {
+                        key: '1',
+                        sensorPosition: 25,
+                        stick: '1'
+                    },
+                    {
+                        key: '2',
+                        sensorPosition: 25,
+                        stick: '2'
+                    },
+                    {
+                        key: '3',
+                        sensorPosition: 25,
+                        stick: '3'
+                    },
+                    {
+                        key: '4',
+                        sensorPosition: 25,
+                        stick: '4'
+                    },
+                    {
+                        key: '5',
+                        sensorPosition: 25,
+                        stick: '5'
+                    }
+                ]
         default:
             console.log('You need to pick up structure you would use')
             return
