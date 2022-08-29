@@ -1,19 +1,7 @@
 export const arduinosConfig = [
   // {
-  //   name: '/dev/tty.usbmodem14201', // first port on MAC
-  //   column: '2',
-  //   baudRate: 115200,
-  //   numberOfLEDs: 40,
-  //   sensors: [
-  //     {
-  //       name: 'someName',
-  //       position: 20
-  //     }
-  //   ],
-  //   baseTension: 0
-  // }, {
   //   name: 'COM7', // first port on Windows
-  //   column: '1',
+  //   stick: '1',
   //   baudRate: 115200,
   //   numberOfLEDs: 40,
   //   sensors: [
@@ -24,6 +12,19 @@ export const arduinosConfig = [
   //   ],
   //   baseTension: 0
   // },
+  {
+    "name": "/dev/tty.usbserial-10", // first port on MacBookAir
+    "stick": "1",
+    "baudRate": 115200,
+    "numberOfLEDs": 40,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 10
+      }
+    ],
+    "baseTension": 0
+  },
   {
     "name": "/dev/ttyUSB0",
     "stick": "1",
@@ -166,19 +167,19 @@ export const arduinosConfig = [
     ],
     "baseTension": 0
   },
-  {
-    "name": "/dev/ttyUSB11",
-    "stick": "12",
-    "baudRate": 115200,
-    "numberOfLEDs": 40,
-    "sensors": [
-      {
-        "name": "some",
-        "position": 10
-      }
-    ],
-    "baseTension": 0
-  },
+  // {
+  //   "name": "/dev/ttyUSB11",
+  //   "stick": "12",
+  //   "baudRate": 115200,
+  //   "numberOfLEDs": 40,
+  //   "sensors": [
+  //     {
+  //       "name": "some",
+  //       "position": 10
+  //     }
+  //   ],
+  //   "baseTension": 0
+  // },
   // {
   //   "name": "/dev/tty.usbserial-14240",
   //   "stick": "1",

@@ -94,7 +94,7 @@ const onConfigure = () => {
 	})
 
 	const structure = document.getElementById('select-structure')
-	structure.value = 'nowhere2019'
+	structure.value = 'mcf-mb-2022'
 	socket.emit('clientChangedStructure', {
 		'structure': document.getElementById('select-structure').value
 	})
