@@ -217,3 +217,36 @@ randomEcho
 tensionWithEcho
 workshop
 ```
+
+## Helpful commands
+To list connected USB devices
+```
+ls /dev/tty*
+```
+To get the sound working run in the parallel terminal
+```
+python3 ./sound/run_sound.py
+```
+Make sure you have `pygame` installed. If you see an error message
+`ImportError: No module named pygame` 
+```
+python -m ensurepip --user
+/Library/Developer/CommandLineTools/usr/bin/python3 -m pip install --upgrade pip
+python -m pip install pygame
+```
+Connect to PI SD card from comp:
+```
+sudo kextunload -b io.macfuse.filesystems.macfuse
+sudo fuse-ext2 /dev/disk4s2 /Volumes/raspberry -o rw+
+```
+## How to change wifi data
+```
+cd /Volumes/raspberry/home/pi/nowhere-ear/deploy/pi-settings
+vim wpa_supplicant.conf
+```
+Then
+```
+cd /
+sudo umount /Volumes/raspberry
+```
+Sometimes you have to relogin to pi, passowrd is `raspberry`

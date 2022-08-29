@@ -65,3 +65,7 @@ typings/
 .next
 .ssh/*
 *id_rsa*
+
+#other
+.DS_Store
+*/.DS_Store

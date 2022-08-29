@@ -37,7 +37,7 @@ modes.onChange = onChange
 let currentMode
 let previousModeKey
 let currentModeKey
-let currentStructureKey = 'nowhere2019'
+let currentStructureKey = 'mcf-mb-2022'
 const prodModesKeys = Object.keys(prodModes)
 const modesKeys = Object.keys(modes)
 let clientSensors = []
@@ -185,11 +185,11 @@ if (realSensors && realSensors.length > 0) {
 
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig && ledsConfig.length > 0) {
-				// console.log({ data, key: realSensor.key })
+				console.log({ data, key: realSensor.key })
 				port.write(calculateDataForRealLeds(getInfoFromSensors(data), realSensor, realSensor.stick))
 				areWeWriting = false
 			} else {
-				//console.log('Data IN, listen', data)
+				console.log('Data IN, listen', data)
 				if (data === 'eat me\r') {
 					areWeWriting = true
 				}
