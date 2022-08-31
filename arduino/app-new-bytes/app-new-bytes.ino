@@ -1,20 +1,23 @@
-/* UPD. 15/05/2019 Ivan:
+/* UPD. Sep 2022 Katya:
  *  String tokenisation
  *  Incoming message should start with "<", end with ">", delimiters ","
 */
 
 #include <FastLED.h>
 #define ORDER       0
-#define LED_COUNT   150 //40
 #define LED_PIN     8
-#define NUM_LEDS    150 //60
+#define LED_PIN_BALL 5
+#define NUM_LEDS_BALL    50
+#define NUM_LEDS    120
 #define BRIGHTNESS  64
-#define LED_TYPE    WS2812B
+#define BRIGHTNESS_BALLS  125
 #define COLOR_ORDER GRB
 #define LEDS_GROUPING 5
+CRGB leds_ball[NUM_LEDS_BALL];
 CRGB leds[NUM_LEDS];
 
 #define UPDATES_PER_SECOND 100
+#define FRAMES_PER_SECOND 60
 
 CRGBPalette16 currentPalette;
 TBlendType    currentBlending;
@@ -23,10 +26,8 @@ extern CRGBPalette16 myRedWhiteBluePalette;
 extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
  
 int sensorPin = A0;    // select the input pin for the potentiometer
-int sensorPin1 = A1;    // select the input pin for the potentiometer
-int sensorPin2 = A2;    // select the input pin for the potentiometer
 int sensorPowerPin = 9; // select the sensor power pin
-int sensorValue, sensorValue1, sensorValue2 = 0;  // variable to store the value coming from the sensor
+int sensorValue = 0;  // variable to store the value coming from the sensor
 int sensorAvg, sensorMed, longAverage; // moving average of the sensor values
 const int AverageN = 10; // for first fast integration
 const int AverageN2 = 50; // for slower integration
@@ -41,6 +42,14 @@ boolean newData = false;
 boolean received = true;
 boolean recvInProgress = false;
 boolean firstMeasurement = true;
+
+bool gReverseDirection = false;
+
+float diffFast;
+float diffSlow;
+float lerpAvgFast;
+float lerpAvgSlow;
+float lerpAvgVerySlow;
 
 // LEDs in Bytes:
 // TODO - check if it's possible to make the size dependent on the incoming data.
@@ -60,16 +69,15 @@ byte endByte = 0x12;
 byte inBuffer[payloadInSize];
 byte sleep = true;
 
-// Serial output
-float diffFast, diffSlow;
 
 void setup() {
     delay( 1000 ); // power-up safety delay
     pinMode(sensorPowerPin, OUTPUT); // declare sensor power pin as output
-    FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
-    FastLED.setBrightness(  BRIGHTNESS );
+    FastLED.addLeds<WS2811, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+    FastLED.addLeds<WS2812B, LED_PIN_BALL, COLOR_ORDER>(leds_ball, NUM_LEDS_BALL).setCorrection( TypicalLEDStrip );
     Serial.begin(115200);
-    FastLED.clear();
+    currentPalette = RainbowColors_p;
+    currentBlending = LINEARBLEND;
 }
 
 
@@ -83,32 +91,25 @@ void loop()
 }
 
 void readSensorData() {
-  // read the value from the sensor:
     digitalWrite(sensorPowerPin,HIGH); 
     sensorValue = analogRead(sensorPin);
     digitalWrite(sensorPowerPin,LOW);
-    
-    // Calculate the averages
-    sensorAvg = runningAverage(sensorValue); // average from last xxx values
-    lerpingAverageFast = lerp(lerpingAverageFast, sensorValue, 0.05); // quickest linear interpolation
-    lerpingAverageSlow = lerp(lerpingAverageSlow, sensorValue, 0.001); // medium linear interpolation
-    lerpingAverageVerySlow = lerp(lerpingAverageVerySlow, sensorAvg, 0.00005); // slowest
 
     // Protect everyone's eyes from an exhausting settle-down period
     if (firstMeasurement) {
-      lerpingAverageFast = sensorValue;
-      lerpingAverageSlow = sensorValue;
-      lerpingAverageVerySlow = sensorValue;
+      lerpAvgFast = sensorValue;
+      lerpAvgSlow = sensorValue;
+      lerpAvgVerySlow = sensorValue;
       firstMeasurement = false;
     }
-    
-    // Calculate the difference between the sensor value and averaged value:
-    diffFast = (lerpingAverageFast - lerpingAverageSlow);  // fast. aka Derivative (for fast plucking)
-    diffSlow = (lerpingAverageSlow - lerpingAverageVerySlow);  // slow. aka pressure (for slow pushing)
-    
-    // if slow pushing less than 0, return it to 0: 
+
+    lerpAvgFast = lerp(lerpAvgFast, sensorValue, 0.05);
+    lerpAvgSlow = lerp(lerpAvgSlow, sensorValue, 0.001);
+    lerpAvgVerySlow = lerp(lerpAvgVerySlow, sensorValue, 0.00005);
+    diffFast = (lerpAvgFast - lerpAvgSlow);
+    diffSlow = (lerpAvgSlow - lerpAvgVerySlow);
     if (diffSlow < 0) {
-      lerpingAverageVerySlow = lerpingAverageSlow;
+      lerpAvgVerySlow = lerpAvgSlow;
     }
 }
 
@@ -116,11 +117,11 @@ void readSensorData() {
 void parseData() {
   if (newData == true) {
     writeToLeds();
+    Fire2012();
     Serial.print("Received! ");
     sendSensorData();
     newData = false;
   } else {
-    // TODO make something so that the following code wouldn't execute when receiving data.
     if (testEvery(500) && !recvInProgress) {
       sleep = true;
       Serial.print("Waiting for transmission, ");
@@ -130,10 +131,8 @@ void parseData() {
 }
 
 void sendSensorData() {
-  // TODO: Calibrate diffFast and diffSlow!
-    Serial.println(String(diffFast) + "\t" + String(diffSlow) + "\t" + String(sensorAvg));
-    // Leave for debugging
-    //Serial.println(String(lerpingAverageSlow) + "\t" + String(lerpingAverageFast) + "\t" + String(lerpingAverageVerySlow) + "\t" + String(sensorValue));
+    Serial.print(String(diffFast) + "\t" + String(diffSlow) + "\t");
+    Serial.println("");
     Serial.println("eat me");
 }
 
@@ -171,7 +170,7 @@ float lerp(float from, float to, float fraction) {
 }
 
 void writeToLeds() {
-  FastLED.clear();
+//  FastLED[0].clear();
   int ledArraySize = NUM_LEDS / LEDS_GROUPING;
   for (int i = 0; i < ledArraySize; i++) {
     // Smooth with the previous frame:
@@ -185,11 +184,11 @@ void writeToLeds() {
                               lerp (leds_united[i][1], leds_united[i + 1][1], 0.2 * j),
                               lerp (leds_united[i][2], leds_united[i + 1][2], 0.2 * j)) ;      
       } else {
-        leds[i*5 + j] = CRGB (leds_united[i][0], leds_united[i][1], leds_united[i][2]);
+        leds[i*5 + j] = CRGB(leds_united[i][0], leds_united[i][1], leds_united[i][2]);
       }
     }
   }
-  FastLED.show();
+  FastLED[0].showLeds(BRIGHTNESS);
 }
 
 // Serial communication:
@@ -234,7 +233,56 @@ void receiveBytes() {
     }
   }
 }
+//
+//void writeToBall(uint8_t colorIndex) {   
+//    for( int i = 0; i < NUM_LEDS_BALL; ++i) {
+//        leds_ball[i] = ColorFromPalette( currentPalette, colorIndex, BRIGHTNESS, currentBlending);
+////        colorIndex = (colorIndex + (millis() / 1000) % 100) % 255;
+//        colorIndex = (millis() / 1000) % 100;
+//    }
+//  FastLED[1].showLeds(BRIGHTNESS * diffSlow / 50);
+////  FastLED.delay(1000 / UPDATES_PER_SECOND);
+//}
 
+#define COOLING  55
+#define SPARKING 120
+
+void Fire2012()
+{
+// Array of temperature readings at each simulation cell
+  static uint8_t heat[NUM_LEDS_BALL];
+
+  // Step 1.  Cool down every cell a little
+    for( int i = 0; i < NUM_LEDS_BALL; i++) {
+      heat[i] = qsub8( heat[i],  random8(0, ((COOLING * 10) / NUM_LEDS_BALL) + 2));
+    }
+  
+    // Step 2.  Heat from each cell drifts 'up' and diffuses a little
+    for( int k= NUM_LEDS_BALL - 1; k >= 2; k--) {
+      heat[k] = (heat[k - 1] + heat[k - 2] + heat[k - 2] ) / 3;
+    }
+    
+    // Step 3.  Randomly ignite new 'sparks' of heat near the bottom
+    if( random8() < SPARKING ) {
+      int y = random8(7);
+      heat[y] = qadd8( heat[y], random8(160,255) );
+    }
+
+    // Step 4.  Map from heat cells to LED colors
+    for( int j = 0; j < NUM_LEDS_BALL; j++) {
+      CRGB color = HeatColor( heat[j]);
+      int pixelnumber;
+      if( gReverseDirection ) {
+        pixelnumber = (NUM_LEDS_BALL-1) - j;
+      } else {
+        pixelnumber = j;
+      }
+      leds_ball[pixelnumber] = color;
+    }
+
+      FastLED[1].showLeds(BRIGHTNESS_BALLS * abs(diffSlow) / 50); // display this frame
+//      FastLED[1].delay(1000 / FRAMES_PER_SECOND);
+}
 
 void charToStringL(const char S[], String &D)
 {
