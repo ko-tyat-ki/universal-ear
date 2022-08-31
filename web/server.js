@@ -185,11 +185,16 @@ if (realSensors && realSensors.length > 0) {
 
 		parser.on('data', data => {
 			if (areWeWriting && ledsConfig && ledsConfig.length > 0) {
-				console.log({ data, key: realSensor.key })
+				// console.log({
+				// 	data,
+				// 	key: realSensor.key,
+				// 	// writing: calculateDataForRealLeds(getInfoFromSensors(data), realSensor, realSensor.stick).toString()
+				// })
 				port.write(calculateDataForRealLeds(getInfoFromSensors(data), realSensor, realSensor.stick))
 				areWeWriting = false
 			} else {
-				console.log('Data IN, listen', data)
+				// console.log('Data IN, listen', data)
+				// console.log(`${new Date().getMinutes()}:${new Date().getSeconds()}`)
 				if (data === 'eat me\r') {
 					areWeWriting = true
 				}
