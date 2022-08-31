@@ -188,7 +188,7 @@ if (realSensors && realSensors.length > 0) {
 				// console.log({
 				// 	data,
 				// 	key: realSensor.key,
-				// 	// writing: calculateDataForRealLeds(getInfoFromSensors(data), realSensor, realSensor.stick).toString()
+				// 	writing: calculateDataForRealLeds(getInfoFromSensors(data), realSensor, realSensor.stick).toString()
 				// })
 				port.write(calculateDataForRealLeds(getInfoFromSensors(data), realSensor, realSensor.stick))
 				areWeWriting = false

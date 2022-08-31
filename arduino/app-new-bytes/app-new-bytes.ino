@@ -13,11 +13,8 @@
 #define BRIGHTNESS_BALLS  125
 #define COLOR_ORDER GRB
 #define LEDS_GROUPING 5
-CRGB leds_ball[NUM_LEDS_BALL];
+CRGB leds_ball[NUM_LEDS];
 CRGB leds[NUM_LEDS];
-
-#define UPDATES_PER_SECOND 100
-#define FRAMES_PER_SECOND 60
 
 CRGBPalette16 currentPalette;
 TBlendType    currentBlending;
@@ -33,6 +30,7 @@ const int AverageN = 10; // for first fast integration
 const int AverageN2 = 50; // for slower integration
 float lerpingAverageFast, lerpingAverageSlow, lerpingAverageVerySlow; // Alternative to averages
 String input = "";
+uint8_t newBrightness;
 
 // Serial helper variables
 
@@ -75,7 +73,7 @@ void setup() {
     pinMode(sensorPowerPin, OUTPUT); // declare sensor power pin as output
     FastLED.addLeds<WS2811, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.addLeds<WS2812B, LED_PIN_BALL, COLOR_ORDER>(leds_ball, NUM_LEDS_BALL).setCorrection( TypicalLEDStrip );
-    Serial.begin(115200);
+    Serial.begin(57600); //115200
     currentPalette = RainbowColors_p;
     currentBlending = LINEARBLEND;
 }
@@ -116,6 +114,7 @@ void readSensorData() {
 // When finished getting a full message, run this function.
 void parseData() {
   if (newData == true) {
+    FastLED.clear();
     writeToLeds();
     Fire2012();
     Serial.print("Received! ");
@@ -233,16 +232,6 @@ void receiveBytes() {
     }
   }
 }
-//
-//void writeToBall(uint8_t colorIndex) {   
-//    for( int i = 0; i < NUM_LEDS_BALL; ++i) {
-//        leds_ball[i] = ColorFromPalette( currentPalette, colorIndex, BRIGHTNESS, currentBlending);
-////        colorIndex = (colorIndex + (millis() / 1000) % 100) % 255;
-//        colorIndex = (millis() / 1000) % 100;
-//    }
-//  FastLED[1].showLeds(BRIGHTNESS * diffSlow / 50);
-////  FastLED.delay(1000 / UPDATES_PER_SECOND);
-//}
 
 #define COOLING  55
 #define SPARKING 120
@@ -280,7 +269,10 @@ void Fire2012()
       leds_ball[pixelnumber] = color;
     }
 
-      FastLED[1].showLeds(BRIGHTNESS_BALLS * abs(diffSlow) / 50); // display this frame
+    newBrightness = BRIGHTNESS_BALLS * abs(diffSlow) / 50;
+    
+
+      FastLED[1].showLeds(newBrightness); // display this frame
 //      FastLED[1].delay(1000 / FRAMES_PER_SECOND);
 }
 
