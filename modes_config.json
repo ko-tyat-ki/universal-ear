@@ -20,7 +20,7 @@
     "basicWithRainbow": {
         "rainbowLength": 60000,
         "maxTension": 40,
-        "soundTrigger": 0.5,
+        "soundTrigger": 0.2,
         "slowSoundTrigger": 0.3,
         "soundFactor": 1,
         "slowSoundFactor": 1
@@ -57,7 +57,7 @@
         "rainbowLength": 60000,
         "positionStickAdjustmentFactor": 10,
         "factor": 1,
-        "soundTrigger": 0.5,
+        "soundTrigger": 0.2,
         "slowSoundTrigger": 0.3,
         "soundFactor": 1,
         "slowSoundFactor": 1
@@ -90,7 +90,7 @@
     },
     "flickerConfig": {
         "factor": 1,
-        "soundTrigger": 0.75,
+        "soundTrigger": 0.2,
         "slowSoundTrigger": 0.3,
         "soundFactor": 1,
         "slowSoundFactor": 1
