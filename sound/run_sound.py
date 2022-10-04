@@ -12,7 +12,8 @@ import logging
 modeNames = ["basic_with_rainbow","changing_colors","random_flashes","flicker","tensionWithEcho","jasmine","ocean","risingStairs","polzynki","sleep","easterEgg"]
 sound_groups = {"basic_with_rainbow":["basic_with_rainbow","tensionWithEcho"],
                 'flicker':["flicker"],
-                'ocean':["ocean","random_flashes"],
+                'ocean':["ocean"],
+                'oceanletov':["random_flashes"],
                 'polzynki':["risingStairs","polzynki"],
                 'jasmine':["jasmine","changing_colors"],
                 'sleep':['sleep'],
@@ -170,6 +171,18 @@ while not exit:
                                 #         slow = max_range
                                 #     channels[name].set_volume((slow / max_range)*config['oceanConfig']['soundFactor'])
                                 # else:
+                                if sensor['fast'] > config['oceanConfig']['tensionTrigger']:
+                                    if time.time() > channels_ignore[name]:
+                                        loc = random.uniform(0.65, 0.85)
+                                        if sensor['where'] == 'right':
+                                            channels[name].set_volume((1 - loc) * config['oceanConfig']['soundFactor'],loc * config['oceanConfig']['soundFactor'])
+                                        else:
+                                            channels[name].set_volume(loc * config['oceanConfig']['soundFactor'], (1 - loc) * config['oceanConfig']['soundFactor'])
+                                        channels[name].play(sounds[name])
+                                        channels_ignore[name] = time.time() + sounds[name].get_length()
+                            elif inv_sound_groups[mode] == "oceanletov":
+                                max_range = NUM_LEDS*config['oceanConfig']['factor']
+
                                 if sensor['fast'] > config['oceanConfig']['tensionTrigger']:
                                     if time.time() > channels_ignore[name]:
                                         loc = random.uniform(0.65, 0.85)
