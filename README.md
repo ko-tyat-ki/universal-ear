@@ -250,3 +250,5 @@ cd /
 sudo umount /Volumes/raspberry
 ```
 Sometimes you have to relogin to pi, passowrd is `raspberry`
+
+sudo amixer cset numid=1 90%
