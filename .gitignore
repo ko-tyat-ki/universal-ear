@@ -72,3 +72,5 @@ typings/
 
 # KiCad
 *-backups
+
+firmware/kat_controller/build/*

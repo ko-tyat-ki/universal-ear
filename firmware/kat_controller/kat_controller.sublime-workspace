@@ -1,0 +1,560 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"correc",
+				"last_correction"
+			],
+			[
+				"startConversion",
+				"startConversion_Differential_0_1"
+			],
+			[
+				"g_ske",
+				"g_skeleton_buffers"
+			],
+			[
+				"max_inf",
+				"max_influence_count"
+			],
+			[
+				"edge_indices",
+				"edges_num_indices_"
+			],
+			[
+				"threads_",
+				"threads_to_use"
+			],
+			[
+				"last_wind",
+				"last_window_width_"
+			],
+			[
+				"fxaaQuality",
+				"fxaaQualityRcpFrame"
+			],
+			[
+				"shadow",
+				"shadow_map_texture_"
+			],
+			[
+				"kG",
+				"kGpuTextureWidth"
+			],
+			[
+				"k",
+				"kTerrainPaths"
+			],
+			[
+				"g_tex",
+				"g_textures_to_save_all_queued"
+			],
+			[
+				"g_textu",
+				"g_textures_to_save"
+			],
+			[
+				"g_textures_",
+				"g_textures_to_save_mutex"
+			],
+			[
+				"kDefault",
+				"kDefaultEyeAzimuth"
+			],
+			[
+				"SetUv",
+				"SetUV0"
+			],
+			[
+				"marked",
+				"export_marked"
+			],
+			[
+				"FCDParameterListAni",
+				"FCDParameterListAnimatableT"
+			],
+			[
+				"extrac",
+				"extraction_fan_last_command_time"
+			],
+			[
+				"manual",
+				"manual_override_timeout"
+			],
+			[
+				"last",
+				"last_manual_override_time"
+			],
+			[
+				"shoud",
+				"should_send_request"
+			],
+			[
+				"last_m",
+				"last_manual_override_check"
+			],
+			[
+				"manual_override",
+				"manual_override_end_time"
+			],
+			[
+				"kChannel",
+				"kChannel"
+			],
+			[
+				"kNum",
+				"kNumChannels"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Install Package Control"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Data/Repositories/kinki-yokai/firmware/kat_controller"
+	],
+	"file_history":
+	[
+		"/C/Data/Repositories/kinki-yokai/firmware/kat_controller/kat_controller.sublime-project",
+		"/C/Data/Repositories/kinki-yokai/firmware/kat_controller/main.cc",
+		"/C/ProgramData/Backblaze/bzdata/bzlogs/bztransmit/bztransmit22.log",
+		"/C/Data/Repositories/kinki-yokai/hardware/electronics/kat_control_board/kat_control_board.kicad_pcb",
+		"/C/Data/Repositories/kinki-yokai/.gitignore",
+		"/C/Users/m/Desktop/2022-dec-20230308T225951Z-001/2022-dec/Matt 健檢DVD/DICOMDIR",
+		"/Z/blogs/dubiouscreations/_posts/2017-10-08-acrylic-mirror.md",
+		"/Z/blogs/dubiouscreations/_posts/2018-07-07-designing-a-13a-arduino-motor-shield.md",
+		"/Z/blogs/dubiouscreations/_sass/images.scss",
+		"/Z/blogs/matthewlai/_posts/2015-01-24-gliding-you-have-to-look-up-to-see-clouds.md",
+		"/Z/blogs/matthewlai/_config.yml",
+		"/Z/blogs/matthewlai/Gemfile",
+		"/Z/blogs/matthewlai/_posts/2022-10-30-phuket.md",
+		"/Z/blogs/matthewlai/_posts/2019-08-01-back-in-air.md",
+		"/Z/blogs/dubiouscreations/_config.yml",
+		"/C/Users/m/Desktop/transcode.py",
+		"/Z/blogs/fix_captions.py",
+		"/Z/blogs/dubiouscreations/Gemfile",
+		"/C/Users/m/Desktop/2022-dec-20230308T225951Z-001/2022-dec/Matt 健檢DVD/DATA/DataExchange.xml",
+		"/C/Users/m/Desktop/Matt 健檢DVD-20230121T102806Z-001/Matt 健檢DVD/DATA/DataExchange.xml",
+		"/C/Users/m/Desktop/Matt 健檢DVD-20230121T102806Z-001/Matt 健檢DVD/DICOMDIR",
+		"/D/S/scripts/transcode_and_rename.py",
+		"/E/DCIM/leinfo.sav",
+		"/Z/blogs/matthewlai/_layouts/home.html",
+		"/Z/blogs/matthewlai/_sass/images.scss",
+		"/Z/blogs/dubiouscreations/_posts/2020-08-09-building-a-bamboo-planter-aka-my-neighbours-cats-toilet.md",
+		"/Z/blogs/dubiouscreations/_posts/2020-08-09-simulating-sunrise-sunset-for-my-aquarium.md",
+		"/Z/blogs/dubiouscreations/_posts/2017-12-02-unnaturallight-part-1-mechanical-optical-design.md",
+		"/Z/blogs/common/_sass/images.scss",
+		"/Z/blogs/dubiouscreations/_posts/2019-10-21-using-kicad-with-jlcpcb-assembly-service.md",
+		"/Z/blogs/dubiouscreations/assets/main.scss",
+		"/Z/blogs/dubiouscreations/_includes/youtube.html",
+		"/Z/blogs/matthewlai/_includes/image.html",
+		"/Z/blogs/dubiouscreations/_posts/2018-05-28-video-editing-on-linux-action-cam-scuba-diving-videos.md",
+		"/Z/blogs/dubiouscreations/_posts/2020-08-13-oscilloscope-current-measurement-on-the-cheap.md",
+		"/Z/blogs/dubiouscreations/_sass/youtube.scss",
+		"/Z/blogs/dubiouscreations/_posts/2021-05-04-designing-an-esp32-based-rgb-matrix-driver-and-making-500-of-them.md",
+		"/Z/blogs/dubiouscreations/_includes/image.html",
+		"/C/Data/Repositories/PlantUndeadifier/.gitignore",
+		"/C/Users/m/Documents/Arduino/libraries/DubiousCreations/src/plant_undeadifier.h",
+		"/C/Users/m/Documents/Arduino/libraries/DubiousCreations/src/plant_undeadifier.cpp",
+		"/C/Users/m/Desktop/export_dc/_posts/2021-05-04-designing-an-esp32-based-rgb-matrix-driver-and-making-500-of-them.md",
+		"/C/Users/m/Desktop/export_dc/fix_captions.py",
+		"/C/Users/m/Desktop/export_m/_posts/2012-07-21-first-solo-reid-hillview-tower-citabria-990wy-ready-for-takeoff.md",
+		"/C/Users/m/Desktop/export_m/_posts/2015-01-24-gliding-you-have-to-look-up-to-see-clouds.md",
+		"/C/Users/m/Desktop/export_m/_posts/2015-02-07-living-slightly-more-rationally-consistent-valuation-of-time.md",
+		"/C/Users/m/Desktop/export_m/1819-2.md",
+		"/Z/blogs/dubiouscreations/_posts/2017-11-14-diy-computer-case-acrylic-and-laser.md",
+		"/Z/blogs/dubiouscreations/_posts/2017-11-16-unnaturallight-adjustable-colour-temperature-lighting.md",
+		"/Z/blogs/dubiouscreations/_posts/2018-01-06-unnaturallight-part-2-electrical-design.md",
+		"/C/Users/m/Desktop/export_m/_config.yml",
+		"/C/Users/m/Desktop/export_dc/_config.yml",
+		"/C/Users/m/Desktop/export_dc/_posts/2020-08-13-oscilloscope-current-measurement-on-the-cheap.md",
+		"/C/Users/m/Desktop/export_m/_posts/2019-08-01-back-in-air.md",
+		"/C/Users/m/Desktop/export_dc/assets/main.scss",
+		"/C/Users/m/Desktop/export_dc/_includes/image.html",
+		"/C/Users/m/Desktop/export_m/_posts/2009-05-12-balabababa-im-lovin-it.md",
+		"/C/Users/m/Desktop/export_m/_posts/2014-02-01-getting-a-3d-printer-part-1-introduction-cad-program.md",
+		"/C/Users/m/Desktop/export_m/_posts_out/2019-08-01-back-in-air.md",
+		"/C/Users/m/Desktop/export_m/import/_config.yml",
+		"/C/Users/m/Desktop/export_m/_posts/2008-06-21-hello-world.md",
+		"/C/Users/m/Desktop/export_m/airports-visited.md",
+		"/C/Users/m/Desktop/export_dc/_posts_out/2021-05-04-designing-an-esp32-based-rgb-matrix-driver-and-making-500-of-them.md",
+		"/C/Users/m/Desktop/export_dc/_layouts/post.html",
+		"/C/Users/m/Desktop/export_dc/_posts/2019-10-21-using-kicad-with-jlcpcb-assembly-service.md",
+		"/C/Users/m/Desktop/export_dc/assets/css/style.scss",
+		"/C/Users/m/Desktop/export_dc/_sass/styles.scss",
+		"/C/Users/m/Desktop/export_dc/import/_config.yml",
+		"/C/Users/m/AppData/Local/Temp/Temp1_export_dc.zip/_posts/2021-05-04-designing-an-esp32-based-rgb-matrix-driver-and-making-500-of-them.md",
+		"/C/Users/m/Desktop/export_dc/about.md",
+		"/C/Users/m/Downloads/Flower.and.Snake.3.2010.x264.AC3-WAF/Flower.and.Snake.3.2010.x264.AC3-WAF.nfo",
+		"/C/Data/Repositories/PlantUndeadifier/hardware/fab/garden-all-pos.csv",
+		"/C/Data/Repositories/PlantUndeadifier/hardware/garden_cpl_jlc.csv",
+		"/C/Data/Repositories/PlantUndeadifier/hardware/garden_bom_jlc.csv",
+		"/C/Data/Repositories/PlantUndeadifier/firmware/HWTest/PlantUndeadifierHW/plant_undeadifier.h",
+		"/Z/WiredHut/controller/lighting.py",
+		"/Z/WiredHut/controller/config.py",
+		"/Z/WiredHut/controller/http_server.py",
+		"/Z/WiredHut/controller/static_server.py",
+		"/Z/WiredHut/controller_backup/main.py",
+		"/Z/WiredHut/controller/main.py",
+		"/Z/WiredHut/controller/remote_handler.py",
+		"/Z/WiredHut/controller/util.py",
+		"/Z/WiredHut/controller/table.py",
+		"/Z/WiredHut/controller/sample_config.py",
+		"/Z/WiredHut/controller/garden.py",
+		"/Z/WiredHut/controller/fixdb.py",
+		"/Z/WiredHut/controller/indoor.py",
+		"/Z/WiredHut/controller/dynamic_var.py",
+		"/C/Data/Repositories/JLCKicadTools/README.md",
+		"/C/Data/Repositories/JLCKicadTools/jlc_kicad_tools/jlc_lib/cpl_fix_rotations.py",
+		"/C/Data/Repositories/JLCKicadTools/setup.py",
+		"/C/Data/Repositories/JLCKicadTools/jlc_kicad_tools/jlc_lib/__init__.py",
+		"/C/Data/Repositories/JLCKicadTools/jlc_kicad_tools/__init__.py",
+		"/D/ssh/id_ed25519.pub",
+		"/C/Data/Repositories/WiredHut/hardware/garden/garden_cpl_jlc.csv",
+		"/C/Data/Repositories/JLCKicadTools/jlc_kicad_tools/generate_jlc_files.py",
+		"/D/ssh/github.openssh",
+		"/D/ssh/github.pub",
+		"/D/ssh/github.ppk",
+		"/D/ssh/github.ssh",
+		"/C/Data/Repositories/WiredHut/hardware/garden/garden_bom_jlc.csv",
+		"/C/Data/Repositories/JLCKicadTools/MANIFEST.in",
+		"/C/Data/Repositories/WiredHut/.gitignore",
+		"/D/.bzvol/bzvol_id.xml",
+		"/C/Users/m/Downloads/dildo_shape2022-02-27_12.37.52.json",
+		"/C/Data/Repositories/Adafruit_ADS1X15/Adafruit_ADS1X15.h",
+		"/C/Data/Repositories/Adafruit_ADS1X15/Adafruit_ADS1X15.cpp",
+		"/F/EFI/BOOT/blacklist.cfg",
+		"/C/Users/m/Documents/Arduino/libraries/Adafruit_ADS1X15/Adafruit_ADS1X15.h",
+		"/C/Users/m/Documents/Arduino/libraries/Adafruit_ADS1X15/Adafruit_ADS1X15.cpp",
+		"/C/Data/Repositories/ESP32Stepper/doc/tline_analysis/1mm_gcpw.xsctn",
+		"/C/Data/Repositories/ESP32Stepper/footprints/MWSA0603/MWSA0603.kicad_mod",
+		"/C/Data/Repositories/ESP32Stepper/.gitignore",
+		"/D/S/scripts/download.sh",
+		"/D/S/reflective-desire-sep-2020/README",
+		"/C/Data/Repositories/ESP32Stepper/footprints/Antennas/TI_DN007_2.4GHz.kicad_mod",
+		"/C/Data/Repositories/ESP32Stepper/controller/Woodpecker/qml.qrc",
+		"/C/Data/Repositories/ESP32Stepper/controller/Woodpecker/Info.plist",
+		"/C/Data/Repositories/ESP32Stepper/controller/Woodpecker/README.md",
+		"/C/Data/Repositories/ESP32Stepper/controller/Woodpecker/woodpecker.pro",
+		"/C/Data/Repositories/ESP32Stepper/controller/Woodpecker/images.qrc",
+		"/C/Users/m/Desktop/LCD_Module_code/Arduino/LCD_2inch4/LCD_Driver.h",
+		"/C/Users/m/Documents/Arduino/libraries/Adafruit_GFX_Library/Adafruit_SPITFT.cpp",
+		"/C/Users/m/Documents/Arduino/libraries/Adafruit_GFX_Library/Adafruit_SPITFT.h",
+		"/C/Users/m/Documents/Arduino/libraries/Adafruit_ILI9341/Adafruit_ILI9341.h",
+		"/C/Users/m/Desktop/LCD_Module_code/Arduino/LCD_2inch4/LCD_Driver.cpp",
+		"/C/Users/m/Desktop/LCD_Module_code/Arduino/LCD_2inch4/DEV_Config.h"
+	],
+	"find":
+	{
+		"height": 27.3333333333
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"(size 0.5) (drill 0.2)",
+			"via",
+			"0.2",
+			"kill",
+			"</div>",
+			"<div class=\"wp-block-image\">",
+			"on the other side",
+			"ledcWrite",
+			"SetSwitchedOutput",
+			"kTempSensorAddr",
+			"j12",
+			"J12",
+			"lights_on",
+			"in_manual_override",
+			"authenticated",
+			"port",
+			"dynamic",
+			"port",
+			"ReadDB",
+			"L1",
+			"differential",
+			"conversionComplete",
+			"conversioncomplete",
+			"thres",
+			"COMP",
+			"comp_mode",
+			"m_datarate",
+			"getLastConversionResults",
+			"ADS1X15_REG_CONFIG_CQUE_MASK",
+			"continuous",
+			"heartrate",
+			"TFT_SOFT_SPI",
+			"connection",
+			"DEV_SPI_WRITE",
+			"O3",
+			"lcsc",
+			"$sheet",
+			"sheet",
+			"Sheet",
+			"6031BE53",
+			"ws2",
+			"string",
+			"String",
+			"g_skeletons",
+			"joint_count",
+			"GetData",
+			"Reindex",
+			"FCDControllerInstance",
+			"controllerInstance",
+			"TransformedInstance",
+			"lock_guard",
+			"ColladaDocument",
+			"loadfromtext",
+			"ColladaDocument",
+			"fix",
+			"ReadWholeFile",
+			"file_content",
+			"readwholefile",
+			"ReadAndFixDaeSource",
+			"AddPropIfNotExist",
+			"this",
+			"render(",
+			"config",
+			"actor_",
+			"RenderMesh",
+			"player_colour",
+			"player",
+			"use_player",
+			"use_normal_map",
+			"Attribute",
+			"offsets",
+			"xmltext",
+			"text",
+			"kTerrainTexturePathPrefix",
+			"biped",
+			"prop",
+			"biped_hip",
+			"ske",
+			"window_height",
+			"shadow",
+			"vsyn",
+			"quad_vao_id_",
+			"vao_id",
+			"upload",
+			"gldis",
+			"UseVBO",
+			"MakeStreamingTexture",
+			"shadow",
+			"TerrainTextureSet",
+			"makeactor",
+			".xml",
+			"xml",
+			" vertices",
+			"DoneTracker",
+			"savetexture",
+			"SaveTexture",
+			"[&]",
+			"static",
+			"g_textures_to_save",
+			"enqueue",
+			"mutex",
+			"player_colour",
+			"RenderMesh",
+			"actor_data_",
+			"g_textures_to_save",
+			"XMLText",
+			"text",
+			"GenerateMessage_",
+			"sampler2DOff",
+			"fullscree",
+			"quad",
+			"discard",
+			"sample",
+			"__",
+			"eyepos",
+			"usevbo",
+			"num_indices_",
+			"indices",
+			"ndef",
+			"FXAA_QUALITY__PS",
+			"FXAA_QUALITY__PRESET",
+			"FXAA_QUALITY__P11",
+			"FXAA_QUALITY__P2",
+			"tex",
+			"FxaaTexOff",
+			"sampler2DOff",
+			"fxaaQualityRcpFrame",
+			"rgbyM"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"(size 0.5) (drill 0.3)",
+			"",
+			"MakeColourTexture",
+			"FormatString",
+			"_",
+			"sampler2D",
+			"clamp",
+			"ivec2",
+			"float",
+			"vec2",
+			"vec3",
+			"vec4",
+			"float",
+			"vec2",
+			"vec3",
+			"vec4",
+			"discard",
+			"bool"
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.3333333333
+	},
+	"input":
+	{
+		"height": 39.3333333333
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SFTP":
+	{
+		"height": 0.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "kat_controller.sublime-project",
+	"replace":
+	{
+		"height": 50.6666666667
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 349.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
