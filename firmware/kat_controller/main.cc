@@ -129,7 +129,7 @@ void __isr dma_complete_handler() {
 }
 
 void dma_init(PIO pio, uint sm) {
-  dma_claim_mask(1 << kMainDmaChannel);
+  dma_channel_claim(kMainDmaChannel);
 
   // main DMA channel outputs 8 word fragments, and then chains back to the chain channel
   dma_channel_config channel_config = dma_channel_get_default_config(kMainDmaChannel);
@@ -140,8 +140,8 @@ void dma_init(PIO pio, uint sm) {
   dma_channel_configure(kMainDmaChannel,
                         &channel_config,
                         /*write_addr=*/&pio->txf[sm],
-                        /*read_addr=*/NULL, // set by caller
-                        /*transfer_count=*/8, // 8 words (16 bits per channel)
+                        /*read_addr=*/NULL,  // Set by caller.
+                        /*transfer_count=*/kMaxNumBitsPerStrip / 2,  // 16-bit words packed into 32-bit transfers.
                         /*trigger=*/false);
 
   irq_set_exclusive_handler(DMA_IRQ_0, dma_complete_handler);
@@ -150,9 +150,7 @@ void dma_init(PIO pio, uint sm) {
 }
 
 void start_dma_output(uint8_t current_buffer) {
-  uint32_t trans_count = kMaxNumBitsPerStrip / 2;
-  dma_channel_set_read_addr(kMainDmaChannel, &g_transposed_output_buffer[current_buffer][0], /*trigger=*/false);
-  dma_channel_set_trans_count(kMainDmaChannel, trans_count, /*trigger=*/true);
+  dma_channel_set_read_addr(kMainDmaChannel, &g_transposed_output_buffer[current_buffer][0], /*trigger=*/true);
 }
 
 int main() {
