@@ -6993,12 +6993,12 @@
     (property "Field5" "" (at 135.89 220.98 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid b73ffc4e-19f6-499f-bcc2-ba068fdea70f))
-    (pin "2" (uuid a2357e1d-1835-466e-b31c-b92c32f7e6b1))
-    (pin "3" (uuid 6e5aee7c-e699-43e0-9967-36eea2b2ac4b))
-    (pin "4" (uuid 4f417a56-9f10-4fef-a688-747c9b0ed430))
-    (pin "5" (uuid 3cc55f55-f9aa-4f61-90dc-98e09c62e97f))
-    (pin "6" (uuid d835496a-bdfd-4057-945b-cdf1504d9439))
+    (pin "1" (uuid 674158f3-480c-4841-b360-cd45c0162d70))
+    (pin "2" (uuid 85bad5a5-5d2f-4abb-8548-baf187a2cb9c))
+    (pin "3" (uuid 969b3636-7f20-4b81-b198-34c3e5524f1c))
+    (pin "4" (uuid 395c44ab-103b-430e-8e87-f76eaa604089))
+    (pin "5" (uuid b708d26c-560f-41cc-ab61-c574492cb0ba))
+    (pin "6" (uuid 824a677f-4eda-4946-a02d-cd7874a68239))
     (instances
       (project "kat_control_board"
         (path "/516f119a-f5ef-48bc-a79a-458f3908fdc5"
@@ -7132,8 +7132,8 @@
     (property "JLC" "C52923" (at 115.57 189.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid be12ea8f-a12e-4740-8c20-9df34fd23c02))
-    (pin "2" (uuid d267ae0d-a67b-41f3-8ab0-e2badf5996c4))
+    (pin "1" (uuid 8adf08c6-5736-4897-b7a7-cbce02e01385))
+    (pin "2" (uuid 7f8d2b36-7075-4234-a115-0bf0bbec45a3))
     (instances
       (project "kat_control_board"
         (path "/516f119a-f5ef-48bc-a79a-458f3908fdc5"
@@ -7244,9 +7244,9 @@
     (property "LCSC" "C5446" (at 128.27 180.34 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 8937d0b9-462e-46f7-9409-bd0ce90bb07c))
-    (pin "2" (uuid 3b0d7a7f-79e3-4586-9a06-3ea690c797b4))
-    (pin "3" (uuid 69477d6f-92bc-4f67-802d-efdf4c65e380))
+    (pin "1" (uuid bd30db5d-13bb-4bea-99d5-4b3e1757e0ec))
+    (pin "2" (uuid c931e5c5-4fc3-4cc5-8f39-78d03f475559))
+    (pin "3" (uuid a4480eb0-332b-4348-a78c-be77510d2ab3))
     (instances
       (project "kat_control_board"
         (path "/516f119a-f5ef-48bc-a79a-458f3908fdc5"
@@ -7616,7 +7616,7 @@
     (property "Datasheet" "" (at 135.89 208.28 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid d57bdaa9-7356-43c9-8ea7-5c24ae27f655))
+    (pin "1" (uuid ef96729a-0592-401e-bf53-ef5119b3f098))
     (instances
       (project "kat_control_board"
         (path "/516f119a-f5ef-48bc-a79a-458f3908fdc5"
@@ -10276,7 +10276,7 @@
     (property "Datasheet" "" (at 142.24 176.53 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 298aa4d5-029a-4996-982f-919cc7bf55f9))
+    (pin "1" (uuid ed62cd88-3d54-4021-8c53-0bfabd0e5198))
     (instances
       (project "kat_control_board"
         (path "/516f119a-f5ef-48bc-a79a-458f3908fdc5"
@@ -10491,7 +10491,7 @@
     (property "Datasheet" "" (at 115.57 193.04 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid bdda7874-a516-4be5-a999-b92fe5129e67))
+    (pin "1" (uuid 1a30fec7-1a08-46eb-8999-1d29ac1cf151))
     (instances
       (project "kat_control_board"
         (path "/516f119a-f5ef-48bc-a79a-458f3908fdc5"
@@ -10836,7 +10836,7 @@
     (property "Datasheet" "" (at 142.24 193.04 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 059ecd0c-3583-44c5-9a6c-0e55904d204a))
+    (pin "1" (uuid ff32d76f-329d-464c-80e3-fe74ffaf1506))
     (instances
       (project "kat_control_board"
         (path "/516f119a-f5ef-48bc-a79a-458f3908fdc5"
@@ -10886,7 +10886,7 @@
     (property "Datasheet" "" (at 135.89 233.68 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 2f51672b-35e8-47ba-95bf-8a78aa28c772))
+    (pin "1" (uuid 589e19cf-1b12-41ee-80d4-3553b4635c77))
     (instances
       (project "kat_control_board"
         (path "/516f119a-f5ef-48bc-a79a-458f3908fdc5"
@@ -11226,7 +11226,7 @@
     (property "Datasheet" "" (at 128.27 187.96 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid b07d71e1-cd58-4d81-abe9-00f5f7ae7edd))
+    (pin "1" (uuid 4f905231-ba2b-454a-be23-70807ff1df7a))
     (instances
       (project "kat_control_board"
         (path "/516f119a-f5ef-48bc-a79a-458f3908fdc5"
@@ -12384,8 +12384,8 @@
     (property "JLC" "C52923" (at 142.24 189.23 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 4654ea91-da83-4603-9021-2c8b0fc13a96))
-    (pin "2" (uuid 0aa0c1d4-cdb3-431e-a743-395abc91dd3e))
+    (pin "1" (uuid 0124acee-4fb2-4749-a3d8-80b43cd3801e))
+    (pin "2" (uuid 123b5827-d5a0-401a-801e-281b921a3723))
     (instances
       (project "kat_control_board"
         (path "/516f119a-f5ef-48bc-a79a-458f3908fdc5"
@@ -13061,7 +13061,7 @@
     (property "Datasheet" "~" (at 53.34 219.71 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "JLC" "C25086" (at 53.34 219.71 90)
+    (property "JLC" "C25741" (at 53.34 219.71 90)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid fdd65df6-e2b2-42de-a0d9-f5cc32c96c65))
@@ -13327,7 +13327,7 @@
     (property "Datasheet" "" (at 115.57 177.8 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid c85fa298-53f7-4a3c-b234-69dd9b66df81))
+    (pin "1" (uuid 6f5c7fab-77bc-4a6e-9856-1ddb0e2d5831))
     (instances
       (project "kat_control_board"
         (path "/516f119a-f5ef-48bc-a79a-458f3908fdc5"
