@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
+set(PICO_BOARD_HEADER_DIRS ${CMAKE_SOURCE_DIR})
+set(PICO_BOARD kat_controller_board)
 include($ENV{PICO_SDK_PATH}/pico_sdk_init.cmake)
 
 project(KatFirmware)
