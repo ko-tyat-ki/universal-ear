@@ -1,6 +1,6 @@
 # Firmware Setup
 
-The board is based on the Raspberry Pi RP2040 (microcontroller used in the Raspberry Pi Pico.
+The board is based on the Raspberry Pi RP2040 (microcontroller used in the Raspberry Pi Pico).
 
 ## Raspberry Pi Pico SDK Setup
 
@@ -37,3 +37,8 @@ make -j8
 1. Power up the board in bootloader mode (press and hold USB_BOOT, press and release RESET, release USB_BOOT).
 2. The board should enumerate as a USB storage device.
 3. Copy the kat_controller.uf2 file to the USB storage device. It will automatically reset and boot into new firmware.
+
+Alternatively, if picotool is installed, it can be used for upload without having to press buttons:
+```
+picotool load -f kat_controller.uf2 && picotool reboot
+```
