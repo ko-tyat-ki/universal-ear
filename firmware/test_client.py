@@ -45,7 +45,7 @@ READY_MESSAGE_TYPE = b'\x08'
 LED_DATA_MESSAGE_TYPE = b'\x01'
 LED_SWAP_MESSAGE_TYPE = b'\x10'
 
-NUM_LEDS_PER_CHANNEL = 1024
+NUM_LEDS_PER_CHANNEL = 512
 
 START_SEQ = [ b'\xe5', b'\x6b', b'\x03', b'\x1d' ];
 
@@ -69,14 +69,14 @@ def read_message(s):
   content = s.read(msg_len)
   return msg_type, content
 
-def send_message(s, message_type, message):
+def make_message(message_type, message):
   pkt = bytearray(b''.join(START_SEQ))
   pkt.extend(message_type)
   pkt.extend(len(message).to_bytes(2, byteorder='little'))
   pkt.extend(message)
-  s.write(pkt)
+  return pkt
 
-def send_led_data_message(s, channel):
+def make_led_data_message(channel):
   message = []
   message.append(channel)
   num_leds_bytes = NUM_LEDS_PER_CHANNEL.to_bytes(2, byteorder='little')
@@ -86,10 +86,10 @@ def send_led_data_message(s, channel):
     message.append(64)
     message.append(64)
     message.append(64)
-  send_message(s, LED_DATA_MESSAGE_TYPE, message)
+  return make_message(LED_DATA_MESSAGE_TYPE, message)
 
-def send_swap_message(s):
-  send_message(s, LED_SWAP_MESSAGE_TYPE, bytearray())
+def make_swap_message():
+  return make_message(LED_SWAP_MESSAGE_TYPE, bytearray())
 
 def main():
   if len(sys.argv) < 2:
@@ -115,10 +115,11 @@ def main():
             if frame_delay < 1e-5:
               frame_delay = 1e-5
             print(f'Sending frame ({(1 / frame_delay):.1f} fps)')
+            messages = bytearray()
             for ch in range(16):
-              send_led_data_message(s, ch)
-            send_swap_message(s)
-            s.flush()
+              messages.extend(make_led_data_message(ch))
+            messages.extend(make_swap_message())
+            s.write(messages)
 
     except serial.serialutil.SerialException:
       if s is not None:

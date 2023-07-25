@@ -40,5 +40,5 @@ make -j8
 
 Alternatively, if picotool is installed, it can be used for upload without having to press buttons:
 ```
-picotool load -f kat_controller.uf2 && picotool reboot
+picotool load -v kat_controller.uf2 -f && picotool reboot
 ```
