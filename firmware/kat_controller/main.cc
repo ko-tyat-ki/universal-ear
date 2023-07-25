@@ -53,6 +53,9 @@ constexpr int kMaxStripLength = 1024;
 constexpr int kLedPinBase = 0;
 constexpr int kTestModeTimeoutUs = 1000000; // If we don't get an update for this long, go into test mode.
 
+// Switched 12V outputs.
+constexpr int kSwitchedOutputsPins[] = { 17, 18, 19, 20 };
+
 // Analog multiplexer.
 constexpr int kAMuxControlPins[] = { 23, 24, 25 };
 constexpr int kAMuxAnalogInPin = 26; // ADCIn0
@@ -381,9 +384,15 @@ Packet* read_packet() {
 }
 
 int main() {
-  stdio_init_all();
+  stdio_usb_init();
 
   amux_init();
+
+  for (const auto& pin : kSwitchedOutputsPins) {
+    gpio_init(pin);
+    gpio_set_dir(pin, /*out=*/true);
+    gpio_put(pin, false);
+  }
 
   gpio_init(kTestButtonPin);
   gpio_set_dir(kTestButtonPin, /*out=*/false);
@@ -391,6 +400,7 @@ int main() {
 
   gpio_init(kTestLEDPin);
   gpio_set_dir(kTestLEDPin, /*out=*/true);
+  gpio_put(kTestLEDPin, /*out=*/false);
 
   // Give the DMA controller bus priority so if we are doing something memory-intensive on the CPU, the PIO blocks
   // driving the LEDs don't get buffer underflow.

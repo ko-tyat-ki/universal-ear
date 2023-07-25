@@ -49,7 +49,7 @@
 #include "hardware/clocks.h"
 
 static inline void ws2812_parallel_16b_program_init(PIO pio, uint sm, uint offset, uint pin_base, uint pin_count, float freq) {
-    for(uint i=pin_base; i<pin_base+pin_count; i++) {
+    for(uint i = pin_base; i < pin_base + pin_count; i++) {
         pio_gpio_init(pio, i);
         gpio_set_function(i, pio == pio0 ? GPIO_FUNC_PIO0 : GPIO_FUNC_PIO1);
     }
