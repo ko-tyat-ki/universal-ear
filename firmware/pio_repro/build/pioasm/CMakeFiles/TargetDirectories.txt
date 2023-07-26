@@ -1,0 +1,3 @@
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/pioasm/CMakeFiles/pioasm.dir
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/pioasm/CMakeFiles/edit_cache.dir
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/pioasm/CMakeFiles/rebuild_cache.dir

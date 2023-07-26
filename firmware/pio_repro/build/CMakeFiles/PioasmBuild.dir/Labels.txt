@@ -1,0 +1,13 @@
+# Target labels
+ PioasmBuild
+# Source files and their labels
+/home/matthew/Repositories/kinki-yokai/firmware/kat_controller/build/CMakeFiles/PioasmBuild
+/home/matthew/Repositories/kinki-yokai/firmware/kat_controller/build/CMakeFiles/PioasmBuild.rule
+/home/matthew/Repositories/kinki-yokai/firmware/kat_controller/build/CMakeFiles/PioasmBuild-complete.rule
+/home/matthew/Repositories/kinki-yokai/firmware/kat_controller/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-build.rule
+/home/matthew/Repositories/kinki-yokai/firmware/kat_controller/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-configure.rule
+/home/matthew/Repositories/kinki-yokai/firmware/kat_controller/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-download.rule
+/home/matthew/Repositories/kinki-yokai/firmware/kat_controller/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-install.rule
+/home/matthew/Repositories/kinki-yokai/firmware/kat_controller/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-mkdir.rule
+/home/matthew/Repositories/kinki-yokai/firmware/kat_controller/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-patch.rule
+/home/matthew/Repositories/kinki-yokai/firmware/kat_controller/build/pioasm/src/PioasmBuild-stamp/PioasmBuild-update.rule

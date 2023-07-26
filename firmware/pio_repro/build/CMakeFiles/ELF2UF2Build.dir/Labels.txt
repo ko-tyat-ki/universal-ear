@@ -1,0 +1,13 @@
+# Target labels
+ ELF2UF2Build
+# Source files and their labels
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/CMakeFiles/ELF2UF2Build
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/CMakeFiles/ELF2UF2Build.rule
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/CMakeFiles/ELF2UF2Build-complete.rule
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-build.rule
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-configure.rule
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-download.rule
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-install.rule
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-mkdir.rule
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-patch.rule
+/home/matthew/Repositories/kinki-yokai/firmware/pio_repro/build/elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-update.rule
