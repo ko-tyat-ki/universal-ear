@@ -45,6 +45,8 @@
 #include "pico/stdlib.h"
 #include "pico/time.h"
 
+#include "fire.h"
+#include "iir_filter.h"
 #include "ws2812parallel16b.pio.h"
 
 // LEDs.
@@ -66,6 +68,7 @@ constexpr int kNumPullSensors = 5;
 constexpr int kPullSensorAnalogMuxPins[kNumPullSensors] = { 3, 0, 1, 2, 5 };
 constexpr int kPullSensorFixedResistance = 1500; // 3V3 -> 1.5k -> test -> gnd.
 constexpr int kPullSensorNumReads = 16; // Average multiple readings.
+constexpr int kPullSensorUpdateIntervalUs = 10000; // 10ms.
 
 // Test button / LED.
 constexpr int kTestButtonPin = 27;
@@ -82,10 +85,12 @@ constexpr uint16_t kMaxPacketLen = 4096;
 
 // Message types to host.
 constexpr uint8_t kDebugInfoPacketType = 0x1;
+constexpr uint8_t kPullSensorUpdatePacketType = 0x2;
 constexpr uint8_t kReadyPacketType = 0x8;
 
 // Message types from host.
 constexpr uint8_t kLEDDataUpdateMessageType = 0x1;
+constexpr uint8_t kLEDFireModeMessageType = 0x2;
 constexpr uint8_t kLEDSwapMessageType = 0x10;
 
 // In test mode we need to pre-compute an approximate sinusoidal function.
@@ -276,6 +281,17 @@ void set_test_leds_data(uint64_t now) {
   }
 }
 
+void write_uint16(uint8_t* dst, uint16_t val) {
+  dst[0] = val & 0xff;
+  dst[1] = (val & 0xff00) >> 8;
+}
+
+void write_int16(uint8_t* dst, int16_t val_signed) {
+  uint16_t val_as_unsigned;
+  std::memcpy(&val_as_unsigned, &val_signed, sizeof(val_signed));
+  write_uint16(dst, val_as_unsigned);
+}
+
 // Using low level stdio_usb functions here:
 // https://github.com/raspberrypi/pico-sdk/blob/master/src/rp2_common/pico_stdio_usb/stdio_usb.c
 void write_packet(uint8_t type, const uint8_t* data, uint16_t len) {
@@ -285,8 +301,7 @@ void write_packet(uint8_t type, const uint8_t* data, uint16_t len) {
     out_packet_buffer[i] = kStartSeq[i];
   }
   out_packet_buffer[4] = type;
-  out_packet_buffer[5] = len & 0xff;
-  out_packet_buffer[6] = (len & 0xff00) >> 8;
+  write_uint16(&out_packet_buffer[5], len);
   if ((kHeaderSize + len) > kMaxPacketLen) {
     len = kMaxPacketLen - kHeaderSize;
   }
@@ -303,6 +318,23 @@ void send_debug_packet(const char* str) {
 
 void send_ready_packet() {
   write_packet(kReadyPacketType, nullptr, 0);
+}
+
+void send_pull_sensor_readings_packet(IIRFilter* filters) {
+  constexpr int kPacketLen = 2 * (1 + 3 * kNumPullSensors);
+  uint8_t buf[kPacketLen];
+  uint8_t* data_ptr = buf;
+  write_uint16(data_ptr, kNumPullSensors);
+  data_ptr += 2;
+  for (int sensor = 0; sensor < kNumPullSensors; ++sensor) {
+    write_int16(data_ptr, static_cast<int16_t>(filters[sensor].LastValue()));
+    data_ptr += 2;
+    write_int16(data_ptr, static_cast<int16_t>(filters[sensor].DiffFast()));
+    data_ptr += 2;
+    write_int16(data_ptr, static_cast<int16_t>(filters[sensor].DiffSlow()));
+    data_ptr += 2;
+  }
+  write_packet(kPullSensorUpdatePacketType, buf, kPacketLen);
 }
 
 struct Packet {
@@ -412,14 +444,25 @@ int main() {
 
   ws2812_parallel_16b_program_init(pio, sm, offset, kLedPinBase, kNumStrips, 800000);
 
+  for (int i = 0; i < 16; ++i) {
+    gpio_set_dir(i, /*out=*/true);
+  }
+
   sem_init(&g_reset_delay_complete_sem, /*initial_permits=*/1, /*max_permits=*/1); // initially posted so we don't block first time
   dma_init(pio, sm);
 
   absolute_time_t start_time = get_absolute_time();
   absolute_time_t last_print_time = start_time;
   absolute_time_t last_update_time = start_time;
+  absolute_time_t last_pull_sensor_update_time = start_time;
 
   uint8_t current_buffer = 0;
+
+  IIRFilter pull_sensor_filters[kNumPullSensors];
+
+  FireCalculator fire_calculators[kNumStrips];
+
+  bool is_on_fire[kNumStrips] = { false };
 
   char debug_info[1024];
 
@@ -448,7 +491,16 @@ int main() {
         }
         uint8_t* buf = &g_pixel_data_buffer[channel][0];
         memcpy(buf, maybe_packet->content + 3, num_leds * 3);
+        is_on_fire[channel] = false;
         last_update_time = now;
+      }
+        break;
+      case kLEDFireModeMessageType:
+      {
+        uint8_t channel = maybe_packet->content[0];
+        uint8_t brightness = maybe_packet->content[1];
+        is_on_fire[channel] = true;
+        fire_calculators[channel].SetBrightness(brightness);
       }
         break;
       case kLEDSwapMessageType:
@@ -472,6 +524,12 @@ int main() {
     }
 
     if (swapping) {
+      for (int channel = 0; channel < kNumStrips; ++channel) {
+        if (is_on_fire[channel]) {
+          fire_calculators[channel].SetFire(&g_pixel_data_buffer[channel][0]);
+        }
+      }
+
       UpdateTransposedBuffer(current_buffer);
 
       if (make_debug_info) {
@@ -490,19 +548,25 @@ int main() {
       current_buffer ^= 0x1;
 
       send_ready_packet();
+      send_pull_sensor_readings_packet(pull_sensor_filters);
     }
 
-    // Pull sensors.
-    int32_t pull_sensor_raw_values[kNumPullSensors];
-    read_all_pull_sensors(pull_sensor_raw_values);
+    if ((now - last_pull_sensor_update_time) > kPullSensorUpdateIntervalUs) {
+      int32_t pull_sensor_raw_values[kNumPullSensors];
+      read_all_pull_sensors(pull_sensor_raw_values);
 
-    if (make_debug_info) {
-      sprintf(debug_info + strlen(debug_info),
-        "Pull raw: %d %d %d %d %d\n", pull_sensor_raw_values[0], pull_sensor_raw_values[1],
-             pull_sensor_raw_values[2], pull_sensor_raw_values[3], pull_sensor_raw_values[4]);
+      // Arduino ADCs are 10-bit (0-1023). The RP2040 ADC is 12-bit. Scale to
+      // (0-1023) for backward compatibility, but because we are passing as floats,
+      // we do still benefit from extra precision.
+      for (int sensor = 0; sensor < kNumPullSensors; ++sensor) {
+        float new_val_scaled = static_cast<float>(pull_sensor_raw_values[sensor]) / 4.0f;
+        pull_sensor_filters[sensor].AddData(new_val_scaled);
+      }
+
+      last_pull_sensor_update_time = now;
     }
 
-    if (make_debug_info) {
+    if (make_debug_info && strlen(debug_info) > 0) {
       send_debug_packet(debug_info);
     }
   }
