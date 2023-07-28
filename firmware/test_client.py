@@ -39,15 +39,22 @@ from datetime import datetime
 
 # From device
 DEBUG_MESSAGE_TYPE = b'\x01'
+PULL_SENSOR_MESSAGE_TYPE = b'\x02'
 READY_MESSAGE_TYPE = b'\x08'
 
 # To device
 LED_DATA_MESSAGE_TYPE = b'\x01'
+LED_FIRE_MESSAGE_TYPE = b'\x02'
 LED_SWAP_MESSAGE_TYPE = b'\x10'
 
 NUM_LEDS_PER_CHANNEL = 512
 
-START_SEQ = [ b'\xe5', b'\x6b', b'\x03', b'\x1d' ];
+START_SEQ = [ b'\xe5', b'\x6b', b'\x03', b'\x1d' ]
+
+MOONS = {
+  # Pull sensor -> LED channel.
+  0: 0
+}
 
 def wait_until_start_seq(s):
   current_position = 0
@@ -59,7 +66,18 @@ def wait_until_start_seq(s):
       current_position = 0
 
 def read_u16(s):
-  return int.from_bytes(s.read(2), 'little')
+  return int.from_bytes(s.read(2), 'little', signed=False)
+
+def read_s16(s):
+  return int.from_bytes(s.read(2), 'little', signed=True)
+
+def as_u16(slice):
+  assert len(slice) == 2
+  return int.from_bytes(slice, 'little', signed=False)
+
+def as_s16(slice):
+  assert len(slice) == 2
+  return int.from_bytes(slice, 'little', signed=True)
 
 # Returns (type, message)
 def read_message(s):
@@ -91,6 +109,12 @@ def make_led_data_message(channel):
 def make_swap_message():
   return make_message(LED_SWAP_MESSAGE_TYPE, bytearray())
 
+def make_fire_message(channel, brightness):
+  message = []
+  message.append(channel)
+  message.append(brightness)
+  return make_message(LED_FIRE_MESSAGE_TYPE, message)
+
 def main():
   if len(sys.argv) < 2:
     print(f'Usage: {sys.argv[0]} <serial port>')
@@ -99,6 +123,8 @@ def main():
   s = None
   print(f'Trying to connect to {port}')
   last_frame_time = datetime.now().timestamp()
+  last_framerate_print_time = last_frame_time
+  sensor_last_pull_times = [last_frame_time] * 5
   while True:
     try:
       with serial.Serial(port) as s:
@@ -114,12 +140,34 @@ def main():
             last_frame_time = now
             if frame_delay < 1e-5:
               frame_delay = 1e-5
-            print(f'Sending frame ({(1 / frame_delay):.1f} fps)')
             messages = bytearray()
             for ch in range(16):
-              messages.extend(make_led_data_message(ch))
+              if ch not in MOONS.values():
+                messages.extend(make_led_data_message(ch))
             messages.extend(make_swap_message())
             s.write(messages)
+            if (now - last_framerate_print_time) > 1.0:
+              print(f'{(1 / frame_delay):.1f} fps')
+              last_framerate_print_time = now
+          if msg_type == PULL_SENSOR_MESSAGE_TYPE:
+            num_sensors = as_u16(msg_content[0:2])
+            now = datetime.now().timestamp()
+            messages = bytearray()
+            for sensor in range(5):
+              base = 6 * sensor + 2
+              raw = as_s16(msg_content[base:(base + 2)])
+              diff_fast = as_s16(msg_content[(base + 2):(base + 4)])
+              diff_slow = as_s16(msg_content[(base + 4):(base + 6)])
+              since_last_pull = now - sensor_last_pull_times[sensor]
+              if diff_fast > 30 and since_last_pull > 5.0:
+                print(f'Sensor {sensor} pulled ({diff_fast})')
+                sensor_last_pull_times[sensor] = now
+              if sensor in MOONS:
+                ch = MOONS[sensor]
+                messages = bytearray()
+                messages.extend(make_fire_message(ch, abs(diff_slow)))
+            s.write(messages)
+
 
     except serial.serialutil.SerialException:
       if s is not None:
