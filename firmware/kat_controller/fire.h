@@ -102,7 +102,6 @@ class FireCalculator {
  public:
   constexpr static uint16_t kCoolingConstant = 55;
   constexpr static uint8_t kSparklingConstant = 120;
-  constexpr static uint8_t kFireBrightnessMultiplier = 3;
 
   FireCalculator() {
     for (int i = 0; i < kFireLength; ++i) {
@@ -130,7 +129,7 @@ class FireCalculator {
     }
 
     // Step 4. Map from heat cells to LED colours.
-    uint16_t led_brightness = kFireBrightnessMultiplier * brightness_;
+    uint16_t led_brightness = brightness_;
     if (led_brightness > 255) {
       led_brightness = 255;
     }
