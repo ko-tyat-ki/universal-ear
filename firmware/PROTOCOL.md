@@ -47,7 +47,10 @@ DATA = [LED0-G (1)][LED0-R (1)][LED0-B (1)][LED1-G (1)][LED1-R (1)][LED1-B (1)].
 #### LED fire mode (MESSAGE_TYPE=0x2)
 
 Puts an LED channel in fire mode. Fire mode is cancelled if a data update is sent for this string. FIRE_BRIGHTNESS is diffslow in the original version.
+
+```
 CONTENT = [LED_OUTPUT_CHANNEL (1)][FIRE_BRIGHTNESS (1)]
+```
 
 #### LED swap/present (MESSAGE_TYPE=0x10)
 
