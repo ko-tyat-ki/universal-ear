@@ -19,7 +19,7 @@ pico_generate_pio_header(kat_controller ${CMAKE_CURRENT_LIST_DIR}/ws2812parallel
 target_sources(kat_controller PRIVATE main.cc)
 
 # pull in common dependencies
-target_link_libraries(kat_controller pico_stdlib hardware_adc hardware_pio hardware_dma)
+target_link_libraries(kat_controller pico_stdlib hardware_adc hardware_pio hardware_pwm hardware_dma)
 
 # enable usb output, disable uart output
 pico_enable_stdio_usb(kat_controller 1)

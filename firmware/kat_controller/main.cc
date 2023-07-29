@@ -38,6 +38,7 @@
 #include <cstdio>
 #include "hardware/adc.h"
 #include "hardware/dma.h"
+#include "hardware/pwm.h"
 #include "hardware/structs/bus_ctrl.h"
 #include "pico/sem.h"
 #include "pico/stdio/driver.h"
@@ -56,6 +57,7 @@ constexpr int kLedPinBase = 0;
 constexpr int kTestModeTimeoutUs = 1000000; // If we don't get an update for this long, go into test mode.
 
 // Switched 12V outputs.
+constexpr int kNumSwitchedOutputs = 4;
 constexpr int kSwitchedOutputsPins[] = { 17, 18, 19, 20 };
 
 // Analog multiplexer.
@@ -92,6 +94,7 @@ constexpr uint8_t kReadyPacketType = 0x8;
 constexpr uint8_t kLEDDataUpdateMessageType = 0x1;
 constexpr uint8_t kLEDFireModeMessageType = 0x2;
 constexpr uint8_t kLEDSwapMessageType = 0x10;
+constexpr uint8_t kSwitchedOutputMessageType = 0x20;
 
 // In test mode we need to pre-compute an approximate sinusoidal function.
 // This is the resolution for that function.
@@ -420,10 +423,33 @@ int main() {
 
   amux_init();
 
-  for (const auto& pin : kSwitchedOutputsPins) {
+  uint32_t switched_output_pwm_slices[kNumSwitchedOutputs];
+  uint32_t switched_output_pwm_channels[kNumSwitchedOutputs];
+
+  for (int i = 0; i < kNumSwitchedOutputs; ++i) {
+    const auto& pin = kSwitchedOutputsPins[i];
     gpio_init(pin);
     gpio_set_dir(pin, /*out=*/true);
     gpio_put(pin, false);
+    gpio_set_function(pin, GPIO_FUNC_PWM);
+    switched_output_pwm_slices[i] = pwm_gpio_to_slice_num(pin);
+    switched_output_pwm_channels[i] = pwm_gpio_to_channel(pin);
+  }
+
+  pwm_config config = pwm_get_default_config();
+  // 30kHz PWM, 256 cycles period, 7.6MHz clock, ~= divider 16.
+  pwm_config_set_clkdiv(&config, 16);
+  pwm_config_set_wrap(&config, 255);
+
+  for (uint32_t pwm_slice : switched_output_pwm_slices) {
+    pwm_init(pwm_slice, &config, true);
+    pwm_set_enabled(pwm_slice, true);
+  }
+
+  for (uint32_t i = 0; i < kNumSwitchedOutputs; ++i) {
+    pwm_set_chan_level(switched_output_pwm_slices[i],
+                       switched_output_pwm_channels[i],
+                       0);
   }
 
   gpio_init(kTestButtonPin);
@@ -506,6 +532,15 @@ int main() {
       case kLEDSwapMessageType:
         swapping = true;
         break;
+      case kSwitchedOutputMessageType:
+      {
+        uint8_t channel = maybe_packet->content[0];
+        uint8_t duty = maybe_packet->content[1];
+        pwm_set_chan_level(switched_output_pwm_slices[channel],
+                           switched_output_pwm_channels[channel],
+                           duty);
+      }
+        break;
       }
     }
 
@@ -524,9 +559,11 @@ int main() {
     }
 
     if (swapping) {
-      for (int channel = 0; channel < kNumStrips; ++channel) {
-        if (is_on_fire[channel]) {
-          fire_calculators[channel].SetFire(&g_pixel_data_buffer[channel][0]);
+      if (!test_mode) {
+        for (int channel = 0; channel < kNumStrips; ++channel) {
+          if (is_on_fire[channel]) {
+            fire_calculators[channel].SetFire(&g_pixel_data_buffer[channel][0]);
+          }
         }
       }
 
