@@ -129,16 +129,12 @@ class FireCalculator {
     }
 
     // Step 4. Map from heat cells to LED colours.
-    uint16_t led_brightness = brightness_;
-    if (led_brightness > 255) {
-      led_brightness = 255;
-    }
     for (int i = 0; i < kFireLength; ++i) {
       uint8_t r, g, b;
       heat_colour(heat_[i], &r, &g, &b);
-      buf[i * 3] = (led_brightness * g) >> 8;
-      buf[i * 3 + 1] = (led_brightness * r) >> 8;
-      buf[i * 3 + 2] = (led_brightness * b) >> 8;
+      buf[i * 3] = (brightness_ * g) >> 8;
+      buf[i * 3 + 1] = (brightness_ * r) >> 8;
+      buf[i * 3 + 2] = (brightness_ * b) >> 8;
     }
   }
 

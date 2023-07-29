@@ -165,7 +165,8 @@ def main():
               if sensor in MOONS:
                 ch = MOONS[sensor]
                 messages = bytearray()
-                messages.extend(make_fire_message(ch, abs(diff_slow)))
+                # print(f'Sensor {sensor}: {raw} {diff_fast} {diff_slow}')
+                messages.extend(make_fire_message(ch, min(3 * abs(diff_slow), 255)))
             s.write(messages)
 
 
