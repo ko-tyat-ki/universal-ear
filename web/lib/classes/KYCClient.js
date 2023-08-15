@@ -63,31 +63,47 @@ class Sensor {
 
 export class KYCClient {
   constructor(config) {
+    this._events = {}
     this.address = config.address
     this.active = false
     this.ledStripsCount = config.ledStripsCount
     this.sensorsCount = config.sensorsCount
-    this.port = new SerialPort(this.address)
+    this.serialPort = new SerialPort(this.address)
     this.sensors = []
     for (let i = 0; i < config.sensorCount; i++) {
       this.sensors.push(new Sensor(i))
     }
 
+    // hacks for backwards compatibility
+    this.parser = {
+      on: this.on
+    }
+    this.port = {
+      write: (ledArray) => this.makeLedDataMessage(0, ledArray)
+    }
   }
 
   init() {
-    this.port.on('error', (error) => {
+    this.serialPort.on('error', (error) => {
       console.log(error)
       this.active = false
     })
-    this.port.on('data', (data) => {
+    this.serialPort.on('data', (data) => {
       const message = this.readMessage(data)
       this.processMessage(message)
+      if('data' in this._events) {
+        this._events['data'](data)
+      }
     })
-    this.port.on('close', (error) => {
-      console.log(`Port was closed., port: ${portName}`, error)
+    this.serialPort.on('close', (error) => {
+      console.log(`Port was closed., port: ${this.address}`, error)
       this.active = false
     })
+  }
+
+  // simplest possible, supporting one callback per event
+  on(event, callback) {
+    this._events[event] = callback
   }
 
   processMessage(message) {
