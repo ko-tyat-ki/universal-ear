@@ -69,3 +69,10 @@ typings/
 #other
 .DS_Store
 */.DS_Store
+
+# KiCad
+*-backups
+fp-info-cache
+
+firmware/kat_controller/build/*
+

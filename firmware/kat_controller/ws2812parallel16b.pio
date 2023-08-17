@@ -1,0 +1,70 @@
+/**
+ * Copyright (c) 2023 Matthew Lai (Kinki Yokai project)
+ * Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
+ *
+ * This is the Kinki Yokai controller firmware. It reads WS2812B LED values
+ * from USB, and re-shapes them as necessary to send out using PIO.
+ *
+ * BSD 3-clause
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of mosquitto nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+.program ws2812_parallel_16b
+
+.define public T1 2
+.define public T2 5
+.define public T3 3
+
+.wrap_target
+    out x, 16
+    mov pins, !null [T1-1]
+    mov pins, x     [T2-1]
+    mov pins, null  [T3-2]
+.wrap
+
+% c-sdk {
+#include "hardware/clocks.h"
+
+static inline void ws2812_parallel_16b_program_init(PIO pio, uint sm, uint offset, uint pin_base, uint pin_count, float freq) {
+    for(uint i = pin_base; i < pin_base + pin_count; i++) {
+        pio_gpio_init(pio, i);
+        gpio_set_function(i, pio == pio0 ? GPIO_FUNC_PIO0 : GPIO_FUNC_PIO1);
+    }
+    pio_sm_set_consecutive_pindirs(pio, sm, pin_base, pin_count, /*is_out=*/true);
+    
+    pio_sm_config c = ws2812_parallel_16b_program_get_default_config(offset);
+    sm_config_set_out_shift(&c, /*shift_right=*/true, /*autopull=*/true, /*pull_threshold=*/32);
+    sm_config_set_out_pins(&c, pin_base, pin_count);
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_TX);
+
+    int cycles_per_bit = ws2812_parallel_16b_T1 + ws2812_parallel_16b_T2 + ws2812_parallel_16b_T3;
+    float div = clock_get_hz(clk_sys) / (freq * cycles_per_bit);
+    sm_config_set_clkdiv(&c, div);
+
+    pio_sm_init(pio, sm, offset, &c);
+    pio_sm_set_enabled(pio, sm, true);
+}
+%}
