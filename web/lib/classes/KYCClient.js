@@ -1,5 +1,4 @@
 import SerialPort from 'serialport'
-import Readline from '@serialport/parser-readline'
 import assert from "assert";
 
 const NUM_LEDS_PER_CHANNEL = 512;
@@ -39,6 +38,7 @@ class Sensor {
 
     this.oldTension = [0,0,0,0]
     this.stick = `${position+1}`
+    this.key = "/dev/ttyUSB0"
   }
 
   //  {raw, fast, slow}
@@ -112,13 +112,14 @@ export class KYCClient {
   }
 
   processMessage(message) {
-    switch (message.type) {
-      case "READY":
+    switch (message.type.name) {
+      case "Ready":
         if (!this.active) {
           this.active = true
         }
         break
-      case "PULL":
+      case "Pull":
+        console.log(message.content.data)
         message.content.data.forEach((data, i) => {
           this.sensors[i].recordPull(data)
         })
@@ -130,6 +131,7 @@ export class KYCClient {
 
   write(buffer) {
     this.serialPort.write(buffer)
+    this.serialPort.write(this.makeSwapMessage())
   }
 
   makeSwapMessage() {
@@ -197,9 +199,9 @@ export class KYCClient {
   }
 
   _incomingType(typeBuff) {
-    for (const messagetype of MESSAGE_TYPES) {
-      if (typeBuff.equals(messagetype.byteValue)) {
-        return messagetype
+    for (const messagetype of Object.keys(MESSAGE_TYPES)) {
+      if (typeBuff.equals(MESSAGE_TYPES[messagetype].byteValue)) {
+        return MESSAGE_TYPES[messagetype]
       }
     }
     return new MessageType("UNKNOWN")

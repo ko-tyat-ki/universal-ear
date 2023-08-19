@@ -19,6 +19,8 @@ import {
 } from './lib/helpers/sleepTracker'
 
 import { serverConfig } from '../modes_config.json'
+import {KYCClient} from "./lib/classes/KYCClient";
+import {kycConfig} from "./lib/configuration/kycConfig";
 console.log({ serverConfig })
 
 // Get from config
@@ -154,54 +156,27 @@ setInterval(() => {
 }, 500)
 
 // Talk to arduinos
-const realSensors = connectToArduinos()
+const realSensor = new KYCClient(kycConfig)
+realSensor.init()
 
-const calculateDataForRealLeds = (sensorData, realSensor, stick) => {
-	realSensor.update(sensorData)
 
-	realSensorsData = realSensors.map(sensor => ({
-		tension: sensor.tension,
-		oldTension: sensor.oldTension,
-		sensorPosition: sensor.sensorPosition,
-		stick: sensor.stick,
-		slowSensorValue: sensor.slowSensorValue,
-		fastSensorValue: sensor.fastSensorValue,
-		key: sensor.key
-	}))
 
-	const combinedLedsConfig = currentMode(calculateRealColumns(currentStructureKey), [...clientSensors, ...realSensorsData])
-
+// if (realSensors && realSensors.length > 0) {
+// 	realSensors.map(realSensor => {
+// 		const port = realSensor.port
+// 		const parser = realSensor.parser
+// 		let areWeWriting = true
+//
+realSensor.on('data', data => {
+	let sensors = [...clientSensors, ...realSensor.sensors];
+	const combinedLedsConfig = currentMode(calculateRealColumns(currentStructureKey), sensors)
 	ledsConfig = regroupConfig(combinedLedsConfig.filter(Boolean))
-
-	const stickLeds = ledsConfig.find(config => config.key === stick).leds
-	return putLedsInBufferArray(stickLeds, NUMBER_OF_LEDS)
-}
-
-if (realSensors && realSensors.length > 0) {
-	realSensors.map(realSensor => {
-		const port = realSensor.port
-		const parser = realSensor.parser
-		let areWeWriting = true
-
-		parser.on('data', data => {
-			if (areWeWriting && ledsConfig && ledsConfig.length > 0) {
-				// console.log({
-				// 	data,
-				// 	key: realSensor.key,
-				// 	writing: calculateDataForRealLeds(getInfoFromSensors(data), realSensor, realSensor.stick).toString()
-				// })
-				port.write(calculateDataForRealLeds(getInfoFromSensors(data), realSensor, realSensor.stick))
-				areWeWriting = false
-			} else {
-				// console.log('Data IN, listen', data)
-				// console.log(`${new Date().getMinutes()}:${new Date().getSeconds()}`)
-				if (data === 'eat me\r') {
-					areWeWriting = true
-				}
-			}
-		})
-	})
-}
+	const stickLeds = ledsConfig.find(config => config.key === '1').leds
+	const ledsInBufferArray = putLedsInBufferArray(stickLeds, 20);
+	realSensor.write(realSensor.makeLedDataMessage(0, ledsInBufferArray))
+})
+// 	})
+// }
 
 // Talk to python
 setInterval(() => {
