@@ -28,13 +28,17 @@ const MESSAGE_TYPES = {
 }
 
 
-const START_SEQ = [Buffer.from([0xe5]), Buffer.from([0x6b]), Buffer.from([0x03]), Buffer.from([0x1d])];
+const START_SEQ = Buffer.concat([Buffer.from([0xe5]), Buffer.from([0x6b]), Buffer.from([0x03]), Buffer.from([0x1d])]);
 
 class Sensor {
   constructor(position) {
     this.position = position
     this.tension = 0
+    // it was always 10 in the old config
+    this.sensorPosition = 10
+
     this.oldTension = [0,0,0,0]
+    this.stick = `${position+1}`
   }
 
   //  {raw, fast, slow}
@@ -45,7 +49,7 @@ class Sensor {
     if (!tension) return
     for (let key = 0; key < 4; key++) {
       this.oldTension[key] = (this.oldTension[key])
-        ? this.lerp(this.oldTension[key], this.tension, 0.1 * (key + 1))
+        ? this._lerp(this.oldTension[key], this.tension, 0.1 * (key + 1))
         : this.tension
       this.oldTension[key] = (this.oldTension[key] < 1)
         ? 0
@@ -84,6 +88,7 @@ export class KYCClient {
   }
 
   init() {
+    console.log(`reading on ${this.address}`)
     this.serialPort.on('error', (error) => {
       console.log(error)
       this.active = false
@@ -121,6 +126,10 @@ export class KYCClient {
       default:
         break;
     }
+  }
+
+  write(buffer) {
+    this.serialPort.write(buffer)
   }
 
   makeSwapMessage() {
