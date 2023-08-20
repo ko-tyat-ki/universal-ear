@@ -2,6 +2,16 @@
 
 export const calculateRealColumns = (selectedStructure) => {
     switch (selectedStructure) {
+        case 'kyctst':
+            return [{
+                numberOfLEDs: 20,
+                name: '1',
+                init: {
+                    x: 0,
+                    y: 0,
+                    z: 0
+                }
+            }]
         case 'duet':
             return [{
                 numberOfLEDs: 40,

@@ -1,5 +1,5 @@
 // generic
-export const NUMBER_OF_LEDS = 40
+export const NUMBER_OF_LEDS = 20
 
 // client specific
 export const STICK_SIZE = 3

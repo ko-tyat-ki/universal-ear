@@ -25,7 +25,8 @@
     "async": "^2.6.2",
     "express": "^4.16.4",
     "serialport": "^7.1.5",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "tinycolor2": "^1.6.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
