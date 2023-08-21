@@ -23,6 +23,8 @@
   "dependencies": {
     "@serialport/binding-mock": "^10.2.2",
     "async": "^2.6.2",
+    "chroma-js": "^2.4.2",
+    "colord": "^2.9.3",
     "express": "^4.16.4",
     "serialport": "^7.1.5",
     "socket.io": "^2.2.0",

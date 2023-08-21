@@ -22,6 +22,20 @@ const putLedsInBufferArray = (stickLedsConfig, numberOfLeds) => {
     return ledsBufferArray
 }
 
+// Takes leds data for one stick, puts it into Byte array to be sent to certain Arduino
+const putLedsInBufferArrayKYC = (stickLedsConfig, numberOfLeds) => {
+    const bufferArray = new ArrayBuffer(numberOfLeds * 3)
+    const ledsBufferArray = new Uint8Array(bufferArray)
+
+    stickLedsConfig.slice(0, numberOfLeds).forEach(led => {
+        const rgb = led.color
+        ledsBufferArray[led.number * 3] = rgb.r
+        ledsBufferArray[led.number * 3+1] = rgb.g
+        ledsBufferArray[led.number * 3+2] = rgb.b
+    })
+    return ledsBufferArray
+}
+
 const addColor = (ledOne, ledTwo) => {
     return {
         r: Math.min(ledOne.r + ledTwo.r, 255),
@@ -107,5 +121,6 @@ export {
 	regroupConfig,
     putLedsInBufferArray,
     getInfoFromSensors,
-    eliminateLEDsConfigRepetition
+    eliminateLEDsConfigRepetition,
+    putLedsInBufferArrayKYC
 }

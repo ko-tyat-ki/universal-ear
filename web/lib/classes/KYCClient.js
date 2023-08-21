@@ -1,9 +1,10 @@
 import SerialPort from 'serialport'
 import assert from "assert";
-import {putLedsInBufferArray, regroupConfig} from "../helpers/dataHelpers";
+import {putLedsInBufferArray, putLedsInBufferArrayKYC, regroupConfig} from "../helpers/dataHelpers";
 import kyctest from "../modes/kyc/kyctestmode";
 import flicker from "../modes/flicker";
 import randomwhite from "../modes/kyc/randomwhite";
+import {colorStep} from "../helpers/colorHelpers";
 
 const NUM_LEDS_PER_CHANNEL = 512;
 
@@ -50,6 +51,7 @@ class Sensor {
 
   //  {raw, fast, slow}
   recordPull(sensorData) {
+    console.log(sensorData)
     const tension = sensorData.fast
     this.fastSensorValue = Math.max(sensorData.fast, 0)
     this.slowSensorValue = Math.max(sensorData.slow, 0)
@@ -81,7 +83,22 @@ class KYCled {
     this.channel = channel
     this.init = config.init
     this.mode = kyctest //default
-    this.currentLeds = Uint8Array.from([])
+    this.currentLights = [...Array(config.numberOfLEDs).keys()].map(i => ({
+      number: i,
+      color: {
+        r: 0,
+        g: 0,
+        b: 0
+      }
+    }))
+    this.futureLights = [...Array(config.numberOfLEDs).keys()].map(i => ({
+      number: i,
+      color: {
+        r: 0,
+        g: 0,
+        b: 0
+      }
+    }))
   }
 
   setMode(mode) {
@@ -98,24 +115,41 @@ class KYCled {
   }
 
   calculateFrame() {
-    this.currentLeds = putLedsInBufferArray(regroupConfig(this.mode([this], [this.sensor]).filter(Boolean)).find(config => config.key === this.name).leds, this.numberOfLEDs)
+    const frameChange = regroupConfig(this.mode([this], [this.sensor]).filter(Boolean)).find(config => config.key === this.name).leds
+    for (const currentLight of this.currentLights) {
+
+
+    }
+    this.currentLights = this.currentLights.map(cl => {
+      const hit = frameChange.filter(frame => frame.number === cl.number)
+      if(hit.length > 0) {
+        return hit[0]
+      } else {
+        return {
+          number: cl.number,
+          color: {r: 0, g: 0, b: 0}
+        }
+      }
+    })
   }
 
   drawFrame() {
-    if (!this.sensor) {
-      const nosensorLeds = putLedsInBufferArray(regroupConfig(this.mode([this], [this.sensor]).filter(Boolean)).find(config => config.key === this.name).leds, this.numberOfLEDs);
-      this.kyc.write(this.kyc.makeLedDataMessage(this.channel, nosensorLeds))
-    }
-    if (this.currentLeds.length) {
-      this.kyc.write(this.kyc.makeLedDataMessage(this.channel, this.currentLeds))
-    }
+    const attemptedStep = [...Array(this.numberOfLEDs).keys()].map(i => ({
+      number: i,
+      color: colorStep(this.currentLights[i].color, this.futureLights[i].color, 0.1)
+    }))
+
+    let ledData = putLedsInBufferArrayKYC(attemptedStep, this.numberOfLEDs);
+    let buffer = this.kyc.makeLedDataMessage(this.channel, this.numberOfLEDs, ledData);
+    this.kyc.write(buffer)
+    this.kyc.write(this.kyc.makeSwapMessage())
+    this.currentLights = attemptedStep
   }
 
 }
 
 export class KYCClient {
   constructor(config, ledConfig) {
-    this._events = {}
     this.address = config.address
     this.active = false
     this.ledStripsCount = config.ledStripsCount
@@ -136,15 +170,6 @@ export class KYCClient {
       }
       this.leds.push(ledstrip)
     }
-
-
-    // hacks for backwards compatibility
-    this.parser = {
-      on: this.on
-    }
-    this.port = {
-      write: (ledArray) => this.makeLedDataMessage(0, ledArray)
-    }
   }
 
   init() {
@@ -156,9 +181,6 @@ export class KYCClient {
     this.serialPort.on('data', (data) => {
       const message = this.readMessage(data)
       this.processMessage(message)
-      if ('data' in this._events) {
-        this._events['data'](data)
-      }
     })
     this.serialPort.on('close', (error) => {
       console.log(`Port was closed., port: ${this.address}`, error)
@@ -180,6 +202,7 @@ export class KYCClient {
         this.leds.forEach(l => l.drawFrame())
         break
       case "Pull":
+        console.log(message)
         message.content.data.forEach((data, i) => {
           this.sensors[i].recordPull(data)
         })
@@ -191,7 +214,6 @@ export class KYCClient {
 
   write(buffer) {
     this.serialPort.write(buffer)
-    this.serialPort.write(this.makeSwapMessage())
   }
 
   makeSwapMessage() {
@@ -208,9 +230,9 @@ export class KYCClient {
 
   // [LED_OUTPUT_CHANNEL (1)][NUM_LEDS (2)][DATA (NUM_LEDS * 3)]
   // [LED0-G (1)][LED0-R (1)][LED0-B (1)][LED1-G (1)][LED1-R (1)][LED1-B (1)]...
-  makeLedDataMessage(channel, ledData) {
+  makeLedDataMessage(channel, ledCount, ledData) {
     const dataBuff = Buffer.from(ledData)
-    const out = Buffer.concat([intToBuff(channel, 1), intToBuff(NUM_LEDS_PER_CHANNEL, 2), dataBuff])
+    const out = Buffer.concat([intToBuff(channel, 1), intToBuff(ledCount, 2), dataBuff])
     return this._makeMessage(MESSAGE_TYPES.Data.byteValue, out);
   }
 
@@ -222,7 +244,6 @@ export class KYCClient {
       msgType = this._incomingType(data.subarray(4, 5))
       if (msgType === MESSAGE_TYPES.Ready) {
       } else {
-        const msgLen = data.readIntLE(5, 2)
         if (msgType === MESSAGE_TYPES.Debug) {
           content = {message: content.toString('utf-8')}
         } else if (msgType === MESSAGE_TYPES.Pull) {

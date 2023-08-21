@@ -1,4 +1,3 @@
-import tinycolor from "tinycolor2";
 
 const kyctest = (sticks, sensors) => {
   return sensors.map(sensor => {
