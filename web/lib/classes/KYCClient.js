@@ -51,7 +51,6 @@ class Sensor {
 
   //  {raw, fast, slow}
   recordPull(sensorData) {
-    console.log(sensorData)
     const tension = sensorData.fast
     this.fastSensorValue = Math.max(sensorData.fast, 0)
     this.slowSensorValue = Math.max(sensorData.slow, 0)
@@ -116,11 +115,7 @@ class KYCled {
 
   calculateFrame() {
     const frameChange = regroupConfig(this.mode([this], [this.sensor]).filter(Boolean)).find(config => config.key === this.name).leds
-    for (const currentLight of this.currentLights) {
-
-
-    }
-    this.currentLights = this.currentLights.map(cl => {
+    this.futureLights = this.currentLights.map(cl => {
       const hit = frameChange.filter(frame => frame.number === cl.number)
       if(hit.length > 0) {
         return hit[0]
@@ -144,6 +139,7 @@ class KYCled {
     this.kyc.write(buffer)
     this.kyc.write(this.kyc.makeSwapMessage())
     this.currentLights = attemptedStep
+    console.log(this.currentLights[5])
   }
 
 }
@@ -202,7 +198,6 @@ export class KYCClient {
         this.leds.forEach(l => l.drawFrame())
         break
       case "Pull":
-        console.log(message)
         message.content.data.forEach((data, i) => {
           this.sensors[i].recordPull(data)
         })

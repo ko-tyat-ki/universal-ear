@@ -18,6 +18,7 @@ import {serverConfig} from '../modes_config.json'
 import {KYCClient} from "./lib/classes/KYCClient";
 import {kycConfig} from "./lib/configuration/kycConfig";
 import polzynki from "./lib/modes/polzynki";
+import kyctest from "./lib/modes/kyc/kyctestmode";
 
 console.log({serverConfig})
 

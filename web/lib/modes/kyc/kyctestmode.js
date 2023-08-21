@@ -1,3 +1,4 @@
+import chroma from "chroma-js"
 
 const kyctest = (sticks, sensors) => {
   return sensors.map(sensor => {
@@ -5,9 +6,10 @@ const kyctest = (sticks, sensors) => {
     if (!stick) return
     const leds = []
     for (let i = 0; i < stick.numberOfLEDs; i++) {
+      let chromRGB = chroma.random().rgb();
       leds.push({
         number: i,
-        color: tinycolor.random().toRgb()
+        color: {r: chromRGB[0], g: chromRGB[1], b: chromRGB[2] }
       })
     }
 
