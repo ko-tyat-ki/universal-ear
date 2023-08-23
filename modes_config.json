@@ -4,7 +4,7 @@
         "useEasterEgg": true,
         "useSleepMode": true,
         "modeAutoChangeInterval": 600000,
-        "goToSleepAfter": 900000,
+        "goToSleepAfter": 300000,
         "isAutoChangingModeEnabled": true
     },    
     "generalSoundConfig": {

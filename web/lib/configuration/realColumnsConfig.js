@@ -229,6 +229,71 @@ export const calculateRealColumns = (selectedStructure) => {
                         z: -225
                     }
                 }]
+        case 'kinki':
+            return [
+                {
+                    numberOfLEDs: 40,
+                    name: '1',
+                    init: {
+                        x: 125,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '2',
+                    init: {
+                        x: -125,
+                        y: -180,
+                        z: 0
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '3',
+                    init: {
+                        x: 0,
+                        y: -180,
+                        z: -250
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '4',
+                    init: {
+                        x: -75,
+                        y: -140,
+                        z: -75
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '5',
+                    init: {
+                        x: 75,
+                        y: -140,
+                        z: -75
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '6',
+                    init: {
+                        x: 0,
+                        y: -140,
+                        z: -150
+                    }
+                },
+                {
+                    numberOfLEDs: 40,
+                    name: '7',
+                    init: {
+                        x: 0,
+                        y: -140,
+                        z: -225
+                    }
+                }]        
         case 'summerRave2019':
             return [
                 {

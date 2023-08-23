@@ -37,7 +37,7 @@ modes.onChange = onChange
 let currentMode
 let previousModeKey
 let currentModeKey
-let currentStructureKey = 'mcf-mb-2022'
+let currentStructureKey = 'kinki'
 const prodModesKeys = Object.keys(prodModes)
 const modesKeys = Object.keys(modes)
 let clientSensors = []

@@ -13,10 +13,23 @@ export const arduinosConfig = [
   //   baseTension: 0
   // },
   {
-    "name": "/dev/tty.usbserial-10", // first port on MacBookAir
+    "name": "/dev/tty.usbserial-150", // first port on MacBookAir
     "stick": "1",
     "baudRate": 57600,
     "numberOfLEDs": 40,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 10
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/tty.usbserial-140", // first port on MacBookAir
+    "stick": "2",
+    "baudRate": 57600,
+    "numberOfLEDs": 81120,
     "sensors": [
       {
         "name": "some",

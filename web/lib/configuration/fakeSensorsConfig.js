@@ -270,6 +270,84 @@ export const calculateFakeSensors = (selectedStructure) => {
                     stick: '12'
                 }
             ]
+            case 'kinki':
+                return [
+                    {
+                        key: '1',
+                        sensorPosition: 25,
+                        stick: '1'
+                    },
+                    {
+                        key: '1',
+                        sensorPosition: 25,
+                        stick: '3'
+                    },
+                    {
+                        key: '1',
+                        sensorPosition: 25,
+                        stick: '6'
+                    },
+                    {
+                        key: '2',
+                        sensorPosition: 25,
+                        stick: '2'
+                    },
+                    {
+                        key: '2',
+                        sensorPosition: 25,
+                        stick: '3'
+                    },
+                    {
+                        key: '2',
+                        sensorPosition: 25,
+                        stick: '6'
+                    },
+                    {
+                        key: '4',
+                        sensorPosition: 25,
+                        stick: '4'
+                    },
+                    {
+                        key: '4',
+                        sensorPosition: 25,
+                        stick: '3'
+                    },
+                    {
+                        key: '4',
+                        sensorPosition: 25,
+                        stick: '6'
+                    },
+                    {
+                        key: '5',
+                        sensorPosition: 25,
+                        stick: '5'
+                    },
+                    {
+                        key: '5',
+                        sensorPosition: 25,
+                        stick: '3'
+                    },
+                    {
+                        key: '5',
+                        sensorPosition: 25,
+                        stick: '6'
+                    },
+                    {
+                        key: '7',
+                        sensorPosition: 25,
+                        stick: '7'
+                    },
+                    {
+                        key: '7',
+                        sensorPosition: 25,
+                        stick: '3'
+                    },
+                    {
+                        key: '7',
+                        sensorPosition: 25,
+                        stick: '6'
+                    },
+                ]
             case 'mcf-mb-2022':
                 return [
                     {

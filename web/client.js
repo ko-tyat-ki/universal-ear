@@ -94,7 +94,7 @@ const onConfigure = () => {
 	})
 
 	const structure = document.getElementById('select-structure')
-	structure.value = 'mcf-mb-2022'
+	structure.value = 'kinki'
 	socket.emit('clientChangedStructure', {
 		'structure': document.getElementById('select-structure').value
 	})

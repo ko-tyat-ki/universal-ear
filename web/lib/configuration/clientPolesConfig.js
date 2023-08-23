@@ -1204,6 +1204,94 @@ export const calculateClientPoles = (selectedStructure) => {
                     }
                 }
             ]
+            case 'kinki':
+            return [
+                // vertical poles
+                {
+                    geo: {
+                        x: 5,
+                        y: 400,
+                        z: 5
+                    },
+                    init: {
+                        x: -75,
+                        y: -50,
+                        z: 225
+                    }
+                },
+                {
+                    geo: {
+                        x: 5,
+                        y: 400,
+                        z: 5
+                    },
+                    init: {
+                        x: 75,
+                        y: -50,
+                        z: 225
+                    }
+                },
+                {
+                    geo: {
+                        x: 5,
+                        y: 400,
+                        z: 5
+                    },
+                    init: {
+                        x: 0,
+                        y: -50,
+                        z: 75
+                    }
+                },
+                {
+                    geo: {
+                        x: 5,
+                        y: 400,
+                        z: 5
+                    },
+                    init: {
+                        x: -75,
+                        y: -50,
+                        z: -75
+                    }
+                },
+                {
+                    geo: {
+                        x: 5,
+                        y: 400,
+                        z: 5
+                    },
+                    init: {
+                        x: 75,
+                        y: -50,
+                        z: -75
+                    }
+                },
+                {
+                    geo: {
+                        x: 5,
+                        y: 400,
+                        z: 5
+                    },
+                    init: {
+                        x: 0,
+                        y: -50,
+                        z: -150
+                    }
+                },
+                {
+                    geo: {
+                        x: 5,
+                        y: 400,
+                        z: 5
+                    },
+                    init: {
+                        x: 0,
+                        y: -50,
+                        z: -225
+                    }
+                },
+            ]
             case 'mcf-mb-2022':
                 return [
                     {
@@ -1217,7 +1305,8 @@ export const calculateClientPoles = (selectedStructure) => {
                             y: -62.5,
                             z: 0
                         }
-                    }, {
+                    },
+                    {
                         geo: {
                             x: 5,
                             y: 375,

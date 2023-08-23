@@ -420,6 +420,65 @@ export const calculateClientSticks = (selectedStructure) => {
                     }
                 }
             ]
+        case 'kinki':
+            return [
+                {
+                    name: '1',
+                    init: {
+                        x: -75,
+                        y: -140,
+                        z: 225
+                    }
+                },
+                {
+                    name: '2',
+                    init: {
+                        x: 75,
+                        y: -140,
+                        z: 225
+                    }
+                },
+                {
+                    name: '3',
+                    init: {
+                        x: 0,
+                        y: -140,
+                        z: 75
+                    }
+                },
+                {
+                    name: '4',
+                    init: {
+                        x: -75,
+                        y: -140,
+                        z: -75
+                    }
+                },
+                {
+                    name: '5',
+                    init: {
+                        x: 75,
+                        y: -140,
+                        z: -75
+                    }
+                },
+                {
+                    name: '6',
+                    init: {
+                        x: 0,
+                        y: -140,
+                        z: -150
+                    }
+                },
+                {
+                    name: '7',
+                    init: {
+                        x: 0,
+                        y: -140,
+                        z: -225
+                    }
+                }
+            ]
             case 'mcf-mb-2022':
                 return [
                     {
