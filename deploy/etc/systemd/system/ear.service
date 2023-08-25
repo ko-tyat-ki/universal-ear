@@ -2,10 +2,10 @@
 Description=Nowhere Ear
 
 [Service]
-WorkingDirectory=/home/pi/nowhere-ear/
-ExecStart=/home/pi/nowhere-ear/start.sh
+WorkingDirectory=/home/kat/nowhere-ear/
+ExecStart=/home/kat/nowhere-ear/start.sh
 Restart=on-failure
-User=pi
+User=kat
 
 [Install]
 WantedBy=multi-user.target
