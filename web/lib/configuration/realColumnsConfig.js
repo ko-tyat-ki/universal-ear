@@ -250,7 +250,7 @@ export const calculateRealColumns = (selectedStructure) => {
                     }
                 },
                 {
-                    numberOfLEDs: 40,
+                    numberOfLEDs: 60,
                     name: '3',
                     init: {
                         x: 0,
@@ -277,7 +277,7 @@ export const calculateRealColumns = (selectedStructure) => {
                     }
                 },
                 {
-                    numberOfLEDs: 40,
+                    numberOfLEDs: 20,
                     name: '6',
                     init: {
                         x: 0,

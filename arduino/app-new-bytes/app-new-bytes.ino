@@ -8,7 +8,7 @@
 #define LED_PIN     8
 #define LED_PIN_BALL 5
 #define NUM_LEDS_BALL    50
-#define NUM_LEDS    120
+#define NUM_LEDS    150
 #define BRIGHTNESS  90
 #define BRIGHTNESS_BALLS  125
 #define COLOR_ORDER GRB

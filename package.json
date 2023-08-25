@@ -33,7 +33,7 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.2",
     "babel-eslint": "^10.0.1",
-    "babel-watch": "^7.0.0",
+    "babel-watch": "7.4.0",
     "jest": "^24.8.0",
     "npm-watch": "^0.6.0"
   }

@@ -12,32 +12,32 @@ export const arduinosConfig = [
   //   ],
   //   baseTension: 0
   // },
-  {
-    "name": "/dev/tty.usbserial-150", // first port on MacBookAir
-    "stick": "1",
-    "baudRate": 57600,
-    "numberOfLEDs": 40,
-    "sensors": [
-      {
-        "name": "some",
-        "position": 10
-      }
-    ],
-    "baseTension": 0
-  },
-  {
-    "name": "/dev/tty.usbserial-140", // first port on MacBookAir
-    "stick": "2",
-    "baudRate": 57600,
-    "numberOfLEDs": 81120,
-    "sensors": [
-      {
-        "name": "some",
-        "position": 10
-      }
-    ],
-    "baseTension": 0
-  },
+  // {
+  //   "name": "/dev/tty.usbserial-1120", // first port on MacBookAir
+  //   "stick": "1",
+  //   "baudRate": 57600,
+  //   "numberOfLEDs": 40,
+  //   "sensors": [
+  //     {
+  //       "name": "some",
+  //       "position": 25
+  //     }
+  //   ],
+  //   "baseTension": 0
+  // },
+  // {
+  //   "name": "/dev/tty.usbserial-1140", // first port on MacBookAir
+  //   "stick": "3",
+  //   "baudRate": 57600,
+  //   "numberOfLEDs": 60,
+  //   "sensors": [
+  //     {
+  //       "name": "some",
+  //       "position": 25
+  //     }
+  //   ],
+  //   "baseTension": 0
+  // },
   {
     "name": "/dev/ttyUSB0",
     "stick": "1",
@@ -46,7 +46,33 @@ export const arduinosConfig = [
     "sensors": [
       {
         "name": "some",
-        "position": 10
+        "position": 25
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/ttyUSB0",
+    "stick": "3",
+    "baudRate": 57600,
+    "numberOfLEDs": 60,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 25
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/ttyUSB0",
+    "stick": "6",
+    "baudRate": 57600,
+    "numberOfLEDs": 10,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 25
       }
     ],
     "baseTension": 0
@@ -59,7 +85,46 @@ export const arduinosConfig = [
     "sensors": [
       {
         "name": "some",
-        "position": 10
+        "position": 25
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/ttyUSB1",
+    "stick": "3",
+    "baudRate": 57600,
+    "numberOfLEDs": 60,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 25
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/ttyUSB1",
+    "stick": "6",
+    "baudRate": 57600,
+    "numberOfLEDs": 10,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 25
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/ttyUSB2",
+    "stick": "4",
+    "baudRate": 57600,
+    "numberOfLEDs": 40,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 25
       }
     ],
     "baseTension": 0
@@ -68,37 +133,104 @@ export const arduinosConfig = [
     "name": "/dev/ttyUSB2",
     "stick": "3",
     "baudRate": 57600,
-    "numberOfLEDs": 40,
+    "numberOfLEDs": 60,
     "sensors": [
       {
         "name": "some",
-        "position": 10
+        "position": 25
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/ttyUSB2",
+    "stick": "6",
+    "baudRate": 57600,
+    "numberOfLEDs": 10,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 25
       }
     ],
     "baseTension": 0
   },
   {
     "name": "/dev/ttyUSB3",
-    "stick": "4",
-    "baudRate": 57600,
-    "numberOfLEDs": 40,
-    "sensors": [
-      {
-        "name": "some",
-        "position": 10
-      }
-    ],
-    "baseTension": 0
-  },
-  {
-    "name": "/dev/ttyUSB4",
     "stick": "5",
     "baudRate": 57600,
     "numberOfLEDs": 40,
     "sensors": [
       {
         "name": "some",
-        "position": 10
+        "position": 25
+      }
+    ],
+    "baseTension": 0
+  },
+
+  {
+    "name": "/dev/ttyUSB3",
+    "stick": "3",
+    "baudRate": 57600,
+    "numberOfLEDs": 60,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 25
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/ttyUSB3",
+    "stick": "6",
+    "baudRate": 57600,
+    "numberOfLEDs": 10,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 25
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/ttyUSB4",
+    "stick": "7",
+    "baudRate": 57600,
+    "numberOfLEDs": 40,
+    "sensors": [
+      {
+        "name": "some", 
+        "position": 25
+      }
+    ],
+    "baseTension": 0
+  },
+
+  {
+    "name": "/dev/ttyUSB4",
+    "stick": "3",
+    "baudRate": 57600,
+    "numberOfLEDs": 60,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 25
+      }
+    ],
+    "baseTension": 0
+  },
+  {
+    "name": "/dev/ttyUSB4",
+    "stick": "6",
+    "baudRate": 57600,
+    "numberOfLEDs": 10,
+    "sensors": [
+      {
+        "name": "some",
+        "position": 25
       }
     ],
     "baseTension": 0
