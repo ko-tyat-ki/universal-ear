@@ -2,8 +2,8 @@
 Description=Nowhere Ear
 
 [Service]
-WorkingDirectory=/home/kat/nowhere-ear/
-ExecStart=/home/kat/nowhere-ear/start.sh
+WorkingDirectory=/home/kat/universal-ear/
+ExecStart=/home/kat/universal-ear/start.sh
 Restart=on-failure
 User=kat
 
